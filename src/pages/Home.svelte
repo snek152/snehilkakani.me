@@ -28,4 +28,16 @@
 		background-size: cover;
 		min-height: calc(100vh - 64px);
 	}
+	@media only screen and (max-width: 991px) {
+		#home {
+			background-size: cover;
+			background-position: center;
+			background-origin: content-box;
+			background-repeat: no-repeat;
+			background-attachment: scroll;
+			min-height: 50vh;
+			height: 50vh;
+			width: 100%;
+		}
+	}
 </style>
