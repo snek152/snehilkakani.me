@@ -6,7 +6,7 @@
 		"build": "svelte-kit build",
 		"package": "svelte-kit package",
 		"preview": "svelte-kit preview",
-		"prepare": "svelte-kit sync && pnpm smui-theme-light && pnpm smui-theme-dark",
+		"prepare": "svelte-kit sync && yarn smui-theme-light && yarn smui-theme-dark",
 		"smui-theme-light": "smui-theme compile static/smui.css -i src/theme",
 		"smui-theme-dark": "smui-theme compile static/smui-dark.css -i src/theme/dark",
 		"check": "svelte-check --tsconfig ./tsconfig.json",
