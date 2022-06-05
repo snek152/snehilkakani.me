@@ -39,6 +39,6 @@
 
 <svelte:window bind:scrollY={y} on:scroll={() => onScroll()} />
 
-<Button variant={active ? 'unelevated' : 'text'} ripple={false} on:click={onClick} {href}
-	><slot /></Button
->
+<Button variant={active ? 'unelevated' : 'text'} ripple={false} on:click={onClick} {href}>
+	<slot />
+</Button>

@@ -10,6 +10,11 @@
 	import { navLinks } from '$lib/data';
 	import Fab from '@smui/fab';
 	import IoIosArrowUp from 'svelte-icons/io/IoIosArrowUp.svelte';
+	import IoMdMenu from 'svelte-icons/io/IoMdMenu.svelte';
+	import IconButton from '@smui/icon-button';
+	import Drawer, { Content, Header, Title as T, Subtitle } from '@smui/drawer';
+	import List, { Item, Text, Graphic } from '@smui/list';
+	import { clickOutside } from '$lib/click-outside';
 
 	let topAppBar: any;
 	let preloaderVisible = true;
@@ -39,9 +44,12 @@
 			exited = true;
 		}
 	}
+
+	let width: number;
+	let open: boolean = false;
 </script>
 
-<svelte:window on:scroll={onScroll} bind:scrollY={top} />
+<svelte:window on:scroll={onScroll} bind:scrollY={top} bind:innerWidth={width} />
 <div class="topbutton-container">
 	<div class="topbutton-inner">
 		<Fab color="primary" ripple={false} {exited} on:click={() => console.log('clicked')}>
@@ -64,12 +72,46 @@
 			<Title>Snehil Kakani</Title>
 		</Section>
 		<Section align="end">
-			{#each navLinks as link}
-				<NavLink href={link.href}>{link.title}</NavLink>
-			{/each}
+			{#if width > 991}
+				{#each navLinks as link}
+					<NavLink href={link.href}>{link.title}</NavLink>
+				{/each}
+			{:else}
+				<IconButton on:click={() => (open = !open)}>
+					<IoMdMenu />
+				</IconButton>
+			{/if}
 		</Section>
 	</Row>
 </TopAppBar>
+<div:any use:clickOutside on:click_outside={() => (open = false)}>
+	<Drawer variant="modal" fixed bind:open>
+		<Header>
+			<T>Super Mail</T>
+			<Subtitle>It's the best fake mail app drawer.</Subtitle>
+		</Header>
+		<Content>
+			<List>
+				<Item href="javascript:void(0)">
+					<Graphic class="material-icons" aria-hidden="true">inbox</Graphic>
+					<Text>Inbox</Text>
+				</Item>
+				<Item href="javascript:void(0)">
+					<Graphic class="material-icons" aria-hidden="true">star</Graphic>
+					<Text>Star</Text>
+				</Item>
+				<Item href="javascript:void(0)">
+					<Graphic class="material-icons" aria-hidden="true">send</Graphic>
+					<Text>Sent Mail</Text>
+				</Item>
+				<Item href="javascript:void(0)" activated={true}>
+					<Graphic class="material-icons" aria-hidden="true">drafts</Graphic>
+					<Text>Drafts</Text>
+				</Item>
+			</List>
+		</Content>
+	</Drawer>
+</div:any>
 
 <AutoAdjust {topAppBar}>
 	<div class="container">
