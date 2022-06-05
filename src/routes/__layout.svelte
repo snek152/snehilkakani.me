@@ -7,6 +7,7 @@
 	import FaDrum from 'svelte-icons/fa/FaDrum.svelte';
 	import FaTheaterMasks from 'svelte-icons/fa/FaTheaterMasks.svelte';
 	import { fadeOut } from '$lib/fade-utils';
+	import { navLinks } from '$lib/data';
 
 	let topAppBar: any;
 	let preloaderVisible = true;
@@ -35,13 +36,15 @@
 		{/each}
 	</div>
 </div>
-<TopAppBar variant="standard" color="secondary" bind:this={topAppBar}>
+<TopAppBar variant="fixed" color="secondary" bind:this={topAppBar}>
 	<Row>
 		<Section>
 			<Title>Snehil Kakani</Title>
 		</Section>
 		<Section align="end">
-			<NavLink href="#">Home</NavLink>
+			{#each navLinks as link}
+				<NavLink href={link.href}>{link.title}</NavLink>
+			{/each}
 		</Section>
 	</Row>
 </TopAppBar>
@@ -70,6 +73,10 @@
 
 	:global(*) {
 		font-family: 'IBM Plex Sans' !important;
+	}
+
+	:global(.section) {
+		scroll-margin-top: 64px;
 	}
 
 	.preloader {

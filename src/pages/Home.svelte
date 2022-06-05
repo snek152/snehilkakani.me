@@ -6,7 +6,7 @@
 	import FaTheaterMasks from 'svelte-icons/fa/FaTheaterMasks.svelte';
 </script>
 
-<div id="home">
+<div id="home" class="section">
 	<FloatingIcon>
 		<FaCode />
 	</FloatingIcon>
