@@ -14,6 +14,7 @@ html,
 body {
 	background-color: theme.$background;
 	color: theme.$on-surface;
+	scrollbar-color: #454a4d #202324;
 }
 
 .preloader {
@@ -25,4 +26,22 @@ a {
 }
 a:visited {
 	color: color.scale(#40b3ff, $lightness: -35%);
+}
+
+::-webkit-scrollbar {
+	background-color: #202324;
+	color: #aba499;
+	width: 12px;
+}
+
+::-webkit-scrollbar-corner {
+	background-color: #181a1b;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: #3f3fb3;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background-color: #5b5bc1;
 }

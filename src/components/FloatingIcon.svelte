@@ -22,4 +22,11 @@
 		user-select: none;
 		position: absolute;
 	}
+
+	@media only screen and (max-width: 991px) {
+		.floating-icon {
+			width: 25px;
+			height: 25px;
+		}
+	}
 </style>

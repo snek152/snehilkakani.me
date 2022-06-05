@@ -81,6 +81,7 @@
 	:global(body) {
 		margin: 0;
 		overflow: hidden;
+		overflow-x: hidden;
 	}
 	:global(:root) {
 		--width-sm: 640px;
