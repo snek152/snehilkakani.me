@@ -1,9 +1,26 @@
-<script>
-	import Navbar from '../components/Navbar.svelte';
+<script lang="ts">
+	import TopAppBar, { Row, Section, Title, AutoAdjust } from '@smui/top-app-bar';
+	import NavLink from '../components/NavLink.svelte';
+
+	let topAppBar;
 </script>
 
-<Navbar />
-<div class="container"><slot /></div>
+<TopAppBar variant="standard" color="secondary" bind:this={topAppBar}>
+	<Row>
+		<Section>
+			<Title>Snehil Kakani</Title>
+		</Section>
+		<Section align="end">
+			<NavLink href="#">Home</NavLink>
+		</Section>
+	</Row>
+</TopAppBar>
+
+<AutoAdjust {topAppBar}>
+	<div class="container">
+		<slot />
+	</div>
+</AutoAdjust>
 
 <style>
 	:global(body) {
