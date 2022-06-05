@@ -1,7 +1,5 @@
 <script lang="ts">
-	import Button from '@smui/button';
+	import Home from '../pages/Home.svelte';
 </script>
 
-<Button>hey</Button>
-
-<Button>sdf</Button>
+<Home />

@@ -2,7 +2,7 @@
 	import TopAppBar, { Row, Section, Title, AutoAdjust } from '@smui/top-app-bar';
 	import NavLink from '../components/NavLink.svelte';
 
-	let topAppBar;
+	let topAppBar: any;
 </script>
 
 <TopAppBar variant="standard" color="secondary" bind:this={topAppBar}>
@@ -19,8 +19,8 @@
 <AutoAdjust {topAppBar}>
 	<div class="container">
 		<slot />
-	</div>
-</AutoAdjust>
+	</div></AutoAdjust
+>
 
 <style>
 	:global(body) {
