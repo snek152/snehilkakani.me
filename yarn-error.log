@@ -1,0 +1,78 @@
+Arguments: 
+  /Users/snehilk/.nvm/versions/node/v16.13.0/bin/node /opt/homebrew/Cellar/yarn/1.22.17_2/libexec/bin/yarn.js install
+
+PATH: 
+  /Users/snehilk/.nvm/versions/node/v16.13.0/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/Library/Frameworks/Python.framework/Versions/3.9/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Users/snehilk/.nvm/versions/node/v16.13.0/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/Library/Frameworks/Python.framework/Versions/3.9/bin:/Users/snehilk/.cargo/bin
+
+Yarn version: 
+  1.22.17
+
+Node version: 
+  16.13.0
+
+Platform: 
+  darwin arm64
+
+Trace: 
+  Error: ENOENT: no such file or directory, copyfile '/Users/snehilk/Library/Caches/Yarn/v6/npm-estraverse-4.3.0-398ad3f3c5a24948be7725e83d11a7de28cdbd1d-integrity/node_modules/estraverse/.jshintrc' -> '/Users/snehilk/Desktop/Projects/web stuff/snehilkakani.me/node_modules/@typescript-eslint/utils/node_modules/estraverse/.jshintrc'
+
+npm manifest: 
+  {
+  	"name": "snehilkakani.me",
+  	"version": "0.0.1",
+  	"scripts": {
+  		"start": "svelte-kit dev",
+  		"build": "svelte-kit build",
+  		"package": "svelte-kit package",
+  		"preview": "svelte-kit preview",
+  		"prepare": "svelte-kit sync && pnpm smui-theme-light && pnpm smui-theme-dark",
+  		"smui-theme-light": "smui-theme compile static/smui.css -i src/theme",
+  		"smui-theme-dark": "smui-theme compile static/smui-dark.css -i src/theme/dark",
+  		"check": "svelte-check --tsconfig ./tsconfig.json",
+  		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
+  		"lint": "prettier --check --plugin-search-dir=. . && eslint .",
+  		"format": "prettier --write --plugin-search-dir=. ."
+  	},
+  	"devDependencies": {
+  		"@material/theme": "^14.0.0",
+  		"@material/typography": "^14.0.0",
+  		"@smui-extra/accordion": "^6.0.0-beta.16",
+  		"@smui/button": "^6.0.0-beta.16",
+  		"@smui/chips": "^6.0.0-beta.16",
+  		"@smui/circular-progress": "^6.0.0-beta.16",
+  		"@smui/common": "^6.0.0-beta.16",
+  		"@smui/dialog": "^6.0.0-beta.16",
+  		"@smui/drawer": "^6.0.0-beta.16",
+  		"@smui/fab": "^6.0.0-beta.16",
+  		"@smui/icon-button": "^6.0.0-beta.16",
+  		"@smui/layout-grid": "^6.0.0-beta.16",
+  		"@smui/linear-progress": "^6.0.0-beta.16",
+  		"@smui/paper": "^6.0.0-beta.16",
+  		"@smui/segmented-button": "^6.0.0-beta.16",
+  		"@smui/switch": "^6.0.0-beta.16",
+  		"@smui/textfield": "^6.0.0-beta.16",
+  		"@smui/tooltip": "^6.0.0-beta.16",
+  		"@sveltejs/adapter-auto": "next",
+  		"@sveltejs/kit": "next",
+  		"@typescript-eslint/eslint-plugin": "^5.10.1",
+  		"@typescript-eslint/parser": "^5.10.1",
+  		"eslint": "^8.12.0",
+  		"eslint-config-prettier": "^8.3.0",
+  		"eslint-plugin-svelte3": "^4.0.0",
+  		"prettier": "^2.5.1",
+  		"prettier-plugin-svelte": "^2.5.0",
+  		"smui-theme": "^6.0.0-beta.16",
+  		"svelte": "^3.44.0",
+  		"svelte-check": "^2.2.6",
+  		"svelte-preprocess": "^4.10.1",
+  		"tslib": "^2.3.1",
+  		"typescript": "~4.6.2"
+  	},
+  	"type": "module"
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
