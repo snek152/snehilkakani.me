@@ -5,7 +5,7 @@
 
 	let icon: HTMLElement;
 	onMount(() => {
-		const obj = new RandomObjectMover(icon, document.querySelector('.container')!);
+		const obj = new RandomObjectMover(icon, document.querySelector('#home')!);
 		obj.start();
 	});
 </script>
