@@ -1,7 +1,12 @@
 <script lang="ts">
+	import List, { Graphic, Item, Text } from '@smui/list';
 	import Paper, { Content } from '@smui/paper';
 	import { onDestroy, onMount } from 'svelte';
 	import Typed from 'typed.js';
+	import MdEmail from 'svelte-icons/md/MdEmail.svelte';
+	import MdSchool from 'svelte-icons/md/MdSchool.svelte';
+	import AboutAccordion from '../components/AboutAccordion.svelte';
+	import Accordion from '@smui-extra/accordion';
 
 	let el: HTMLElement;
 	let typed: Typed;
@@ -45,6 +50,52 @@
 						<h1 class="card-title">
 							<span bind:this={el} />
 						</h1>
+						<h5 class="card-text">
+							Hi! My name is Snehil, and I'm an aspiring programmer. I love working on solid,
+							flexible UIs in the frontend, and creating APIs and server apps in the backend. I'm
+							also a professional graphic designer, drummer, actor, and more! You can find me on
+							social media, or contact me directly.
+						</h5>
+						<div class="card-list">
+							<List nonInteractive>
+								<Item>
+									<Graphic>
+										<MdEmail />
+									</Graphic>
+									<Text>kakanisnehil@gmail.com</Text>
+								</Item>
+								<Item>
+									<Graphic>
+										<MdSchool />
+									</Graphic>
+									<Text>Rising Sophomore - Lynbrook High School</Text>
+								</Item>
+							</List>
+						</div>
+						<hr />
+						<div class="card-columns-flex">
+							<div class="col-3">
+								<h4>Professional Experience</h4>
+								<Accordion color="primary">
+									<AboutAccordion
+										title="Graphic Designer"
+										description="@ Youth Economics Initiative"
+									>
+										As a graphic designer at the <a
+											href="https://theyei.org"
+											target="_blank"
+											rel="noreferrer noopener">YEI</a
+										>, I make professional Instagram posts and stories to promote their events, as
+										well as educating people about economics. To accomplish this, I use the graphic
+										design platform
+										<a href="https://canva.com" target="_blank" rel="noreferrer noopener">Canva</a>.
+									</AboutAccordion>
+								</Accordion>
+							</div>
+							<div class="col-4">
+								<h4>Interests</h4>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -58,10 +109,29 @@
 	}
 	.card-columns {
 		display: flex;
+		flex-direction: column;
+		overflow-wrap: anywhere !important;
+	}
+
+	.card-columns-flex {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.card-columns h4 {
+		font-size: 1.5rem;
+		font-weight: 400;
+		padding-bottom: 0.5rem;
+		margin-top: 0.5rem;
+		line-height: 1.2;
+		margin-bottom: 0;
+	}
+	.card-columns > * {
+		overflow: hidden;
 	}
 
 	.card-title {
-		margin-bottom: 0.5rem;
+		margin-bottom: 1rem;
 		margin-top: 0;
 		font-weight: 500;
 	}
@@ -71,30 +141,64 @@
 		padding: 1rem;
 	}
 
-	@media (min-width: 768px) {
-		.col-1 {
-			width: 100%;
-		}
-		.col-2 {
-			width: 100%;
-		}
+	.card-text {
+		font-weight: 400;
+		margin-bottom: 0;
+		font-size: 1.2rem;
+		margin-top: 0;
+		line-height: 1.2;
 	}
-	@media (min-width: 1024px) {
+
+	.col-1,
+	.col-2,
+	.col-3,
+	.col-4 {
+		width: 100%;
+		flex: 0 0 auto;
+	}
+
+	.col-3,
+	.col-4 {
+		display: inline;
+		padding: 0;
+		min-width: 0;
+		padding: 0 1rem;
+	}
+
+	@media (min-width: 992px) {
 		.col-1 {
-			width: 41.6%;
+			width: 41.7%;
 		}
 
 		.col-2 {
 			width: 58.3%;
+		}
+
+		/* .col-3 {
+			width: 50%;
+		}
+
+		.col-4 {
+			width: 50%;
+		} */
+
+		.card-columns {
+			flex-direction: row;
 		}
 	}
 
 	.col-1 > img {
 		width: 100%;
 		height: 100%;
+		object-fit: cover;
 	}
 
 	.col-2 {
 		padding: 15px;
+	}
+
+	:global(.mdc-deprecated-list-item__text) {
+		text-overflow: clip;
+		white-space: normal;
 	}
 </style>

@@ -163,12 +163,27 @@
 		--width-xl: 1280px;
 	}
 
-	:global(h1 > *, h2 > *, h3 > *, h4 > *, h3 > *) {
+	:global(h1 > *, h2 > *, h3 > *, h4 > *, h3 > *, h1, h2, h3, h4) {
 		font-family: 'Red Hat Display' !important;
+	}
+
+	:global(.smui-accordion
+			.smui-accordion__panel
+			> .smui-accordion__header
+			.smui-accordion__header__title.smui-accordion__header__title--with-description) {
+		flex-basis: initial;
+	}
+
+	:global(.smui-accordion
+			.smui-accordion__panel
+			> .smui-accordion__header
+			.smui-accordion__header__title) {
+		flex-grow: 0;
 	}
 
 	:global(*) {
 		font-family: 'IBM Plex Sans' !important;
+		box-sizing: border-box;
 	}
 
 	:global(.section) {
