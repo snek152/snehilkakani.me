@@ -57,7 +57,7 @@
 							social media, or contact me directly.
 						</h5>
 						<div class="card-list">
-							<List nonInteractive>
+							<List nonInteractive class="list">
 								<Item>
 									<Graphic>
 										<MdEmail />
@@ -104,6 +104,14 @@
 </div>
 
 <style>
+	:global(.list) {
+		color: #4f4f4f !important;
+		fill: #4f4f4f !important;
+	}
+
+	:global(.mdc-deprecated-list .mdc-deprecated-list-item__graphic) {
+		color: #4f4f4f !important;
+	}
 	#about {
 		padding: 1rem;
 	}

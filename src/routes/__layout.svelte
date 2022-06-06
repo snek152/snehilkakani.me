@@ -16,9 +16,6 @@
 	import List from '@smui/list';
 	import { clickOutside } from '$lib/click-outside';
 	import { dev } from '$app/env';
-	import { theme } from '$lib/stores';
-	import Switch from '@smui/switch';
-	import FormField from '@smui/form-field';
 	let topAppBar: any;
 	let preloaderVisible = true;
 	let preloader: HTMLElement;
@@ -37,17 +34,6 @@
 			dev ? 0 : 1000
 		);
 		onScroll();
-		if (!('theme' in localStorage)) {
-			theme.useLocalStorage();
-			if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-				theme.set({ ...$theme, mode: 'dark' });
-			} else {
-				theme.set({ ...$theme, mode: 'light' });
-			}
-		} else {
-			theme.useLocalStorage();
-		}
-		document.documentElement.classList.remove('dark');
 	});
 	const preloaderImages = [FaCode, FaPenNib, FaDrum, FaTheaterMasks];
 
@@ -63,27 +49,13 @@
 		}
 	}
 
-	function toggleTheme() {
-		if ($theme.mode === 'light') {
-			theme.set({ ...$theme, mode: 'dark' });
-		} else {
-			theme.set({ ...$theme, mode: 'light' });
-		}
-	}
-
 	let width: number;
 	let open: boolean = false;
-
-	$: checked = $theme.mode === 'dark';
 </script>
 
 <svelte:window on:scroll={onScroll} bind:scrollY={top} bind:innerWidth={width} />
 <svelte:head>
-	{#if $theme.mode === 'light'}
-		<link rel="stylesheet" href="/smui.css" />
-	{:else if $theme.mode === 'dark'}
-		<link rel="stylesheet" href="/smui-dark.css" />
-	{/if}
+	<link rel="stylesheet" href="/smui.css" />
 </svelte:head>
 <div
 	style="background: {open
@@ -110,10 +82,6 @@
 	<Row>
 		<Section>
 			<Title>Snehil Kakani</Title>
-			<FormField align="start">
-				<Switch bind:checked on:click={() => toggleTheme()} />
-				<span slot="label">Dark mode</span>
-			</FormField>
 		</Section>
 		<Section align="end" toolbar>
 			{#if width > 991}
@@ -170,15 +138,22 @@
 	:global(.smui-accordion
 			.smui-accordion__panel
 			> .smui-accordion__header
+			.smui-accordion__header__description) {
+		opacity: 0.75 !important;
+	}
+
+	:global(.smui-accordion
+			.smui-accordion__panel
+			> .smui-accordion__header
 			.smui-accordion__header__title.smui-accordion__header__title--with-description) {
-		flex-basis: initial;
+		flex-basis: initial !important;
 	}
 
 	:global(.smui-accordion
 			.smui-accordion__panel
 			> .smui-accordion__header
 			.smui-accordion__header__title) {
-		flex-grow: 0;
+		flex-grow: 0 !important;
 	}
 
 	:global(*) {
@@ -200,7 +175,6 @@
 		justify-content: center;
 		align-items: center;
 		display: flex;
-		background-color: white;
 	}
 
 	.spinner {

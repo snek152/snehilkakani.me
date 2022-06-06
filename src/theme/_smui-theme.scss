@@ -3,23 +3,26 @@
 @use '@material/theme/color-palette';
 
 @use '@material/theme/index' as theme with (
-	$primary: #4f95ff,
-	$secondary: #dfdfdf,
+	$primary: #0d6efd,
+	$secondary: #262626,
 	$surface: #fbfbfb,
-	$background: #dfdfdf,
+	$background: #2b2b2b,
 	$error: color-palette.$red-900,
 	$on-surface: #4f4f4f
 );
 
+$on-dark-surface: #c2c2c2;
+
 html,
 body {
 	background-color: theme.$background;
-	color: theme.$on-surface;
+	color: theme.$on-surface !important;
 	scrollbar-color: #dde9ef #3f3fb3;
 }
 
 .preloader {
 	background-color: theme.$background;
+	color: $on-dark-surface;
 }
 
 a {
