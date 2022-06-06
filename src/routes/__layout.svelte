@@ -15,6 +15,7 @@
 	import Drawer, { Content, Header, Title as T, Subtitle } from '@smui/drawer';
 	import List, { Item, Text, Graphic } from '@smui/list';
 	import { clickOutside } from '$lib/click-outside';
+	import { dev } from '$app/env';
 
 	let topAppBar: any;
 	let preloaderVisible = true;
@@ -26,10 +27,13 @@
 		}
 	}
 	onMount(() => {
-		setTimeout(() => {
-			preloaderVisible = false;
-			document.body.style.overflow = 'auto';
-		}, 1000);
+		setTimeout(
+			() => {
+				preloaderVisible = false;
+				document.body.style.overflowY = 'auto';
+			},
+			dev ? 0 : 1000
+		);
 		onScroll();
 	});
 	const preloaderImages = [FaCode, FaPenNib, FaDrum, FaTheaterMasks];
@@ -50,6 +54,11 @@
 </script>
 
 <svelte:window on:scroll={onScroll} bind:scrollY={top} bind:innerWidth={width} />
+<div
+	style="background: {open
+		? 'rgba(0,0,0,0.5)'
+		: 'transparent'}; width: 100%; overflow: hidden; height: 100%; position: absolute; transition: background-color 100ms; z-index: 5; pointer-events: none;"
+/>
 <div class="topbutton-container">
 	<div class="topbutton-inner">
 		<Fab color="primary" ripple={false} {exited} on:click={() => console.log('clicked')}>
@@ -84,30 +93,16 @@
 		</Section>
 	</Row>
 </TopAppBar>
+
 <div:any use:clickOutside on:click_outside={() => (open = false)}>
 	<Drawer variant="modal" fixed bind:open>
-		<Header>
-			<T>Super Mail</T>
-			<Subtitle>It's the best fake mail app drawer.</Subtitle>
-		</Header>
 		<Content>
 			<List>
-				<Item href="javascript:void(0)">
-					<Graphic class="material-icons" aria-hidden="true">inbox</Graphic>
-					<Text>Inbox</Text>
-				</Item>
-				<Item href="javascript:void(0)">
-					<Graphic class="material-icons" aria-hidden="true">star</Graphic>
-					<Text>Star</Text>
-				</Item>
-				<Item href="javascript:void(0)">
-					<Graphic class="material-icons" aria-hidden="true">send</Graphic>
-					<Text>Sent Mail</Text>
-				</Item>
-				<Item href="javascript:void(0)" activated={true}>
-					<Graphic class="material-icons" aria-hidden="true">drafts</Graphic>
-					<Text>Drafts</Text>
-				</Item>
+				{#each navLinks as link}
+					<NavLink href={link.href} mobile on:click={() => (open = false)}>
+						{link.title}
+					</NavLink>
+				{/each}
 			</List>
 		</Content>
 	</Drawer>
@@ -122,8 +117,9 @@
 <style>
 	:global(body) {
 		margin: 0;
-		overflow: hidden;
+		overflow-y: hidden;
 		overflow-x: hidden;
+		position: relative;
 	}
 	:global(:root) {
 		--width-sm: 640px;
