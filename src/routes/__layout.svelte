@@ -18,7 +18,7 @@
 	import { dev } from '$app/env';
 	import { theme } from '$lib/stores';
 	import Switch from '@smui/switch';
-
+	import FormField from '@smui/form-field';
 	let topAppBar: any;
 	let preloaderVisible = true;
 	let preloader: HTMLElement;
@@ -110,9 +110,12 @@
 	<Row>
 		<Section>
 			<Title>Snehil Kakani</Title>
-			<Switch bind:checked icons={false} on:click={() => toggleTheme()} />
+			<FormField align="start">
+				<Switch bind:checked on:click={() => toggleTheme()} />
+				<span slot="label">Dark mode</span>
+			</FormField>
 		</Section>
-		<Section align="end">
+		<Section align="end" toolbar>
 			{#if width > 991}
 				{#each navLinks as link}
 					<NavLink href={link.href}>{link.title}</NavLink>

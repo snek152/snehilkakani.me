@@ -25,6 +25,7 @@
 		"@smui/dialog": "^6.0.0-beta.16",
 		"@smui/drawer": "^6.0.0-beta.16",
 		"@smui/fab": "^6.0.0-beta.16",
+		"@smui/form-field": "^6.0.0-beta.16",
 		"@smui/icon-button": "^6.0.0-beta.16",
 		"@smui/layout-grid": "^6.0.0-beta.16",
 		"@smui/linear-progress": "^6.0.0-beta.16",
@@ -50,6 +51,7 @@
 		"svelte-icons": "^2.1.0",
 		"svelte-preprocess": "^4.10.1",
 		"tslib": "^2.3.1",
+		"typed.js": "^2.0.12",
 		"typescript": "~4.6.2"
 	},
 	"type": "module"

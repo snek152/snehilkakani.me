@@ -1,5 +1,5 @@
 Arguments: 
-  /Users/snehilk/.nvm/versions/node/v16.13.0/bin/node /opt/homebrew/Cellar/yarn/1.22.17_2/libexec/bin/yarn.js add -D @types/smui/list
+  /Users/snehilk/.nvm/versions/node/v16.13.0/bin/node /opt/homebrew/Cellar/yarn/1.22.17_2/libexec/bin/yarn.js add -D @types/svelte-typed-js
 
 PATH: 
   /Users/snehilk/.nvm/versions/node/v16.13.0/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/Library/Frameworks/Python.framework/Versions/3.9/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Users/snehilk/.nvm/versions/node/v16.13.0/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/Library/Frameworks/Python.framework/Versions/3.9/bin:/Users/snehilk/.cargo/bin
@@ -14,8 +14,8 @@ Platform:
   darwin arm64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@types%2fsmui/list: Request "https://registry.yarnpkg.com/@types%2fsmui/list" returned a 405
-      at Request.params.callback [as _callback] (/opt/homebrew/Cellar/yarn/1.22.17_2/libexec/lib/cli.js:67038:18)
+  Error: https://registry.yarnpkg.com/@types%2fsvelte-typed-js: Not found
+      at Request.params.callback [as _callback] (/opt/homebrew/Cellar/yarn/1.22.17_2/libexec/lib/cli.js:67029:18)
       at Request.self.callback (/opt/homebrew/Cellar/yarn/1.22.17_2/libexec/lib/cli.js:140883:22)
       at Request.emit (node:events:390:28)
       at Request.<anonymous> (/opt/homebrew/Cellar/yarn/1.22.17_2/libexec/lib/cli.js:141855:10)
@@ -54,6 +54,7 @@ npm manifest:
   		"@smui/dialog": "^6.0.0-beta.16",
   		"@smui/drawer": "^6.0.0-beta.16",
   		"@smui/fab": "^6.0.0-beta.16",
+  		"@smui/form-field": "^6.0.0-beta.16",
   		"@smui/icon-button": "^6.0.0-beta.16",
   		"@smui/layout-grid": "^6.0.0-beta.16",
   		"@smui/linear-progress": "^6.0.0-beta.16",
@@ -78,6 +79,7 @@ npm manifest:
   		"svelte-check": "^2.2.6",
   		"svelte-icons": "^2.1.0",
   		"svelte-preprocess": "^4.10.1",
+  		"svelte-typed-js": "^1.0.3",
   		"tslib": "^2.3.1",
   		"typescript": "~4.6.2"
   	},
@@ -352,6 +354,19 @@ Lockfile:
       "@material/typography" "^13.0.0"
       tslib "^2.1.0"
   
+  "@material/form-field@^13.0.0":
+    version "13.0.0"
+    resolved "https://registry.yarnpkg.com/@material/form-field/-/form-field-13.0.0.tgz#59f50b342bc20562fa2c78c17ac4385236f89c99"
+    integrity sha512-cXs5uYA89KgrXrU1UYkl52JizeIK3Mx9LjBw4ZYiyQJzFaBTPYsYWGSJMad1HZhWlRiigGTyN1M9ePIxtBpi0Q==
+    dependencies:
+      "@material/base" "^13.0.0"
+      "@material/feature-targeting" "^13.0.0"
+      "@material/ripple" "^13.0.0"
+      "@material/rtl" "^13.0.0"
+      "@material/theme" "^13.0.0"
+      "@material/typography" "^13.0.0"
+      tslib "^2.1.0"
+  
   "@material/icon-button@^13.0.0":
     version "13.0.0"
     resolved "https://registry.yarnpkg.com/@material/icon-button/-/icon-button-13.0.0.tgz#e2d3fb5dcd2b944883f8241420b82f0f3ce2ebf2"
@@ -620,6 +635,11 @@ Lockfile:
       "@nodelib/fs.scandir" "2.1.5"
       fastq "^1.6.0"
   
+  "@polka/url@^1.0.0-next.20":
+    version "1.0.0-next.21"
+    resolved "https://registry.yarnpkg.com/@polka/url/-/url-1.0.0-next.21.tgz#5de5a2385a35309427f6011992b544514d559aa1"
+    integrity sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==
+  
   "@rollup/pluginutils@^4.2.1":
     version "4.2.1"
     resolved "https://registry.yarnpkg.com/@rollup/pluginutils/-/pluginutils-4.2.1.tgz#e6c6c3aba0744edce3fb2074922d3776c0af2a6d"
@@ -726,6 +746,17 @@ Lockfile:
     integrity sha512-9Vk7NPoWgL7r7Sk88iWfq+rW/BKL1rQ6S0rJimspsoUIgPpUQYFeBRZFaQiOMJZJrJEGisJbqdKVpsXqqnNq/w==
     dependencies:
       "@material/floating-label" "^13.0.0"
+      "@smui/common" "^6.0.0-beta.16"
+      svelte2tsx "^0.5.5"
+  
+  "@smui/form-field@^6.0.0-beta.16":
+    version "6.0.0-beta.16"
+    resolved "https://registry.yarnpkg.com/@smui/form-field/-/form-field-6.0.0-beta.16.tgz#d552c3a4093354a41cca28c20985db700e4871a1"
+    integrity sha512-sNzmim4HDM07feYaqRZGy0VwNH6PuerSl6Ha5cxAFaTLN8SIzfNUEJ7iNX1eBImTlrRNHsR6VwUySXX60xUyQA==
+    dependencies:
+      "@material/feature-targeting" "^13.0.0"
+      "@material/form-field" "^13.0.0"
+      "@material/rtl" "^13.0.0"
       "@smui/common" "^6.0.0-beta.16"
       svelte2tsx "^0.5.5"
   
@@ -1255,6 +1286,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
     integrity sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==
   
+  console-clear@^1.1.0:
+    version "1.1.1"
+    resolved "https://registry.yarnpkg.com/console-clear/-/console-clear-1.1.1.tgz#995e20cbfbf14dd792b672cde387bd128d674bf7"
+    integrity sha512-pMD+MVR538ipqkG5JXeOEbKWS5um1H4LUUccUQG68qpeqBYbzYy79Gh55jkd2TtPdRfUaLWdv6LPP//5Zt0aPQ==
+  
   console-control-strings@^1.0.0, console-control-strings@^1.1.0, console-control-strings@~1.1.0:
     version "1.1.0"
     resolved "https://registry.yarnpkg.com/console-control-strings/-/console-control-strings-1.1.0.tgz#3d7cf4464db6446ea644bf4b39507f9851008e8e"
@@ -1753,6 +1789,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/get-caller-file/-/get-caller-file-2.0.5.tgz#4f94412a82db32f36e3b0b9741f8a97feb031f7e"
     integrity sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==
   
+  get-port@^3.2.0:
+    version "3.2.0"
+    resolved "https://registry.yarnpkg.com/get-port/-/get-port-3.2.0.tgz#dd7ce7de187c06c8bf353796ac71e099f0980ebc"
+    integrity sha512-x5UJKlgeUiNT8nyo/AcnwLnZuZNcSjSw0kogRB+Whd1fjjFq4B1hySFxSFWWSn4mIBzg3sRNUDFYc4g5gjPoLg==
+  
   glob-parent@^5.1.2, glob-parent@~5.1.2:
     version "5.1.2"
     resolved "https://registry.yarnpkg.com/glob-parent/-/glob-parent-5.1.2.tgz#869832c58034fe68a4093c17dc15e8340d8401c4"
@@ -1963,6 +2004,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/json-stable-stringify-without-jsonify/-/json-stable-stringify-without-jsonify-1.0.1.tgz#9db7b59496ad3f3cfef30a75142d2d930ad72651"
     integrity sha512-Bdboy+l7tA3OGW6FjyFHWkP5LuByj1Tk33Ljyq0axyzdk9//JSi2u3fP1QSmd1KNwq6VOKYGlAu87CisVir6Pw==
   
+  kleur@^3.0.0:
+    version "3.0.3"
+    resolved "https://registry.yarnpkg.com/kleur/-/kleur-3.0.3.tgz#a79c9ecc86ee1ce3fa6206d1216c501f147fc07e"
+    integrity sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==
+  
   kleur@^4.1.4:
     version "4.1.4"
     resolved "https://registry.yarnpkg.com/kleur/-/kleur-4.1.4.tgz#8c202987d7e577766d039a8cd461934c01cda04d"
@@ -1975,6 +2021,11 @@ Lockfile:
     dependencies:
       prelude-ls "^1.2.1"
       type-check "~0.4.0"
+  
+  local-access@^1.0.1:
+    version "1.1.0"
+    resolved "https://registry.yarnpkg.com/local-access/-/local-access-1.1.0.tgz#e007c76ba2ca83d5877ba1a125fc8dfe23ba4798"
+    integrity sha512-XfegD5pyTAfb+GY6chk283Ox5z8WexG56OvM06RWLpAc/UHozO8X6xAxEkIitZOtsSMM1Yr3DkHgW5W+onLhCw==
   
   lodash.merge@^4.6.2:
     version "4.6.2"
@@ -2468,7 +2519,7 @@ Lockfile:
     dependencies:
       queue-microtask "^1.2.2"
   
-  sade@^1.7.4, sade@^1.8.1:
+  sade@^1.6.0, sade@^1.7.4, sade@^1.8.1:
     version "1.8.1"
     resolved "https://registry.yarnpkg.com/sade/-/sade-1.8.1.tgz#0a78e81d658d394887be57d2a409bf703a3b2701"
     integrity sha512-xal3CZX1Xlo/k4ApwCFrHVACi9fBqJ7V+mwhBsuf/1IOKbBy098Fex+Wa/5QMubw09pSZ/u8EY8PWgevJsXp1A==
@@ -2514,6 +2565,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
     integrity sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
   
+  semiver@^1.0.0:
+    version "1.1.0"
+    resolved "https://registry.yarnpkg.com/semiver/-/semiver-1.1.0.tgz#9c97fb02c21c7ce4fcf1b73e2c7a24324bdddd5f"
+    integrity sha512-QNI2ChmuioGC1/xjyYwyZYADILWyW6AmS1UH6gDj/SFUUUS4MBAWs/7mxnkRPc/F4iHezDP+O8t0dO8WHiEOdg==
+  
   semver@^5.3.0:
     version "5.7.1"
     resolved "https://registry.yarnpkg.com/semver/-/semver-5.7.1.tgz#a954f931aeba508d307bbf069eff0c01c96116f7"
@@ -2557,6 +2613,29 @@ Lockfile:
     version "3.0.7"
     resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.7.tgz#a9a1767f8af84155114eaabd73f99273c8f59ad9"
     integrity sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==
+  
+  sirv-cli@^1.0.0:
+    version "1.0.14"
+    resolved "https://registry.yarnpkg.com/sirv-cli/-/sirv-cli-1.0.14.tgz#4bc60421b3de9caea80ccd292b5004aca4ce3c81"
+    integrity sha512-yyUTNr984ANKDloqepkYbBSqvx3buwYg2sQKPWjSU+IBia5loaoka2If8N9CMwt8AfP179cdEl7kYJ//iWJHjQ==
+    dependencies:
+      console-clear "^1.1.0"
+      get-port "^3.2.0"
+      kleur "^3.0.0"
+      local-access "^1.0.1"
+      sade "^1.6.0"
+      semiver "^1.0.0"
+      sirv "^1.0.13"
+      tinydate "^1.0.0"
+  
+  sirv@^1.0.13:
+    version "1.0.19"
+    resolved "https://registry.yarnpkg.com/sirv/-/sirv-1.0.19.tgz#1d73979b38c7fe91fcba49c85280daa9c2363b49"
+    integrity sha512-JuLThK3TnZG1TAKDwNIqNq6QA2afLOCcm+iE8D1Kj3GA40pSPsxQjjJl0J8X3tsR7T+CP1GavpzLwYkgVLWrZQ==
+    dependencies:
+      "@polka/url" "^1.0.0-next.20"
+      mrmime "^1.0.0"
+      totalist "^1.0.0"
   
   slash@^3.0.0:
     version "3.0.0"
@@ -2703,6 +2782,14 @@ Lockfile:
       sorcery "^0.10.0"
       strip-indent "^3.0.0"
   
+  svelte-typed-js@^1.0.3:
+    version "1.0.3"
+    resolved "https://registry.yarnpkg.com/svelte-typed-js/-/svelte-typed-js-1.0.3.tgz#3cecb8407ae669ed59769276240f88818bf16d4f"
+    integrity sha512-WdKqhq2mbyVryNScrvf+PxQ3WMPi5EZYY20JTQ/MB/Z+6qNvxtt+JByFWQVsgouL+71MAW7z6/aoIQAgEMi3mA==
+    dependencies:
+      sirv-cli "^1.0.0"
+      typed.js "^2.0.11"
+  
   svelte2tsx@^0.5.5:
     version "0.5.10"
     resolved "https://registry.yarnpkg.com/svelte2tsx/-/svelte2tsx-0.5.10.tgz#32f244534361325e40f8976173ce2569c7e71fdb"
@@ -2754,12 +2841,22 @@ Lockfile:
       globalyzer "0.1.0"
       globrex "^0.1.2"
   
+  tinydate@^1.0.0:
+    version "1.3.0"
+    resolved "https://registry.yarnpkg.com/tinydate/-/tinydate-1.3.0.tgz#e6ca8e5a22b51bb4ea1c3a2a4fd1352dbd4c57fb"
+    integrity sha512-7cR8rLy2QhYHpsBDBVYnnWXm8uRTr38RoZakFSW7Bs7PzfMPNZthuMLkwqZv7MTu8lhQ91cOFYS5a7iFj2oR3w==
+  
   to-regex-range@^5.0.1:
     version "5.0.1"
     resolved "https://registry.yarnpkg.com/to-regex-range/-/to-regex-range-5.0.1.tgz#1648c44aae7c8d988a326018ed72f5b4dd0392e4"
     integrity sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==
     dependencies:
       is-number "^7.0.0"
+  
+  totalist@^1.0.0:
+    version "1.1.0"
+    resolved "https://registry.yarnpkg.com/totalist/-/totalist-1.1.0.tgz#a4d65a3e546517701e3e5c37a47a70ac97fe56df"
+    integrity sha512-gduQwd1rOdDMGxFG1gEvhV88Oirdo2p+KjoYFU7k2g+i7n6AFFbDQ5kMPUsW0pNbfQsB/cwXvT1i4Bue0s9g5g==
   
   tr46@~0.0.3:
     version "0.0.3"
@@ -2794,6 +2891,11 @@ Lockfile:
     version "0.20.2"
     resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.20.2.tgz#1bf207f4b28f91583666cb5fbd327887301cd5f4"
     integrity sha512-Ne+eE4r0/iWnpAxD852z3A+N0Bt5RN//NjJwRd2VFHEmrywxf5vsZlh4R6lixl6B+wz/8d+maTSAkN1FIkI3LQ==
+  
+  typed.js@^2.0.11:
+    version "2.0.12"
+    resolved "https://registry.yarnpkg.com/typed.js/-/typed.js-2.0.12.tgz#246aff074c8e18d32ec27acb7be15094ac0bc0e1"
+    integrity sha512-lyACZh1cu+vpfYY3DG/bvsGLXXbdoDDpWxmqta10IQUdMXisMXOEyl+jos+YT9uBbzK4QaKYBjT3R0kTJO0Slw==
   
   typescript@*:
     version "4.7.3"
