@@ -16,6 +16,8 @@
 	import List from '@smui/list';
 	import { clickOutside } from '$lib/click-outside';
 	import { dev } from '$app/env';
+	import { changePage } from '$lib/page';
+	import { activePage } from '$lib/stores';
 	let topAppBar: any;
 	let preloaderVisible = true;
 	let preloader: HTMLElement;
@@ -64,7 +66,17 @@
 />
 <div class="topbutton-container">
 	<div class="topbutton-inner">
-		<Fab color="primary" ripple={false} {exited} on:click={() => console.log('clicked')}>
+		<Fab
+			color="primary"
+			ripple={false}
+			{exited}
+			on:click={() => {
+				changePage('#home').then(() => {
+					exited = true;
+					activePage.set('/');
+				});
+			}}
+		>
 			<div class="topbutton-icon"><IoIosArrowUp /></div>
 		</Fab>
 	</div>

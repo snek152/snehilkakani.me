@@ -77,6 +77,15 @@
 							<div class="col-3">
 								<h4>Professional Experience</h4>
 								<Accordion color="primary">
+									<AboutAccordion title="Director of Technology" description="@ STEMist Education">
+										As the director of technology at <a
+											href="https://joinstemist.org"
+											target="_blank"
+											rel="noreferrer noopener">STEMist Education</a
+										>, I manage the tech team, report and relay between the officers and the tech
+										team, interview tech candidates, and focus primarily on building the website.
+										The website is built using React, Next.js, and Tailwind.
+									</AboutAccordion>
 									<AboutAccordion
 										title="Graphic Designer"
 										description="@ Youth Economics Initiative"
@@ -90,10 +99,28 @@
 										design platform
 										<a href="https://canva.com" target="_blank" rel="noreferrer noopener">Canva</a>.
 									</AboutAccordion>
+									<AboutAccordion
+										title="Full Stack Web Developer"
+										description="@ YoungWonks Open Source Project 2021"
+									>
+										In the summer of 2021, I was selected into an open source project called
+										GeoRepair <a
+											href="https://github.com/youngwonks/ywsos2021_web"
+											target="_blank"
+											rel="noreferrer noopener">(learn more)</a
+										>. I worked as a frontend developer and created the homepage, forum page, and
+										assisted in creating basic backend functionalities.
+									</AboutAccordion>
 								</Accordion>
 							</div>
 							<div class="col-4">
 								<h4>Interests</h4>
+								<ul>
+									<li>Full stack web development (frontend and backend)</li>
+									<li>Acting</li>
+									<li>Drumming</li>
+									<li>Video games</li>
+								</ul>
 							</div>
 						</div>
 					</div>
@@ -124,6 +151,7 @@
 	.card-columns-flex {
 		display: flex;
 		flex-direction: column;
+		gap: 1rem;
 	}
 
 	.card-columns h4 {
@@ -133,6 +161,10 @@
 		margin-top: 0.5rem;
 		line-height: 1.2;
 		margin-bottom: 0;
+	}
+
+	.card-columns ul {
+		margin-top: 0;
 	}
 	.card-columns > * {
 		overflow: hidden;
