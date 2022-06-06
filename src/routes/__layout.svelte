@@ -163,7 +163,7 @@
 		--width-xl: 1280px;
 	}
 
-	:global(h1, h2, h3, h4, h3 > *) {
+	:global(h1 > *, h2 > *, h3 > *, h4 > *, h3 > *) {
 		font-family: 'Red Hat Display' !important;
 	}
 
