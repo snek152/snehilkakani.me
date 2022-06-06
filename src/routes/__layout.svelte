@@ -12,10 +12,12 @@
 	import IoIosArrowUp from 'svelte-icons/io/IoIosArrowUp.svelte';
 	import IoMdMenu from 'svelte-icons/io/IoMdMenu.svelte';
 	import IconButton from '@smui/icon-button';
-	import Drawer, { Content, Header, Title as T, Subtitle } from '@smui/drawer';
-	import List, { Item, Text, Graphic } from '@smui/list';
+	import Drawer, { Content } from '@smui/drawer';
+	import List from '@smui/list';
 	import { clickOutside } from '$lib/click-outside';
 	import { dev } from '$app/env';
+	import { theme } from '$lib/stores';
+	import Switch from '@smui/switch';
 
 	let topAppBar: any;
 	let preloaderVisible = true;
@@ -35,11 +37,23 @@
 			dev ? 0 : 1000
 		);
 		onScroll();
+		if (!('theme' in localStorage)) {
+			theme.useLocalStorage();
+			if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+				theme.set({ ...$theme, mode: 'dark' });
+			} else {
+				theme.set({ ...$theme, mode: 'light' });
+			}
+		} else {
+			theme.useLocalStorage();
+		}
+		document.documentElement.classList.remove('dark');
 	});
 	const preloaderImages = [FaCode, FaPenNib, FaDrum, FaTheaterMasks];
 
 	let top: number;
 	let exited = true;
+
 	function onScroll() {
 		const homepage = document.getElementById('home')!;
 		if (top >= homepage.offsetHeight) {
@@ -49,11 +63,28 @@
 		}
 	}
 
+	function toggleTheme() {
+		if ($theme.mode === 'light') {
+			theme.set({ ...$theme, mode: 'dark' });
+		} else {
+			theme.set({ ...$theme, mode: 'light' });
+		}
+	}
+
 	let width: number;
 	let open: boolean = false;
+
+	$: checked = $theme.mode === 'dark';
 </script>
 
 <svelte:window on:scroll={onScroll} bind:scrollY={top} bind:innerWidth={width} />
+<svelte:head>
+	{#if $theme.mode === 'light'}
+		<link rel="stylesheet" href="/smui.css" />
+	{:else if $theme.mode === 'dark'}
+		<link rel="stylesheet" href="/smui-dark.css" />
+	{/if}
+</svelte:head>
 <div
 	style="background: {open
 		? 'rgba(0,0,0,0.5)'
@@ -79,6 +110,7 @@
 	<Row>
 		<Section>
 			<Title>Snehil Kakani</Title>
+			<Switch bind:checked icons={false} on:click={() => toggleTheme()} />
 		</Section>
 		<Section align="end">
 			{#if width > 991}
