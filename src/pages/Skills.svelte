@@ -28,7 +28,7 @@
 						{#each codingSkills as s}
 							<Wrapper>
 								<svelte:component this={s.icon} class="icon" />
-								<Tooltip>
+								<Tooltip xPos="start">
 									<C>
 										<h3 class="tooltip-header">{s.name}</h3>
 										<div class="tooltip-body"><LinearProgress progress={s.progress / 100} /></div>
@@ -59,7 +59,7 @@
 						{#each designSkills as s}
 							<Wrapper>
 								<svelte:component this={s.icon} class="icon" />
-								<Tooltip>
+								<Tooltip xPos="start">
 									<C>
 										<h3 class="tooltip-header">{s.name}</h3>
 										<div class="tooltip-body"><LinearProgress progress={s.progress / 100} /></div>
@@ -90,7 +90,7 @@
 						{#each musicSkills as s}
 							<Wrapper>
 								<svelte:component this={s.icon} class="icon" />
-								<Tooltip>
+								<Tooltip xPos="start">
 									<C>
 										<h3 class="tooltip-header">{s.name}</h3>
 										<div class="tooltip-body"><LinearProgress progress={s.progress / 100} /></div>
@@ -102,10 +102,16 @@
 				</Content>
 			</Paper>
 		</div>
+		<h3 class="tip">(Tip: Hover over the icons to see progress levels)</h3>
 	</div>
 </div>
 
 <style>
+	.tip {
+		color: #c2c2c2;
+		font-weight: 400;
+		text-align: center;
+	}
 	.tooltip-header {
 		color: white;
 		margin-top: 0;
@@ -117,13 +123,13 @@
 		background-color: rgba(0, 0, 0, 0.7) !important;
 	}
 	#expertise {
-		margin: 5rem 0;
+		margin: 1rem 0;
 	}
 	:global(.column) {
-		flex: 1 0 0%;
 		padding: 15px;
 		border-radius: 1rem !important;
 		position: relative;
+		width: 100%;
 	}
 
 	:global(.icon-grid svg) {
@@ -143,6 +149,7 @@
 	}
 	.row {
 		display: flex;
+		flex-direction: column;
 		gap: 0.5rem;
 	}
 	.card-image {
@@ -166,5 +173,14 @@
 		margin-bottom: 0.5rem;
 		font-weight: 500;
 		line-height: 1.2;
+	}
+
+	@media (min-width: 992px) {
+		:global(.column) {
+			flex: 1 0 0%;
+		}
+		.row {
+			flex-direction: row;
+		}
 	}
 </style>
