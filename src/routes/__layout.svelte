@@ -152,6 +152,13 @@
 			> .smui-accordion__header
 			.smui-accordion__header__description) {
 		opacity: 0.75 !important;
+		flex-basis: initial !important;
+		white-space: normal !important;
+	}
+
+	:global(.smui-accordion .smui-accordion__panel.smui-accordion__panel--raised, .smui-accordion
+			.smui-accordion__panel.smui-paper--unelevated) {
+		border-top-color: rgba(0, 0, 0, 0.2) !important;
 	}
 
 	:global(.smui-accordion

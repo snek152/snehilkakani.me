@@ -155,7 +155,7 @@
 	}
 
 	.card-columns h4 {
-		font-size: 1.5rem;
+		font-size: calc(1.275rem + 0.3vw);
 		font-weight: 400;
 		padding-bottom: 0.5rem;
 		margin-top: 0.5rem;
@@ -174,11 +174,11 @@
 		margin-bottom: 1rem;
 		margin-top: 0;
 		font-weight: 500;
+		font-size: calc(1.3rem + 0.6vw);
 	}
 
 	.card-body {
 		flex: 1 1 auto;
-		padding: 1rem;
 	}
 
 	.card-text {
@@ -202,7 +202,6 @@
 		display: inline;
 		padding: 0;
 		min-width: 0;
-		padding: 0 1rem;
 	}
 
 	@media (min-width: 992px) {
@@ -214,16 +213,16 @@
 			width: 58.3%;
 		}
 
-		/* .col-3 {
-			width: 50%;
-		}
-
+		.col-3,
 		.col-4 {
-			width: 50%;
-		} */
+			padding: 0 1rem;
+		}
 
 		.card-columns {
 			flex-direction: row;
+		}
+		.card-body {
+			padding: 1rem;
 		}
 	}
 
