@@ -37,7 +37,7 @@
 
 <div id="about" class="section">
 	<Paper
-		style="max-width: 1500px; margin: 1rem; border-radius: 1.25rem; padding: 0; overflow: hidden;"
+		style="max-width: 1500px; margin: auto; border-radius: 1.25rem; padding: 0; overflow: hidden;"
 		elevation={2}
 	>
 		<Content>
@@ -140,7 +140,7 @@
 		color: #4f4f4f !important;
 	}
 	#about {
-		padding: 1rem;
+		padding: 1.5rem;
 	}
 	.card-columns {
 		display: flex;
