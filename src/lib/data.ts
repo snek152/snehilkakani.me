@@ -219,3 +219,44 @@ export const musicSkills: Skill[] = [
 		icon: GiPianoKeys
 	}
 ];
+
+type Project = {
+	image: string;
+	title: string;
+	description: string;
+	url: string;
+	buttonText: string;
+	type: 'cs' | 'design' | 'music' | 'drama';
+	chips?: string[];
+};
+
+export const projects: Project[] = [
+	{
+		title: 'Beat Box - Music Album',
+		description:
+			'One of my first albums produced with GarageBand, this was my first step towards developing DJ skills.',
+		image: '/images/beatbox.webp',
+		url: 'https://soundcloud.com/snek152/sets/beat-box',
+		buttonText: 'listen on soundcloud',
+		type: 'music'
+	},
+	{
+		title: "Check Please Valentine's Day Show 2022 - LHS Studio 74",
+		type: 'drama',
+		image: '/images/checkplease.webp',
+		description:
+			"In Lynbrook High School Studio 74's Valentine's Day show, I was cast as the young Tod in the play Check Please, which was performed in February 2022.",
+		url: 'https://www.playscripts.com/play/202',
+		buttonText: 'view on playscript'
+	},
+	{
+		title: 'Director of Technology - STEMist Education',
+		description:
+			'As Director of Technology at STEMist, I designed and constructed the website using React, Next.js, and Tailwind working with my subordinates, as well as leading several other tech projects.',
+		image: '/images/stemist.webp',
+		type: 'cs',
+		url: 'https://joinstemist.org',
+		buttonText: 'check it out',
+		chips: ['React', 'Next.js', 'Tailwind']
+	}
+];
