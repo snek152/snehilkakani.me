@@ -241,6 +241,24 @@ export const projects: Project[] = [
 		type: 'music'
 	},
 	{
+		title: 'Beat Box - Music Album',
+		description:
+			'One of my first albums produced with GarageBand, this was my first step towards developing DJ skills.',
+		image: '/images/beatbox.webp',
+		url: 'https://soundcloud.com/snek152/sets/beat-box',
+		buttonText: 'listen on soundcloud',
+		type: 'music'
+	},
+	{
+		title: 'Beat Box - Music Album',
+		description:
+			'One of my first albums produced with GarageBand, this was my first step towards developing DJ skills.',
+		image: '/images/beatbox.webp',
+		url: 'https://soundcloud.com/snek152/sets/beat-box',
+		buttonText: 'listen on soundcloud',
+		type: 'music'
+	},
+	{
 		title: "Check Please Valentine's Day Show 2022 - LHS Studio 74",
 		type: 'drama',
 		image: '/images/checkplease.webp',

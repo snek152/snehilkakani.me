@@ -18,12 +18,18 @@
 	$: filteredList = projects
 		.filter((p) => subjectMap[p.type] === selected || selected === 'All')
 		.sort((a, b) => a.title.localeCompare(b.title));
+
+	let width: number;
 </script>
+
+<svelte:window bind:innerWidth={width} />
 
 <div class="grid">
 	<LayoutGrid>
 		{#each filteredList as project}
-			<Cell>
+			<Cell
+				span={width >= 1800 ? 2 : width >= 1240 ? 3 : width >= 1000 ? 4 : width >= 870 ? 6 : 12}
+			>
 				<div class="grid-item" transition:fade>
 					<div class="grid-item-container">
 						<span class="image">
