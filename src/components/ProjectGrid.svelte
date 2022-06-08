@@ -33,7 +33,12 @@
 				<div class="grid-item" transition:fade>
 					<div class="grid-item-container">
 						<span class="image">
-							<img src={project.image} alt={project.title} />
+							<img
+								src={project.image}
+								alt={project.title}
+								draggable={false}
+								on:dragstart={() => false}
+							/>
 						</span>
 						<span class="project-content">
 							<h6 class="project-header">{project.title}</h6>
@@ -144,7 +149,7 @@
 
 	:global(.project-button) {
 		transform: translate(0, 300%);
-		transition: all 0.25s linear;
+		transition: all 0.25s linear !important;
 		padding: 0.5rem 0.75rem;
 	}
 

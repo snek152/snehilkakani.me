@@ -267,5 +267,81 @@ export const projects: Project[] = [
 		url: 'https://youtu.be/oCek4xPO3yw',
 		buttonText: 'watch now',
 		type: 'music'
+	},
+	{
+		title: 'Drum Performance 2021',
+		description:
+			'As part of my annual drum live performance, I performed "Riff Raff" by AC/DC on my drumset with an audience of 100+.',
+		image: '/images/riffraff.webp',
+		url: 'https://drive.google.com/file/d/1AFItfeM42BsmTmQjFmsahRxzP16SVbEh/view?usp=sharing',
+		buttonText: 'watch now',
+		type: 'music'
+	},
+	{
+		title: 'Dook - An Opportunity App',
+		description:
+			"As part of Elevate the Future's Project Falcon, myself and other web developers created a website for Dook to promote their platform.",
+		buttonText: 'check it out',
+		image: '/images/dook.webp',
+		url: 'https://dookapp.com',
+		type: 'cs',
+		chips: ['Bootstrap']
+	},
+	{
+		title: 'Georepair - An Open-Source Project',
+		description:
+			"As YoungWonks's 2021 Summer Open Source Project, GeoRepair is a geotagging web application and mobile app allowing users to scan broken public-owned objects.",
+		chips: ['Bootstrap', 'Vue.js', 'Flask'],
+		image: '/images/georepair.webp',
+		url: 'https://github.com/youngwonks/ywsos2021_web',
+		type: 'cs',
+		buttonText: 'learn more'
+	},
+	{
+		title: 'Music Album Covers',
+		description:
+			'Using Canva, I designed a multidude of album covers for each song in my album Beat Box as if it were a single.',
+		url: 'https://drive.google.com/drive/folders/19Uw374XJPUG6UCvEFpKNgzGgS0rzwi6G?usp=sharing',
+		buttonText: 'view on drive',
+		image: '/images/albumcovers.webp',
+		type: 'design'
+	},
+	{
+		title: 'Romeo and Juliet Spring Outdoor Show 2022 - LHS Studio 74',
+		type: 'drama',
+		image: '/images/romeojuliet2122.webp',
+		description:
+			"In Lynbrook High School Studio 74's Spring Outdoor show, I was cast as the County Paris in the play Romeo and Juliet, performing through May 2022.",
+		url: 'https://youtu.be/ngWYAiN_Yh8',
+		buttonText: 'watch the recording'
+	},
+	{
+		title: 'Sword Selection - A Minecraft Mod',
+		type: 'cs',
+		image: '/images/swordselection.webp',
+		description:
+			'My first mod for Minecraft with over 1.5k downloads, Sword Selection is a mod that adds all kinds of swords to the game such as daggers, longswords, sickles, and more!',
+		url: 'https://swordselection.snehilkakani.me',
+		buttonText: 'learn more',
+		chips: ['Java', 'Minecraft Forge', 'Gradle']
+	},
+	{
+		title: 'React Web Calculator',
+		type: 'cs',
+		image: '/images/calculator.webp',
+		chips: ['React', 'Tailwind'],
+		description:
+			'Using React and Tailwind, I built a simple basic and scientific calculator for the web, optimized as a PWA.',
+		url: 'https://calculator.snehilkakani.me',
+		buttonText: 'check it out'
+	},
+	{
+		title: 'YEI - Econ Concepts and Instagram Posts',
+		type: 'design',
+		image: '/images/econconcepts.webp',
+		description:
+			'As part of the YEI, I designed many econ concept posts for Instagram, as well as various stories and announcements.',
+		url: 'https://drive.google.com/drive/folders/1p9jnuJM7ywy8azSGWwqjG6bF8lpHrp2B?usp=sharing',
+		buttonText: 'view on drive'
 	}
 ];
