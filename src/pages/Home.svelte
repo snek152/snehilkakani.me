@@ -1,11 +1,10 @@
 <script lang="ts">
 	import FloatingIcon from '../components/FloatingIcon.svelte';
 	import Fa from 'svelte-fa';
-	import { faCode, faDrum, faPenNib, faTheaterMasks } from '@fortawesome/free-solid-svg-icons';
-	// import FaCode from 'svelte-icons/fa/FaCode.svelte';
-	// import FaPenNib from 'svelte-icons/fa/FaPenNib.svelte';
-	// import FaDrum from 'svelte-icons/fa/FaDrum.svelte';
-	// import FaTheaterMasks from 'svelte-icons/fa/FaTheaterMasks.svelte';
+	import { faCode } from '@fortawesome/free-solid-svg-icons/faCode';
+	import { faPenNib } from '@fortawesome/free-solid-svg-icons/faPenNib';
+	import { faDrum } from '@fortawesome/free-solid-svg-icons/faDrum';
+	import { faTheaterMasks } from '@fortawesome/free-solid-svg-icons/faTheaterMasks';
 </script>
 
 <div id="home" class="section">

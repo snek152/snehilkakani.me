@@ -4,7 +4,7 @@
 	import CircularProgress from '@smui/circular-progress';
 	import Textfield from '@smui/textfield';
 	import Fa from 'svelte-fa';
-	import { faCheck } from '@fortawesome/free-solid-svg-icons';
+	import { faCheck } from '@fortawesome/free-solid-svg-icons/faCheck';
 
 	let email = '';
 	let name = '';
@@ -35,7 +35,7 @@
 </script>
 
 <div id="contact" class="section">
-	<Paper class="container">
+	<Paper class="contact-container">
 		<h1 class="header">Contact Me</h1>
 		<form on:submit|preventDefault={formSubmit}>
 			<Content class="flex-container">
@@ -81,8 +81,9 @@
 </div>
 
 <style>
-	:global(.container) {
+	:global(.contact-container) {
 		padding: 1rem 5rem 1.5rem 5rem;
+		margin: 0 5rem;
 		border-radius: 0.75rem !important;
 	}
 

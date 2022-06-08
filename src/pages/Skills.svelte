@@ -4,7 +4,9 @@
 	import Tooltip, { Wrapper, Content as C } from '@smui/tooltip';
 	import LinearProgress from '@smui/linear-progress';
 	import Fa from 'svelte-fa';
-	import { faFileAudio, faFileCode, faPalette } from '@fortawesome/free-solid-svg-icons';
+	import { faFileAudio } from '@fortawesome/free-solid-svg-icons/faFileAudio';
+	import { faFileCode } from '@fortawesome/free-solid-svg-icons/faFileCode';
+	import { faPalette } from '@fortawesome/free-solid-svg-icons/faPalette';
 </script>
 
 <div id="expertise" class="section">

@@ -15,7 +15,10 @@
 	import { changePage } from '$lib/page';
 	import { activePage } from '$lib/stores';
 	import Fa from 'svelte-fa';
-	import { faCode, faDrum, faPenNib, faTheaterMasks } from '@fortawesome/free-solid-svg-icons';
+	import { faCode } from '@fortawesome/free-solid-svg-icons/faCode';
+	import { faPenNib } from '@fortawesome/free-solid-svg-icons/faPenNib';
+	import { faDrum } from '@fortawesome/free-solid-svg-icons/faDrum';
+	import { faTheaterMasks } from '@fortawesome/free-solid-svg-icons/faTheaterMasks';
 	let topAppBar: any;
 	let preloaderVisible = true;
 	let preloader: HTMLElement;
