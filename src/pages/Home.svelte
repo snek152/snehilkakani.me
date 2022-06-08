@@ -1,23 +1,25 @@
 <script lang="ts">
 	import FloatingIcon from '../components/FloatingIcon.svelte';
-	import FaCode from 'svelte-icons/fa/FaCode.svelte';
-	import FaPenNib from 'svelte-icons/fa/FaPenNib.svelte';
-	import FaDrum from 'svelte-icons/fa/FaDrum.svelte';
-	import FaTheaterMasks from 'svelte-icons/fa/FaTheaterMasks.svelte';
+	import Fa from 'svelte-fa';
+	import { faCode, faDrum, faPenNib, faTheaterMasks } from '@fortawesome/free-solid-svg-icons';
+	// import FaCode from 'svelte-icons/fa/FaCode.svelte';
+	// import FaPenNib from 'svelte-icons/fa/FaPenNib.svelte';
+	// import FaDrum from 'svelte-icons/fa/FaDrum.svelte';
+	// import FaTheaterMasks from 'svelte-icons/fa/FaTheaterMasks.svelte';
 </script>
 
 <div id="home" class="section">
 	<FloatingIcon>
-		<FaCode />
+		<Fa icon={faCode} size="3x" />
 	</FloatingIcon>
 	<FloatingIcon>
-		<FaPenNib />
+		<Fa icon={faPenNib} size="3x" />
 	</FloatingIcon>
 	<FloatingIcon>
-		<FaDrum />
+		<Fa icon={faDrum} size="3x" />
 	</FloatingIcon>
 	<FloatingIcon>
-		<FaTheaterMasks />
+		<Fa icon={faTheaterMasks} size="3x" />
 	</FloatingIcon>
 </div>
 

@@ -14,6 +14,7 @@
 		"format": "prettier --write --plugin-search-dir=. ."
 	},
 	"devDependencies": {
+		"@fortawesome/free-solid-svg-icons": "^6.1.1",
 		"@material/theme": "^14.0.0",
 		"@material/typography": "^14.0.0",
 		"@smui-extra/accordion": "^6.0.0-beta.16",
@@ -47,6 +48,7 @@
 		"smui-theme": "^6.0.0-beta.16",
 		"svelte": "^3.44.0",
 		"svelte-check": "^2.2.6",
+		"svelte-fa": "^2.4.0",
 		"svelte-icons": "^2.1.0",
 		"svelte-preprocess": "^4.10.1",
 		"tslib": "^2.3.1",

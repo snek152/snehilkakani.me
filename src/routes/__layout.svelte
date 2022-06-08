@@ -2,10 +2,6 @@
 	import TopAppBar, { Row, Section, Title, AutoAdjust } from '@smui/top-app-bar';
 	import { onMount } from 'svelte';
 	import NavLink from '../components/NavLink.svelte';
-	import FaCode from 'svelte-icons/fa/FaCode.svelte';
-	import FaPenNib from 'svelte-icons/fa/FaPenNib.svelte';
-	import FaDrum from 'svelte-icons/fa/FaDrum.svelte';
-	import FaTheaterMasks from 'svelte-icons/fa/FaTheaterMasks.svelte';
 	import { fadeOut } from '$lib/fade-utils';
 	import { navLinks } from '$lib/data';
 	import Fab from '@smui/fab';
@@ -18,6 +14,8 @@
 	import { dev } from '$app/env';
 	import { changePage } from '$lib/page';
 	import { activePage } from '$lib/stores';
+	import Fa from 'svelte-fa';
+	import { faCode, faDrum, faPenNib, faTheaterMasks } from '@fortawesome/free-solid-svg-icons';
 	let topAppBar: any;
 	let preloaderVisible = true;
 	let preloader: HTMLElement;
@@ -37,7 +35,27 @@
 		);
 		onScroll();
 	});
-	const preloaderImages = [FaCode, FaPenNib, FaDrum, FaTheaterMasks];
+	const preloaderImages = [
+		{
+			icon: faCode,
+			size: '2x'
+		},
+		{
+			icon: faPenNib,
+			size: '2x'
+		},
+		{
+			icon: faDrum,
+			size: '2x'
+		},
+		{
+			icon: faTheaterMasks,
+			size: '2x'
+		}
+	].map((i) => ({
+		...i,
+		component: Fa
+	}));
 
 	let top: number;
 	let exited = true;
@@ -85,7 +103,11 @@
 	<div class="spinner">
 		{#each [-0.32, -0.16, 0, 0.16] as delay, index}
 			<div class="bounce" style="animation-delay: {delay}s">
-				<svelte:component this={preloaderImages[index]} />
+				<svelte:component
+					this={preloaderImages[index].component}
+					icon={preloaderImages[index].icon}
+					size={preloaderImages[index].size}
+				/>
 			</div>
 		{/each}
 	</div>
