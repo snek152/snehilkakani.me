@@ -3,6 +3,8 @@
 	import Paper, { Content } from '@smui/paper';
 	import Tooltip, { Wrapper, Content as C } from '@smui/tooltip';
 	import LinearProgress from '@smui/linear-progress';
+	import Fa from 'svelte-fa';
+	import { faFileAudio, faFileCode, faPalette } from '@fortawesome/free-solid-svg-icons';
 </script>
 
 <div id="expertise" class="section">
@@ -10,12 +12,7 @@
 		<div class="row">
 			<Paper elevation={5} class="column">
 				<Content>
-					<img
-						alt="Coding Icon"
-						src="/images/code-square.svg"
-						style="opacity: 0.65; float: left;"
-						class="card-image"
-					/>
+					<Fa icon={faFileCode} style="opacity: 0.65; float: left;" class="card-image" />
 					<span>
 						<h3 class="card-title">Computer Science</h3>
 						<p class="card-description">
@@ -41,12 +38,7 @@
 			</Paper>
 			<Paper elevation={5} class="column">
 				<Content>
-					<img
-						alt="Coding Icon"
-						src="/images/easel.svg"
-						style="opacity: 0.65; float: left;"
-						class="card-image"
-					/>
+					<Fa icon={faPalette} style="opacity: 0.65; float: left;" class="card-image" />
 					<span>
 						<h3 class="card-title">Graphic Design</h3>
 						<p class="card-description">
@@ -72,12 +64,7 @@
 			</Paper>
 			<Paper elevation={5} class="column">
 				<Content>
-					<img
-						alt="Coding Icon"
-						src="/images/file-earmark-music.svg"
-						style="opacity: 0.65; float: left;"
-						class="card-image"
-					/>
+					<Fa icon={faFileAudio} style="opacity: 0.65; float: left;" class="card-image" />
 					<span>
 						<h3 class="card-title">Music</h3>
 						<p class="card-description">
@@ -152,10 +139,10 @@
 		flex-direction: column;
 		gap: 0.5rem;
 	}
-	.card-image {
-		height: 6.5rem;
-		width: 6.5rem;
-		padding-right: 1rem;
+	:global(.card-image) {
+		height: 6.5rem !important;
+		width: 6.5rem !important;
+		padding: 0 1rem 1rem 0;
 		margin-bottom: -0.5rem;
 	}
 
