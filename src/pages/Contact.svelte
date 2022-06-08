@@ -93,7 +93,14 @@
 	}
 	.flex-cols {
 		display: flex;
+		flex-direction: column;
 		gap: 1rem;
+	}
+
+	@media (min-width: 800px) {
+		.flex-cols {
+			flex-direction: row;
+		}
 	}
 	.header {
 		margin: auto;
