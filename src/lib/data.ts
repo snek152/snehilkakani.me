@@ -241,24 +241,6 @@ export const projects: Project[] = [
 		type: 'music'
 	},
 	{
-		title: 'Beat Box - Music Album',
-		description:
-			'One of my first albums produced with GarageBand, this was my first step towards developing DJ skills.',
-		image: '/images/beatbox.webp',
-		url: 'https://soundcloud.com/snek152/sets/beat-box',
-		buttonText: 'listen on soundcloud',
-		type: 'music'
-	},
-	{
-		title: 'Beat Box - Music Album',
-		description:
-			'One of my first albums produced with GarageBand, this was my first step towards developing DJ skills.',
-		image: '/images/beatbox.webp',
-		url: 'https://soundcloud.com/snek152/sets/beat-box',
-		buttonText: 'listen on soundcloud',
-		type: 'music'
-	},
-	{
 		title: "Check Please Valentine's Day Show 2022 - LHS Studio 74",
 		type: 'drama',
 		image: '/images/checkplease.webp',
@@ -276,5 +258,14 @@ export const projects: Project[] = [
 		url: 'https://joinstemist.org',
 		buttonText: 'check it out',
 		chips: ['React', 'Next.js', 'Tailwind']
+	},
+	{
+		title: 'Drum Recording 2021',
+		description:
+			'As part of my annual drum showcase, I played "Whistle" by Flo Rida on my drumset.',
+		image: '/images/drums2021.webp',
+		url: 'https://youtu.be/oCek4xPO3yw',
+		buttonText: 'watch now',
+		type: 'music'
 	}
 ];
