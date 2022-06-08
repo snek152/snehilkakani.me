@@ -5,20 +5,22 @@
 	import { faPenNib } from '@fortawesome/free-solid-svg-icons/faPenNib';
 	import { faDrum } from '@fortawesome/free-solid-svg-icons/faDrum';
 	import { faTheaterMasks } from '@fortawesome/free-solid-svg-icons/faTheaterMasks';
+
+	const size = '2x';
 </script>
 
 <div id="home" class="section">
 	<FloatingIcon>
-		<Fa icon={faCode} size="3x" />
+		<Fa icon={faCode} {size} />
 	</FloatingIcon>
 	<FloatingIcon>
-		<Fa icon={faPenNib} size="3x" />
+		<Fa icon={faPenNib} {size} />
 	</FloatingIcon>
 	<FloatingIcon>
-		<Fa icon={faDrum} size="3x" />
+		<Fa icon={faDrum} {size} />
 	</FloatingIcon>
 	<FloatingIcon>
-		<Fa icon={faTheaterMasks} size="3x" />
+		<Fa icon={faTheaterMasks} {size} />
 	</FloatingIcon>
 </div>
 

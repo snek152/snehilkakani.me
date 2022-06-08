@@ -40,24 +40,21 @@
 	});
 	const preloaderImages = [
 		{
-			icon: faCode,
-			size: '2x'
+			icon: faCode
 		},
 		{
-			icon: faPenNib,
-			size: '2x'
+			icon: faPenNib
 		},
 		{
-			icon: faDrum,
-			size: '2x'
+			icon: faDrum
 		},
 		{
-			icon: faTheaterMasks,
-			size: '2x'
+			icon: faTheaterMasks
 		}
 	].map((i) => ({
 		...i,
-		component: Fa
+		component: Fa,
+		size: '2x'
 	}));
 
 	let top: number;
