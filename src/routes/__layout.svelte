@@ -74,9 +74,7 @@
 </script>
 
 <svelte:window on:scroll={onScroll} bind:scrollY={top} bind:innerWidth={width} />
-<svelte:head>
-	<link rel="stylesheet" href="/smui.css" />
-</svelte:head>
+
 <div
 	style="background: {open
 		? 'rgba(0,0,0,0.5)'
@@ -95,6 +93,7 @@
 				});
 			}}
 		>
+			<span class="sr-only">Scroll to Top</span>
 			<div class="topbutton-icon"><IoIosArrowUp /></div>
 		</Fab>
 	</div>
@@ -124,6 +123,7 @@
 				{/each}
 			{:else}
 				<IconButton on:click={() => (open = !open)}>
+					<span class="sr-only">Open Menu</span>
 					<IoMdMenu />
 				</IconButton>
 			{/if}
@@ -152,6 +152,19 @@
 </AutoAdjust>
 
 <style>
+	.sr-only {
+		border: 0 !important;
+		clip: rect(1px, 1px, 1px, 1px) !important; /* 1 */
+		-webkit-clip-path: inset(50%) !important;
+		clip-path: inset(50%) !important; /* 2 */
+		height: 1px !important;
+		margin: -1px !important;
+		overflow: hidden !important;
+		padding: 0 !important;
+		position: absolute !important;
+		width: 1px !important;
+		white-space: nowrap !important; /* 3 */
+	}
 	:global(body) {
 		margin: 0;
 		overflow-y: hidden;
