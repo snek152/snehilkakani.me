@@ -131,7 +131,7 @@
 	</Row>
 </TopAppBar>
 
-<div:any use:clickOutside on:click_outside={() => (open = false)}>
+<div use:clickOutside on:click_outside={() => (open = false)}>
 	<Drawer variant="modal" fixed bind:open>
 		<Content>
 			<List>
@@ -143,7 +143,7 @@
 			</List>
 		</Content>
 	</Drawer>
-</div:any>
+</div>
 
 <AutoAdjust {topAppBar}>
 	<div class="container">
