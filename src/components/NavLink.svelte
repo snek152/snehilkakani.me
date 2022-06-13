@@ -42,7 +42,7 @@
 	});
 </script>
 
-<svelte:window bind:scrollY={y} on:scroll={() => onScroll()} />
+<svelte:window bind:scrollY={y} on:scroll|passive={() => onScroll()} />
 
 {#if mobile}
 	<Item activated={active} {href} on:click={onClick} ripple>
