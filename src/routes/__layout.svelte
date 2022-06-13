@@ -73,7 +73,7 @@
 	let open: boolean = false;
 </script>
 
-<svelte:window on:scroll={onScroll} bind:scrollY={top} bind:innerWidth={width} />
+<svelte:window on:scroll|passive={onScroll} bind:scrollY={top} bind:innerWidth={width} />
 
 <div
 	style="background: {open
