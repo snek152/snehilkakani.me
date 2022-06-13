@@ -43,7 +43,7 @@
 		<Content>
 			<div class="card-columns">
 				<div class="col-1">
-					<img src="/images/aboutphoto.webp" alt="Snehil Kakani" />
+					<img src="/images/aboutphoto.webp" alt="Snehil Kakani" loading="lazy" />
 				</div>
 				<div class="col-2">
 					<div class="card-body">

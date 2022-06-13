@@ -38,6 +38,7 @@
 								alt={project.title}
 								draggable={false}
 								on:dragstart={() => false}
+								loading="lazy"
 							/>
 						</span>
 						<span class="project-content">
