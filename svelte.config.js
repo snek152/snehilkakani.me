@@ -14,9 +14,6 @@ const config = {
 		}),
 		vite: {
 			plugins: [viteCompression()]
-		},
-		prerender: {
-			default: true
 		}
 	}
 };
