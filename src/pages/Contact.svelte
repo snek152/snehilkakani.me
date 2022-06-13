@@ -82,8 +82,8 @@
 
 <style>
 	:global(.contact-container) {
-		padding: 1rem 5rem 1.5rem 5rem;
-		margin: 0 5rem;
+		padding: 1rem 2rem 1.5rem 2rem;
+		margin: 0 2rem;
 		border-radius: 0.75rem !important;
 	}
 
@@ -101,6 +101,10 @@
 	@media (min-width: 800px) {
 		.flex-cols {
 			flex-direction: row;
+		}
+		:global(.contact-container) {
+			padding: 1rem 5rem 1.5rem 5rem;
+			margin: 0 5rem;
 		}
 	}
 	.header {
