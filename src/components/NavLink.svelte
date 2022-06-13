@@ -61,13 +61,3 @@
 		<slot />
 	</Button>
 {/if}
-
-<style>
-	:global(.nav-link-button) {
-		transition: ease-in-out 100ms;
-	}
-
-	:global(.nav-link-button.smui-button--color-secondary.mdc-button--raised:not(:disabled), .smui-button--color-secondary.mdc-button--unelevated.nav-link-button:not(:disabled)) {
-		background-color: initial !important;
-	}
-</style>

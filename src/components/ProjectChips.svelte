@@ -9,17 +9,3 @@
 		<Text>{chip}</Text>
 	</Chip>
 </Set>
-
-<style>
-	:global(.mdc-chip__text) {
-		font-size: 12px;
-	}
-
-	:global(.mdc-chip) {
-		height: 20px;
-	}
-
-	:global(.chips) {
-		justify-content: center;
-	}
-</style>
