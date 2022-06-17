@@ -3,7 +3,7 @@
 	import { onMount } from 'svelte';
 	import NavLink from '../components/NavLink.svelte';
 	import { fadeOut } from '$lib/fade-utils';
-	import { navLinks } from '$lib/data';
+	import { navLinks, socials } from '$lib/data';
 	import Fab from '@smui/fab';
 	import IoIosArrowUp from 'svelte-icons/io/IoIosArrowUp.svelte';
 	import IoMdMenu from 'svelte-icons/io/IoMdMenu.svelte';
@@ -19,6 +19,7 @@
 	import { faPenNib } from '@fortawesome/free-solid-svg-icons/faPenNib';
 	import { faDrum } from '@fortawesome/free-solid-svg-icons/faDrum';
 	import { faTheaterMasks } from '@fortawesome/free-solid-svg-icons/faTheaterMasks';
+	import Button from '@smui/button';
 	let topAppBar: any;
 	let preloaderVisible = true;
 	let preloader: HTMLElement;
@@ -103,12 +104,38 @@
 		<Section>
 			<Title>Snehil Kakani</Title>
 		</Section>
-		<Section align="end" toolbar>
+		<Section align="end" toolbar class="navlinks">
 			{#if width > 991}
-				{#each navLinks as link}
-					<NavLink href={link.href}>{link.title}</NavLink>
-				{/each}
+				<div class="navlink-container">
+					{#each navLinks as link}
+						<NavLink href={link.href}>{link.title}</NavLink>
+					{/each}
+				</div>
+				<div class="social-container">
+					{#each socials as social}
+						<Button
+							class="social-link"
+							href={social.href}
+							target="_blank"
+							rel="noreferrer noopener"
+						>
+							<svelte:component this={social.icon} class="social-icon" />
+						</Button>
+					{/each}
+				</div>
 			{:else}
+				<div class="social-container">
+					{#each socials as social}
+						<Button
+							class="social-link"
+							href={social.href}
+							target="_blank"
+							rel="noreferrer noopener"
+						>
+							<svelte:component this={social.icon} class="social-icon" />
+						</Button>
+					{/each}
+				</div>
 				<IconButton on:click={() => (open = !open)}>
 					<span class="sr-only">Open Menu</span>
 					<IoMdMenu />
@@ -151,6 +178,36 @@
 </AutoAdjust>
 
 <style>
+	:global(.navlinks) {
+		gap: 0.5rem;
+	}
+	.navlink-container {
+		justify-content: flex-end;
+		display: inline-flex;
+		flex: 1 1 auto;
+		align-items: center;
+		min-width: 0;
+		z-index: 1;
+		width: 100%;
+	}
+
+	:global(.social-link) {
+		/* color: #c2c2c2; */
+		min-width: 0;
+	}
+	.social-container {
+		height: 100%;
+		/* width: 100%; */
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		/* gap: 0.5rem; */
+	}
+
+	:global(.social-icon) {
+		height: 1.25rem;
+		width: 1.25rem;
+	}
 	#footer {
 		display: flex;
 		flex-direction: column;

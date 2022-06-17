@@ -28,6 +28,39 @@ import FaDrum from 'svelte-icons/fa/FaDrum.svelte';
 import FaPenSquare from 'svelte-icons/fa/FaPenSquare.svelte';
 import FaGuitar from 'svelte-icons/fa/FaGuitar.svelte';
 import GiPianoKeys from 'svelte-icons/gi/GiPianoKeys.svelte';
+import type { SvelteComponent } from 'svelte';
+
+import Instagram from '@svicons/simple-icons/instagram.svelte';
+import Facebook from '@svicons/simple-icons/facebook.svelte';
+import Linkedin from '@svicons/simple-icons/linkedin.svelte';
+import Github from '@svicons/simple-icons/github.svelte';
+import Email from '@svicons/simple-icons/gmail.svelte';
+
+export const socials: {
+	icon: typeof SvelteComponent;
+	href: string;
+}[] = [
+	{
+		icon: Instagram,
+		href: 'https://www.instagram.com/sne.k152/'
+	},
+	{
+		icon: Facebook,
+		href: 'https://www.facebook.com/snehilkakani/'
+	},
+	{
+		icon: Linkedin,
+		href: 'https://linkedin.com/in/snehilkakani'
+	},
+	{
+		icon: Github,
+		href: 'https://github.com/snek152'
+	},
+	{
+		icon: Email,
+		href: 'mailto:kakanisnehil@gmail.com?body=%0A%0A%0A%0A%0A%0A%0ASent from snehilkakani.me: the official website of Snehil Kakani.'
+	}
+];
 
 export const navLinks: {
 	title: string;
@@ -59,7 +92,7 @@ type Skill = {
 	name: string;
 	progress: number;
 	learning?: boolean;
-	icon: any;
+	icon: typeof SvelteComponent;
 };
 
 export const codingSkills: Skill[] = [
