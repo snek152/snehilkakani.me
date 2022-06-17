@@ -84,14 +84,4 @@ class RandomObjectMover {
 	}
 }
 
-RandomObjectMover.prototype.stop = function () {
-	if (!this.is_running) {
-		return;
-	}
-
-	this.$object.removeEventListener('transitionend', this.boundEvent);
-
-	this.is_running = false;
-};
-
 export default RandomObjectMover;
