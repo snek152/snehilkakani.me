@@ -16,7 +16,19 @@
 	};
 
 	$: filteredList = projects
-		.filter((p) => subjectMap[p.type] === selected || selected === 'All')
+		.filter((p) => {
+			let returnVal: boolean = false;
+			if (typeof p.type === 'object') {
+				p.type.forEach((t) => {
+					if (subjectMap[t] === selected || selected === 'All') {
+						returnVal = true;
+					}
+				});
+			} else {
+				returnVal = subjectMap[p.type] === selected || selected === 'All';
+			}
+			return returnVal;
+		})
 		.sort((a, b) => a.title.localeCompare(b.title));
 
 	let width: number;
