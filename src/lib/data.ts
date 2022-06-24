@@ -283,6 +283,15 @@ export const projects: Project[] = [
 		type: 'music'
 	},
 	{
+		title: 'STEAM Force - Accessible and Interactive Education Platform',
+		description:
+			'As my Synopsys project in 2022 (winning an Honorable Mention in Physical Science and Engineering), the STEAM Force is a fast education platform optimized for third world countries.',
+		image: '/images/steamforce.webp',
+		url: 'https://snehilkakani.me/steamforce',
+		buttonText: 'check it out',
+		type: 'cs'
+	},
+	{
 		title: "Check Please Valentine's Day Show 2022 - LHS Studio 74",
 		type: 'drama',
 		image: '/images/checkplease.webp',
