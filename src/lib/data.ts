@@ -317,7 +317,7 @@ export const projects: Project[] = [
 		image: '/images/swordselection.webp',
 		description:
 			'My first mod for Minecraft with over 1.5k downloads, Sword Selection is a mod that adds all kinds of swords to the game such as daggers, longswords, sickles, and more!',
-		url: 'https://swordselection.snehilkakani.me',
+		url: 'https://snehilkakani.me/swordselection',
 		buttonText: 'learn more',
 		chips: ['Java', 'Minecraft Forge', 'Gradle']
 	},
@@ -356,7 +356,7 @@ export const projects: Project[] = [
 		chips: ['React', 'Tailwind'],
 		description:
 			'Using React and Tailwind, I built a simple basic and scientific calculator for the web, optimized as a PWA.',
-		url: 'https://calculator.snehilkakani.me',
+		url: 'https://snehilkakani.me/calculator',
 		buttonText: 'check it out'
 	},
 	{
