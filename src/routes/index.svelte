@@ -197,6 +197,7 @@
 		align-items: center;
 		min-width: 0;
 		z-index: 1;
+		gap: 0.25rem;
 		width: 100%;
 	}
 
