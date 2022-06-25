@@ -6,11 +6,7 @@ import viteCompression from 'vite-plugin-compression';
 const config = {
 	// Consult https://github.com/sveltejs/svelte-preprocess
 	// for more information about preprocessors
-	preprocess: [
-		preprocess({
-			postcss: true
-		})
-	],
+	preprocess: [preprocess()],
 
 	kit: {
 		adapter: adapter(),
