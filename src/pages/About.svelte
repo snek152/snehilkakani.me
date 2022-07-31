@@ -114,12 +114,12 @@
 								</Accordion>
 							</div>
 							<div class="col-4">
-								<h4>Interests</h4>
+								<h4>More About Me</h4>
 								<ul>
-									<li>Full stack web development (frontend and backend)</li>
-									<li>Acting</li>
-									<li>Drumming</li>
-									<li>Video games</li>
+									<li>Aspiring actor, love being in school plays and musicals</li>
+									<li>Avid drummer, enjoy covering favorite songs</li>
+									<li>Marvel and Star Wars aficionado and buff</li>
+									<li>Occasional gamer, sometimes with friends</li>
 								</ul>
 							</div>
 						</div>
