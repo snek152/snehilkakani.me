@@ -3,7 +3,6 @@
 	import Button from '@smui/button';
 	import LayoutGrid, { Cell } from '@smui/layout-grid';
 	import MdOpenInNew from 'svelte-icons/md/MdOpenInNew.svelte';
-	import { fade } from 'svelte/transition';
 	import ProjectChips from './ProjectChips.svelte';
 
 	export let selected: string;
@@ -42,7 +41,7 @@
 			<Cell
 				span={width >= 1800 ? 2 : width >= 1240 ? 3 : width >= 1000 ? 4 : width >= 870 ? 6 : 12}
 			>
-				<div class="grid-item" transition:fade>
+				<div class="grid-item">
 					<div class="grid-item-container">
 						<span class="image">
 							<img

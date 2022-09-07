@@ -36,10 +36,12 @@ import Linkedin from '@svicons/simple-icons/linkedin.svelte';
 import Github from '@svicons/simple-icons/github.svelte';
 import Email from '@svicons/simple-icons/gmail.svelte';
 
-export const socials: {
+type Social = {
 	icon: typeof SvelteComponent;
 	href: string;
-}[] = [
+};
+
+export const socials: Social[] = [
 	{
 		icon: Instagram,
 		href: 'https://www.instagram.com/sne.k152/'
@@ -62,10 +64,12 @@ export const socials: {
 	}
 ];
 
-export const navLinks: {
+type NavLink = {
 	title: string;
 	href: string;
-}[] = [
+};
+
+export const navLinks: NavLink[] = [
 	{
 		title: 'Home',
 		href: '/'
@@ -274,6 +278,36 @@ export const projects: Project[] = [
 		buttonText: 'watch the recording'
 	},
 	{
+		title: 'JS Barrels - A CLI for Generating Javascript and Typescript Barrels',
+		description:
+			'JS-Barrels is a CLI to create barrel files, or files that re-export all the files in a directory, for Javascript and Typescript projects.',
+		image: '/images/jsbarrels.webp',
+		url: 'https://github.com/snek152/js-barrels',
+		type: 'cs',
+		buttonText: 'view on github',
+		chips: ['Typescript', 'Node.js']
+	},
+	{
+		title: 'Next.js Utilities - A Collection of Utilities for Next.js Projects',
+		description:
+			'Nextjs-utilities is a collection of helpers and utilities to simplify the Next.js developer experience in large and small scale projects alike.',
+		image: '/images/nextjsutils.webp',
+		url: 'https://github.com/snek152/nextjs-utilities',
+		type: 'cs',
+		buttonText: 'view on github',
+		chips: ['Typescript', 'Next.js']
+	},
+	{
+		title: 'Typescript Library Template - A Template for Creating Typescript Libraries with Ease',
+		description:
+			'TS-lib-template is an extremely powerful, batteries-included template for creating Typescript libraries with ease, including many utilities out of the box.',
+		image: '/images/tslibtemplate.webp',
+		url: 'https://github.com/snek152/ts-lib-template',
+		type: 'cs',
+		buttonText: 'view on github',
+		chips: ['Typescript', 'Github Actions', 'Node.js']
+	},
+	{
 		title: 'Drum Performance 2021',
 		description:
 			'As part of my annual drum live performance, I performed "Riff Raff" by AC/DC on my drumset with an audience of 100+.',
@@ -287,9 +321,10 @@ export const projects: Project[] = [
 		description:
 			'As my Synopsys project in 2022 (winning an Honorable Mention in Physical Science and Engineering), the STEAM Force is a fast education platform optimized for third world countries.',
 		image: '/images/steamforce.webp',
-		url: 'https://snehilkakani.me/steamforce',
+		url: 'https://steamforce.snehilkakani.me',
 		buttonText: 'check it out',
-		type: 'cs'
+		type: 'cs',
+		chips: ['React', 'Next.js', 'Firebase', 'Typescript']
 	},
 	{
 		title: "Check Please Valentine's Day Show 2022 - LHS Studio 74",
@@ -308,7 +343,7 @@ export const projects: Project[] = [
 		type: 'cs',
 		url: 'https://joinstemist.org',
 		buttonText: 'check it out',
-		chips: ['React', 'Next.js', 'Tailwind']
+		chips: ['React', 'Next.js', 'Tailwind', 'Typescript']
 	},
 	{
 		title: 'Website Developer and Designer - Care for our Common Home',
@@ -318,7 +353,7 @@ export const projects: Project[] = [
 		type: ['cs', 'design'],
 		url: 'https://cfoch.org',
 		buttonText: 'check it out',
-		chips: ['React', 'Next.js', 'Tailwind', 'Figma']
+		chips: ['React', 'Next.js', 'Tailwind', 'Figma', 'Typescript']
 	},
 	{
 		title: 'Sword Selection - A Minecraft Mod',
@@ -326,7 +361,7 @@ export const projects: Project[] = [
 		image: '/images/swordselection.webp',
 		description:
 			'My first mod for Minecraft with over 1.5k downloads, Sword Selection is a mod that adds all kinds of swords to the game such as daggers, longswords, sickles, and more!',
-		url: 'https://snehilkakani.me/swordselection',
+		url: 'https://swordselection.snehilkakani.me',
 		buttonText: 'learn more',
 		chips: ['Java', 'Minecraft Forge', 'Gradle']
 	},
@@ -365,7 +400,7 @@ export const projects: Project[] = [
 		chips: ['React', 'Tailwind'],
 		description:
 			'Using React and Tailwind, I built a simple basic and scientific calculator for the web, optimized as a PWA.',
-		url: 'https://snehilkakani.me/calculator',
+		url: 'https://calculator.snehilkakani.me',
 		buttonText: 'check it out'
 	},
 	{
