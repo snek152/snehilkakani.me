@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import Paper from '@smui/paper';
 
 	onMount(() => {
 		window.location.replace('https://youtu.be/dQw4w9WgXcQ');
 	});
 </script>
 
-<h1>Have Fun!</h1>
+<Paper>Have Fun!</Paper>
