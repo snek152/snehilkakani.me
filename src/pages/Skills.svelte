@@ -7,6 +7,7 @@
 	import { faFileAudio } from '@fortawesome/free-solid-svg-icons/faFileAudio';
 	import { faFileCode } from '@fortawesome/free-solid-svg-icons/faFileCode';
 	import { faPalette } from '@fortawesome/free-solid-svg-icons/faPalette';
+	import Testimonials from '../components/Testimonials.svelte';
 </script>
 
 <div id="expertise" class="section">
@@ -93,6 +94,7 @@
 		</div>
 		<h3 class="tip">(Tip: Hover over the icons to see progress levels)</h3>
 	</div>
+	<Testimonials />
 </div>
 
 <style>

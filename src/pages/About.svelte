@@ -14,10 +14,10 @@
 	onMount(() => {
 		const options = {
 			strings: [
-				"I'm a frontend engineer",
-				"I'm a backend developer",
+				"I'm a web developer",
+				"I'm a machine learning engineer",
 				"I'm an innovator",
-				"I'm a graphic designer",
+				"I'm a video gamer",
 				"I'm a drummer"
 			],
 			typeSpeed: 80,
@@ -52,9 +52,9 @@
 						</h1>
 						<h5 class="card-text">
 							Hi! My name is Snehil, and I'm an aspiring programmer. I love working on solid,
-							flexible UIs in the frontend, and creating APIs and server apps in the backend. I'm
-							also a professional graphic designer, drummer, actor, and more! You can find me on
-							social media, or contact me directly.
+							flexible UIs in the frontend, creating APIs and server apps in the backend, and
+							designing intelligent computer vision models. I'm also a graphic designer, gamer,
+							drummer, actor, and more! You can find me on social media, or contact me directly.
 						</h5>
 						<div class="card-list">
 							<List nonInteractive class="list">
@@ -74,7 +74,7 @@
 						</div>
 						<hr />
 						<div class="card-columns-flex">
-							<div class="col-3">
+							<!-- <div class="col-3">
 								<h4>Professional Experience</h4>
 								<Accordion color="primary">
 									<AboutAccordion title="Director of Technology" description="@ STEMist Education">
@@ -112,9 +112,9 @@
 										assisted in creating basic backend functionalities.
 									</AboutAccordion>
 								</Accordion>
-							</div>
+							</div> -->
 							<div class="col-4">
-								<h4>More About Me</h4>
+								<h4>My Hobbies</h4>
 								<ul>
 									<li>Aspiring actor, love being in school plays and musicals</li>
 									<li>Avid drummer, enjoy covering favorite songs</li>
@@ -207,6 +207,11 @@
 	@media (min-width: 992px) {
 		.col-1 {
 			width: 41.7%;
+			position: relative;
+		}
+		.col-1 > img {
+			position: absolute;
+			height: 50%;
 		}
 
 		.col-2 {

@@ -257,6 +257,24 @@ export const musicSkills: Skill[] = [
 	}
 ];
 
+type Testimonial = {
+	testimonial: string;
+	name: string;
+};
+
+export const testimonials: Testimonial[] = [
+	{
+		testimonial:
+			"I've known Snehil for quite a while now, and he is very self-driven and someone who will consistently follow through on his word.  For the past year or so, he has helped me create the webpage for STEMist, dedicating hours each week to fixing bugs and improving the site.  His web development skills have made creating the webpage so much easier, because I can rely on him instead of some wacky online website builder.  He transformed the website from a weebly page to what it is today, implementing design requests as soon as I pointed out some error.  It's been great working with Snehil both as a friend and as a teamate!",
+		name: 'Steve Yang, Founder and CEO of STEMist Education'
+	},
+	{
+		testimonial:
+			'I highly recommend Snehil Kakani as a website developer and designer. He has done an outstanding job designing the website for the nonprofit organization Care for our Common Home Foundation from scratch, capturing my vision perfectly and with an attention to detail that has resulted in a website that exceeds my expectations. Snehil is reliable, communicative, and a pleasure to work with. I am delighted with his work and I would not hesitate to collaborate with him again in the future.',
+		name: 'Eleanor Koo, Founder and CEO of CFOCH Foundation'
+	}
+];
+
 type Project = {
 	image: string;
 	title: string;
@@ -266,6 +284,35 @@ type Project = {
 	type: 'cs' | 'design' | 'music' | 'drama' | ('cs' | 'design' | 'music' | 'drama')[];
 	chips?: string[];
 };
+
+export const professionalProjects: Omit<Project, 'type'>[] = [
+	{
+		title: 'Director of Technology - STEMist Education',
+		description:
+			'As Director of Technology at STEMist, I designed and constructed the website using React, Next.js, and Tailwind working with my subordinates, as well as leading several other tech projects.',
+		image: '/images/stemist.webp',
+		url: 'https://joinstemist.org',
+		buttonText: 'check it out',
+		chips: ['React', 'Next.js', 'Tailwind', 'Typescript']
+	},
+	{
+		title: 'Website Developer and Designer - Care for our Common Home',
+		description:
+			'As a freelance web developer for CFOCH, my responsibility was to design and build a new website for their organization from scratch.',
+		image: '/images/cfoch.webp',
+		url: 'https://cfoch.org',
+		buttonText: 'check it out',
+		chips: ['React', 'Next.js', 'Tailwind', 'Figma', 'Typescript']
+	},
+	{
+		title: 'Beat Box - Music Album',
+		description:
+			'One of my first albums produced with GarageBand, this was my first step towards developing DJ skills.',
+		image: '/images/beatbox.webp',
+		url: 'https://soundcloud.com/snek152/sets/beat-box',
+		buttonText: 'listen on soundcloud'
+	}
+];
 
 export const projects: Project[] = [
 	{
@@ -336,26 +383,6 @@ export const projects: Project[] = [
 		buttonText: 'view on playscript'
 	},
 	{
-		title: 'Director of Technology - STEMist Education',
-		description:
-			'As Director of Technology at STEMist, I designed and constructed the website using React, Next.js, and Tailwind working with my subordinates, as well as leading several other tech projects.',
-		image: '/images/stemist.webp',
-		type: 'cs',
-		url: 'https://joinstemist.org',
-		buttonText: 'check it out',
-		chips: ['React', 'Next.js', 'Tailwind', 'Typescript']
-	},
-	{
-		title: 'Website Developer and Designer - Care for our Common Home',
-		description:
-			'As a freelance web developer for CFOCH, my responsibility was to design and build a new website for their organization from scratch.',
-		image: '/images/cfoch.webp',
-		type: ['cs', 'design'],
-		url: 'https://cfoch.org',
-		buttonText: 'check it out',
-		chips: ['React', 'Next.js', 'Tailwind', 'Figma', 'Typescript']
-	},
-	{
 		title: 'Sword Selection - A Minecraft Mod',
 		type: 'cs',
 		image: '/images/swordselection.webp',
@@ -421,14 +448,5 @@ export const projects: Project[] = [
 		buttonText: 'view on drive',
 		image: '/images/albumcovers.webp',
 		type: 'design'
-	},
-	{
-		title: 'Beat Box - Music Album',
-		description:
-			'One of my first albums produced with GarageBand, this was my first step towards developing DJ skills.',
-		image: '/images/beatbox.webp',
-		url: 'https://soundcloud.com/snek152/sets/beat-box',
-		buttonText: 'listen on soundcloud',
-		type: 'music'
 	}
 ];

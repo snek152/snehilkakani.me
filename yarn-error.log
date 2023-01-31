@@ -1,29 +1,29 @@
 Arguments: 
-  /Users/snehilk/.nvm/versions/node/v16.13.0/bin/node /opt/homebrew/Cellar/yarn/1.22.17_2/libexec/bin/yarn.js add -D @types/svelte-icons
+  /Users/snehilk/.nvm/versions/node/v16.16.0/bin/node /opt/homebrew/Cellar/yarn/1.22.17_2/libexec/bin/yarn.js add -D @types/svelte-carousel
 
 PATH: 
-  /Users/snehilk/.nvm/versions/node/v16.13.0/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/Library/Frameworks/Python.framework/Versions/3.9/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Users/snehilk/.nvm/versions/node/v16.13.0/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/Library/Frameworks/Python.framework/Versions/3.9/bin:/Users/snehilk/.cargo/bin
+  /Users/snehilk/Library/pnpm:/Users/snehilk/.bun/bin:/Users/snehilk/.bun/bin:/Users/snehilk/.nvm/versions/node/v16.16.0/bin:/Library/Frameworks/Python.framework/Versions/3.10/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/Library/Frameworks/Python.framework/Versions/3.9/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Users/snehilk/miniforge3/condabin:/Users/snehilk/Library/pnpm:/Users/snehilk/.bun/bin:/Users/snehilk/.nvm/versions/node/v16.16.0/bin:/Library/Frameworks/Python.framework/Versions/3.10/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/Library/Frameworks/Python.framework/Versions/3.9/bin:/Users/snehilk/.cargo/bin:/Users/snehilk/Library/Application Support/JetBrains/Toolbox/scripts:/Users/snehilk/Library/Application Support/JetBrains/Toolbox/scripts
 
 Yarn version: 
   1.22.17
 
 Node version: 
-  16.13.0
+  16.16.0
 
 Platform: 
   darwin arm64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@types%2fsvelte-icons: Not found
+  Error: https://registry.yarnpkg.com/@types%2fsvelte-carousel: Not found
       at Request.params.callback [as _callback] (/opt/homebrew/Cellar/yarn/1.22.17_2/libexec/lib/cli.js:67029:18)
       at Request.self.callback (/opt/homebrew/Cellar/yarn/1.22.17_2/libexec/lib/cli.js:140883:22)
-      at Request.emit (node:events:390:28)
+      at Request.emit (node:events:527:28)
       at Request.<anonymous> (/opt/homebrew/Cellar/yarn/1.22.17_2/libexec/lib/cli.js:141855:10)
-      at Request.emit (node:events:390:28)
+      at Request.emit (node:events:527:28)
       at IncomingMessage.<anonymous> (/opt/homebrew/Cellar/yarn/1.22.17_2/libexec/lib/cli.js:141777:12)
-      at Object.onceWrapper (node:events:509:28)
-      at IncomingMessage.emit (node:events:402:35)
-      at endReadableNT (node:internal/streams/readable:1343:12)
+      at Object.onceWrapper (node:events:641:28)
+      at IncomingMessage.emit (node:events:539:35)
+      at endReadableNT (node:internal/streams/readable:1345:12)
       at processTicksAndRejections (node:internal/process/task_queues:83:21)
 
 npm manifest: 
@@ -36,7 +36,7 @@ npm manifest:
   		"package": "svelte-kit package",
   		"preview": "svelte-kit preview",
   		"prepare": "svelte-kit sync && yarn smui-theme",
-  		"smui-theme": "smui-theme compile static/smui.css -i src/theme",
+  		"smui-theme": "smui-theme compile src/smui.css -i src/theme",
   		"check": "svelte-check --tsconfig ./tsconfig.json",
   		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
   		"lint": "prettier --check --plugin-search-dir=. . && eslint .",
@@ -77,10 +77,11 @@ npm manifest:
   		"prettier-plugin-svelte": "^2.5.0",
   		"smui-theme": "^6.0.0-beta.16",
   		"svelte": "^3.44.0",
+  		"svelte-carousel": "^1.0.20",
   		"svelte-check": "^2.2.6",
   		"svelte-fa": "^2.4.0",
   		"svelte-icons": "^2.1.0",
-  		"svelte-preprocess": "^4.10.1",
+  		"svelte-preprocess": "^4.10.5",
   		"tslib": "^2.3.1",
   		"typed.js": "^2.0.12",
   		"typescript": "~4.6.2",
@@ -2023,6 +2024,21 @@ Lockfile:
       prelude-ls "^1.2.1"
       type-check "~0.4.0"
   
+  lodash.clonedeep@^4.5.0:
+    version "4.5.0"
+    resolved "https://registry.yarnpkg.com/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
+    integrity sha512-H5ZhCF25riFd9uB5UCkVKo61m3S/xZk1x4wA6yp/L3RFP6Z/eHH1ymQcGLo7J3GMPfm0V/7m1tryHuGVxpqEBQ==
+  
+  lodash.get@^4.4.2:
+    version "4.4.2"
+    resolved "https://registry.yarnpkg.com/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
+    integrity sha512-z+Uw/vLuy6gQe8cfaFWD7p0wVv8fJl3mbzXh33RS+0oW2wvUqiRXiQ69gLWSLpgB5/6sU+r6BlQR0MBILadqTQ==
+  
+  lodash.isequal@^4.5.0:
+    version "4.5.0"
+    resolved "https://registry.yarnpkg.com/lodash.isequal/-/lodash.isequal-4.5.0.tgz#415c4478f2bcc30120c22ce10ed3226f7d3e18e0"
+    integrity sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==
+  
   lodash.merge@^4.6.2:
     version "4.6.2"
     resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.2.tgz#558aa53b43b661e1925a0afdfa36a9a1085fe57a"
@@ -2605,6 +2621,14 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.7.tgz#a9a1767f8af84155114eaabd73f99273c8f59ad9"
     integrity sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==
   
+  "simply-reactive@github:vadimkorr/simply-reactive#1.0.2":
+    version "1.0.0"
+    resolved "https://codeload.github.com/vadimkorr/simply-reactive/tar.gz/f403097d695030306bdfd0f849411fd28ad7d474"
+    dependencies:
+      lodash.clonedeep "^4.5.0"
+      lodash.get "^4.4.2"
+      lodash.isequal "^4.5.0"
+  
   slash@^3.0.0:
     version "3.0.0"
     resolved "https://registry.yarnpkg.com/slash/-/slash-3.0.0.tgz#6539be870c165adbd5240220dbe361f1bc4d4634"
@@ -2714,6 +2738,13 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
     integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
   
+  svelte-carousel@^1.0.20:
+    version "1.0.20"
+    resolved "https://registry.yarnpkg.com/svelte-carousel/-/svelte-carousel-1.0.20.tgz#ec8f4d3ea5f9a532940159b5e497142b6cc43bcf"
+    integrity sha512-BP6LosKg1I8D741WmzS2/Q9bwu1DdMslGXUe8//kWeumXB87XSQChw62Vyo8yFtgKP287riYI3w3fSI+aU+gbA==
+    dependencies:
+      simply-reactive vadimkorr/simply-reactive#1.0.2
+  
   svelte-check@^2.2.6:
     version "2.7.2"
     resolved "https://registry.yarnpkg.com/svelte-check/-/svelte-check-2.7.2.tgz#0e31e4d3d766ca41f38812cfb1c3257654c93e34"
@@ -2743,7 +2774,7 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/svelte-icons/-/svelte-icons-2.1.0.tgz#6f2ec72f1d5c8b2de1a4b8a822c95bcb2f701aca"
     integrity sha512-rHPQjweEc9fGSnvM0/4gA3pDHwyZyYsC5KhttCZRhSMJfLttJST5Uq0B16Czhw+HQ+HbSOk8kLigMlPs7gZtfg==
   
-  svelte-preprocess@^4.0.0, svelte-preprocess@^4.10.1:
+  svelte-preprocess@^4.0.0, svelte-preprocess@^4.10.5:
     version "4.10.7"
     resolved "https://registry.yarnpkg.com/svelte-preprocess/-/svelte-preprocess-4.10.7.tgz#3626de472f51ffe20c9bc71eff5a3da66797c362"
     integrity sha512-sNPBnqYD6FnmdBrUmBCaqS00RyCsCpj2BG58A1JBswNF7b0OKviwxqVrOL/CKyJrLSClrSeqQv5BXNg2RUbPOw==

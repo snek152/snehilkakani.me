@@ -14,3 +14,5 @@ declare namespace svelte.JSX {
 		onclick_outside?: CompositionEventHandler<T>;
 	}
 }
+
+declare module 'svelte-carousel';

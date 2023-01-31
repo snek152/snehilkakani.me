@@ -11,7 +11,10 @@ const config = {
 	kit: {
 		adapter: adapter(),
 		vite: {
-			plugins: [viteCompression()]
+			plugins: [viteCompression()],
+			optimizeDeps: {
+				include: ['lodash.get', 'lodash.isequal', 'lodash.clonedeep']
+			}
 		}
 	}
 };

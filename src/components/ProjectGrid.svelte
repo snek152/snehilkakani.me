@@ -39,7 +39,7 @@
 	<LayoutGrid>
 		{#each filteredList as project}
 			<Cell
-				span={width >= 1800 ? 2 : width >= 1240 ? 3 : width >= 1000 ? 4 : width >= 870 ? 6 : 12}
+				span={width >= 1800 ? 2 : width >= 1300 ? 3 : width >= 1000 ? 4 : width >= 870 ? 6 : 12}
 			>
 				<div class="grid-item">
 					<div class="grid-item-container">
