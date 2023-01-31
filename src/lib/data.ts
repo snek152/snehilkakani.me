@@ -307,7 +307,7 @@ export const professionalProjects: Omit<Project, 'type'>[] = [
 	{
 		title: 'Beat Box - Music Album',
 		description:
-			'One of my first albums produced with GarageBand, this was my first step towards developing DJ skills.',
+			'My first album, produced entirely by me, is an amalgamation of my musical interests and inspirations. It is a collection of nine songs, each with a different genre and style.',
 		image: '/images/beatbox.webp',
 		url: 'https://soundcloud.com/snek152/sets/beat-box',
 		buttonText: 'listen on soundcloud'
