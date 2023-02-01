@@ -272,6 +272,11 @@ export const testimonials: Testimonial[] = [
 		testimonial:
 			'I highly recommend Snehil Kakani as a website developer and designer. He has done an outstanding job designing the website for the nonprofit organization Care for our Common Home Foundation from scratch, capturing my vision perfectly and with an attention to detail that has resulted in a website that exceeds my expectations. Snehil is reliable, communicative, and a pleasure to work with. I am delighted with his work and I would not hesitate to collaborate with him again in the future.',
 		name: 'Eleanor Koo, Founder and CEO of CFOCH Foundation'
+	},
+	{
+		testimonial:
+			'Snehil is one of the best people - not just the best developer, not just the best graphic designer - but the most fulfilling and giving person you will ever meet. When I first started working with Snehil, I could see his ability in picking skills up quickly and his humbleness in asking for help whenever needed. Snehil is down-to-earth and will never let you down on a promise and yet push you to be better. If you need a web developer or a friend, Snehil is the man.',
+		name: 'Anish Lakkapragada, Vice President of Lynbrook Web Dev Club'
 	}
 ];
 
