@@ -153,11 +153,11 @@
 
 	.project-desc {
 		margin-top: 0px;
-		font-size: 15px;
+		font-size: 20px;
 	}
 
 	.project-header {
-		font-size: 20px;
+		font-size: 30px;
 		margin-top: 0;
 		margin-bottom: 0.5rem;
 		font-weight: 500;
