@@ -21,7 +21,7 @@
 			],
 			typeSpeed: 80,
 			smartBackspace: true,
-			backDelay: 600,
+			fadeOutDelay: 600,
 			backSpeed: 40,
 			loop: true,
 			loopCount: Infinity,
