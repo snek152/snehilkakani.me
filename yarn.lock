@@ -856,11 +856,6 @@
     magic-string "^0.26.2"
     svelte-hmr "^0.14.12"
 
-"@svicons/simple-icons@^0.1.11":
-  version "0.1.11"
-  resolved "https://registry.yarnpkg.com/@svicons/simple-icons/-/simple-icons-0.1.11.tgz#5985780f097cc8f7e7efbc2868db3c50992e459e"
-  integrity sha512-9GkLu+41TfUhk5h86/PK9b4XmjXYSoM1+pcIl5BD7KIe2A4qJp+47Md54LIZ/+VI1wTfBPtMA+0hELBYUWubdA==
-
 "@tsconfig/svelte@^3.0.0":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@tsconfig/svelte/-/svelte-3.0.0.tgz#b06e059209f04c414de0069f2f0e2796d979fc6f"
@@ -2525,7 +2520,7 @@ signal-exit@^3.0.0:
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.7.tgz#a9a1767f8af84155114eaabd73f99273c8f59ad9"
   integrity sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==
 
-"simply-reactive@github:vadimkorr/simply-reactive#1.0.2":
+simply-reactive@vadimkorr/simply-reactive#1.0.2:
   version "1.0.0"
   resolved "https://codeload.github.com/vadimkorr/simply-reactive/tar.gz/f403097d695030306bdfd0f849411fd28ad7d474"
   dependencies:
@@ -2689,6 +2684,11 @@ svelte-preprocess@^4.0.0, svelte-preprocess@^4.10.5:
     magic-string "^0.25.7"
     sorcery "^0.10.0"
     strip-indent "^3.0.0"
+
+svelte-simple-icons@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/svelte-simple-icons/-/svelte-simple-icons-1.0.3.tgz#4778a9b0bb004557b6b61eb1792328d0b398f3f0"
+  integrity sha512-BmQPPrV9fHMH+BJSf4xBKNP0oW2XCtWizZnfAnlOBn54UWRLWmk8uTt0JRAF5NfS+74DD09oHADAroneC94eFg==
 
 svelte2tsx@^0.5.5:
   version "0.5.10"

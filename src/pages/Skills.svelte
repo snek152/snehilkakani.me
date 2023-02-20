@@ -27,7 +27,11 @@
 					<div class="icon-grid">
 						{#each codingSkills as s}
 							<Wrapper>
-								<svelte:component this={s.icon} class="icon" />
+								{#if typeof s.icon === 'string'}
+									{@html s.icon}
+								{:else}
+									<svelte:component this={s.icon} class="icon" />
+								{/if}
 								<Tooltip xPos="start">
 									<C>
 										<h3 class="tooltip-header">{s.name}</h3>
@@ -53,7 +57,11 @@
 					<div class="icon-grid">
 						{#each designSkills as s}
 							<Wrapper>
-								<svelte:component this={s.icon} class="icon" />
+								{#if typeof s.icon === 'string'}
+									{@html s.icon}
+								{:else}
+									<svelte:component this={s.icon} class="icon" />
+								{/if}
 								<Tooltip xPos="start">
 									<C>
 										<h3 class="tooltip-header">{s.name}</h3>
@@ -79,7 +87,11 @@
 					<div class="icon-grid">
 						{#each musicSkills as s}
 							<Wrapper>
-								<svelte:component this={s.icon} class="icon" />
+								{#if typeof s.icon === 'string'}
+									{@html s.icon}
+								{:else}
+									<svelte:component this={s.icon} class="icon" />
+								{/if}
 								<Tooltip xPos="start">
 									<C>
 										<h3 class="tooltip-header">{s.name}</h3>
@@ -127,6 +139,7 @@
 		cursor: pointer;
 		height: 20px;
 		width: 20px;
+		fill: currentColor;
 		user-select: none;
 	}
 

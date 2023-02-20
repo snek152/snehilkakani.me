@@ -181,7 +181,7 @@
 		</svg>
 		<div class="footer-inner">
 			<h1 class="header">Snehil Kakani</h1>
-			<p class="copyright">Copyright © 2022 All rights reserved.</p>
+			<p class="copyright">Copyright © 2023 All rights reserved.</p>
 		</div>
 	</div>
 </AutoAdjust>
@@ -205,6 +205,12 @@
 		/* color: #c2c2c2; */
 		min-width: 0;
 	}
+
+	:global(.social-link > svg) {
+		height: 1.25rem;
+		width: 1.25rem;
+		fill: currentColor;
+	}
 	.social-container {
 		height: 100%;
 		/* width: 100%; */
@@ -214,10 +220,10 @@
 		/* gap: 0.5rem; */
 	}
 
-	:global(.social-icon) {
+	/* :global(.social-icon) {
 		height: 1.25rem;
 		width: 1.25rem;
-	}
+	} */
 	#footer {
 		display: flex;
 		flex-direction: column;

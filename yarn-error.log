@@ -1,8 +1,8 @@
 Arguments: 
-  /Users/snehilk/.nvm/versions/node/v16.16.0/bin/node /opt/homebrew/Cellar/yarn/1.22.17_2/libexec/bin/yarn.js add -D @types/svelte-carousel
+  /Users/snehilk/.nvm/versions/node/v16.16.0/bin/node /opt/homebrew/Cellar/yarn/1.22.17_2/libexec/bin/yarn.js add -D @types/svelte-simple-icons
 
 PATH: 
-  /Users/snehilk/Library/pnpm:/Users/snehilk/.bun/bin:/Users/snehilk/.bun/bin:/Users/snehilk/.nvm/versions/node/v16.16.0/bin:/Library/Frameworks/Python.framework/Versions/3.10/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/Library/Frameworks/Python.framework/Versions/3.9/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Users/snehilk/miniforge3/condabin:/Users/snehilk/Library/pnpm:/Users/snehilk/.bun/bin:/Users/snehilk/.nvm/versions/node/v16.16.0/bin:/Library/Frameworks/Python.framework/Versions/3.10/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/Library/Frameworks/Python.framework/Versions/3.9/bin:/Users/snehilk/.cargo/bin:/Users/snehilk/Library/Application Support/JetBrains/Toolbox/scripts:/Users/snehilk/Library/Application Support/JetBrains/Toolbox/scripts
+  /Users/snehilk/miniforge3/condabin:/Users/snehilk/Library/pnpm:/Users/snehilk/.bun/bin:/Users/snehilk/.bun/bin:/Users/snehilk/.nvm/versions/node/v16.16.0/bin:/Library/Frameworks/Python.framework/Versions/3.10/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/Library/Frameworks/Python.framework/Versions/3.9/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Users/snehilk/.cargo/bin:/Users/snehilk/Library/Application Support/JetBrains/Toolbox/scripts
 
 Yarn version: 
   1.22.17
@@ -14,7 +14,7 @@ Platform:
   darwin arm64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@types%2fsvelte-carousel: Not found
+  Error: https://registry.yarnpkg.com/@types%2fsvelte-simple-icons: Not found
       at Request.params.callback [as _callback] (/opt/homebrew/Cellar/yarn/1.22.17_2/libexec/lib/cli.js:67029:18)
       at Request.self.callback (/opt/homebrew/Cellar/yarn/1.22.17_2/libexec/lib/cli.js:140883:22)
       at Request.emit (node:events:527:28)
@@ -67,7 +67,6 @@ npm manifest:
   		"@sveltejs/adapter-auto": "next",
   		"@sveltejs/adapter-static": "^1.0.0-next.34",
   		"@sveltejs/kit": "next",
-  		"@svicons/simple-icons": "^0.1.11",
   		"@typescript-eslint/eslint-plugin": "^5.10.1",
   		"@typescript-eslint/parser": "^5.10.1",
   		"eslint": "^8.12.0",
@@ -87,7 +86,10 @@ npm manifest:
   		"typescript": "~4.6.2",
   		"vite-plugin-compression": "^0.5.1"
   	},
-  	"type": "module"
+  	"type": "module",
+  	"dependencies": {
+  		"svelte-simple-icons": "^1.0.3"
+  	}
   }
 
 yarn manifest: 
@@ -951,11 +953,6 @@ Lockfile:
       kleur "^4.1.4"
       magic-string "^0.26.2"
       svelte-hmr "^0.14.12"
-  
-  "@svicons/simple-icons@^0.1.11":
-    version "0.1.11"
-    resolved "https://registry.yarnpkg.com/@svicons/simple-icons/-/simple-icons-0.1.11.tgz#5985780f097cc8f7e7efbc2868db3c50992e459e"
-    integrity sha512-9GkLu+41TfUhk5h86/PK9b4XmjXYSoM1+pcIl5BD7KIe2A4qJp+47Md54LIZ/+VI1wTfBPtMA+0hELBYUWubdA==
   
   "@tsconfig/svelte@^3.0.0":
     version "3.0.0"
@@ -2621,7 +2618,7 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.7.tgz#a9a1767f8af84155114eaabd73f99273c8f59ad9"
     integrity sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==
   
-  "simply-reactive@github:vadimkorr/simply-reactive#1.0.2":
+  simply-reactive@vadimkorr/simply-reactive#1.0.2:
     version "1.0.0"
     resolved "https://codeload.github.com/vadimkorr/simply-reactive/tar.gz/f403097d695030306bdfd0f849411fd28ad7d474"
     dependencies:
@@ -2785,6 +2782,11 @@ Lockfile:
       magic-string "^0.25.7"
       sorcery "^0.10.0"
       strip-indent "^3.0.0"
+  
+  svelte-simple-icons@^1.0.3:
+    version "1.0.3"
+    resolved "https://registry.yarnpkg.com/svelte-simple-icons/-/svelte-simple-icons-1.0.3.tgz#4778a9b0bb004557b6b61eb1792328d0b398f3f0"
+    integrity sha512-BmQPPrV9fHMH+BJSf4xBKNP0oW2XCtWizZnfAnlOBn54UWRLWmk8uTt0JRAF5NfS+74DD09oHADAroneC94eFg==
   
   svelte2tsx@^0.5.5:
     version "0.5.10"

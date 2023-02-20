@@ -1,5 +1,14 @@
+<script lang="ts">
+	import { page } from '$app/stores';
+</script>
+
 <div>
-	<h1>404 Error</h1>
+	{#if $page.status === 404}
+		<h1>404 Error</h1>
+	{:else}
+		<h1>{$page.error?.name}</h1>
+		<p>{$page.error?.message}</p>
+	{/if}
 </div>
 
 <style>

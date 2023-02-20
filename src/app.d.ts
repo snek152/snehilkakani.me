@@ -16,3 +16,5 @@ declare namespace svelte.JSX {
 }
 
 declare module 'svelte-carousel';
+
+declare module 'svelte-simple-icons';
