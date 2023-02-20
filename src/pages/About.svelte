@@ -14,11 +14,10 @@
 	onMount(() => {
 		const options = {
 			strings: [
-				"I'm a web developer",
-				"I'm a machine learning engineer",
-				"I'm an innovator",
-				"I'm a video gamer",
-				"I'm a drummer"
+				"Striving for community improvement",
+				"Dedicated to sharing knowledge",
+				"Learning new ideas every day",
+				"Focused on building relationships",
 			],
 			typeSpeed: 80,
 			smartBackspace: true,
@@ -174,7 +173,7 @@
 		margin-bottom: 1rem;
 		margin-top: 0;
 		font-weight: 500;
-		font-size: calc(1.3rem + 0.6vw);
+		font-size: calc(1.3rem + 0.5vw);
 	}
 
 	.card-body {
