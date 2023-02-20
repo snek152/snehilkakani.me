@@ -24,7 +24,8 @@
 			backDelay: 600,
 			backSpeed: 40,
 			loop: true,
-			loopCount: Infinity
+			loopCount: Infinity,
+			fadeOut: true
 		};
 		typed = new Typed(el, options);
 	});
