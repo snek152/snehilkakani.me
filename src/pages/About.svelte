@@ -174,7 +174,7 @@
 		margin-bottom: 1rem;
 		margin-top: 0;
 		font-weight: 500;
-		font-size: calc(1.2rem + 0.4vw);
+		font-size: calc(1.2rem + 0.2vw);
 	}
 
 	.card-body {
