@@ -14,10 +14,10 @@
 	onMount(() => {
 		const options = {
 			strings: [
-				"Striving for community improvement",
-				"Dedicated to sharing knowledge",
-				"Learning new ideas every day",
-				"Focused on building relationships",
+				'Striving for community improvement',
+				'Dedicated to sharing knowledge',
+				'Learning new ideas every day',
+				'Focused on building relationships'
 			],
 			typeSpeed: 80,
 			smartBackspace: true,
@@ -174,7 +174,7 @@
 		margin-bottom: 1rem;
 		margin-top: 0;
 		font-weight: 500;
-		font-size: calc(1.2rem + 0.2vw);
+		font-size: calc(4.6vw);
 	}
 
 	.card-body {
@@ -216,6 +216,10 @@
 
 		.col-2 {
 			width: 58.3%;
+		}
+
+		.card-title {
+			font-size: calc(1.2rem + 0.6vw);
 		}
 
 		.col-3,
