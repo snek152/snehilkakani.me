@@ -349,11 +349,11 @@ export const professionalProjects: Omit<Project, 'type'>[] = [
 		chips: ['React', 'Next.js', 'Tailwind', 'Figma', 'Typescript']
 	},
 	{
-		title: 'Beat Box - Music Album',
+		title: 'If Only - Music Album',
 		description:
-			'My first album, produced entirely by me, is an amalgamation of my musical interests and inspirations. It is a collection of nine songs, each with a different genre and style.',
-		image: '/images/beatbox.webp',
-		url: 'https://soundcloud.com/snek152/sets/beat-box',
+			'My first album, produced by me, is a set of electronic songs with an innate feeling of desire, longing, and power.',
+		image: '/images/ifonly.webp',
+		url: 'https://soundcloud.com/snek152/sets/if-only',
 		buttonText: 'listen on soundcloud'
 	}
 ];
