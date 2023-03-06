@@ -64,7 +64,7 @@
 	}
 
 	.grid-item {
-		aspect-ratio: 1 / 1;
+		aspect-ratio: 1.5 / 1;
 		position: relative;
 		overflow: hidden !important;
 		display: flex;
@@ -83,6 +83,7 @@
 	}
 
 	.image {
+		aspect-ratio: 1 / 1;
 		display: flex;
 		align-self: center;
 		justify-self: center;
@@ -91,7 +92,7 @@
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
-		height: 100%;
+		/* height: 100%; */
 		width: 100%;
 		transition: all 0.25s linear;
 		overflow: hidden;
@@ -99,6 +100,7 @@
 	}
 
 	.image img {
+		width: 100%;
 		height: 100%;
 		user-select: none;
 		pointer-events: none;
@@ -107,8 +109,9 @@
 	.grid-item:hover .image {
 		box-sizing: border-box;
 		overflow: hidden;
-		width: 120%;
-		height: 120%;
+		/* width: 120%; */
+		/* height: 120%; */
+		transform: translate(-50%, -50%) scale(1.2);
 		opacity: 0.1;
 		transition: all 0.25s linear;
 	}
@@ -153,11 +156,11 @@
 
 	.project-desc {
 		margin-top: 0px;
-		font-size: 20px;
+		font-size: 17px;
 	}
 
 	.project-header {
-		font-size: 30px;
+		font-size: 25px;
 		margin-top: 0;
 		margin-bottom: 0.5rem;
 		font-weight: 500;

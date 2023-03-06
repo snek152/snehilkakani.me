@@ -54,6 +54,18 @@
 		align-items: center;
 		padding: 1rem;
 	}
+
+	@media only screen and (max-width: 991px) {
+		.button-container {
+			padding: 0.5rem;
+			position: relative;
+		}
+		:global(.button-container button) {
+			height: 2rem !important;
+			width: 2rem !important;
+		}
+	}
+
 	:global(.button-container svg) {
 		height: 16px !important;
 		width: 16px !important;

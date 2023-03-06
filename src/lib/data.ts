@@ -347,14 +347,6 @@ export const professionalProjects: Omit<Project, 'type'>[] = [
 		url: 'https://cfoch.org',
 		buttonText: 'check it out',
 		chips: ['React', 'Next.js', 'Tailwind', 'Figma', 'Typescript']
-	},
-	{
-		title: 'If Only - Music Album',
-		description:
-			'My first album, produced by me, is a set of electronic songs with an innate feeling of desire, longing, and power.',
-		image: '/images/ifonly.webp',
-		url: 'https://soundcloud.com/snek152/sets/if-only',
-		buttonText: 'listen on soundcloud'
 	}
 ];
 
@@ -367,6 +359,15 @@ export const projects: Project[] = [
 			"In Lynbrook High School Studio 74's Spring Outdoor show, I was cast as the County Paris in the play Romeo and Juliet, performing through May 2022.",
 		url: 'https://youtu.be/ngWYAiN_Yh8',
 		buttonText: 'watch the recording'
+	},
+	{
+		title: 'If Only - Music Album',
+		type: 'music',
+		description:
+			'My first album, produced by me, is a set of electronic songs with an innate feeling of desire, longing, and power.',
+		image: '/images/ifonly.webp',
+		url: 'https://soundcloud.com/snek152/sets/if-only',
+		buttonText: 'listen on soundcloud'
 	},
 	{
 		title: 'JS Barrels - A CLI for Generating Javascript and Typescript Barrels',

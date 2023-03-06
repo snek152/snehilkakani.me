@@ -8,9 +8,9 @@
 </script>
 
 <div id="projects" class="section">
-	<h1 class="header">Professional Projects</h1>
+	<h1 class="header">Professional Experience</h1>
 	<ProfessionalProjects />
-	<h1 class="header">Other Projects</h1>
+	<h1 class="header">Side Projects</h1>
 	<div class="button-group">
 		<Group class="group">
 			{#each choices as c}
