@@ -25,6 +25,7 @@
 	import { faDrum } from '@fortawesome/free-solid-svg-icons/faDrum';
 	import { faTheaterMasks } from '@fortawesome/free-solid-svg-icons/faTheaterMasks';
 	import Button from '@smui/button';
+
 	let topAppBar: any;
 	let preloaderVisible = true;
 	let preloader: HTMLElement;

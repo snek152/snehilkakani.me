@@ -88,10 +88,24 @@
   dependencies:
     tslib "^2.1.0"
 
+"@material/animation@^14.0.0":
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/@material/animation/-/animation-14.0.0.tgz#f23fbe38deb6a48829dcdb0b7580017a4217e94b"
+  integrity sha512-VlYSfUaIj/BBVtRZI8Gv0VvzikFf+XgK0Zdgsok5c1v5DDnNz5tpB8mnGrveWz0rHbp1X4+CWLKrTwNmjrw3Xw==
+  dependencies:
+    tslib "^2.1.0"
+
 "@material/base@^13.0.0":
   version "13.0.0"
   resolved "https://registry.yarnpkg.com/@material/base/-/base-13.0.0.tgz#18f7f5ac112bf67e66c1ade6ab543ea9df9d3836"
   integrity sha512-vFx0JryRfcvUNX3cZ2u32wUMvxzd+c/YW0LFOXNgqCDWlubHcMm0Y6Wz371LhfQo80/NE69u+/4Joo99yKnVeg==
+  dependencies:
+    tslib "^2.1.0"
+
+"@material/base@^14.0.0":
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/@material/base/-/base-14.0.0.tgz#022debef6762764dbe1056eb1bcffca6b354883c"
+  integrity sha512-Ou7vS7n1H4Y10MUZyYAbt6H0t67c6urxoCgeVT7M38aQlaNUwFMODp7KT/myjYz2YULfhu3PtfSV3Sltgac9mA==
   dependencies:
     tslib "^2.1.0"
 
@@ -196,6 +210,14 @@
   integrity sha512-M9HLAYBZtkTUvf66FL+jAEvUOdhji1HkGA1mV6oyE+HY9gkCkmso+mngvzlLd5+uaAVE9I3WQFhSb9gp0cpXnw==
   dependencies:
     "@material/feature-targeting" "^13.0.0"
+    tslib "^2.1.0"
+
+"@material/dom@^14.0.0":
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/@material/dom/-/dom-14.0.0.tgz#dad6908ea26f7cb21b1078f58ec04bd897c615c4"
+  integrity sha512-8t88XyacclTj8qsIw9q0vEj4PI2KVncLoIsIMzwuMx49P2FZg6TsLjor262MI3Qs00UWAifuLMrhnOnfyrbe7Q==
+  dependencies:
+    "@material/feature-targeting" "^14.0.0"
     tslib "^2.1.0"
 
 "@material/drawer@^13.0.0":
@@ -382,12 +404,33 @@
     "@material/theme" "^13.0.0"
     tslib "^2.1.0"
 
+"@material/ripple@^14.0.0":
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/@material/ripple/-/ripple-14.0.0.tgz#4a6b3639197f39d78be967b46195007aedf06652"
+  integrity sha512-9XoGBFd5JhFgELgW7pqtiLy+CnCIcV2s9cQ2BWbOQeA8faX9UZIDUx/g76nHLZ7UzKFtsULJxZTwORmsEt2zvw==
+  dependencies:
+    "@material/animation" "^14.0.0"
+    "@material/base" "^14.0.0"
+    "@material/dom" "^14.0.0"
+    "@material/feature-targeting" "^14.0.0"
+    "@material/rtl" "^14.0.0"
+    "@material/theme" "^14.0.0"
+    tslib "^2.1.0"
+
 "@material/rtl@^13.0.0":
   version "13.0.0"
   resolved "https://registry.yarnpkg.com/@material/rtl/-/rtl-13.0.0.tgz#c8dbdc2b63d122450ff456572d08a9f5639704ab"
   integrity sha512-nFGy3iQg7k+xLs67eb86mRFVLwa0yi7MusqRK4OM8DXcLO5yoVfUTPKpdSykcbRryp9imVHsxutox2tZawR4og==
   dependencies:
     "@material/theme" "^13.0.0"
+    tslib "^2.1.0"
+
+"@material/rtl@^14.0.0":
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/@material/rtl/-/rtl-14.0.0.tgz#6be5adf56dcbab0d4a7dabd9ab724fbcc5c63d6b"
+  integrity sha512-xl6OZYyRjuiW2hmbjV2omMV8sQtfmKAjeWnD1RMiAPLCTyOW9Lh/PYYnXjxUrNa0cRwIIbOn5J7OYXokja8puA==
+  dependencies:
+    "@material/theme" "^14.0.0"
     tslib "^2.1.0"
 
 "@material/shape@^13.0.0":
@@ -609,6 +652,15 @@
     "@tsconfig/svelte" "^3.0.0"
     svelte2tsx "^0.5.5"
 
+"@smui/common@^7.0.0-beta.0":
+  version "7.0.0-beta.0"
+  resolved "https://registry.yarnpkg.com/@smui/common/-/common-7.0.0-beta.0.tgz#5c4e6d9ed194be45ca9e9e2dc18a9bf73c4ec130"
+  integrity sha512-JFbmbXR/j3NdUPC1Nn28LDH62WVv6AaKQVr4VVmutgBYAkMy+QIQhG/kvFBP4Shr2gG8DLQyXGSK0wHHgiONlw==
+  dependencies:
+    "@material/dom" "^14.0.0"
+    "@tsconfig/svelte" "^3.0.0"
+    svelte2tsx "^0.5.12"
+
 "@smui/dialog@^6.0.0-beta.16":
   version "6.0.0-beta.16"
   resolved "https://registry.yarnpkg.com/@smui/dialog/-/dialog-6.0.0-beta.16.tgz#9a6d3c592f009440af54df12540a8d048a4862d3"
@@ -743,6 +795,16 @@
     "@material/ripple" "^13.0.0"
     "@smui/common" "^6.0.0-beta.16"
     svelte2tsx "^0.5.5"
+
+"@smui/ripple@^7.0.0-beta.0":
+  version "7.0.0-beta.0"
+  resolved "https://registry.yarnpkg.com/@smui/ripple/-/ripple-7.0.0-beta.0.tgz#044576e627f2f8e7eb52d7f2731052c06d0f3822"
+  integrity sha512-2G9ILzcNAWeL8NgqW4tuBJXuh0gfGj01CtlGeRUSUNG5AxM3zLECrTEEqKdX25wtJf+QxBqV1Zi3ZqFDm3lzDg==
+  dependencies:
+    "@material/dom" "^14.0.0"
+    "@material/ripple" "^14.0.0"
+    "@smui/common" "^7.0.0-beta.0"
+    svelte2tsx "^0.5.12"
 
 "@smui/switch@^6.0.0-beta.16":
   version "6.0.0-beta.16"
@@ -2689,6 +2751,14 @@ svelte-simple-icons@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/svelte-simple-icons/-/svelte-simple-icons-1.0.3.tgz#4778a9b0bb004557b6b61eb1792328d0b398f3f0"
   integrity sha512-BmQPPrV9fHMH+BJSf4xBKNP0oW2XCtWizZnfAnlOBn54UWRLWmk8uTt0JRAF5NfS+74DD09oHADAroneC94eFg==
+
+svelte2tsx@^0.5.12:
+  version "0.5.23"
+  resolved "https://registry.yarnpkg.com/svelte2tsx/-/svelte2tsx-0.5.23.tgz#e20c464b3250f97902994d3784a57e87ca86a849"
+  integrity sha512-jYFnugTQRFmUpvLXPQrKzVYcW5ErT+0QCxg027Zx9BuvYefMZFuoBSTDYe7viPEFGrPPiLgT2m7f5n9khE7f7Q==
+  dependencies:
+    dedent-js "^1.0.1"
+    pascal-case "^3.1.1"
 
 svelte2tsx@^0.5.5:
   version "0.5.10"

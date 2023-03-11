@@ -4,6 +4,7 @@
 	import LayoutGrid, { Cell } from '@smui/layout-grid';
 	import MdOpenInNew from 'svelte-icons/md/MdOpenInNew.svelte';
 	import ProjectChips from './ProjectChips.svelte';
+	import Ripple from '@smui/ripple';
 
 	export let selected: string;
 
@@ -41,7 +42,7 @@
 			<Cell
 				span={width >= 1800 ? 2 : width >= 1300 ? 3 : width >= 1000 ? 4 : width >= 870 ? 6 : 12}
 			>
-				<div class="grid-item">
+				<div use:Ripple={{ surface: true, color: 'primary' }} class="grid-item">
 					<div class="grid-item-container">
 						<span class="image">
 							<img
@@ -96,6 +97,7 @@
 		align-items: center;
 		justify-content: center;
 		flex-direction: column;
+		cursor: pointer;
 	}
 
 	.grid-item-container {
