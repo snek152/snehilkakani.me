@@ -304,18 +304,18 @@ type Testimonial = {
 export const testimonials: Testimonial[] = [
 	{
 		testimonial:
-			"I've known Snehil for quite a while now, and he is very self-driven and someone who will consistently follow through on his word.  For the past year or so, he has helped me create the webpage for STEMist, dedicating hours each week to fixing bugs and improving the site.  His web development skills have made creating the webpage so much easier, because I can rely on him instead of some wacky online website builder.  He transformed the website from a weebly page to what it is today, implementing design requests as soon as I pointed out some error.  It's been great working with Snehil both as a friend and as a teamate!",
-		name: 'Steve Yang, Founder and CEO of STEMist Education'
+			"I've known Snehil for quite a while now, and he is very *self-driven* and someone who will *consistently follow through on his word*.  For the past year or so, he has helped me create the webpage for STEMist, dedicating hours each week to fixing bugs and improving the site.  His web development skills have made creating the webpage so much easier, because *I can rely on him* instead of some wacky online website builder.  He transformed the website from a weebly page to what it is today, implementing design requests as soon as I pointed out some error.  *It's been great working with Snehil* both as a friend and as a teamate!",
+		name: 'Steve Yang, Co-Founder and President of STEMist Education'
 	},
 	{
 		testimonial:
-			'I highly recommend Snehil Kakani as a website developer and designer. He has done an outstanding job designing the website for the nonprofit organization Care for our Common Home Foundation from scratch, capturing my vision perfectly and with an attention to detail that has resulted in a website that exceeds my expectations. Snehil is reliable, communicative, and a pleasure to work with. I am delighted with his work and I would not hesitate to collaborate with him again in the future.',
-		name: 'Eleanor Koo, Founder and CEO of CFOCH Foundation'
+			'I highly recommend Snehil Kakani as a website developer and designer. He has done an *outstanding job* designing the website for the nonprofit organization Care for our Common Home Foundation from scratch, *capturing my vision perfectly* and with an attention to detail that has resulted in a website that *exceeds my expectations*. Snehil is *reliable, communicative, and a pleasure to work with*. I am delighted with his work and I would not hesitate to collaborate with him again in the future.',
+		name: 'Eleanor Koo, Founder of CFOCH Foundation'
 	},
 	{
 		testimonial:
-			'Snehil is one of the best people - not just the best developer, not just the best graphic designer - but the most fulfilling and giving person you will ever meet. When I first started working with Snehil, I could see his ability in picking skills up quickly and his humbleness in asking for help whenever needed. Snehil is down-to-earth and will never let you down on a promise and yet push you to be better. If you need a web developer or a friend, Snehil is the man.',
-		name: 'Anish Lakkapragada, Vice President of Lynbrook Web Dev Club'
+			'Snehil is one of the best people - not just the best developer, not just the best graphic designer - but the *most fulfilling and giving person you will ever meet*. When I first started working with Snehil, I could see his ability in *picking skills up quickly* and his humbleness in asking for help whenever needed. Snehil is down-to-earth and will *never let you down on a promise and yet push you to be better*. If you need a web developer or a friend, Snehil is the man.',
+		name: 'Anish Lakkapragada, Vice President of Lynbrook Web Development Club'
 	}
 ];
 

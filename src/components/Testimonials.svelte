@@ -30,7 +30,15 @@
 				<Paper>
 					<div class="testimonial">
 						<div class="testimonial-content">
-							<p>{testimonial}</p>
+							<p>
+								{#each testimonial.split('*') as t, i}
+									{#if i % 2 == 1}
+										<span class="strong">{t}</span>
+									{:else}
+										{t}
+									{/if}
+								{/each}
+							</p>
 						</div>
 						<div class="testimonial-author">
 							<h1>{name}</h1>
@@ -91,5 +99,10 @@
 		margin: 0.8rem auto;
 		width: 75%;
 		border-bottom: 0.2rem solid #c2c2c2;
+	}
+
+	.strong {
+		font-weight: bold;
+		color: #0d6efd;
 	}
 </style>
