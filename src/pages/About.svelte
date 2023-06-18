@@ -51,9 +51,8 @@
 							<span bind:this={el} />
 						</h1>
 						<h5 class="card-text">
-							Hi! My name is Snehil, and I'm an aspiring programmer. I love working on solid,
-							flexible UIs in the frontend, creating APIs and server apps in the backend, and
-							designing intelligent computer vision models. I'm also a graphic designer, gamer,
+							Hi! My name is Snehil, and I'm an aspiring programmer and musician. I love developing
+							websites and designing computer vision models. I'm also a graphic designer, gamer,
 							drummer, actor, and more! You can find me on social media, or contact me directly.
 						</h5>
 						<div class="card-list">
@@ -68,7 +67,7 @@
 									<Graphic>
 										<MdSchool />
 									</Graphic>
-									<Text>Rising Sophomore - Lynbrook High School</Text>
+									<Text>Rising Junior - Lynbrook High School</Text>
 								</Item>
 							</List>
 						</div>
@@ -117,9 +116,30 @@
 								<h4>My Hobbies</h4>
 								<ul>
 									<li>Aspiring actor, love being in school plays and musicals</li>
-									<li>Avid drummer, enjoy covering favorite songs</li>
+									<li>Producing music with fellow music artists</li>
 									<li>Marvel and Star Wars aficionado and buff</li>
 									<li>Occasional gamer, sometimes with friends</li>
+								</ul>
+							</div>
+							<div class="col-4">
+								<h4>What I've Accomplished</h4>
+								<ul>
+									<li>
+										Awarded two gold Presidential Volunteer Service Awards for volunteer work in
+										various nonprofits
+									</li>
+									<li>
+										Inducted into International Thespian Society through volunteer work for Lynbrook
+										Studio 74 Drama Club
+									</li>
+									<li>
+										Awarded Horn Entrepreneurship through Equity Award at Diamond Challenge 2023, a
+										high school entrepreneurship competition
+									</li>
+									<li>
+										Awarded Honorable Mention in Physical Science and Engineering at Synopsys
+										Science Fair 2022
+									</li>
 								</ul>
 							</div>
 						</div>
