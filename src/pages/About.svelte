@@ -67,7 +67,7 @@
 									<Graphic>
 										<MdSchool />
 									</Graphic>
-									<Text>Rising Junior - Lynbrook High School</Text>
+									<Text>Junior - Lynbrook High School</Text>
 								</Item>
 							</List>
 						</div>
