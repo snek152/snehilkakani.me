@@ -331,9 +331,8 @@ type Project = {
 
 export const professionalProjects: Omit<Project, 'type'>[] = [
 	{
-		title: 'Director of Technology - STEMist Education',
-		description:
-			'As Director of Technology at STEMist, I designed and constructed the website using React, Next.js, and Tailwind working with my subordinates, as well as leading several other tech projects.',
+		title: 'Director of Technology and CS Instructor - STEMist Education',
+		description: `At STEMist, I led the creation and development of organization website, worked on additional projects like hackathons and upcoming events, led a team of developers in various side projects such as a Discord bot and student portal, interviewed candidates for the tech team and training new hires, and developed lesson material for students learning web development.`,
 		image: '/images/stemist.webp',
 		url: 'https://joinstemist.org',
 		buttonText: 'check it out',
