@@ -407,7 +407,7 @@ export const projects: Project[] = [
 		description:
 			'As part of my annual drum live performance, I performed "Riff Raff" by AC/DC on my drumset with an audience of 100+.',
 		image: '/images/riffraff.webp',
-		url: 'https://drive.google.com/file/d/1AFItfeM42BsmTmQjFmsahRxzP16SVbEh/view?usp=sharing',
+		url: 'https://youtu.be/y9Et4WJt7hs',
 		buttonText: 'watch now',
 		type: 'music'
 	},
