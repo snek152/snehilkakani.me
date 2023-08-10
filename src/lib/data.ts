@@ -494,3 +494,29 @@ export const projects: Project[] = [
 		type: 'design'
 	}
 ];
+
+type Beat = {
+	title: string;
+	file: string;
+};
+
+export const beats: Beat[] = [
+	// { title: 'a', file: '/beats/a_soup.mp3' },
+	{ title: 'alien trap', file: '/beats/alien_trap_2.mp3' },
+	{ title: 'boat', file: '/beats/boat.mp3' },
+	{ title: 'bollybeat', file: '/beats/bollybeat.mp3' },
+	{ title: 'sea', file: '/beats/c_soup.mp3' },
+	{ title: 'drifting', file: '/beats/drifting.mp3' },
+	// { title: 'e', file: '/beats/e.mp3' },
+	{ title: 'in my mind', file: '/beats/in_my_mind.mp3' },
+	{ title: 'king', file: '/beats/king.mp3' },
+	{ title: 'memories', file: '/beats/memories.mp3' },
+	{ title: 'music box', file: '/beats/music_box.mp3' },
+	{ title: 'operator', file: '/beats/operator.mp3' },
+	{ title: 'rain falling', file: '/beats/rain_falling.mp3' },
+	{ title: 'static', file: '/beats/static.mp3' },
+	{ title: 'sunken', file: '/beats/sunken.mp3' },
+	{ title: 'sunset', file: '/beats/sunset.mp3' },
+	{ title: 'thunder', file: '/beats/thunder.mp3' },
+	{ title: 'zombie', file: '/beats/zombie_2.mp3' }
+];

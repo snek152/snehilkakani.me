@@ -2,6 +2,7 @@
 	import Button, { Group } from '@smui/button';
 	import ProfessionalProjects from '../components/ProfessionalProjects.svelte';
 	import ProjectGrid from '../components/ProjectGrid.svelte';
+	import AudioPlayer from '../components/AudioPlayer.svelte';
 
 	let choices = ['All', 'Code Projects', 'Designs', 'Music', 'Drama Productions'];
 	let selected = 'All';
@@ -10,6 +11,8 @@
 <div id="projects" class="section">
 	<h1 class="header">Professional Experience</h1>
 	<ProfessionalProjects />
+	<h1 class="header">Music Portfolio</h1>
+	<AudioPlayer />
 	<h1 class="header">Side Projects</h1>
 	<div class="button-group">
 		<Group class="group">
