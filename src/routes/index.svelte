@@ -25,6 +25,7 @@
 	import { faDrum } from '@fortawesome/free-solid-svg-icons/faDrum';
 	import { faTheaterMasks } from '@fortawesome/free-solid-svg-icons/faTheaterMasks';
 	import Button from '@smui/button';
+	import Music from '../pages/Music.svelte';
 
 	let topAppBar: any;
 	let preloaderVisible = true;
@@ -171,6 +172,7 @@
 		<About />
 		<Skills />
 		<Projects />
+		<Music />
 		<Contact />
 	</div>
 	<div id="footer">

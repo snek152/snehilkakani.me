@@ -115,6 +115,10 @@ export const navLinks: NavLink[] = [
 		href: 'projects'
 	},
 	{
+		title: 'Music',
+		href: 'music'
+	},
+	{
 		title: 'Contact',
 		href: 'contact'
 	}

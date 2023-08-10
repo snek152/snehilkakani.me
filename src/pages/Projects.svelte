@@ -11,8 +11,7 @@
 <div id="projects" class="section">
 	<h1 class="header">Professional Experience</h1>
 	<ProfessionalProjects />
-	<h1 class="header">Music Portfolio</h1>
-	<AudioPlayer />
+	<!-- <AudioPlayer /> -->
 	<h1 class="header">Side Projects</h1>
 	<div class="button-group">
 		<Group class="group">

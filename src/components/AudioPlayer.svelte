@@ -9,6 +9,7 @@
 	import { onMount } from 'svelte';
 	import { beats } from '$lib/data';
 	import LayoutGrid, { Cell } from '@smui/layout-grid';
+	import Button from '@smui/button';
 
 	let progress: number = 0;
 
@@ -162,6 +163,18 @@
 		<!-- </div> -->
 	</div>
 </div>
+<!-- <Button
+	variant="raised"
+	class="project-button"
+	href={project.url}
+	target="_blank"
+	rel="noreferrer noopener"
+>
+	<span class="icon">
+		<MdOpenInNew />
+	</span>
+	{project.buttonText}
+</Button> -->
 
 <!-- </Paper> -->
 <style>
