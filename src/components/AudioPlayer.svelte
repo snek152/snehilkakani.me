@@ -4,12 +4,12 @@
 	import MdForward10 from 'svelte-icons/md/MdForward10.svelte';
 	import MdReplay10 from 'svelte-icons/md/MdReplay10.svelte';
 	import MdPause from 'svelte-icons/md/MdPause.svelte';
-	import List, { Item, Separator, Text } from '@smui/list';
+	import { Graphic, Item, Text } from '@smui/list';
 	import LinearProgress from '@smui/linear-progress';
 	import { onMount } from 'svelte';
 	import { beats } from '$lib/data';
 	import LayoutGrid, { Cell } from '@smui/layout-grid';
-	import Button from '@smui/button';
+	import MdPlayCircleFilled from 'svelte-icons/md/MdPlayCircleFilled.svelte';
 
 	let progress: number = 0;
 
@@ -75,8 +75,52 @@
 
 <!-- <Paper class="contact-container"> -->
 <div class="container">
+	<div class="col-2">
+		<!-- <div class="scrollable" > -->
+		<LayoutGrid>
+			{#each beats as beat}
+				<Cell
+					span={width >= 1800 ? 1 : width >= 1500 ? 1 : width >= 1000 ? 2 : width >= 900 ? 3 : 2}
+				>
+					<Item
+						ripple={false}
+						style="background-color: {current_name === beat.title ? '#0d6efd' : 'none'};"
+						on:SMUI:action={() => {
+							audio.pause();
+							audio.currentTime = 0;
+							playing = false;
+							audio_file = beat.file;
+							current_name = beat.title;
+							audio.load();
+							loadAudioTime(() => {
+								audio.play();
+								playing = true;
+							});
+						}}
+					>
+						<Graphic style="color: {current_name === beat.title ? '#fbfbfb' : '#c2c2c2'};">
+							<MdPlayCircleFilled />
+						</Graphic>
+						<Text
+							class="title"
+							style="color: {current_name === beat.title ? '#fbfbfb' : '#c2c2c2'};"
+						>
+							{beat.title}
+						</Text>
+						<!-- <div class="cell-wrapper">
+							<span class="cell-play">
+								<MdPlayCircleFilled />
+							</span>
+							<p class="title">{beat.title}</p>
+						</div> -->
+					</Item>
+				</Cell>
+			{/each}
+		</LayoutGrid>
+		<!-- </div> -->
+	</div>
 	<div class="col-1">
-		<h1>{current_name}</h1>
+		<!-- <h1>{current_name}</h1> -->
 		<audio bind:this={audio} src={audio_file} preload="metadata" />
 		<LinearProgress {progress} class="progress" />
 		<div class="toolbar">
@@ -134,34 +178,6 @@
 			<span class="time">{calculateTime(audio_duration)}</span>
 		</div>
 	</div>
-	<div class="col-2">
-		<!-- <div class="scrollable" > -->
-		<LayoutGrid>
-			{#each beats as beat}
-				<Cell
-					span={width >= 1800 ? 1 : width >= 1500 ? 1 : width >= 1000 ? 2 : width >= 900 ? 3 : 2}
-				>
-					<Item
-						on:SMUI:action={() => {
-							audio.pause();
-							audio.currentTime = 0;
-							playing = false;
-							audio_file = beat.file;
-							current_name = beat.title;
-							audio.load();
-							loadAudioTime(() => {
-								audio.play();
-								playing = true;
-							});
-						}}
-					>
-						<p class="title">{beat.title}</p>
-					</Item>
-				</Cell>
-			{/each}
-		</LayoutGrid>
-		<!-- </div> -->
-	</div>
 </div>
 <!-- <Button
 	variant="raised"
@@ -181,9 +197,23 @@
 	:global(.mdc-layout-grid__inner) {
 		gap: 0rem;
 	}
-	.title {
-		color: #c2c2c2;
+	:global(.mdc-layout-grid) {
+		padding: 0 0 1rem !important;
 	}
+	:global(.title) {
+		color: #c2c2c2;
+		margin: 0;
+	}
+
+	/* .cell-wrapper {
+		display: inline-flex;
+		align-items: center;
+	}
+
+	.cell-play {
+		height: 10px;
+		width: 10px;
+	} */
 	.time {
 		color: #fbfbfb;
 	}
@@ -225,9 +255,9 @@
 		background-color: #4d4d4d;
 	}
 
-	.col-1 > h1 {
+	/* .col-1 > h1 {
 		color: #c2c2c2;
 		margin: 0;
 		margin-bottom: 0.5rem;
-	}
+	} */
 </style>
