@@ -1,5 +1,5 @@
 const songs: string[] = [
-	'/songs/.DS_Store',
+	// '/songs/.DS_Store',
 	'/songs/4Free_Bob.mp3',
 	'/songs/4Inch_Bob.mp3',
 	'/songs/4_Bob.mp3',
