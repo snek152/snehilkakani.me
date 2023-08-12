@@ -69,6 +69,7 @@
 	}
 
 	onMount(() => {
+		document.body.style.overflowY = 'auto';
 		loadAudioTime();
 		audio.addEventListener('timeupdate', () => {
 			current_time = audio.currentTime;
@@ -110,43 +111,8 @@
 <!-- <Paper class="contact-container"> -->
 <h1 class="header">Idli Music Player</h1>
 <div class="container">
-	<div class="col-2">
-		<!-- <div class="scrollable" > -->
-		<LayoutGrid>
-			{#each songs as beat}
-				<Cell
-					span={width >= 1800 ? 1 : width >= 1500 ? 1 : width >= 1000 ? 2 : width >= 900 ? 3 : 2}
-				>
-					<Item
-						ripple={false}
-						style="background-color: {current_name === beat.title ? '#0d6efd' : 'none'};"
-						on:SMUI:action={() => {
-							loadNewFile(beat);
-						}}
-					>
-						<Graphic style="color: {current_name === beat.title ? '#fbfbfb' : '#c2c2c2'};">
-							<MdPlayCircleFilled />
-						</Graphic>
-						<Text
-							class="title"
-							style="color: {current_name === beat.title ? '#fbfbfb' : '#c2c2c2'};"
-						>
-							{beat.title}
-						</Text>
-						<!-- <div class="cell-wrapper">
-							<span class="cell-play">
-								<MdPlayCircleFilled />
-							</span>
-							<p class="title">{beat.title}</p>
-						</div> -->
-					</Item>
-				</Cell>
-			{/each}
-		</LayoutGrid>
-		<!-- </div> -->
-	</div>
 	<div class="col-1">
-		<!-- <h1>{current_name}</h1> -->
+		<h1>{current_name}</h1>
 		<audio bind:this={audio} src={audio_file} preload="metadata" />
 		<LinearProgress {progress} class="progress" />
 		<div class="toolbar">
@@ -229,6 +195,41 @@
 			</div>
 			<span class="time">{calculateTime(audio_duration)}</span>
 		</div>
+	</div>
+	<div class="col-2">
+		<!-- <div class="scrollable" > -->
+		<LayoutGrid>
+			{#each songs as beat}
+				<Cell
+					span={width >= 1800 ? 4 : width >= 1500 ? 4 : width >= 1000 ? 4 : width >= 900 ? 4 : 4}
+				>
+					<Item
+						ripple={false}
+						style="background-color: {current_name === beat.title ? '#0d6efd' : 'none'};"
+						on:SMUI:action={() => {
+							loadNewFile(beat);
+						}}
+					>
+						<Graphic style="color: {current_name === beat.title ? '#fbfbfb' : '#c2c2c2'};">
+							<MdPlayCircleFilled />
+						</Graphic>
+						<Text
+							class="title"
+							style="color: {current_name === beat.title ? '#fbfbfb' : '#c2c2c2'};"
+						>
+							{beat.title}
+						</Text>
+						<!-- <div class="cell-wrapper">
+							<span class="cell-play">
+								<MdPlayCircleFilled />
+							</span>
+							<p class="title">{beat.title}</p>
+						</div> -->
+					</Item>
+				</Cell>
+			{/each}
+		</LayoutGrid>
+		<!-- </div> -->
 	</div>
 </div>
 <!-- <Button
@@ -325,9 +326,9 @@
 		border-bottom: 0.2rem solid #c2c2c2;
 	}
 
-	/* .col-1 > h1 {
+	.col-1 > h1 {
 		color: #c2c2c2;
 		margin: 0;
 		margin-bottom: 0.5rem;
-	} */
+	}
 </style>
