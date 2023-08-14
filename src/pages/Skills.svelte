@@ -137,16 +137,16 @@
 
 	:global(.icon-grid svg) {
 		cursor: pointer;
-		height: 20px;
-		width: 20px;
-		fill: currentColor;
+		height: 20px !important;
+		width: 20px !important;
+		fill: currentColor !important;
 		user-select: none;
 	}
 
 	.icon-grid {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.25rem;
+		display: flex !important;
+		flex-wrap: wrap !important;
+		gap: 0.25rem !important;
 	}
 	.container {
 		padding: 0 1rem;
