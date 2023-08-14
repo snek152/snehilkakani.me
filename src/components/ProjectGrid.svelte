@@ -17,7 +17,7 @@
 
 	$: filteredList = projects
 		.filter((p) => {
-			let returnVal: boolean = false;
+			let returnVal = false;
 			if (typeof p.type === 'object') {
 				p.type.forEach((t) => {
 					if (subjectMap[t] === selected || selected === 'All') {
