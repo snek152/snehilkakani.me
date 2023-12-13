@@ -355,11 +355,29 @@ export const professionalProjects: Omit<Project, 'type'>[] = [
 
 export const projects: Project[] = [
 	{
-		title: 'Romeo and Juliet Spring Outdoor Show 2022 - LHS Studio 74',
+		title: 'Ranked Fall Show 2023 - LHS Studio 74',
+		type: 'drama',
+		image: '/images/ranked.webp',
+		description:
+			"In Lynbrook High School Studio 74's fall production of Ranked, I was a member of the sound team and controlled the soundboard during shows, performing through December 2023.",
+		url: '',
+		buttonText: ''
+	},
+	{
+		title: 'The Lion in Winter Fall Show 2022 - LHS Studio 74',
+		type: 'drama',
+		image: '/images/lion.webp',
+		description:
+			"In Lynbrook High School Studio 74's fall production of The Lion in Winter, I played the lead role of King Henry the Second, performing through December 2022.",
+		url: '',
+		buttonText: ''
+	},
+	{
+		title: 'Romeo and Juliet Spring Show 2022 - LHS Studio 74',
 		type: 'drama',
 		image: '/images/romeojuliet2122.webp',
 		description:
-			"In Lynbrook High School Studio 74's Spring Outdoor show, I was cast as the County Paris in the play Romeo and Juliet, performing through May 2022.",
+			"In Lynbrook High School Studio 74's Spring show, I was cast as the County Paris in the play Romeo and Juliet, performing through May 2022.",
 		url: 'https://youtu.be/ngWYAiN_Yh8',
 		buttonText: 'watch the recording'
 	},

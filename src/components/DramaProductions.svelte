@@ -37,18 +37,20 @@
 								</div>
 							{/if}
 							<p class="project-desc">{project.description}</p>
-							<Button
-								variant="raised"
-								class="project-button"
-								href={project.url}
-								target="_blank"
-								rel="noreferrer noopener"
-							>
-								<span class="icon">
-									<MdOpenInNew />
-								</span>
-								{project.buttonText}
-							</Button>
+							{#if project.url !== ''}
+								<Button
+									variant="raised"
+									class="project-button"
+									href={project.url}
+									target="_blank"
+									rel="noreferrer noopener"
+								>
+									<span class="icon">
+										<MdOpenInNew />
+									</span>
+									{project.buttonText}
+								</Button>
+							{/if}
 						</span>
 					</div>
 				</div>
