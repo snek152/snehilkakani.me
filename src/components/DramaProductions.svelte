@@ -1,18 +1,20 @@
 <script lang="ts">
-	import { professionalProjects } from '$lib/data';
+	import { projects } from '$lib/data';
 	import Button from '@smui/button';
 	import LayoutGrid, { Cell } from '@smui/layout-grid';
 	import MdOpenInNew from 'svelte-icons/md/MdOpenInNew.svelte';
 	import ProjectChips from './ProjectChips.svelte';
 
 	let width: number;
+
+	$: dramaProductions = projects.filter((proj) => proj.type.includes('drama'));
 </script>
 
 <svelte:window bind:innerWidth={width} />
 
 <div class="grid">
 	<LayoutGrid>
-		{#each professionalProjects as project}
+		{#each dramaProductions as project}
 			<Cell
 				span={width >= 1800 ? 3 : width >= 1300 ? 4 : width >= 1000 ? 6 : width >= 870 ? 12 : 12}
 			>

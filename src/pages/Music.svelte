@@ -3,7 +3,7 @@
 </script>
 
 <div id="music" class="section">
-	<h1 class="header">Music Portfolio</h1>
+	<h1 class="header">Beat Portfolio</h1>
 	<AudioPlayer />
 </div>
 

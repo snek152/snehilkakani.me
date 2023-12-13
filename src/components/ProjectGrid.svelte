@@ -6,31 +6,37 @@
 	import ProjectChips from './ProjectChips.svelte';
 	import Ripple from '@smui/ripple';
 
-	export let selected: string;
+	// export let selected: string;
 
-	const subjectMap: Record<'cs' | 'design' | 'music' | 'drama', string> = {
-		cs: 'Code Projects',
-		design: 'Designs',
-		music: 'Music',
-		drama: 'Drama Productions'
-	};
+	// const subjectMap: Record<'cs' | 'design' | 'music' | 'drama', string> = {
+	// 	cs: 'Code Projects',
+	// 	design: 'Designs',
+	// 	music: 'Music',
+	// 	drama: 'Drama Productions'
+	// };
 
-	$: filteredList = projects
-		.filter((p) => {
-			let returnVal = false;
-			if (typeof p.type === 'object') {
-				p.type.forEach((t) => {
-					if (subjectMap[t] === selected || selected === 'All') {
-						returnVal = true;
-					}
-				});
-			} else {
-				returnVal = subjectMap[p.type] === selected || selected === 'All';
-			}
-			return returnVal;
-		})
-		.sort((a, b) => a.title.localeCompare(b.title));
+	// $: filteredList = projects
+	// 	.filter((p) => {
+	// 		let returnVal = false;
+	// 		if (typeof p.type === 'object') {
+	// 			p.type.forEach((t) => {
+	// 				if (subjectMap[t] === selected || selected === 'All') {
+	// 					returnVal = true;
+	// 				}
+	// 			});
+	// 		} else {
+	// 			returnVal = subjectMap[p.type] === selected || selected === 'All';
+	// 		}
+	// 		return returnVal;
+	// 	})
+	// 	.sort((a, b) => a.title.localeCompare(b.title));
 
+	$: csProjects = projects.filter(
+		(proj) =>
+			// proj.type === 'cs' ||
+			// proj.type === 'design' ||
+			proj.type.includes('cs') || proj.type.includes('design')
+	);
 	let width: number;
 </script>
 
@@ -38,7 +44,7 @@
 
 <div class="grid">
 	<LayoutGrid>
-		{#each filteredList as project}
+		{#each csProjects as project}
 			<Cell
 				span={width >= 1800 ? 2 : width >= 1300 ? 3 : width >= 1000 ? 4 : width >= 870 ? 6 : 12}
 			>
@@ -82,6 +88,9 @@
 </div>
 
 <style>
+	.grid {
+		padding: 0 2rem;
+	}
 	.icon {
 		height: 16px;
 		width: 16px;
@@ -94,6 +103,7 @@
 		position: relative;
 		overflow: hidden !important;
 		display: flex;
+		margin: 0.5rem;
 		align-items: center;
 		justify-content: center;
 		flex-direction: column;

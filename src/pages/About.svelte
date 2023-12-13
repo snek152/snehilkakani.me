@@ -5,7 +5,6 @@
 	import Typed from 'typed.js';
 	import MdEmail from 'svelte-icons/md/MdEmail.svelte';
 	import MdSchool from 'svelte-icons/md/MdSchool.svelte';
-	import AboutAccordion from '../components/AboutAccordion.svelte';
 	import Accordion from '@smui-extra/accordion';
 
 	let el: HTMLElement;
@@ -15,11 +14,12 @@
 		const options = {
 			strings: [
 				'Striving for community improvement',
-				'Dedicated to sharing knowledge',
+				// 'Dedicated to sharing knowledge',
 				'Learning new ideas every day',
-				'Focused on building relationships'
+				'Focused on building relationships',
+				'Spreading my love of tech'
 			],
-			typeSpeed: 80,
+			typeSpeed: 90,
 			smartBackspace: true,
 			fadeOutDelay: 600,
 			backSpeed: 40,
@@ -51,9 +51,10 @@
 							<span bind:this={el} />
 						</h1>
 						<h5 class="card-text">
-							Hi! My name is Snehil, and I'm an aspiring programmer and musician. I love developing
-							websites and designing computer vision models. I'm also a graphic designer, gamer,
-							drummer, actor, and more! You can find me on social media, or contact me directly.
+							Hi! My name is Snehil, and I'm absolutely in love with technology! I love developing
+							websites, designing computer vision models, and working on tech behind the scenes in
+							drama productions. I'm also a graphic designer, gamer, music producer, actor, and
+							more! You can find me on social media, or contact me directly.
 						</h5>
 						<div class="card-list">
 							<List nonInteractive class="list">

@@ -111,7 +111,7 @@ export const navLinks: NavLink[] = [
 		href: 'expertise'
 	},
 	{
-		title: 'Projects',
+		title: 'Activities',
 		href: 'projects'
 	},
 	{
@@ -319,7 +319,7 @@ export const testimonials: Testimonial[] = [
 	{
 		testimonial:
 			'Snehil is one of the best people - not just the best developer, not just the best graphic designer - but the *most fulfilling and giving person you will ever meet*. When I first started working with Snehil, I could see his ability in *picking skills up quickly* and his humbleness in asking for help whenever needed. Snehil is down-to-earth and will *never let you down on a promise and yet push you to be better*. If you need a web developer or a friend, Snehil is the man.',
-		name: 'Anish Lakkapragada, Vice President of Lynbrook Web Development Club'
+		name: 'Anish Lakkapragada, President of Lynbrook Web Development Club'
 	}
 ];
 
@@ -362,15 +362,6 @@ export const projects: Project[] = [
 			"In Lynbrook High School Studio 74's Spring Outdoor show, I was cast as the County Paris in the play Romeo and Juliet, performing through May 2022.",
 		url: 'https://youtu.be/ngWYAiN_Yh8',
 		buttonText: 'watch the recording'
-	},
-	{
-		title: 'If Only - Music Album',
-		type: 'music',
-		description:
-			'My first album, produced by me, is a set of electronic songs with an innate feeling of desire, longing, and power.',
-		image: '/images/ifonly.webp',
-		url: 'https://soundcloud.com/snek152/sets/if-only',
-		buttonText: 'listen on soundcloud'
 	},
 	{
 		title: 'JS Barrels - A CLI for Generating Javascript and Typescript Barrels',
@@ -467,35 +458,6 @@ export const projects: Project[] = [
 			'As part of the YEI, I designed many econ concept posts for Instagram, as well as various stories and announcements.',
 		url: 'https://drive.google.com/drive/folders/1p9jnuJM7ywy8azSGWwqjG6bF8lpHrp2B?usp=sharing',
 		buttonText: 'view on drive'
-	},
-	{
-		title: 'React Web Calculator',
-		type: 'cs',
-		image: '/images/calculator.webp',
-		chips: ['React', 'Tailwind'],
-		description:
-			'Using React and Tailwind, I built a simple basic and scientific calculator for the web, optimized as a PWA.',
-		url: 'https://calculator.snehilkakani.me',
-		buttonText: 'check it out'
-	},
-	{
-		title: 'Dook - An Opportunity App',
-		description:
-			"As part of Elevate the Future's Project Falcon, myself and other web developers created a website for Dook to promote their platform.",
-		buttonText: 'check it out',
-		image: '/images/dook.webp',
-		url: 'https://dookapp.com',
-		type: 'cs',
-		chips: ['Bootstrap']
-	},
-	{
-		title: 'Music Album Covers',
-		description:
-			'Using Canva, I designed a multidude of album covers for each song in my album Beat Box as if it were a single.',
-		url: 'https://drive.google.com/drive/folders/19Uw374XJPUG6UCvEFpKNgzGgS0rzwi6G?usp=sharing',
-		buttonText: 'view on drive',
-		image: '/images/albumcovers.webp',
-		type: 'design'
 	}
 ];
 
