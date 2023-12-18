@@ -127,7 +127,6 @@ export const navLinks: NavLink[] = [
 type Skill = {
 	name: string;
 	progress: number;
-	learning?: boolean;
 	icon: typeof SvelteComponent | string;
 };
 
@@ -157,6 +156,7 @@ export const codingSkills: Skill[] = [
 		progress: 90,
 		icon: '<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Tailwind CSS</title><path d="M12.001,4.8c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 C13.666,10.618,15.027,12,18.001,12c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C16.337,6.182,14.976,4.8,12.001,4.8z M6.001,12c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 c1.177,1.194,2.538,2.576,5.512,2.576c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C10.337,13.382,8.976,12,6.001,12z"/></svg>'
 	},
+
 	{
 		name: 'CSS',
 		progress: 90,
@@ -178,6 +178,11 @@ export const codingSkills: Skill[] = [
 		icon: TypescriptIcon
 	},
 	{
+		name: 'Python',
+		progress: 90,
+		icon: PythonIcon
+	},
+	{
 		name: 'Bootstrap',
 		progress: 85,
 		icon: BootstrapIcon
@@ -191,11 +196,6 @@ export const codingSkills: Skill[] = [
 		name: 'jQuery',
 		progress: 80,
 		icon: JqueryIcon
-	},
-	{
-		name: 'Python',
-		progress: 80,
-		icon: PythonIcon
 	},
 	{
 		name: 'Java',
@@ -236,13 +236,11 @@ export const codingSkills: Skill[] = [
 	{
 		name: 'MongoDB',
 		progress: 15,
-		learning: true,
 		icon: MongodbIcon
 	},
 	{
 		name: 'MySQL',
 		progress: 15,
-		learning: true,
 		icon: MysqlIcon
 	}
 ];
@@ -271,21 +269,24 @@ export const designSkills: Skill[] = [
 	{
 		name: 'Blender',
 		progress: 15,
-		learning: true,
 		icon: BlenderIcon
 	},
 	{
 		name: 'Creative Cloud',
 		progress: 15,
-		learning: true,
 		icon: AdobeIcon
 	}
 ];
 
 export const musicSkills: Skill[] = [
 	{
+		name: 'Logic Pro',
+		progress: 90,
+		icon: "<svg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><rect width='24' height='24' stroke='none' fill='#000000' opacity='0'/><g transform='matrix(0.45 0 0 0.45 12 12)'><path style='stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;' transform=' translate(-25, -25)' d='M 7 3 C 6.45 3 6 3.45 6 4 L 6 46 C 6 46.55 6.45 47 7 47 L 43 47 C 43.55 47 44 46.55 44 46 L 44 4 C 44 3.45 43.55 3 43 3 L 7 3 z M 25 8 C 32.18 8 38 13.82 38 21 C 38 28.18 32.18 34 25 34 C 17.82 34 12 28.18 12 21 C 12 13.82 17.82 8 25 8 z M 25 12 C 20.041282 12 16 16.041282 16 21 C 16 25.958718 20.041282 30 25 30 C 29.958718 30 34 25.958718 34 21 C 34 16.041282 29.958718 12 25 12 z M 25 14 C 28.877838 14 32 17.122162 32 21 C 32 24.877838 28.877838 28 25 28 C 21.122162 28 18 24.877838 18 21 C 18 17.122162 21.122162 14 25 14 z M 25 19 C 23.895430500338414 19 23 19.895430500338414 23 21 C 23 22.104569499661586 23.895430500338414 23 25 23 C 26.104569499661586 23 27 22.104569499661586 27 21 C 27 19.895430500338414 26.104569499661586 19 25 19 z M 18 38 L 32 38 C 32.55 38 33 38.45 33 39 L 33 42 C 33 42.55 32.55 43 32 43 L 18 43 C 17.45 43 17 42.55 17 42 L 17 39 C 17 38.45 17.45 38 18 38 z' stroke-linecap='round' /></g></svg>"
+	},
+	{
 		name: 'Drums',
-		progress: 85,
+		progress: 70,
 		icon: FaDrum
 	},
 	{
