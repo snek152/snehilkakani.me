@@ -71,7 +71,7 @@
 	}
 
 	.grid-item {
-		aspect-ratio: 1.5 / 1;
+		aspect-ratio: 1 / 1;
 		position: relative;
 		overflow: hidden !important;
 		display: flex;

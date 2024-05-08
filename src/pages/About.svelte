@@ -125,6 +125,7 @@
 							<div class="col-4">
 								<h4>What I've Accomplished</h4>
 								<ul>
+									<li>Awarded a silver medal for Duo Scenes at the Lenaea Theatre Festival</li>
 									<li>
 										Awarded two gold Presidential Volunteer Service Awards for volunteer work in
 										various nonprofits

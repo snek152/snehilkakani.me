@@ -9,9 +9,9 @@
 </script>
 
 <div id="projects" class="section">
-	<h1 class="header">Professional Experience</h1>
+	<h1 class="header">Major Projects & Professional Experience</h1>
 	<ProfessionalProjects />
-	<h1 class="header">Drama Productions</h1>
+	<h1 class="header">Experience in Theatre</h1>
 	<DramaProductions />
 	<!-- <AudioPlayer /> -->
 	<h1 class="header">Side Projects</h1>

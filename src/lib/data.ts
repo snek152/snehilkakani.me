@@ -337,7 +337,7 @@ type Project = {
 export const professionalProjects: Omit<Project, 'type'>[] = [
 	{
 		title: 'Director of Technology and CS Instructor - STEMist Education',
-		description: `At STEMist, I led the creation and development of organization website, worked on additional projects like hackathons and upcoming events, led a team of developers in various side projects such as a Discord bot and student portal, interviewed candidates for the tech team and training new hires, and developed lesson material for students learning web development.`,
+		description: `At STEMist, I led the creation and development of the organization website, worked on additional projects like hackathons and upcoming events, led a team of developers in various side projects such as a Discord bot and student portal, interviewed candidates for the tech team and training new hires, and developed lesson material for students learning web development, earning a gold PVSA for my work.`,
 		image: '/images/stemist.webp',
 		url: 'https://joinstemist.org',
 		buttonText: 'check it out',
@@ -346,39 +346,68 @@ export const professionalProjects: Omit<Project, 'type'>[] = [
 	{
 		title: 'Website Developer and Designer - Care for our Common Home',
 		description:
-			'As a freelance web developer for CFOCH, my responsibility was to design and build a new website for their organization from scratch.',
+			'As a freelance web developer hired by CFOCH, I redesigned and developed the organization website from scratch, and incorporated blog features and donations, earning a gold PVSA for my work.',
 		image: '/images/cfoch.webp',
 		url: 'https://cfoch.org',
 		buttonText: 'check it out',
 		chips: ['React', 'Next.js', 'Tailwind', 'Figma', 'Typescript']
+	},
+	{
+		title:
+			'GU-Net: Novel Architecture for Brain Tumor Segmentation - Research conducted at UCSB SRA',
+		image: '/images/sra.webp',
+		description:
+			'GU-Net is a novel and simplified version of prior architectures, built to solve the problem of segmenting diffuse gliomas, which are a prevalent type of brain tumor in adults, and intended to be used in underprivileged areas and hospitals with less funding. Using an incredibly small subset of the dataset provided and using limited computations, GU-Net achieved a 71.58% accuracy. My gorup members and I conducted and presented this research at UCSB.',
+		url: '',
+		buttonText: '',
+		chips: ['Python', 'Pytorch', 'Machine Learning']
 	}
+	// club officer positions, SRA
 ];
 
 export const projects: Project[] = [
 	{
-		title: 'Ranked Fall Show 2023 - LHS Studio 74',
+		title: 'Lynbrook Improv Team',
+		type: 'drama',
+		image: '/images/improv.webp',
+		description:
+			'As a member of the improv team in sophomore year and the vice-captain in junior year, I have been able to learn a lot about improvisational acting and comedy, and perform in front of an audience in multiple shows. I have been able to learn how to think on my feet and create a story on the spot, and I helped the team come up with new games and ideas for the show, guide rehearsals, and mentor new members.',
+		url: '',
+		buttonText: ''
+	},
+	{
+		title: 'The Laramie Project',
+		type: 'drama',
+		image: '/images/laramie.webp',
+		description:
+			'I took on the challenge of being the head of sound for The Laramie Project, a show that was very complex in terms of sound design and sound effects. A problem we faced was that our hardware was taken by the school contractors only a few weeks before the show, which meant we had to wait to practice with it. Additionally, this was the first time I had worked on sound design, and due to a lack of foresight I left it until two weeks before the show, but I was able to quickly fix my mistake and put in more time to complete it fast enough. In the end, I was able to once again create a seamless audio experience for the audience, learned about sound design, and am ready to mentor new sound team members in the future.',
+		url: '',
+		buttonText: ''
+	},
+	{
+		title: 'Ranked, the Musical',
 		type: 'drama',
 		image: '/images/ranked.webp',
 		description:
-			"In Lynbrook High School Studio 74's fall production of Ranked, I was a member of the sound team and controlled the soundboard during shows, performing through December 2023.",
-		url: '',
-		buttonText: ''
+			"Ranked was my first production as a member of the sound team, and under the instruction of my friend and the head of sound, I was able to quickly pick up the skills needed to set up the mic hardware and operate the soundboard for the show. Using my audio engineering experience to mix all the actors together and adjust and compress individual frequencies of their voice, I was able to create a seamless and professional audio experience for the audience. The show also brought more attention to the theatre department, which hadn't been recognized in such a way since the pandemic, and I'm glad I got to help with that.",
+		url: 'https://youtu.be/LKQmaYzCqIk',
+		buttonText: 'watch the recording'
 	},
 	{
-		title: 'The Lion in Winter Fall Show 2022 - LHS Studio 74',
+		title: 'The Lion in Winter',
 		type: 'drama',
 		image: '/images/lion.webp',
 		description:
-			"In Lynbrook High School Studio 74's fall production of The Lion in Winter, I played the lead role of King Henry the Second, performing through December 2022.",
-		url: '',
-		buttonText: ''
+			'In my only production of sophomore year, I took on the lead role of The Lion in Winter as King Henry II. Although the cast and show were relatively smaller than the last show, we put in several hours every day to rehearse, memorize our lines, and become our characters over the course of multiple months. The show was a great success, and I was able to learn a lot about acting and performing in a lead role.',
+		url: 'https://youtu.be/Q5i8JM3NRQQ',
+		buttonText: 'watch the recording'
 	},
 	{
-		title: 'Romeo and Juliet Spring Show 2022 - LHS Studio 74',
+		title: 'Romeo and Juliet',
 		type: 'drama',
 		image: '/images/romeojuliet2122.webp',
 		description:
-			"In Lynbrook High School Studio 74's Spring show, I was cast as the County Paris in the play Romeo and Juliet, performing through May 2022.",
+			'In my first major production, I initially started out unsure of what to expect in my role as Paris and the outdoor quad setting of the production as opposed to a show in the theater. Along with difficulties with facing two sides of the audience at the same time, there were numerous technical challenges. The memorization and acting were also difficult because the play was Shakespearean, but after many months of stage blocking, learning stage combat, characterization, and line memorization, I was able to perform the show successfully.',
 		url: 'https://youtu.be/ngWYAiN_Yh8',
 		buttonText: 'watch the recording'
 	},
@@ -431,15 +460,15 @@ export const projects: Project[] = [
 		type: 'cs',
 		chips: ['React', 'Next.js', 'Firebase', 'Typescript']
 	},
-	{
-		title: "Check Please Valentine's Day Show 2022 - LHS Studio 74",
-		type: 'drama',
-		image: '/images/checkplease.webp',
-		description:
-			"In Lynbrook High School Studio 74's Valentine's Day show, I was cast as the young Tod in the play Check Please, which was performed in February 2022.",
-		url: 'https://www.playscripts.com/play/202',
-		buttonText: 'view on playscript'
-	},
+	// {
+	// 	title: "Check Please Valentine's Day Show 2022 - LHS Studio 74",
+	// 	type: 'drama',
+	// 	image: '/images/checkplease.webp',
+	// 	description:
+	// 		"In Lynbrook High School Studio 74's Valentine's Day show, I was cast as the young Tod in the play Check Please, which was performed in February 2022.",
+	// 	url: 'https://www.playscripts.com/play/202',
+	// 	buttonText: 'view on playscript'
+	// },
 	{
 		title: 'Sword Selection - A Minecraft Mod',
 		type: 'cs',
@@ -498,6 +527,8 @@ export const beats: Beat[] = [
 	{ title: 'drifting', file: '/beats/drifting.mp3' },
 	// { title: 'e', file: '/beats/e.mp3' },
 	{ title: 'game over', file: '/beats/game_over.mp3' },
+	{ title: 'hell', file: '/beats/hell.mp3' },
+	{ title: 'hero', file: '/beats/hero.mp3' },
 	{ title: 'in my mind', file: '/beats/in_my_mind.mp3' },
 	{ title: 'king', file: '/beats/king.mp3' },
 	{ title: 'lonely', file: '/beats/lonely.mp3' },
