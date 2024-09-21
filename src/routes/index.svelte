@@ -184,12 +184,16 @@
 		</svg>
 		<div class="footer-inner">
 			<h1 class="header">Snehil Kakani</h1>
-			<p class="copyright">Copyright © 2023 All rights reserved.</p>
+			<p class="copyright">Copyright © 2024 All rights reserved.</p>
 		</div>
 	</div>
 </AutoAdjust>
 
 <style>
+	#wave {
+		transform: translateY(1px);
+	}
+
 	:global(.navlinks) {
 		gap: 0.5rem;
 	}

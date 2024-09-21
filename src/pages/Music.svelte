@@ -1,14 +1,13 @@
 <script>
-	import AudioPlayer from '../components/AudioPlayer.svelte';
+	import ModAudioPlayer from '../components/ModAudioPlayer.svelte';
 </script>
 
-<div id="music" class="section">
+<!-- <div id="music" class="section">
 	<h1 class="header">Music Production</h1>
-	<AudioPlayer />
-</div>
-
+	<ModAudioPlayer />
+</div> -->
 <style>
-	.header {
+	/* .header {
 		margin: auto;
 		display: block;
 		width: fit-content;
@@ -24,5 +23,5 @@
 		margin: 0.8rem auto;
 		width: 75%;
 		border-bottom: 0.2rem solid #c2c2c2;
-	}
+	} */
 </style>

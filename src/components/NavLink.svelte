@@ -7,7 +7,7 @@
 	import { changePage } from '../lib/page';
 	export let href: string;
 	export let mobile: boolean = false;
-	$: modifiedHref = href === '/' ? '#home' : `#${href}`;
+	$: modifiedHref = href === '/' ? '#home' : href.startsWith('/') ? href : `#${href}`;
 	let active: boolean;
 	let y: number;
 
@@ -16,6 +16,7 @@
 	});
 
 	function onScroll(adjustedY?: number) {
+		if (modifiedHref.startsWith('/')) return;
 		const section = document.querySelector(modifiedHref) as HTMLElement;
 		const fromTop = adjustedY || y;
 		if (section === null) return;
@@ -32,9 +33,14 @@
 	function onClick(e: CustomEvent<any>) {
 		e.preventDefault();
 		dispatch('click');
-		changePage(modifiedHref).then(() => {
-			onScroll();
-		});
+		if (modifiedHref.startsWith('/')) {
+			history.pushState({}, '', '/music');
+			window.location.href = '/music';
+		} else {
+			changePage(modifiedHref).then(() => {
+				onScroll();
+			});
+		}
 	}
 
 	onMount(() => {

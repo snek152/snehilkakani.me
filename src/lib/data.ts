@@ -116,7 +116,7 @@ export const navLinks: NavLink[] = [
 	},
 	{
 		title: 'Music',
-		href: 'music'
+		href: '/music'
 	},
 	{
 		title: 'Contact',
@@ -513,6 +513,7 @@ export type Beat = {
 	title: string;
 	file: string;
 	primary?: boolean;
+	image?: string;
 };
 
 export const beats: Beat[] = [
@@ -522,7 +523,7 @@ export const beats: Beat[] = [
 	{ title: 'alone', file: '/beats/alone.mp3' },
 	{ title: 'boat', file: '/beats/boat.mp3' },
 	{ title: 'boat 2', file: '/beats/boat_2.mp3' },
-	{ title: 'boat 3', file: '/beats/boat_3.mp3', primary: true },
+	{ title: 'boat 3', file: '/beats/boat_3.mp3', primary: true, image: '/images/boat.jpg' },
 	{ title: 'bollybeat', file: '/beats/bollybeat.mp3' },
 	{ title: 'sea', file: '/beats/c_soup.mp3' },
 	{ title: 'comedy', file: '/beats/comedy_crazy.mp3' },
@@ -531,8 +532,13 @@ export const beats: Beat[] = [
 	{ title: 'drama', file: '/beats/drama.mp3' },
 	{ title: 'drifting', file: '/beats/drifting.mp3' },
 	// { title: 'e', file: '/beats/e.mp3' },
-	{ title: 'game over', file: '/beats/game_over.mp3', primary: true },
-	{ title: 'hell', file: '/beats/hell.mp3', primary: true },
+	{
+		title: 'game over',
+		file: '/beats/game_over.mp3',
+		primary: true,
+		image: '/images/gameover.jpg'
+	},
+	{ title: 'hell', file: '/beats/hell.mp3', primary: true, image: '/images/hell.jpg' },
 	{ title: 'hero', file: '/beats/hero.mp3' },
 	{ title: 'in my mind', file: '/beats/in_my_mind.mp3' },
 	{ title: 'king', file: '/beats/king.mp3' },
@@ -542,12 +548,17 @@ export const beats: Beat[] = [
 	{ title: 'music box', file: '/beats/music_box.mp3' },
 	{ title: 'operator', file: '/beats/operator.mp3' },
 	{ title: 'rain falling', file: '/beats/rain_falling.mp3' },
-	{ title: 'static', file: '/beats/static.mp3' },
+	{ title: 'static', file: '/beats/static.mp3', primary: true, image: '/images/static.jpg' },
 	{ title: 'stranded', file: '/beats/stranded.mp3' },
 	{ title: 'sunken', file: '/beats/sunken.mp3' },
 	{ title: 'sunset', file: '/beats/sunset.mp3' },
-	{ title: 'thunder', file: '/beats/thunder.mp3' },
-	{ title: 'vengeance', file: '/beats/vengeance.mp3', primary: true },
+	{ title: 'thunder', file: '/beats/thunder.mp3', primary: true, image: '/images/thunder.jpg' },
+	{
+		title: 'vengeance',
+		file: '/beats/vengeance.mp3',
+		primary: true,
+		image: '/images/vengeance.jpg'
+	},
 	{ title: 'vengeance 2', file: '/beats/vengeance_2.mp3' },
 	{ title: 'zombie', file: '/beats/zombie_2.mp3' }
 ];
