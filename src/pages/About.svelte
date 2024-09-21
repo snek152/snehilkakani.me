@@ -43,7 +43,7 @@
 		<Content>
 			<div class="card-columns">
 				<div class="col-1">
-					<img src="/images/aboutphoto.webp" alt="Snehil Kakani" loading="lazy" />
+					<img src="/images/aboutphoto.jpg" alt="Snehil Kakani" loading="lazy" />
 				</div>
 				<div class="col-2">
 					<div class="card-body">
@@ -51,10 +51,7 @@
 							<span bind:this={el} />
 						</h1>
 						<h5 class="card-text">
-							Hi! My name is Snehil, and I'm absolutely in love with technology! I love developing
-							websites, designing computer vision models, and working on tech behind the scenes in
-							drama productions. I'm also a graphic designer, gamer, music producer, actor, and
-							more! You can find me on social media, or contact me directly.
+							{"Hi! My name is Snehil, and I'm absolutely in love with technology! I love developing websites, producing hip-hop beats, and working on tech behind the scenes in drama productions. I'm also a graphic designer, gamer, actor, and more! You can find me on social media, or contact me directly."}
 						</h5>
 						<div class="card-list">
 							<List nonInteractive class="list">
@@ -68,7 +65,7 @@
 									<Graphic>
 										<MdSchool />
 									</Graphic>
-									<Text>Junior - Lynbrook High School</Text>
+									<Text>Senior - Lynbrook High School</Text>
 								</Item>
 							</List>
 						</div>
@@ -125,6 +122,7 @@
 							<div class="col-4">
 								<h4>What I've Accomplished</h4>
 								<ul>
+									<li>National Merit Scholarship Semifinalist</li>
 									<li>Awarded a silver medal for Duo Scenes at the Lenaea Theatre Festival</li>
 									<li>
 										Awarded two gold Presidential Volunteer Service Awards for volunteer work in
@@ -261,6 +259,7 @@
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
+		object-position: 25%;
 	}
 
 	.col-2 {

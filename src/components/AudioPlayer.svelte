@@ -80,7 +80,7 @@
 		<LayoutGrid>
 			{#each beats as beat}
 				<Cell
-					span={width >= 1800 ? 1 : width >= 1500 ? 1 : width >= 1000 ? 2 : width >= 900 ? 3 : 2}
+					span={width >= 1800 ? 1 : width >= 1500 ? 2 : width >= 1000 ? 2 : width >= 900 ? 3 : 2}
 				>
 					<Item
 						ripple={false}

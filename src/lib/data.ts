@@ -509,9 +509,10 @@ export const projects: Project[] = [
 	}
 ];
 
-type Beat = {
+export type Beat = {
 	title: string;
 	file: string;
+	primary?: boolean;
 };
 
 export const beats: Beat[] = [
@@ -521,7 +522,7 @@ export const beats: Beat[] = [
 	{ title: 'alone', file: '/beats/alone.mp3' },
 	{ title: 'boat', file: '/beats/boat.mp3' },
 	{ title: 'boat 2', file: '/beats/boat_2.mp3' },
-	{ title: 'boat 3', file: '/beats/boat_3.mp3' },
+	{ title: 'boat 3', file: '/beats/boat_3.mp3', primary: true },
 	{ title: 'bollybeat', file: '/beats/bollybeat.mp3' },
 	{ title: 'sea', file: '/beats/c_soup.mp3' },
 	{ title: 'comedy', file: '/beats/comedy_crazy.mp3' },
@@ -530,8 +531,8 @@ export const beats: Beat[] = [
 	{ title: 'drama', file: '/beats/drama.mp3' },
 	{ title: 'drifting', file: '/beats/drifting.mp3' },
 	// { title: 'e', file: '/beats/e.mp3' },
-	{ title: 'game over', file: '/beats/game_over.mp3' },
-	{ title: 'hell', file: '/beats/hell.mp3' },
+	{ title: 'game over', file: '/beats/game_over.mp3', primary: true },
+	{ title: 'hell', file: '/beats/hell.mp3', primary: true },
 	{ title: 'hero', file: '/beats/hero.mp3' },
 	{ title: 'in my mind', file: '/beats/in_my_mind.mp3' },
 	{ title: 'king', file: '/beats/king.mp3' },
@@ -546,7 +547,7 @@ export const beats: Beat[] = [
 	{ title: 'sunken', file: '/beats/sunken.mp3' },
 	{ title: 'sunset', file: '/beats/sunset.mp3' },
 	{ title: 'thunder', file: '/beats/thunder.mp3' },
-	{ title: 'vengeance', file: '/beats/vengeance.mp3' },
+	{ title: 'vengeance', file: '/beats/vengeance.mp3', primary: true },
 	{ title: 'vengeance 2', file: '/beats/vengeance_2.mp3' },
 	{ title: 'zombie', file: '/beats/zombie_2.mp3' }
 ];
