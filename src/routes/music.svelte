@@ -5,6 +5,12 @@
 	import { onMount } from 'svelte';
 	import { fadeOut } from '$lib/fade-utils';
 	import { dev } from '$app/env';
+	import { faCode } from '@fortawesome/free-solid-svg-icons/faCode';
+	import { faPenNib } from '@fortawesome/free-solid-svg-icons/faPenNib';
+	import { faDrum } from '@fortawesome/free-solid-svg-icons/faDrum';
+	import { faTheaterMasks } from '@fortawesome/free-solid-svg-icons/faTheaterMasks';
+	import Fa from 'svelte-fa';
+	import IoIosSkipBackward from 'svelte-icons/io/IoIosSkipBackward.svelte';
 
 	let width: number;
 
@@ -32,18 +38,14 @@
 			dev ? 0 : 1000
 		);
 	});
-	import { faCode } from '@fortawesome/free-solid-svg-icons/faCode';
-	import { faPenNib } from '@fortawesome/free-solid-svg-icons/faPenNib';
-	import { faDrum } from '@fortawesome/free-solid-svg-icons/faDrum';
-	import { faTheaterMasks } from '@fortawesome/free-solid-svg-icons/faTheaterMasks';
-	import Fa from 'svelte-fa';
-	import IoIosSkipBackward from 'svelte-icons/io/IoIosSkipBackward.svelte';
 
 	const preloaderImages = [faCode, faPenNib, faDrum, faTheaterMasks].map((icon) => ({
 		icon,
 		component: Fa,
 		size: '2x'
 	}));
+
+	console.log(faCode, faPenNib, faDrum, faTheaterMasks);
 </script>
 
 <svelte:window bind:innerWidth={width} />
@@ -159,8 +161,8 @@
 	}
 
 	:global(.nav-link-button-cool > svg) {
-		height: 1rem;
-		width: 1rem;
+		height: 1rem !important;
+		width: 1rem !important;
 	}
 	.preloader {
 		position: fixed;
@@ -213,13 +215,13 @@
 		color: #fbfbfb;
 		font-weight: 400;
 		text-align: center;
-		font-size: calc(7vw);
+		font-size: calc(2.5rem + 4vw);
 		margin: 0 !important;
 	}
 
 	.header2 {
 		margin: 0 !important;
-		font-size: calc(3vw);
+		font-size: calc(1.5rem + 1.5vw);
 		text-transform: uppercase;
 		font-weight: 600;
 		color: #fbfbfb;

@@ -66,6 +66,8 @@
 
 	let width: number;
 	let open: boolean = false;
+
+	console.log(faCode, faPenNib, faDrum, faTheaterMasks);
 </script>
 
 <svelte:window on:scroll|passive={onScroll} bind:scrollY={top} bind:innerWidth={width} />
