@@ -521,6 +521,7 @@ export const beats: Beat[] = [
 	{ title: 'alien trap', file: '/beats/alien_trap.mp3' },
 	// { title: 'alien trap 2', file: '/beats/alien_trap_2.mp3' },
 	{ title: 'alone', file: '/beats/alone.mp3' },
+	{ title: 'apocalypse', file: '/beats/apocalypse.mp3' },
 	{ title: 'boat', file: '/beats/boat.mp3' },
 	{ title: 'boat 2', file: '/beats/boat_2.mp3' },
 	{ title: 'boat 3', file: '/beats/boat_3.mp3', primary: true, image: '/images/boat.jpg' },
@@ -548,6 +549,7 @@ export const beats: Beat[] = [
 	{ title: 'music box', file: '/beats/music_box.mp3' },
 	{ title: 'operator', file: '/beats/operator.mp3' },
 	{ title: 'rain falling', file: '/beats/rain_falling.mp3' },
+	{ title: 'shut the front door', file: '/beats/shut_the_front_door.mp3' },
 	{ title: 'static', file: '/beats/static.mp3', primary: true, image: '/images/static.jpg' },
 	{ title: 'stranded', file: '/beats/stranded.mp3' },
 	{ title: 'sunken', file: '/beats/sunken.mp3' },
@@ -560,5 +562,6 @@ export const beats: Beat[] = [
 		image: '/images/vengeance.jpg'
 	},
 	{ title: 'vengeance 2', file: '/beats/vengeance_2.mp3' },
+	{ title: 'vengeance 3', file: '/beats/vengeance_3.mp3' },
 	{ title: 'zombie', file: '/beats/zombie_2.mp3' }
 ];
