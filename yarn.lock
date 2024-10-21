@@ -250,6 +250,18 @@
     "@material/theme" "^13.0.0"
     tslib "^2.1.0"
 
+"@material/elevation@^14.0.0":
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/@material/elevation/-/elevation-14.0.0.tgz#82018c3f0856ff5057d9f80df43db27b1e19a52b"
+  integrity sha512-Di3tkxTpXwvf1GJUmaC8rd+zVh5dB2SWMBGagL4+kT8UmjSISif/OPRGuGnXs3QhF6nmEjkdC0ijdZLcYQkepw==
+  dependencies:
+    "@material/animation" "^14.0.0"
+    "@material/base" "^14.0.0"
+    "@material/feature-targeting" "^14.0.0"
+    "@material/rtl" "^14.0.0"
+    "@material/theme" "^14.0.0"
+    tslib "^2.1.0"
+
 "@material/fab@^13.0.0":
   version "13.0.0"
   resolved "https://registry.yarnpkg.com/@material/fab/-/fab-13.0.0.tgz#fa8cf548b7c90a592760569385aff3a816c59d2d"

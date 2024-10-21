@@ -11,7 +11,51 @@
 	import { faTheaterMasks } from '@fortawesome/free-solid-svg-icons/faTheaterMasks';
 	import Fa from 'svelte-fa';
 	import IoIosSkipBackward from 'svelte-icons/io/IoIosSkipBackward.svelte';
+	import LayoutGrid, { Cell } from '@smui/layout-grid';
+	import Paper from '@smui/paper/src/Paper.svelte';
 
+	const albumSongs: { src: string; title: string }[] = [
+		{
+			src: 'https://open.spotify.com/embed/track/2Hp4NpdI4uNXP6Z2ZKHcWW?utm_source=generator&theme=0',
+			title: 'On My Own Tonight'
+		},
+		{
+			src: 'https://open.spotify.com/embed/track/4v0fZ7YkKMcioBM4UWhDTx?utm_source=generator&theme=0',
+			title: "That's It"
+		},
+		{
+			src: 'https://open.spotify.com/embed/track/4wOzWjzN5w8Tri6wuztuBU?utm_source=generator&theme=0',
+			title: 'Stuck In A Hole'
+		},
+		{
+			src: 'https://open.spotify.com/embed/track/6QzkhU10zGDONjh8VOTDns?utm_source=generator&theme=0',
+			title: 'Puppy Coat'
+		},
+		{
+			src: 'https://open.spotify.com/embed/track/1tMznSU41DVnqaIrjun2ME?utm_source=generator&theme=0',
+			title: 'I Am'
+		},
+		{
+			src: 'https://open.spotify.com/embed/track/4TKJnrXB6m0Uk0OsSKWvhX?utm_source=generator&theme=0',
+			title: 'Jailed'
+		},
+		{
+			src: 'https://open.spotify.com/embed/track/2txXJlPmJ5W2tDtKBGV9D6?utm_source=generator&theme=0',
+			title: 'Nobody In My Way'
+		},
+		{
+			src: 'https://open.spotify.com/embed/track/4pTtxQRgYiG3HTfOY3g4K0?utm_source=generator&theme=0',
+			title: 'Who?'
+		},
+		{
+			src: 'https://open.spotify.com/embed/track/0jBrSDS7KKTnDgW0zOmlpT?utm_source=generator&theme=0',
+			title: 'Game Over'
+		},
+		{
+			src: 'https://open.spotify.com/embed/track/1olMepH9LQeO1aQOAOzvpQ?utm_source=generator&theme=0',
+			title: 'The King'
+		}
+	];
 	let width: number;
 
 	onMount(() => {
@@ -86,6 +130,30 @@
 	</div>
 	<br />
 	<AudioPlayer />
+	<h1 class="mainheader">Album Songs</h1>
+	<div class="iframe-cont">
+		<LayoutGrid>
+			{#each albumSongs as song}
+				<Cell
+					span={width >= 1800 ? 2 : width >= 1300 ? 3 : width >= 1000 ? 6 : width >= 870 ? 6 : 8}
+				>
+					<div class="mdc-elevation--z24">
+						<iframe
+							title={song.title}
+							src={song.src}
+							width="100%"
+							height="152"
+							frameBorder="0"
+							allowfullscreen={true}
+							allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+							loading="lazy"
+							class="iframe"
+						/>
+					</div>
+				</Cell>
+			{/each}
+		</LayoutGrid>
+	</div>
 </div>
 <div id="footer">
 	<svg id="wave" viewBox="0 0 1440 100" version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -101,7 +169,15 @@
 </div>
 
 <style>
-	/* .mainheader {
+	.iframe-cont {
+		margin: 0 2rem;
+		/* height: ; */
+	}
+	.iframe {
+		border-radius: 1rem;
+		padding: 0 0.125rem;
+	}
+	.mainheader {
 		margin: auto;
 		display: block;
 		width: fit-content;
@@ -117,7 +193,7 @@
 		margin: 0.8rem auto;
 		width: 75%;
 		border-bottom: 0.2rem solid #c2c2c2;
-	} */
+	}
 	#wave {
 		transform: translateY(1px);
 	}
