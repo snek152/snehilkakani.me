@@ -367,11 +367,20 @@ export const professionalProjects: Omit<Project, 'type'>[] = [
 
 export const projects: Project[] = [
 	{
+		title: 'Laughing Stock',
+		type: 'drama',
+		image: '/images/laughingstock.webp',
+		description:
+			'Returning to the stage as an actor in Laughing Stock, as the character Tyler, was unforgettable. The contrast between comedy and seriousness in this play created a memorable and educative actor experience for me. I spent many hours in rehearsals, fine-tuning my character, and I was able to develop him significantly. I was also the head of sound once again, and applied all of the lessons I learned from the Laramie Project to this show, in conjunction with training a new sound team to run the show since I was going to be on stage. As I was playing two key roles in this production, it was a great challenge, but nevertheless one I was able to overcome.',
+		url: 'https://youtu.be/7erYKVXOw6A?si=Y-C9FoFglhhm9xfR',
+		buttonText: 'watch the recording'
+	},
+	{
 		title: 'Lynbrook Improv Team',
 		type: 'drama',
 		image: '/images/improv.webp',
 		description:
-			'As a member of the improv team in sophomore year and the vice-captain in junior year, I have been able to learn a lot about improvisational acting and comedy, and perform in front of an audience in multiple shows. I have been able to learn how to think on my feet and create a story on the spot, and I helped the team come up with new games and ideas for the show, guide rehearsals, and mentor new members.',
+			'As a member of the improv team in sophomore year, the vice-captain in junior year, and co-captain in senior year, I have been able to learn a lot about improvisational acting and comedy, and have performed in front of an audience in multiple shows. I have learned how to think on my feet and create a story on the spot, and I came up with new games and ideas for the show, guided rehearsals, and mentored new members.',
 		url: '',
 		buttonText: ''
 	},
@@ -529,6 +538,7 @@ export const beats: Beat[] = [
 	{ title: 'sea', file: '/beats/c_soup.mp3' },
 	{ title: 'comedy', file: '/beats/comedy_crazy.mp3' },
 	{ title: 'monster', file: '/beats/cringe_beat.mp3' },
+	{ title: 'danger', file: '/beats/danger.mp3' },
 	{ title: 'deserted', file: '/beats/deserted.mp3' },
 	{ title: 'drama', file: '/beats/drama.mp3' },
 	{ title: 'drifting', file: '/beats/drifting.mp3' },
