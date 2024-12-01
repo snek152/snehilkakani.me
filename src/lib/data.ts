@@ -357,7 +357,7 @@ export const professionalProjects: Omit<Project, 'type'>[] = [
 			'GU-Net: Novel Architecture for Brain Tumor Segmentation - Research conducted at UCSB SRA',
 		image: '/images/sra.webp',
 		description:
-			'GU-Net is a novel and simplified version of prior architectures, built to solve the problem of segmenting diffuse gliomas, which are a prevalent type of brain tumor in adults, and intended to be used in underprivileged areas and hospitals with less funding. Using an incredibly small subset of the dataset provided and using limited computations, GU-Net achieved a 71.58% accuracy. My gorup members and I conducted and presented this research at UCSB.',
+			'GU-Net is a novel and simplified version of prior architectures, built to solve the problem of segmenting diffuse gliomas, which are a prevalent type of brain tumor in adults, and intended to be used in underprivileged areas and hospitals with less funding. Using an incredibly small subset of the dataset provided and using limited computations, GU-Net achieved a 71.58% accuracy. My group members and I conducted and presented this research at UCSB.',
 		url: 'https://www.jsr.org/hs/index.php/path/article/view/6376',
 		buttonText: 'published paper',
 		chips: ['Python', 'Pytorch', 'Machine Learning']
