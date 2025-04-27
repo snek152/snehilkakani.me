@@ -572,6 +572,7 @@ export const beats: Beat[] = [
 	{ title: 'stranded', file: '/beats/stranded.mp3' },
 	{ title: 'sunken', file: '/beats/sunken.mp3' },
 	{ title: 'sunset', file: '/beats/sunset.mp3' },
+	{title: "thirty three", file: "/beats/thirty_three.mp3"},
 	{ title: 'thunder', file: '/beats/thunder.mp3' },
 	{ title: 'utopia', file: '/beats/utopia.mp3', primary: true, image: '/images/utopia.jpg' },
 	{

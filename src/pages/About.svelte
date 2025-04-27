@@ -122,22 +122,19 @@
 							<div class="col-4">
 								<h4>What I've Accomplished</h4>
 								<ul>
-									<li>National Merit Scholarship Semifinalist</li>
-									<li>Awarded a silver medal for Duo Scenes at the Lenaea Theatre Festival</li>
+									<li>National Merit Scholarship Finalist</li>
+									<li>Silver Medal + Command Performance for Duo Scenes @ Lenaea Theatre Festival 2024</li>
 									<li>
-										Awarded two gold Presidential Volunteer Service Awards for volunteer work in
-										various nonprofits
+										Two Time PVSA Gold Recipient for Nonprofit Work
 									</li>
 									<li>
-										Inducted into International Thespian Society through volunteer work for Lynbrook
-										Studio 74 Drama Club
+										Member of International Thespian Society
 									</li>
 									<li>
-										Awarded Horn Entrepreneurship through Equity Award at Diamond Challenge 2023, a
-										high school entrepreneurship competition
+										Horn Entrepreneurship for Equity Award @ Diamond Challenge 2023
 									</li>
 									<li>
-										Awarded Honorable Mention in Physical Science and Engineering at Synopsys
+										Awarded Honorable Mention in Physical Science and Engineering @ Synopsys
 										Science Fair 2022
 									</li>
 								</ul>

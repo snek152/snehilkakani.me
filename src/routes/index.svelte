@@ -186,7 +186,7 @@
 		</svg>
 		<div class="footer-inner">
 			<h1 class="header">Snehil Kakani</h1>
-			<p class="copyright">Copyright © 2024 All rights reserved.</p>
+			<p class="copyright">Copyright © 2025 All rights reserved.</p>
 		</div>
 	</div>
 </AutoAdjust>
