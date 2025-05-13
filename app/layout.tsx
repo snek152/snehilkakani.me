@@ -11,7 +11,7 @@ const domine = Domine({
 const ibm = IBM_Plex_Sans({
   variable: "--gfont-ibm",
   subsets: ["latin"],
-  weight: "400",
+  weight: ["100", "200", "300", "400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
