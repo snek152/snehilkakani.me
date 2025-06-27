@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@eslint/eslintrc': ^3
+  '@heroicons/react': ^2.2.0
   '@tailwindcss/postcss': ^4
   '@types/node': ^20
   '@types/react': ^19
@@ -16,6 +17,7 @@ specifiers:
   typescript: ^5
 
 dependencies:
+  '@heroicons/react': 2.2.0_react@19.1.0
   motion: 12.11.0_j6k6oay3ugsr56slyfvma2drry
   next: 15.3.2_j6k6oay3ugsr56slyfvma2drry
   react: 19.1.0
@@ -143,6 +145,14 @@ packages:
       '@eslint/core': 0.13.0
       levn: 0.4.1
     dev: true
+
+  /@heroicons/react/2.2.0_react@19.1.0:
+    resolution: {integrity: sha512-LMcepvRaS9LYHJGsF0zzmgKCUim/X3N/DQKc4jepAXJ7l8QxJ1PmxJzqplF2Z3FE4PqBAIGyJAQ/w4B5dsqbtQ==}
+    peerDependencies:
+      react: '>= 16 || ^19.0.0-rc'
+    dependencies:
+      react: 19.1.0
+    dev: false
 
   /@humanfs/core/0.19.1:
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}

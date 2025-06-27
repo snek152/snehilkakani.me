@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Domine, IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
-import Preloader from "./components/Preloader";
+import HomePage from "./components/HomePage";
 
 const domine = Domine({
   variable: "--gfont-domine",
@@ -26,8 +26,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${domine.variable} ${ibm.variable} antialiased`}>
-        <Preloader />
+      <body
+        className={`${domine.variable} ${ibm.variable} antialiased overflow-x-hidden h-[1000vh]`}
+      >
+        <HomePage />
         {children}
       </body>
     </html>
