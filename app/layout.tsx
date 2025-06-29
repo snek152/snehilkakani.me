@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Domine, IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
-import HomePage from "./components/HomePage";
+// import HomePage from "./components/HomePage";
+import LoadingWrapper from "./components/LoadingWrapper";
+import { NavContextProvider } from "./components/NavContextProvider";
 
 const domine = Domine({
   variable: "--gfont-domine",
@@ -27,10 +29,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${domine.variable} ${ibm.variable} antialiased overflow-x-hidden h-[1000vh]`}
+        className={`${domine.variable} ${ibm.variable} antialiased overflow-x-hidden h-[1000vh] bg-background`}
       >
-        <HomePage />
-        {children}
+        <NavContextProvider>
+          <LoadingWrapper />
+          {children}
+        </NavContextProvider>
       </body>
     </html>
   );

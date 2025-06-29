@@ -13,10 +13,9 @@ const array = [
 ];
 const spacing = 40;
 
-const HomePage = () => {
+const HomePage = ({ loaded }: { loaded: boolean }) => {
   const [text, setText] = useState(array.slice(0, 3));
   const [animate, setAnimate] = useState(false);
-  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const timeout = setInterval(() => {
@@ -34,22 +33,10 @@ const HomePage = () => {
     return () => clearInterval(timeout);
   }, [animate]);
 
-  useEffect(() => {
-    document.body.style.overflowY = "hidden";
-    const timer = setTimeout(() => {
-      document.body.style.overflowY = "auto";
-      setLoaded(true);
-    }, 3000); // Adjust the duration as needed
-
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
     <div className="relative">
       <motion.div
-        className="w-[100vw] h-screen flex items-center justify-center bg-white relative
-          md:w-[100vw] md:h-screen
-          lg:w-[50vw] lg:h-screen"
+        className="w-[100vw] h-screen flex items-center justify-center relative"
         animate={{
           width: loaded
             ? window.innerWidth >= 1024
@@ -74,16 +61,16 @@ const HomePage = () => {
             {text.map((t, index) => (
               <motion.div
                 layout
-                className={`text-4xl font-normal tracking-tight absolute font-ibm self-center text-center block text-black
-          md:text-4xl
-          lg:text-4xl`}
+                className={`text-4xl font-normal tracking-tight absolute font-ibm self-center text-center block ${
+                  index === 1 ? "text-surface" : "text-on-surface"
+                } transition-colors`}
                 initial={{
                   y: index === 0 ? -100 : index === 2 ? 100 : 0,
                   opacity: index === 1 ? 1 : 0,
                 }}
                 animate={{
                   y: index === 1 ? 0 : index === 0 ? -spacing : spacing,
-                  opacity: index === 1 ? 1 : 0.5,
+                  opacity: index === 1 ? 1 : 1,
                 }}
                 exit={{
                   y: index === 0 ? -100 : 100,
@@ -103,7 +90,7 @@ const HomePage = () => {
           </AnimatePresence>
         </div>
       </motion.div>
-      <div className="w-100vw lg:w-[50vw] h-[50vh] lg:h-screen flex items-center justify-center bottom-0 left-0 lg:right-0 lg:top-0 absolute">
+      <div className="w-[100vw] lg:w-[50vw] h-[50vh] lg:h-screen flex items-center justify-center bottom-0 left-0 lg:right-0 lg:bottom-auto lg:left-auto lg:top-0 absolute">
         <AnimatePresence>
           {loaded && (
             <motion.div
@@ -117,12 +104,10 @@ const HomePage = () => {
                 delay: 0.3,
                 damping: 20,
               }}
-              className="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center"
+              className="bg-surface rounded-xl shadow-lg p-8 flex flex-col items-center"
             >
-              <h2 className="text-2xl font-bold mb-2 text-yellow-700">
-                Welcome!
-              </h2>
-              <p className="text-lg text-gray-700 text-center">
+              <h2 className="text-2xl font-bold mb-2 text-primary">Welcome!</h2>
+              <p className="text-lg text-on-surface text-center">
                 This is an upward animating card. You can put any content here.
               </p>
             </motion.div>
