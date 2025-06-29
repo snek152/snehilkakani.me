@@ -16,7 +16,7 @@ export default function NavLink({
   return (
     <button
       onClick={() => setActiveP((act) => !act)}
-      className="relative w-full flex items-center justify-start gap-2 transition-all duration-300 overflow-hidden px-3 text-secondary focus:outline-none cursor-pointer hover:bg-surface hover:text-primary"
+      className="relative w-full flex items-center px-3 justify-start gap-2 transition-all duration-300 overflow-hidden text-secondary focus:outline-none cursor-pointer hover:bg-surface hover:text-primary"
       style={{ minWidth: 0 }}
       // onMouseEnter={() => setCursor(true)}
       // onMouseLeave={() => setCursor(false)}

@@ -11,7 +11,7 @@ const array = [
   "Graphic Designer",
   "Actor",
 ];
-const spacing = 60;
+const spacing = 50;
 
 const HomePage = ({ loaded }: { loaded: boolean }) => {
   const [text, setText] = useState(array.slice(0, 3));
@@ -61,11 +61,11 @@ const HomePage = ({ loaded }: { loaded: boolean }) => {
             {text.map((t, index) => (
               <motion.div
                 layout
-                className={`text-6xl font-normal tracking-tight absolute font-ibm self-center text-center block ${
+                className={`text-5xl font-normal tracking-tight absolute font-ibm self-center text-center block ${
                   index === 1 ? "text-surface" : "text-on-surface"
                 } transition-colors`}
                 initial={{
-                  y: index === 0 ? -150 : index === 2 ? 150 : 0,
+                  y: index === 0 ? -125 : index === 2 ? 125 : 0,
                   opacity: index === 1 ? 1 : 0,
                 }}
                 animate={{

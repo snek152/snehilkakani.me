@@ -32,11 +32,8 @@ export default function Navbar({ loaded }: { loaded: boolean }) {
   return (
     <nav
       className={`fixed top-0 left-0 h-screen ${
-        hovered ? "w-32" : "w-16"
+        hovered ? "w-56 md:w-64" : "w-16"
       } z-50 flex px-2 flex-col items-center justify-center transition-all duration-300`}
-      //   style={{
-      //     width: hovered ? "4.5rem" : "1.5rem", // 1.5rem (w-16) * 3 = 4.5rem (w-48)
-      //   }}
     >
       <AnimatePresence>
         {loaded && (
@@ -51,7 +48,7 @@ export default function Navbar({ loaded }: { loaded: boolean }) {
               delay: 1,
               damping: 20,
             }}
-            className="bg-surface rounded-2xl shadow-lg w-full py-5 flex flex-col items-center"
+            className="bg-surface rounded-2xl shadow-lg w-full py-5 flex flex-col justify-center items-center"
             onHoverEnd={() => setHovered(false)}
             onHoverStart={() => setHovered(true)}
           >
