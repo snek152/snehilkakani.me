@@ -34,7 +34,7 @@ const HomePage = ({ loaded }: { loaded: boolean }) => {
   }, [animate]);
 
   return (
-    <div className="relative">
+    <div className="relative w-screen h-screen">
       <motion.div
         className="w-[100vw] h-screen flex items-center justify-center relative"
         animate={{
@@ -61,7 +61,7 @@ const HomePage = ({ loaded }: { loaded: boolean }) => {
             {text.map((t, index) => (
               <motion.div
                 layout
-                className={`text-5xl font-normal tracking-tight absolute font-ibm self-center text-center block ${
+                className={`text-5xl font-normal tracking-tight absolute font-domine self-center text-center block ${
                   index === 1 ? "text-surface" : "text-on-surface"
                 } transition-colors`}
                 initial={{

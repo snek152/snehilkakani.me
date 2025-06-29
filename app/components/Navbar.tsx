@@ -32,7 +32,7 @@ export default function Navbar({ loaded }: { loaded: boolean }) {
   return (
     <nav
       className={`fixed top-0 left-0 h-screen ${
-        hovered ? "w-56 md:w-64" : "w-16"
+        hovered ? "w-36" : "w-18"
       } z-50 flex px-2 flex-col items-center justify-center transition-all duration-300`}
     >
       <AnimatePresence>

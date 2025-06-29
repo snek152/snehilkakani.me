@@ -11,43 +11,19 @@ export default function NavLink({
   navlink: NavLink;
   hovered: boolean;
 }) {
-  // const [cursor, setCursor] = useState<boolean>(false);
   const [activeP, setActiveP] = useState<boolean>(false);
   return (
     <button
       onClick={() => setActiveP((act) => !act)}
-      className="relative w-full flex items-center px-3 justify-start gap-2 transition-all duration-300 overflow-hidden text-secondary focus:outline-none cursor-pointer hover:bg-surface hover:text-primary"
+      className="relative flex items-center h-9 w-full transition-all duration-300 overflow-hidden text-secondary focus:outline-none cursor-pointer hover:bg-surface hover:text-primary"
       style={{ minWidth: 0 }}
-      // onMouseEnter={() => setCursor(true)}
-      // onMouseLeave={() => setCursor(false)}
     >
-      {/* <AnimatePresence>
-        <motion.span
-          layout
-          initial={{ scaleX: 0, opacity: 0 }}
-          animate={{
-            scaleX: cursor ? 1 : 0,
-            opacity: cursor ? 1 : 0,
-            boxShadow: cursor
-              ? "0 2px 8px 0 rgba(80, 80, 255, 0.15)"
-              : "0 0px 0px 0 rgba(0,0,0,0)",
-          }}
-          exit={{ scaleX: 0, opacity: 0 }}
-          transition={{
-            type: "spring",
-            stiffness: 220,
-            damping: 22,
-            opacity: { duration: 0.18 },
-          }}
-          className="absolute left-0 bottom-0 h-[2px] w-full bg-gradient-to-r from-primary to-blue-400 origin-left pointer-events-none rounded-full"
-        />
-      </AnimatePresence> */}
-      {/* Icon and label */}
-      <span className="flex-shrink-0">
+      {/* Icon container: absolutely centered horizontally */}
+      <span className="absolute left-0 top-0 h-full w-14 flex items-center justify-center pointer-events-none">
         <AnimatePresence>
           <motion.div
             layout
-            className="w-6 h-6 flex items-center justify-center"
+            className="w-9 h-9 flex items-center justify-center"
             style={{ position: "relative" }}
           >
             <AnimatePresence mode="sync" initial={false}>
@@ -64,7 +40,7 @@ export default function NavLink({
                   }}
                   className="absolute inset-0 flex items-center justify-center"
                 >
-                  <navlink.iconActive className="w-6 h-6" />
+                  <navlink.iconActive className="w-9 h-9" />
                 </motion.span>
               ) : (
                 <motion.span
@@ -79,22 +55,24 @@ export default function NavLink({
                   }}
                   className="absolute inset-0 flex items-center justify-center"
                 >
-                  <navlink.iconInactive className="w-6 h-6" />
+                  <navlink.iconInactive className="w-9 h-9" />
                 </motion.span>
               )}
             </AnimatePresence>
           </motion.div>
         </AnimatePresence>
       </span>
+      {/* Spacer for icon width */}
+      <span className="w-22" />
+      {/* Animated label */}
       <AnimatePresence>
         {hovered && (
           <motion.span
-            initial={{ width: 0, opacity: 0 }}
+            initial={{ width: "100%", opacity: 0 }}
             animate={{ width: "100%", opacity: 1 }}
-            exit={{ width: 0, opacity: 0 }}
+            exit={{ width: "100%", opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 24 }}
-            className="whitespace-nowrap overflow-hidden text-left font-sans inline-block"
-            // style={{ display: "inline-block", verticalAlign: "middle" }}
+            className="whitespace-nowrap overflow-hidden text-lg text-left font-ibm font-medium inline-block"
           >
             {navlink.label}
           </motion.span>
