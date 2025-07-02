@@ -1,8 +1,10 @@
 "use client";
 import { AnimatePresence } from "motion/react";
 import { type NavLink } from "../types";
-import { useState } from "react";
+// import { useState } from "react";
 import { motion } from "motion/react";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 export default function NavLink({
   navlink,
@@ -11,10 +13,11 @@ export default function NavLink({
   navlink: NavLink;
   hovered: boolean;
 }) {
-  const [activeP, setActiveP] = useState<boolean>(false);
+  const pathname = usePathname();
   return (
-    <button
-      onClick={() => setActiveP((act) => !act)}
+    <Link
+      href={navlink.href}
+      // onClick={() => setActiveP((act) => !act)}
       className="relative flex items-center h-9 w-full transition-all duration-300 overflow-hidden text-secondary focus:outline-none cursor-pointer hover:bg-surface hover:text-primary"
       style={{ minWidth: 0 }}
     >
@@ -27,7 +30,7 @@ export default function NavLink({
             style={{ position: "relative" }}
           >
             <AnimatePresence mode="sync" initial={false}>
-              {activeP ? (
+              {pathname === navlink.href ? (
                 <motion.span
                   key="active"
                   initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
@@ -78,6 +81,6 @@ export default function NavLink({
           </motion.span>
         )}
       </AnimatePresence>
-    </button>
+    </Link>
   );
 }

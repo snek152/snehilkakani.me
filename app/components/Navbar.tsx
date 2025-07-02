@@ -1,3 +1,4 @@
+"use client";
 import { AnimatePresence, motion } from "motion/react";
 import {
   UserCircleIcon as UserIconOutline,
@@ -9,7 +10,8 @@ import {
 } from "@heroicons/react/24/solid";
 import NavLink from "./NavLink";
 import { type NavLink as navlinkT } from "../types";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 
 const navlinks: navlinkT[] = [
   {
@@ -26,8 +28,19 @@ const navlinks: navlinkT[] = [
   },
 ];
 
-export default function Navbar({ loaded }: { loaded: boolean }) {
+export default function Navbar() {
   const [hovered, setHovered] = useState<boolean>(false);
+  const [shouldAnimate, setShouldAnimate] = useState<boolean>(true);
+  const pathname = usePathname();
+  const isFirstRender = useRef(true);
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+    } else {
+      setShouldAnimate(false);
+    }
+  }, [pathname]);
 
   return (
     <nav
@@ -36,27 +49,25 @@ export default function Navbar({ loaded }: { loaded: boolean }) {
       } z-50 flex px-2 flex-col items-center justify-center transition-all duration-300`}
     >
       <AnimatePresence>
-        {loaded && (
-          <motion.div
-            initial={{ x: -30, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: 30, opacity: 0 }}
-            transition={{
-              type: "spring",
-              stiffness: 60,
-              duration: 0.8,
-              delay: 1,
-              damping: 20,
-            }}
-            className="bg-surface rounded-2xl shadow-lg w-full py-5 flex flex-col justify-center items-center"
-            onHoverEnd={() => setHovered(false)}
-            onHoverStart={() => setHovered(true)}
-          >
-            {navlinks.map((navlink) => (
-              <NavLink key={navlink.href} navlink={navlink} hovered={hovered} />
-            ))}
-          </motion.div>
-        )}
+        <motion.div
+          initial={shouldAnimate ? { x: -30, opacity: 0 } : false}
+          animate={{ x: 0, opacity: 1 }}
+          exit={shouldAnimate ? { x: 30, opacity: 0 } : undefined}
+          transition={{
+            type: "spring",
+            stiffness: 60,
+            duration: 0.8,
+            delay: 0,
+            damping: 20,
+          }}
+          className="bg-surface rounded-2xl shadow-lg w-full py-5 flex flex-col justify-center items-center"
+          onHoverEnd={() => setHovered(false)}
+          onHoverStart={() => setHovered(true)}
+        >
+          {navlinks.map((navlink) => (
+            <NavLink key={navlink.href} navlink={navlink} hovered={hovered} />
+          ))}
+        </motion.div>
       </AnimatePresence>
     </nav>
   );
