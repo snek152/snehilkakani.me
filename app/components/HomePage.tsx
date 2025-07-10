@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "motion/react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const array = [
   "Software Engineer",
@@ -36,6 +36,7 @@ const HomePage = () => {
   useEffect(() => {
     if (!needsToLoad) {
       setLoaded(true);
+      document.body.style.overflowY = "auto"; // Ensure overflow is reset
       return;
     }
     document.body.style.overflowY = "hidden";
@@ -64,9 +65,9 @@ const HomePage = () => {
   }, [animate]);
 
   return (
-    <div className="relative w-screen h-screen">
+    <div className="relative w-screen max-w-full h-screen overflow-x-hidden">
       <motion.div
-        className="w-[100vw] h-screen flex items-center justify-center relative"
+        className="w-[100vw] h-screen flex items-center justify-center relative overflow-x-hidden"
         animate={{
           width: loaded
             ? window.innerWidth >= 1024
