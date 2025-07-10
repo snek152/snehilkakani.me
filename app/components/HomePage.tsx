@@ -20,7 +20,7 @@ const HomePage = () => {
   const [text, setText] = useState(array.slice(0, 3));
   const [animate, setAnimate] = useState(false);
   const [loaded, setLoaded] = useState(false);
-  const [needsToLoad, setNeedsToLoad] = useState(true);
+  const [needsToLoad, setNeedsToLoad] = useState<null | boolean>(null);
 
   useEffect(() => {
     const lastVisit = localStorage.getItem(VISIT_KEY);
@@ -34,7 +34,7 @@ const HomePage = () => {
   }, []);
 
   useEffect(() => {
-    if (!needsToLoad) {
+    if (needsToLoad === false) {
       setLoaded(true);
       document.body.style.overflowY = "auto"; // Ensure overflow is reset
       return;
@@ -64,10 +64,30 @@ const HomePage = () => {
     return () => clearInterval(timeout);
   }, [animate]);
 
+  if (needsToLoad === null) {
+    // Prevent rendering until needsToLoad is determined
+    return null;
+  }
+
   return (
     <div className="relative w-screen max-w-full h-screen overflow-x-hidden">
       <motion.div
         className="w-[100vw] h-screen flex items-center justify-center relative overflow-x-hidden"
+        initial={{
+          width:
+            needsToLoad === false
+              ? window.innerWidth >= 1024
+                ? "50vw"
+                : "100vw"
+              : "100vw",
+          height:
+            needsToLoad === false
+              ? window.innerWidth >= 1024
+                ? "100vh"
+                : "50vh"
+              : "100vh",
+          scale: needsToLoad === false ? 0.8 : 1,
+        }}
         animate={{
           width: loaded
             ? window.innerWidth >= 1024
@@ -79,6 +99,7 @@ const HomePage = () => {
               ? "100vh"
               : "50vh"
             : "100vh",
+          scale: 1,
         }}
         transition={{
           duration: 0.8,
