@@ -44,7 +44,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 h-screen ${
+      className={` top-0 left-0 h-screen ${
         hovered ? "w-36" : "w-18"
       } z-50 flex px-2 flex-col items-center justify-center transition-all duration-300`}
     >

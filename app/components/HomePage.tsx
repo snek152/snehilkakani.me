@@ -43,12 +43,12 @@ const HomePage = () => {
   useEffect(() => {
     if (needsToLoad === false) {
       setLoaded(true);
-      document.body.style.overflowY = "auto"; // Ensure overflow is reset
+      document.getElementById("container")!.style.overflowY = "scroll"; // Ensure overflow is reset
       return;
     }
-    document.body.style.overflowY = "hidden";
+    document.getElementById("container")!.style.overflowY = "hidden";
     const timer = setTimeout(() => {
-      document.body.style.overflowY = "auto";
+      document.getElementById("container")!.style.overflowY = "scroll";
       setLoaded(true);
     }, 3000);
 
@@ -79,33 +79,29 @@ const HomePage = () => {
   return (
     <div className="relative w-screen max-w-full h-screen overflow-x-hidden">
       <motion.div
-        className="w-[100vw] h-screen flex items-center justify-center relative overflow-x-hidden"
+        className="w-full h-full flex items-center justify-center relative overflow-x-hidden"
         initial={{
           width:
             needsToLoad === false
               ? window.innerWidth >= 1024
-                ? "50vw"
-                : "100vw"
-              : "100vw",
+                ? "50%"
+                : "100%"
+              : "100%",
           height:
             needsToLoad === false
               ? window.innerWidth >= 1024
-                ? "100vh"
-                : "50vh"
-              : "100vh",
+                ? "100%"
+                : "50%"
+              : "100%",
           scale: needsToLoad === false ? 0.8 : 1,
         }}
         animate={{
-          width: loaded
-            ? window.innerWidth >= 1024
-              ? "50vw"
-              : "100vw"
-            : "100vw",
+          width: loaded ? (window.innerWidth >= 1024 ? "50%" : "100%") : "100%",
           height: loaded
             ? window.innerWidth >= 1024
-              ? "100vh"
-              : "50vh"
-            : "100vh",
+              ? "100%"
+              : "50%"
+            : "100%",
           scale: 1,
         }}
         transition={{
@@ -149,7 +145,7 @@ const HomePage = () => {
           </AnimatePresence>
         </div>
       </motion.div>
-      <div className="w-[100vw] lg:w-[50vw] h-[50vh] lg:h-screen flex items-center justify-center bottom-0 left-0 lg:right-0 lg:bottom-auto lg:left-auto lg:top-0 absolute">
+      <div className="w-full lg:w-[50%] h-[50%] lg:h-screen flex items-center justify-center bottom-0 left-0 lg:right-0 lg:bottom-auto lg:left-auto lg:top-0 absolute">
         <AnimatePresence>
           {loaded && (
             <motion.div
