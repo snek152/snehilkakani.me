@@ -310,7 +310,7 @@ const HomePage = () => {
                   <h1 className="text-3xl font-bold text-secondary w-full text-left font-domine tracking-tight relative">
                     Snehil Kakani
                   </h1>
-                  <p className="text-on-surface font-ibm text-base">
+                  <p className="text-on-surface font-ibm text-base w-[38ch]">
                     Focused on computer science and software engineering.
                     Passionate about creating innovative solutions and exploring
                     new technologies. Exploring music production and

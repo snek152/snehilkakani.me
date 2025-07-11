@@ -12,3 +12,34 @@
   --color-background: #2b2b2b;
   --color-on-surface: #404040;
 }
+/* For Firefox */
+#container {
+  scrollbar-color: var(--color-surface) var(--color-background); /* thumb and track */
+  scrollbar-radius: 0; /* Remove rounded corners */
+  scrollbar-width: thin;
+}
+
+/* make the scrollbar not rounded */
+#container::-webkit-scrollbar {
+  border-radius: 0; /* Remove rounded corners */
+}
+
+/* WebKit Browsers (Chrome, Safari, Arc, Edge) */
+#container::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+#container::-webkit-scrollbar-track {
+  background: var(--color-background) !important; /* White background track */
+}
+
+#container::-webkit-scrollbar-thumb {
+  background: var(--color-surface) !important; /* Dark gray thumb */
+  border-radius: 0px;
+  border: 2px solid #fff; /* adds spacing around thumb for clean look */
+}
+
+#container::-webkit-scrollbar-corner {
+  background: #fff; /* Optional, cleaner corner */
+}
