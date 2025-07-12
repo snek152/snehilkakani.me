@@ -23,8 +23,8 @@ const navlinks: navlinkT[] = [
   {
     iconInactive: CommandOutline,
     iconActive: CommandSolid,
-    href: "/about",
-    label: "About",
+    href: "/projects",
+    label: "Projects",
   },
 ];
 

@@ -10,6 +10,7 @@ specifiers:
   '@types/react-dom': ^19
   eslint: ^9
   eslint-config-next: 15.3.2
+  lucide-react: ^0.525.0
   motion: ^12.11.0
   next: 15.3.2
   react: ^19.0.0
@@ -20,6 +21,7 @@ specifiers:
 dependencies:
   '@heroicons/react': 2.2.0_react@19.1.0
   '@icons-pack/react-simple-icons': 13.4.0_react@19.1.0
+  lucide-react: 0.525.0_react@19.1.0
   motion: 12.11.0_j6k6oay3ugsr56slyfvma2drry
   next: 15.3.2_j6k6oay3ugsr56slyfvma2drry
   react: 19.1.0
@@ -2711,6 +2713,14 @@ packages:
     dependencies:
       js-tokens: 4.0.0
     dev: true
+
+  /lucide-react/0.525.0_react@19.1.0:
+    resolution: {integrity: sha512-Tm1txJ2OkymCGkvwoHt33Y2JpN5xucVq1slHcgE6Lk0WjDfjgKWor5CdVER8U6DvcfMwh4M8XxmpTiyzfmfDYQ==}
+    peerDependencies:
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    dependencies:
+      react: 19.1.0
+    dev: false
 
   /magic-string/0.30.17:
     resolution: {integrity: sha512-sNPKHvyjVf7gyjwS4xGTaW/mCnF8wnjtifKBEhxfZ7E/S8tQ0rssrwGNn6q8JH/ohItJfSQp9mBtQYuTlH5QnA==}
