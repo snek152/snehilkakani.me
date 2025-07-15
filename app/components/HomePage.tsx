@@ -159,10 +159,13 @@ const HomePage = () => {
                 delay: 0.3,
                 damping: 20,
               }}
-              className="rounded-xl shadow-xl flex flex-col relative overflow-hidden border-6 w-full mx-15 border-on-surface/50"
+              className="rounded-xl shadow-2xl flex flex-col relative overflow-hidden border w-full mx-15 border-secondary"
+              style={{
+                boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.37)",
+              }}
             >
               {/* Top bar with icons */}
-              <div className="flex items-center justify-between px-4 py-2 bg-secondary border-b border-[#333]">
+              <div className="flex items-center justify-between px-4 py-2 bg-background/10 border-b rounded-t-xl border-secondary">
                 <div className="flex items-center gap-2">
                   <span className="block w-3 h-3 rounded-full bg-surface"></span>
                   <span className="block w-3 h-3 rounded-full bg-surface"></span>
@@ -175,7 +178,7 @@ const HomePage = () => {
                     height="14"
                     viewBox="0 0 22 14"
                     fill="none"
-                    className="text-surface"
+                    className="text-surface/60"
                   >
                     <rect
                       x="1"

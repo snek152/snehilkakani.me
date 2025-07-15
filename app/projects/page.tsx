@@ -18,7 +18,24 @@ import {
 import { motion } from "motion/react";
 
 const iconClasses =
-  "w-8 h-8 text-on-surface hover:text-secondary transition-colors duration-200";
+  "w-10 h-10 text-surface/80 transition-colors duration-300 drop-shadow-md";
+const iconColors: Record<string, string> = {
+  SiJavascript: "hover:text-yellow-400",
+  SiTypescript: "hover:text-blue-500",
+  SiHtml5: "hover:text-orange-500",
+  SiCss: "hover:text-purple-500",
+  SiReact: "hover:text-cyan-400",
+  SiNextdotjs: "hover:text-white",
+  SiTailwindcss: "hover:text-teal-400",
+  SiSvelte: "hover:text-orange-400",
+  SiGit: "hover:text-orange-600",
+  SiPython: "hover:text-yellow-300",
+  SiFirebase: "hover:text-yellow-500",
+  SiPytorch: "hover:text-red-500",
+  SiNodedotjs: "hover:text-green-600",
+  SiPrisma: "hover:text-teal-700",
+};
+
 export default function About() {
   return (
     <div className="min-h-screen w-full grid place-items-center gap-5 px-5 grid-cols-2">
@@ -32,40 +49,90 @@ export default function About() {
           delay: 0.2,
           damping: 18,
         }}
-        className="w-full rounded-xl col-span-2 bg-surface p-8 space-y-4 shadow-lg"
+        className="w-full rounded-xl border border-secondary bg-background p-0 shadow-2xl col-span-2 relative overflow-hidden"
+        style={{
+          boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.37)",
+        }}
       >
-        <h1 className="text-3xl font-semibold text-center font-domine tracking-tight text-secondary">
-          My Tools
-        </h1>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <section className="space-y-2">
-            <h2 className="text-lg font-medium font-domine text-on-surface">
-              Frontend
-            </h2>
-            <div className="flex flex-wrap gap-2 items-center">
-              <SiJavascript className={iconClasses} />
-              <SiTypescript className={iconClasses} />
-              <SiHtml5 className={iconClasses} />
-              <SiCss className={iconClasses} />
-              <SiReact className={iconClasses} />
-              <SiNextdotjs className={iconClasses} />
-              <SiTailwindcss className={iconClasses} />
-              <SiSvelte className={iconClasses} />
-              <SiGit className={iconClasses} />
-            </div>
-          </section>
-          <section className="space-y-2">
-            <h2 className="text-lg font-medium font-domine text-on-surface">
-              Backend
-            </h2>
-            <div className="flex flex-wrap gap-2 items-center">
-              <SiPython className={iconClasses} />
-              <SiFirebase className={iconClasses} />
-              <SiPytorch className={iconClasses} />
-              <SiNodedotjs className={iconClasses} />
-              <SiPrisma className={iconClasses} />
-            </div>
-          </section>
+        {/* Code-like header bar */}
+        <div className="flex items-center gap-2 px-4 py-3 bg-background/10 border-b border-secondary rounded-t-xl">
+          <span className="w-3 h-3 rounded-full bg-surface" />
+          <span className="w-3 h-3 rounded-full bg-surface" />
+          <span className="w-3 h-3 rounded-full bg-surface" />
+          <span className="ml-4 text-xs font-mono text-surface/60">
+            projects/tools.tsx
+          </span>
+        </div>
+        {/* Subtle grid background */}
+        <div className="absolute inset-0 pointer-events-none opacity-10 z-0">
+          <svg width="100%" height="100%">
+            <defs>
+              <pattern
+                id="grid"
+                width="32"
+                height="32"
+                patternUnits="userSpaceOnUse"
+              >
+                <path
+                  d="M 32 0 L 0 0 0 32"
+                  fill="none"
+                  stroke="#fbfbfb"
+                  strokeWidth="0.5"
+                />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid)" />
+          </svg>
+        </div>
+        <div className="relative z-10 p-10 space-y-4">
+          <h1 className="text-4xl font-bold text-center tracking-tight text-surface mb-2 font-domine">
+            <span className="text-primary">{"<"}</span>My Tools
+            <span className="text-primary">{"/>"}</span>
+          </h1>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <section className="space-y-3">
+              <h2 className="text-xl font-semibold text-surface/80 font-mono">
+                {"// Frontend"}
+              </h2>
+              <div className="flex flex-wrap gap-4 items-center">
+                <SiJavascript
+                  className={`${iconClasses} ${iconColors.SiJavascript}`}
+                />
+                <SiTypescript
+                  className={`${iconClasses} ${iconColors.SiTypescript}`}
+                />
+                <SiHtml5 className={`${iconClasses} ${iconColors.SiHtml5}`} />
+                <SiCss className={`${iconClasses} ${iconColors.SiCss}`} />
+                <SiReact className={`${iconClasses} ${iconColors.SiReact}`} />
+                <SiNextdotjs
+                  className={`${iconClasses} ${iconColors.SiNextdotjs}`}
+                />
+                <SiTailwindcss
+                  className={`${iconClasses} ${iconColors.SiTailwindcss}`}
+                />
+                <SiSvelte className={`${iconClasses} ${iconColors.SiSvelte}`} />
+                <SiGit className={`${iconClasses} ${iconColors.SiGit}`} />
+              </div>
+            </section>
+            <section className="space-y-3">
+              <h2 className="text-xl font-semibold text-surface/80 font-mono">
+                {"// Backend"}
+              </h2>
+              <div className="flex flex-wrap gap-4 items-center">
+                <SiPython className={`${iconClasses} ${iconColors.SiPython}`} />
+                <SiFirebase
+                  className={`${iconClasses} ${iconColors.SiFirebase}`}
+                />
+                <SiPytorch
+                  className={`${iconClasses} ${iconColors.SiPytorch}`}
+                />
+                <SiNodedotjs
+                  className={`${iconClasses} ${iconColors.SiNodedotjs}`}
+                />
+                <SiPrisma className={`${iconClasses} ${iconColors.SiPrisma}`} />
+              </div>
+            </section>
+          </div>
         </div>
       </motion.div>
     </div>
