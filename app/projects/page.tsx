@@ -15,7 +15,7 @@ import {
   SiTailwindcss,
   SiTypescript,
 } from "@icons-pack/react-simple-icons";
-import { motion } from "motion/react";
+import Card from "../components/Card";
 
 const iconClasses =
   "w-10 h-10 text-surface/80 transition-colors duration-300 drop-shadow-md";
@@ -39,23 +39,8 @@ const iconColors: Record<string, string> = {
 export default function About() {
   return (
     <div className="min-h-screen w-full grid place-items-center gap-5 px-5 grid-cols-2">
-      <motion.div
-        initial={{ y: 80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{
-          type: "spring",
-          stiffness: 60,
-          duration: 0.7,
-          delay: 0.2,
-          damping: 18,
-        }}
-        className="w-full rounded-xl border border-secondary bg-background p-0 shadow-2xl col-span-2 relative overflow-hidden"
-        style={{
-          boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.37)",
-        }}
-      >
-        {/* Code-like header bar */}
-        <div className="flex items-center gap-2 px-4 py-3 bg-background/10 border-b border-secondary rounded-t-xl">
+      <Card className="col-span-2 p-0">
+        <div className="flex items-center gap-2 px-4 py-3 bg-background relative z-20 text-primary border-b border-secondary rounded-t-xl">
           <span className="w-3 h-3 rounded-full bg-surface" />
           <span className="w-3 h-3 rounded-full bg-surface" />
           <span className="w-3 h-3 rounded-full bg-surface" />
@@ -63,7 +48,6 @@ export default function About() {
             projects/tools.tsx
           </span>
         </div>
-        {/* Subtle grid background */}
         <div className="absolute inset-0 pointer-events-none opacity-10 z-0">
           <svg width="100%" height="100%">
             <defs>
@@ -134,7 +118,7 @@ export default function About() {
             </section>
           </div>
         </div>
-      </motion.div>
+      </Card>
     </div>
   );
 }

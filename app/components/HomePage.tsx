@@ -9,6 +9,7 @@ import {
   SunIcon,
   ViewfinderCircleIcon,
 } from "@heroicons/react/24/outline";
+import Card from "./Card";
 
 const array = [
   "Software Engineer",
@@ -148,24 +149,9 @@ const HomePage = () => {
       <div className="w-full lg:w-[50%] h-[50%] lg:h-screen flex items-center justify-center bottom-0 left-0 lg:right-0 lg:bottom-auto lg:left-auto lg:top-0 absolute">
         <AnimatePresence>
           {loaded && (
-            <motion.div
-              initial={{ y: 100, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -100, opacity: 0 }}
-              transition={{
-                type: "spring",
-                stiffness: 60,
-                duration: 0.8,
-                delay: 0.3,
-                damping: 20,
-              }}
-              className="rounded-xl shadow-2xl flex flex-col relative overflow-hidden border w-full mx-15 border-secondary"
-              style={{
-                boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.37)",
-              }}
-            >
+            <Card className="flex flex-col mx-15">
               {/* Top bar with icons */}
-              <div className="flex items-center justify-between px-4 py-2 bg-background/10 border-b rounded-t-xl border-secondary">
+              <div className="flex items-center justify-between px-4 py-3 bg-background/10 border-b rounded-t-xl border-secondary">
                 <div className="flex items-center gap-2">
                   <span className="block w-3 h-3 rounded-full bg-surface"></span>
                   <span className="block w-3 h-3 rounded-full bg-surface"></span>
@@ -362,7 +348,7 @@ const HomePage = () => {
                   />
                 </svg>
               </div>
-            </motion.div>
+            </Card>
           )}
         </AnimatePresence>
       </div>
