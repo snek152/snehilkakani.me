@@ -155,7 +155,7 @@ export default function BeatArrangementView() {
               delay: 0.08 * (beats.findIndex((b) => b.name === beat.name) % 2),
             }}
           >
-            <div className="flex items-center justify-between h-full px-4 w-50 rounded-md relative bg-background">
+            <div className="flex items-center justify-between h-full px-4 w-36 rounded-md relative bg-background">
               {/* Gradient border */}
               <motion.div
                 className="absolute inset-0 rounded-md p-[2px] pointer-events-none"
@@ -193,7 +193,7 @@ export default function BeatArrangementView() {
                 ref={(el) => {
                   waveformRefs.current[beat.name] = el;
                 }}
-                className="w-full h-10"
+                className="w-full max-w-[20vw] h-10 mx-auto"
               />
             </div>
 
