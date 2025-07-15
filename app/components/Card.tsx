@@ -21,7 +21,7 @@ export default function Card({
         damping: 20,
         ...transition,
       }}
-      className={`w-full rounded-xl border border-secondary bg-background relative overflow-hidden ${className}`}
+      className={`w-full rounded-xl border-4 border-secondary bg-background relative overflow-hidden ${className}`}
       style={{
         boxShadow: "0 8px 32px 0 rgba(13, 110, 253, 0.19)",
         ...style,

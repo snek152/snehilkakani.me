@@ -33,9 +33,9 @@ export default function NavLink({
               {pathname === navlink.href ? (
                 <motion.span
                   key="active"
-                  initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
+                  initial={{ opacity: 0, scale: 0.8, rotate: -30 }}
                   animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                  exit={{ opacity: 0, scale: 0.8, rotate: 10 }}
+                  exit={{ opacity: 0, scale: 1, rotate: 0 }}
                   transition={{
                     type: "spring",
                     stiffness: 300,
@@ -48,9 +48,9 @@ export default function NavLink({
               ) : (
                 <motion.span
                   key="inactive"
-                  initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
+                  initial={{ opacity: 0, scale: 1, rotate: 0 }}
                   animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                  exit={{ opacity: 0, scale: 0.8, rotate: 10 }}
+                  exit={{ opacity: 0, scale: 0.8, rotate: 30 }}
                   transition={{
                     type: "spring",
                     stiffness: 300,
