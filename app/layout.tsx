@@ -34,11 +34,11 @@ export default function RootLayout({
         className={`${domine.variable} ${ibm.variable} antialiased relative overflow-x-hidden overflow-y-hidden h-full bg-secondary`}
       >
         <NavContextProvider>
-          <div className="flex">
+          <div className="flex flex-col lg:flex-row w-screen h-screen">
             <Navbar />
             <div
               id="container"
-              className="overflow-x-hidden overflow-y-scroll relative h-screen w-screen flex-1"
+              className="overflow-x-hidden overflow-y-scroll relative h-full w-screen lg:h-screen lg:w-full flex-1"
             >
               <div className="h-[1000vh]">{children}</div>
             </div>

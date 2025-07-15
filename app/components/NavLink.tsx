@@ -18,11 +18,11 @@ export default function NavLink({
     <Link
       href={navlink.href}
       // onClick={() => setActiveP((act) => !act)}
-      className="relative flex items-center h-9 w-full transition-all duration-300 overflow-hidden text-surface focus:outline-none cursor-pointer hover:text-primary"
+      className="relative flex lg:flex-row flex-col lg:items-center lg:h-9 lg:w-full w-9 h-full transition-all duration-300 overflow-hidden text-surface focus:outline-none cursor-pointer hover:text-primary"
       style={{ minWidth: 0 }}
     >
       {/* Icon container: absolutely centered horizontally */}
-      <span className="absolute left-0 top-0 h-full w-14 flex items-center justify-center pointer-events-none">
+      <span className="absolute left-0 top-0 lg:h-full lg:w-14 w-full h-14 flex items-center justify-center pointer-events-none">
         <AnimatePresence>
           <motion.div
             layout
@@ -66,7 +66,7 @@ export default function NavLink({
         </AnimatePresence>
       </span>
       {/* Spacer for icon width */}
-      <span className="w-22" />
+      <span className="lg:w-22 w-0" />
       {/* Animated label */}
       <AnimatePresence>
         {hovered && (
@@ -75,7 +75,7 @@ export default function NavLink({
             animate={{ width: "100%", opacity: 1 }}
             exit={{ width: "100%", opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 24 }}
-            className="whitespace-nowrap overflow-hidden text-lg text-left font-ibm font-medium inline-block"
+            className="whitespace-nowrap lg:visible invisible overflow-hidden text-lg text-left font-ibm font-medium inline-block"
           >
             {navlink.label}
           </motion.span>
