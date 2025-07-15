@@ -204,7 +204,11 @@ export default function BeatArrangementView() {
                 whileHover={{ scale: 1.08 }}
                 transition={{ type: "spring", stiffness: 300, damping: 18 }}
                 onClick={() => togglePlay(beat.name)}
-                className={`p-2 rounded-full bg-secondary/50 hover:bg-background focus:outline-none transition-colors duration-150`}
+                className={`p-2 rounded-full focus:outline-none transition-colors duration-150 ${
+                  playing === beat.name
+                    ? "bg-primary/50 hover:bg-primary"
+                    : "bg-secondary/50 hover:bg-background "
+                }`}
                 aria-label={playing === beat.name ? "Pause" : "Play"}
               >
                 <motion.span
