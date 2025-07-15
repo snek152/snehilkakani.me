@@ -11,14 +11,20 @@ import {
 } from "@heroicons/react/24/outline";
 import Card from "./Card";
 
-const array = [
+let array = [
   "Software Engineer",
   "Full-Stack Developer",
   "Music Producer",
+  "Photographer",
   "Audio Engineer",
   "Graphic Designer",
   "Actor",
 ];
+
+array = array
+  .map((value) => ({ value, sort: Math.random() }))
+  .sort((a, b) => a.sort - b.sort)
+  .map(({ value }) => value);
 
 const VISIT_KEY = "lastVisitTimestamp";
 const HOURS_24 = 24 * 60 * 60 * 1000;
