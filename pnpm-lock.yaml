@@ -17,6 +17,7 @@ specifiers:
   react-dom: ^19.0.0
   tailwindcss: ^4
   typescript: ^5
+  wavesurfer.js: ^7.10.0
 
 dependencies:
   '@heroicons/react': 2.2.0_react@19.1.0
@@ -26,6 +27,7 @@ dependencies:
   next: 15.3.2_j6k6oay3ugsr56slyfvma2drry
   react: 19.1.0
   react-dom: 19.1.0_react@19.1.0
+  wavesurfer.js: 7.10.0
 
 devDependencies:
   '@eslint/eslintrc': 3.3.1
@@ -3751,6 +3753,10 @@ packages:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
     engines: {node: '>= 0.8'}
     dev: true
+
+  /wavesurfer.js/7.10.0:
+    resolution: {integrity: sha512-GiyAHdorqGtUYG5fe4BfTf5lmtSLhrXoHeNlMsR80JOiOZxOrIOv9QaIR8RnqlleJ6D8R9cqvZKR9lfJcWcapg==}
+    dev: false
 
   /which-boxed-primitive/1.1.1:
     resolution: {integrity: sha512-TbX3mj8n0odCBFVlY8AxkqcHASw3L60jIuF8jFP78az3C2YhmGvqbHBpAjTRH2/xqYunrJ9g1jSyjCjpoWzIAA==}

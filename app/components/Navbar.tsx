@@ -3,10 +3,12 @@ import { AnimatePresence, motion } from "motion/react";
 import {
   UserCircleIcon as UserIconOutline,
   CommandLineIcon as CommandOutline,
+  MusicalNoteIcon as MusicOutline,
 } from "@heroicons/react/24/outline";
 import {
   UserCircleIcon as UserIconSolid,
   CommandLineIcon as CommandSolid,
+  MusicalNoteIcon as MusicSolid,
 } from "@heroicons/react/24/solid";
 import NavLink from "./NavLink";
 import { type NavLink as navlinkT } from "../types";
@@ -25,6 +27,12 @@ const navlinks: navlinkT[] = [
     iconActive: CommandSolid,
     href: "/projects",
     label: "Projects",
+  },
+  {
+    iconInactive: MusicOutline,
+    iconActive: MusicSolid,
+    href: "/music",
+    label: "Music",
   },
 ];
 
@@ -60,7 +68,7 @@ export default function Navbar() {
             delay: 0,
             damping: 20,
           }}
-          className="bg-gradient-to-br from-primary/20 via-background to-primary/10 border border-primary/5 rounded-2xl shadow-xl w-full py-5 flex flex-col justify-center items-center backdrop-blur-md"
+          className="bg-gradient-to-br from-primary/20 via-background to-primary/10 border border-primary/5 rounded-2xl shadow-xl w-full py-5 gap-2 flex flex-col justify-center items-center backdrop-blur-md"
           onHoverEnd={() => setHovered(false)}
           onHoverStart={() => setHovered(true)}
         >

@@ -1,115 +1,167 @@
-// "use client";
-// import { useState, useRef } from "react";
-// import { Play, Pause } from "lucide-react";
+"use client";
+import { PauseIcon, PlayIcon } from "@heroicons/react/24/outline";
+import { motion } from "motion/react";
+import { useEffect, useRef, useState } from "react";
+import WaveSurfer from "wavesurfer.js";
 
-// const beats = [
-//   { name: "Utopia", file: "/utopia.mp3" },
-//   { name: "Crystal", file: "/crystal.mp3" },
-//   { name: "Phantom", file: "/phantom.mp3" },
-// ];
+const beats = [
+  { name: "ny_beat", file: "/beats/ny_beat.mp3" },
+  { name: "spooky_extended", file: "/beats/spooky_extended.mp3" },
+  { name: "boat_4", file: "/beats/boat_4.mp3" },
+];
 
-// const trackColors = [
-//   "bg-purple-500",
-//   "bg-blue-500",
-//   "bg-green-500",
-//   "bg-yellow-400",
-//   "bg-red-500",
-//   "bg-pink-400",
-//   "bg-teal-400",
-//   "bg-indigo-500",
-// ];
+export default function BeatArrangementView() {
+  const waveformRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const wavesurferRefs = useRef<Record<string, WaveSurfer>>({});
+  const [playing, setPlaying] = useState<string | null>(null);
 
-// export default function BeatArrangementView() {
-//   const [isPlaying, setIsPlaying] = useState(false);
-//   const [selectedBeat, setSelectedBeat] = useState(beats[0]);
-//   const audioRef = useRef(null);
+  useEffect(() => {
+    beats.forEach((beat) => {
+      // Prevent duplicate WaveSurfer instances
+      if (!waveformRefs.current[beat.name] || wavesurferRefs.current[beat.name])
+        return;
 
-//   const handlePlay = () => {
-//     if (audioRef.current) {
-//       audioRef.current.play();
-//       setIsPlaying(true);
-//     }
-//   };
+      const ws = WaveSurfer.create({
+        container: waveformRefs.current[beat.name] as HTMLDivElement,
+        waveColor: "#999",
+        progressColor: "#fff",
+        height: 40,
+        barWidth: 2,
+        barGap: 1,
+        cursorColor: "white",
+      });
 
-//   const handlePause = () => {
-//     if (audioRef.current) {
-//       audioRef.current.pause();
-//       setIsPlaying(false);
-//     }
-//   };
+      ws.load(beat.file);
+      wavesurferRefs.current[beat.name] = ws;
+    });
 
-//   const switchBeat = (beat) => {
-//     setSelectedBeat(beat);
-//     setIsPlaying(false);
-//     if (audioRef.current) {
-//       audioRef.current.pause();
-//       audioRef.current.load();
-//     }
-//   };
+    return () => {
+      Object.values(wavesurferRefs.current).forEach((ws) => {
+        if (ws && typeof ws.destroy === "function") {
+          // Only destroy if ready or not loading
+          if ((ws as WaveSurfer & { isReady?: boolean }).isReady) {
+            ws.destroy();
+          } else {
+            ws.once("ready", () => ws.destroy());
+            ws.once("error", () => ws.destroy());
+          }
+        }
+      });
+      // Clear the refs to avoid stale instances
+      wavesurferRefs.current = {};
+    };
+  }, []);
 
-//   return (
-//     <div className="min-h-screen bg-[#111] text-white font-sans px-6 py-8">
-//       <div className="flex justify-between items-center mb-6">
-//         <h1 className="text-3xl font-semibold tracking-tight">
-//           🎛 Beat Timeline
-//         </h1>
-//         <div className="flex gap-2">
-//           <button
-//             onClick={handlePlay}
-//             className="p-2 rounded-md bg-[#252525] hover:bg-[#3a3a3a]"
-//           >
-//             <Play className="w-5 h-5 text-white" />
-//           </button>
-//           <button
-//             onClick={handlePause}
-//             className="p-2 rounded-md bg-[#252525] hover:bg-[#3a3a3a]"
-//           >
-//             <Pause className="w-5 h-5 text-white" />
-//           </button>
-//         </div>
-//       </div>
+  const togglePlay = (beatName: string) => {
+    const current = wavesurferRefs.current[beatName];
+    if (!current) return;
 
-//       <div className="flex gap-3 mb-6">
-//         {beats.map((beat) => (
-//           <button
-//             key={beat.name}
-//             onClick={() => switchBeat(beat)}
-//             className={`px-4 py-1.5 rounded-md text-sm font-medium transition ${
-//               selectedBeat.name === beat.name
-//                 ? "bg-white text-black"
-//                 : "bg-[#222] text-white hover:bg-[#444]"
-//             }`}
-//           >
-//             {beat.name}
-//           </button>
-//         ))}
-//       </div>
+    if (playing === beatName) {
+      current.pause();
+      setPlaying(null);
+    } else {
+      Object.entries(wavesurferRefs.current).forEach(([name, ws]) => {
+        if (name !== beatName) (ws as WaveSurfer).pause();
+      });
+      current.play();
+      setPlaying(beatName);
+    }
+  };
 
-//       <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg overflow-x-auto">
-//         <div className="grid grid-cols-32 gap-1 p-4">
-//           {Array.from({ length: 8 }).map((_, trackIdx) => (
-//             <div key={trackIdx} className="flex gap-1 items-center h-10">
-//               {Array.from({ length: 32 }).map((_, segIdx) => (
-//                 <div
-//                   key={segIdx}
-//                   className={`${
-//                     trackColors[trackIdx % trackColors.length]
-//                   } w-8 h-full rounded-sm transition-opacity ${
-//                     (trackIdx + segIdx) % 3 === 0 ? "opacity-90" : "opacity-60"
-//                   } hover:opacity-100`}
-//                 ></div>
-//               ))}
-//             </div>
-//           ))}
-//         </div>
-//       </div>
+  return (
+    <div className="min-h-screen">
+      <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4 p-4">
+        {beats.map((beat) => (
+          <motion.div
+            key={beat.name}
+            className="flex items-center h-16 w-full rounded-xl overflow-hidden shadow-lg relative bg-on-surface border-secondary border-2"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{
+              duration: 0.5,
+              delay: 0.1 * beats.findIndex((b) => b.name === beat.name),
+            }}
+          >
+            <div className="flex items-center justify-between h-full px-4 w-50 rounded-md relative bg-background">
+              {/* Gradient border */}
+              <motion.div
+                className="absolute inset-0 rounded-md p-[2px] pointer-events-none"
+                style={{
+                  background:
+                    "linear-gradient(90deg, transparent 0%, transparent 50%, rgba(13, 110, 253, 0.5) 100%)",
+                }}
+                animate={
+                  playing === beat.name
+                    ? { boxShadow: "8px 0 16px 4px rgba(13,110,253,0.7)" }
+                    : { boxShadow: "0 0 0px 0px rgba(13,110,253,0)" }
+                }
+                transition={{
+                  duration: 1,
+                  repeat: playing === beat.name ? Infinity : 0,
+                  repeatType: "reverse",
+                }}
+              />
+              {/* Inner content with background, inset to show border */}
+              <div
+                className="absolute inset-0 rounded-md bg-background z-0"
+                style={{ margin: 2 }}
+              />
+              <span className="font-ibm font-semibold text-surface z-10">
+                {beat.name}
+              </span>
+              {/* <div className="flex gap-1 z-10">
+                <button className="text-xs px-1 py-0.5 bg-white rounded">
+                  M
+                </button>
+                <button className="text-xs px-1 py-0.5 bg-[#333] rounded">
+                  S
+                </button>
+                <button className="text-xs px-1 py-0.5 bg-[#333] rounded">
+                  R
+                </button>
+              </div> */}
+            </div>
 
-//       <p className="text-xs text-gray-400 mt-6">
-//         Now Playing: {selectedBeat.name}
-//       </p>
-//       <audio ref={audioRef} preload="auto" className="hidden">
-//         <source src={selectedBeat.file} type="audio/mpeg" />
-//       </audio>
-//     </div>
-//   );
-// }
+            {/* Waveform */}
+            <div className="flex-1 px-4 relative">
+              <div
+                ref={(el) => {
+                  waveformRefs.current[beat.name] = el;
+                }}
+                className="w-full h-10"
+              />
+            </div>
+
+            {/* Controls */}
+            <div className="pr-4 flex items-center">
+              <motion.button
+                whileTap={{ scale: 0.92 }}
+                whileHover={{ scale: 1.08 }}
+                transition={{ type: "spring", stiffness: 300, damping: 18 }}
+                onClick={() => togglePlay(beat.name)}
+                className={`p-2 rounded-full bg-secondary/50 hover:bg-background focus:outline-none transition-colors duration-150`}
+                aria-label={playing === beat.name ? "Pause" : "Play"}
+              >
+                <motion.span
+                  key={playing === beat.name ? "pause" : "play"}
+                  initial={{ opacity: 0, rotate: -20, scale: 0.8 }}
+                  animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                  exit={{ opacity: 0, rotate: 20, scale: 0.8 }}
+                  transition={{ duration: 0.18 }}
+                  className="flex"
+                >
+                  {playing === beat.name ? (
+                    <PauseIcon className="w-5 h-5 text-white" />
+                  ) : (
+                    <PlayIcon className="w-5 h-5 text-white" />
+                  )}
+                </motion.span>
+              </motion.button>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+}
