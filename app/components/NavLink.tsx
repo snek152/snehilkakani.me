@@ -18,7 +18,7 @@ export default function NavLink({
     <Link
       href={navlink.href}
       // onClick={() => setActiveP((act) => !act)}
-      className="relative flex items-center h-9 w-full transition-all duration-300 overflow-hidden text-secondary focus:outline-none cursor-pointer hover:bg-surface hover:text-primary"
+      className="relative flex items-center h-9 w-full transition-all duration-300 overflow-hidden text-surface focus:outline-none cursor-pointer hover:text-primary"
       style={{ minWidth: 0 }}
     >
       {/* Icon container: absolutely centered horizontally */}

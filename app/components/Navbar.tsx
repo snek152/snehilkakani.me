@@ -60,7 +60,7 @@ export default function Navbar() {
             delay: 0,
             damping: 20,
           }}
-          className="bg-surface rounded-2xl shadow-lg w-full py-5 flex flex-col justify-center items-center"
+          className="bg-gradient-to-br from-primary/20 via-background to-primary/10 border border-primary/5 rounded-2xl shadow-xl w-full py-5 flex flex-col justify-center items-center backdrop-blur-md"
           onHoverEnd={() => setHovered(false)}
           onHoverStart={() => setHovered(true)}
         >
