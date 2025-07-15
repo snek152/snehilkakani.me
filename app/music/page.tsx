@@ -5,9 +5,58 @@ import { useEffect, useRef, useState } from "react";
 import WaveSurfer from "wavesurfer.js";
 
 const beats = [
-  { name: "ny_beat", file: "/beats/ny_beat.mp3" },
-  { name: "spooky_extended", file: "/beats/spooky_extended.mp3" },
-  { name: "boat_4", file: "/beats/boat_4.mp3" },
+  { name: "alien trap", file: "/beats/alien_trap.mp3" },
+  { name: "alien trap 2", file: "/beats/alien_trap_2.mp3" },
+  { name: "alien trap 3", file: "/beats/alien_trap_3.mp3" },
+  { name: "all i do", file: "/beats/all_i_do.mp3" },
+  { name: "alone", file: "/beats/alone.mp3" },
+  { name: "apocalypse", file: "/beats/apocalypse.mp3" },
+  { name: "apocalypse 2", file: "/beats/apocalypse_2.mp3" },
+  { name: "be right", file: "/beats/be_right.mp3" },
+  { name: "boat", file: "/beats/boat.mp3" },
+  { name: "boat 2", file: "/beats/boat_2.mp3" },
+  { name: "boat 3", file: "/beats/boat_3.mp3" },
+  { name: "boat 4", file: "/beats/boat_4.mp3" },
+  { name: "boat 5", file: "/beats/boat_5.mp3" },
+  { name: "bollybeat", file: "/beats/bollybeat.mp3" },
+  { name: "sea", file: "/beats/c_soup.mp3" },
+  { name: "come back", file: "/beats/come_back.mp3" },
+  { name: "comedy", file: "/beats/comedy_crazy.mp3" },
+  { name: "danger", file: "/beats/danger.mp3" },
+  { name: "deserted", file: "/beats/deserted.mp3" },
+  { name: "drama", file: "/beats/drama.mp3" },
+  { name: "drifting", file: "/beats/drifting.mp3" },
+  { name: "e", file: "/beats/e.mp3" },
+  { name: "game over", file: "/beats/game_over.mp3" },
+  { name: "hell", file: "/beats/hell.mp3" },
+  { name: "hell 2", file: "/beats/hell_2.mp3" },
+  { name: "hero", file: "/beats/hero.mp3" },
+  { name: "in my mind", file: "/beats/in_my_mind.mp3" },
+  { name: "king", file: "/beats/king.mp3" },
+  { name: "lonely", file: "/beats/lonely.mp3" },
+  { name: "lowkey vibe", file: "/beats/lowkey_vibe.mp3" },
+  { name: "melodrama", file: "/beats/melodrama.mp3" },
+  { name: "memories", file: "/beats/memories.mp3" },
+  { name: "monster", file: "/beats/cringe_beat.mp3" },
+  { name: "music box", file: "/beats/music_box.mp3" },
+  { name: "ny beat", file: "/beats/ny_beat.mp3" },
+  { name: "office", file: "/beats/office.mp3" },
+  { name: "operator", file: "/beats/operator.mp3" },
+  { name: "rain falling", file: "/beats/rain_falling.mp3" },
+  { name: "shadow", file: "/beats/shadow.mp3" },
+  { name: "shut the front door", file: "/beats/shut_the_front_door.mp3" },
+  { name: "spooky", file: "/beats/spooky_extended.mp3" },
+  { name: "static", file: "/beats/static.mp3" },
+  { name: "stranded", file: "/beats/stranded.mp3" },
+  { name: "sunken", file: "/beats/sunken.mp3" },
+  { name: "sunset", file: "/beats/sunset.mp3" },
+  { name: "thirty three", file: "/beats/thirty_three.mp3" },
+  { name: "thunder", file: "/beats/thunder.mp3" },
+  { name: "utopia", file: "/beats/utopia.mp3" },
+  { name: "vengeance", file: "/beats/vengeance.mp3" },
+  { name: "vengeance 2", file: "/beats/vengeance_2.mp3" },
+  { name: "vengeance 3", file: "/beats/vengeance_3.mp3" },
+  { name: "zombie", file: "/beats/zombie_2.mp3" },
 ];
 
 export default function BeatArrangementView() {
@@ -16,26 +65,49 @@ export default function BeatArrangementView() {
   const [playing, setPlaying] = useState<string | null>(null);
 
   useEffect(() => {
-    beats.forEach((beat) => {
-      // Prevent duplicate WaveSurfer instances
-      if (!waveformRefs.current[beat.name] || wavesurferRefs.current[beat.name])
-        return;
+    let cancelled = false;
 
-      const ws = WaveSurfer.create({
-        container: waveformRefs.current[beat.name] as HTMLDivElement,
-        waveColor: "#999",
-        progressColor: "#fff",
-        height: 40,
-        barWidth: 2,
-        barGap: 1,
-        cursorColor: "white",
-      });
+    // Helper to initialize wavesurfer in batches
+    const batchSize = 2;
+    const delay = 200; // ms between batches
 
-      ws.load(beat.file);
-      wavesurferRefs.current[beat.name] = ws;
-    });
+    const beatNames = beats.map((b) => b.name);
+
+    function loadBatch(startIdx: number) {
+      for (
+        let i = startIdx;
+        i < Math.min(startIdx + batchSize, beatNames.length);
+        i++
+      ) {
+        const beat = beats[i];
+        if (
+          !waveformRefs.current[beat.name] ||
+          wavesurferRefs.current[beat.name]
+        )
+          continue;
+
+        const ws = WaveSurfer.create({
+          container: waveformRefs.current[beat.name] as HTMLDivElement,
+          waveColor: "#999",
+          progressColor: "#fff",
+          height: 40,
+          barWidth: 2,
+          barGap: 1,
+          cursorColor: "white",
+        });
+
+        ws.load(beat.file);
+        wavesurferRefs.current[beat.name] = ws;
+      }
+      if (startIdx + batchSize < beatNames.length && !cancelled) {
+        setTimeout(() => loadBatch(startIdx + batchSize), delay);
+      }
+    }
+
+    loadBatch(0);
 
     return () => {
+      cancelled = true;
       Object.values(wavesurferRefs.current).forEach((ws) => {
         if (ws && typeof ws.destroy === "function") {
           // Only destroy if ready or not loading
@@ -77,10 +149,10 @@ export default function BeatArrangementView() {
             className="flex items-center h-16 w-full rounded-xl overflow-hidden shadow-lg relative bg-on-surface border-secondary border-2"
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
+            viewport={{ once: true, amount: 0.2 }}
             transition={{
               duration: 0.5,
-              delay: 0.1 * beats.findIndex((b) => b.name === beat.name),
+              delay: 0.08 * (beats.findIndex((b) => b.name === beat.name) % 2),
             }}
           >
             <div className="flex items-center justify-between h-full px-4 w-50 rounded-md relative bg-background">
@@ -94,7 +166,10 @@ export default function BeatArrangementView() {
                 animate={
                   playing === beat.name
                     ? { boxShadow: "8px 0 16px 4px rgba(13,110,253,0.7)" }
-                    : { boxShadow: "0 0 0px 0px rgba(13,110,253,0)" }
+                    : {
+                        boxShadow: "0 0 0px 0px rgba(13,110,253,0)",
+                        transition: { duration: 0.1 },
+                      }
                 }
                 transition={{
                   duration: 1,
@@ -110,17 +185,6 @@ export default function BeatArrangementView() {
               <span className="font-ibm font-semibold text-surface z-10">
                 {beat.name}
               </span>
-              {/* <div className="flex gap-1 z-10">
-                <button className="text-xs px-1 py-0.5 bg-white rounded">
-                  M
-                </button>
-                <button className="text-xs px-1 py-0.5 bg-[#333] rounded">
-                  S
-                </button>
-                <button className="text-xs px-1 py-0.5 bg-[#333] rounded">
-                  R
-                </button>
-              </div> */}
             </div>
 
             {/* Waveform */}
