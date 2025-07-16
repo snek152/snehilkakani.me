@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from "motion/react";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   CameraIcon,
   ClockIcon,
@@ -28,9 +28,21 @@ array = array
 
 const VISIT_KEY = "lastVisitTimestamp";
 const HOURS_24 = 24 * 60 * 60 * 1000;
-const spacing = 50;
+// const spacing = 50;
 
 const HomePage = () => {
+  const spacing = useMemo(() => {
+    if (typeof window === "undefined") {
+      return 50; // Default value for server-side rendering
+    }
+    return window.innerWidth >= 1024 ? 50 : 35;
+  }, []);
+  const outValue = useMemo(() => {
+    if (typeof window === "undefined") {
+      return 125; // Default value for server-side rendering
+    }
+    return window.innerWidth >= 1024 ? 125 : 100;
+  }, []);
   const [text, setText] = useState(array.slice(0, 3));
   const [animate, setAnimate] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -84,7 +96,7 @@ const HomePage = () => {
   }
 
   return (
-    <div className="relative w-screen max-w-full h-screen overflow-x-hidden">
+    <div className="relative w-screen max-w-full h-screen max-h-full overflow-x-hidden">
       <motion.div
         className="w-full h-full flex items-center justify-center relative overflow-x-hidden"
         initial={{
@@ -98,7 +110,7 @@ const HomePage = () => {
             needsToLoad === false
               ? window.innerWidth >= 1024
                 ? "100%"
-                : "50%"
+                : "30%"
               : "100%",
           scale: needsToLoad === false ? 0.8 : 1,
         }}
@@ -107,7 +119,7 @@ const HomePage = () => {
           height: loaded
             ? window.innerWidth >= 1024
               ? "100%"
-              : "50%"
+              : "30%"
             : "100%",
           scale: 1,
         }}
@@ -123,11 +135,11 @@ const HomePage = () => {
             {text.map((t, index) => (
               <motion.div
                 layout
-                className={`text-5xl font-normal tracking-tight absolute font-domine self-center text-center block ${
+                className={`text-3xl lg:text-5xl font-normal tracking-tight absolute font-domine self-center text-center block ${
                   index === 1 ? "text-surface" : "text-on-surface"
                 } transition-colors`}
                 initial={{
-                  y: index === 0 ? -125 : index === 2 ? 125 : 0,
+                  y: index === 0 ? -outValue : index === 2 ? outValue : 0,
                   opacity: index === 1 ? 1 : 0,
                 }}
                 animate={{
@@ -135,7 +147,7 @@ const HomePage = () => {
                   opacity: index === 1 ? 1 : 1,
                 }}
                 exit={{
-                  y: index === 0 ? -150 : 150,
+                  y: index === 0 ? -outValue : outValue,
                   opacity: 0,
                 }}
                 transition={{
@@ -152,12 +164,12 @@ const HomePage = () => {
           </AnimatePresence>
         </div>
       </motion.div>
-      <div className="w-full lg:w-[50%] h-[50%] lg:h-screen flex items-center justify-center bottom-0 left-0 lg:right-0 lg:bottom-auto lg:left-auto lg:top-0 absolute">
+      <div className="w-full lg:w-[50%] h-[70%] lg:h-screen flex items-center justify-center bottom-0 left-0 lg:right-0 lg:bottom-auto lg:left-auto lg:top-0 absolute">
         <AnimatePresence>
           {loaded && (
-            <Card className="flex flex-col mx-15">
+            <Card className="flex flex-col mx-2 lg:mx-15">
               {/* Top bar with icons */}
-              <div className="flex items-center justify-between px-4 py-3 bg-background/10 border-b rounded-t-xl border-secondary">
+              <div className="flex items-center justify-between px-3 lg:px-4 py-2 lg:py-3 bg-background/10 border-b rounded-t-xl border-secondary">
                 <div className="flex items-center gap-2">
                   <span className="block w-3 h-3 rounded-full bg-surface"></span>
                   <span className="block w-3 h-3 rounded-full bg-surface"></span>
@@ -224,7 +236,7 @@ const HomePage = () => {
                     alt="photo of snehil kakani in front of the manhattan bridge"
                     width={200}
                     height={200}
-                    className="object-cover object-center h-72 w-full"
+                    className="object-cover object-center h-60 lg:h-72 w-full"
                   />
                   {/* Name and subtitle top-left overlay */}
                   {/* <motion.div
@@ -247,7 +259,7 @@ const HomePage = () => {
                   </motion.div> */}
                   {/* Camera settings bottom-left overlay */}
                   <motion.div
-                    className="absolute bottom-4 left-4 flex gap-2 z-10 bg-on-surface/40 rounded-lg px-3 py-2 shadow-lg backdrop-blur-xs"
+                    className="absolute bottom-4 left-4 flex gap-2 z-10 bg-on-surface/60 rounded-lg px-3 py-2 shadow-lg backdrop-blur-xs"
                     initial={{ opacity: 0, y: 20, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     transition={{
@@ -302,10 +314,10 @@ const HomePage = () => {
                 {/* Minimalist camera settings overlay */}
 
                 <div className="flex flex-col my-4 mx-4 items-left">
-                  <h1 className="text-3xl font-bold text-secondary w-full text-left font-domine tracking-tight relative">
+                  <h1 className="text-2xl lg:text-3xl font-bold text-secondary w-full text-left font-domine tracking-tight relative">
                     Snehil Kakani
                   </h1>
-                  <p className="text-on-surface font-ibm text-base w-[38ch]">
+                  <p className="text-on-surface font-ibm text-sm w-full lg:text-base lg:w-[38ch]">
                     Focused on computer science and software engineering.
                     Passionate about creating innovative solutions and exploring
                     new technologies. Exploring music production and
@@ -314,7 +326,7 @@ const HomePage = () => {
                 </div>
               </div>
               {/* Bottom controls */}
-              <div className="flex items-center justify-center gap-4 py-2 bg-secondary">
+              <div className="flex items-center justify-center gap-4 py-1.5 lg:py-2 bg-secondary">
                 {/* Shutter button */}
                 <span className="w-4 h-4 rounded-full bg-surface border-2 border-on-surface shadow-inner"></span>
                 {/* Mode dial */}

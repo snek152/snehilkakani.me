@@ -40,7 +40,7 @@ export default function RootLayout({
               id="container"
               className="overflow-x-hidden overflow-y-scroll relative h-full w-screen lg:h-screen lg:w-full flex-1"
             >
-              <div className="h-[1000vh]">{children}</div>
+              {children}
             </div>
           </div>
         </NavContextProvider>

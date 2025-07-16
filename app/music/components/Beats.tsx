@@ -314,7 +314,16 @@ export default function Beats() {
       wavesurferRefs.current = {};
     };
   }, []);
-
+  useEffect(() => {
+    // Attach "finish" event listeners to all wavesurfer instances
+    Object.entries(wavesurferRefs.current).forEach(([name, ws]) => {
+      if (!ws) return;
+      const onFinish = () => setPlaying((p) => (p === name ? null : p));
+      ws.on("finish", onFinish);
+      // Clean up listener on unmount or re-run
+      return () => ws.un("finish", onFinish);
+    });
+  }, [playing]);
   const togglePlay = (beatName: string) => {
     const current = wavesurferRefs.current[beatName];
     if (!current) return;
