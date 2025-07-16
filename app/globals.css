@@ -14,7 +14,7 @@
 }
 /* For Firefox */
 #container {
-  scrollbar-color: var(--color-surface) var(--color-background); /* thumb and track */
+  scrollbar-color: var(--color-surface) var(--color-secondary); /* thumb and track */
   scrollbar-radius: 0; /* Remove rounded corners */
   scrollbar-width: thin;
 }
@@ -31,7 +31,7 @@
 }
 
 #container::-webkit-scrollbar-track {
-  background: var(--color-background) !important; /* White background track */
+  background: var(--color-secondary) !important; /* White background track */
 }
 
 #container::-webkit-scrollbar-thumb {
