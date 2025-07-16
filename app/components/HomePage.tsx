@@ -234,9 +234,10 @@ const HomePage = () => {
                   <Image
                     src="/about.jpg"
                     alt="photo of snehil kakani in front of the manhattan bridge"
-                    width={600}
-                    height={600}
+                    width={1500}
+                    height={1500}
                     className="object-cover object-center h-60 lg:h-72 w-full"
+                    priority
                   />
                   {/* Name and subtitle top-left overlay */}
                   {/* <motion.div
