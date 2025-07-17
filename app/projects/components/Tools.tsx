@@ -18,7 +18,7 @@ import {
 } from "@icons-pack/react-simple-icons";
 
 const iconClasses =
-  "w-8 h-8 text-surface/80 transition-colors duration-300 drop-shadow-md";
+  "lg:w-8 lg:h-8 h-6 w-6 text-surface/80 transition-colors duration-300 drop-shadow-md";
 const iconColors: Record<string, string> = {
   SiJavascript: "hover:text-yellow-400",
   SiTypescript: "hover:text-blue-500",
@@ -39,7 +39,7 @@ const iconColors: Record<string, string> = {
 export default function Tools() {
   return (
     <Card className="col-span-2 p-0">
-      <div className="flex items-center gap-2 px-4 py-3 bg-background relative z-20 text-primary border-b border-secondary rounded-t-xl">
+      <div className="flex items-center gap-2 px-3 lg:px-4 py-2 lg:py-3 bg-background relative z-20 text-primary border-b border-secondary rounded-t-xl">
         <span className="w-3 h-3 rounded-full bg-surface" />
         <span className="w-3 h-3 rounded-full bg-surface" />
         <span className="w-3 h-3 rounded-full bg-surface" />
@@ -67,12 +67,12 @@ export default function Tools() {
           <rect width="100%" height="100%" fill="url(#grid)" />
         </svg>
       </div>
-      <div className="relative z-10 px-10 py-5 flex flex-col items-center">
-        <h1 className="text-4xl font-bold text-center tracking-tight text-surface mb-2 font-domine">
+      <div className="relative z-10 px-2 lg:px-10 py-4 lg:py-5 flex flex-col items-center">
+        <h1 className="text-3xl lg:text-4xl font-bold text-center tracking-tight text-surface mb-2 font-domine">
           <span className="text-primary">{"<"}</span>My Tools
           <span className="text-primary">{"/>"}</span>
         </h1>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 w-full">
           <section className="space-y-2 flex flex-col items-center">
             <h2 className="text-lg font-semibold text-surface/80 font-mono text-center">
               {"// Frontend"}

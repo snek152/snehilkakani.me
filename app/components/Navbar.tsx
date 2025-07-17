@@ -52,15 +52,43 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`top-0 fixed left-0 lg:h-screen w-full h-18 ${
-        hovered ? "lg:w-36" : "lg:w-18"
+      className={`top-0 fixed left-0 lg:h-screen w-full h-20 ${
+        hovered ? "lg:w-40" : "lg:w-20"
       } z-50 flex lg:px-2 lg:py-0 py-2 items-center justify-center transition-all duration-300`}
     >
       <AnimatePresence>
         <motion.div
-          initial={shouldAnimate ? { x: -30, opacity: 0 } : false}
-          animate={{ x: 0, opacity: 1 }}
-          exit={shouldAnimate ? { x: 30, opacity: 0 } : undefined}
+          initial={
+            shouldAnimate
+              ? {
+                  x:
+                    typeof window !== "undefined" && window.innerWidth < 1024
+                      ? 0
+                      : -30,
+                  y:
+                    typeof window !== "undefined" && window.innerWidth < 1024
+                      ? -30
+                      : 0,
+                  opacity: 0,
+                }
+              : false
+          }
+          animate={{ x: 0, y: 0, opacity: 1 }}
+          exit={
+            shouldAnimate
+              ? {
+                  x:
+                    typeof window !== "undefined" && window.innerWidth < 1024
+                      ? 0
+                      : 30,
+                  y:
+                    typeof window !== "undefined" && window.innerWidth < 1024
+                      ? 30
+                      : 0,
+                  opacity: 0,
+                }
+              : undefined
+          }
           transition={{
             type: "spring",
             stiffness: 60,
@@ -68,7 +96,7 @@ export default function Navbar() {
             delay: 0,
             damping: 20,
           }}
-          className="bg-gradient-to-br from-primary/20 via-background to-primary/10 border border-primary/5 rounded-2xl shadow-xl lg:w-full lg:h-auto h-full w-auto lg:py-5 lg:px-0 px-5 gap-2 flex lg:flex-col justify-center items-center backdrop-blur-md"
+          className="bg-gradient-to-br from-primary/20 via-background to-primary/10 border border-primary/5 rounded-2xl shadow-xl lg:w-full lg:h-auto h-full w-auto lg:py-5 lg:px-1 py-1 px-5 gap-2 flex lg:flex-col justify-center items-center backdrop-blur-md"
           onHoverEnd={() => setHovered(false)}
           onHoverStart={() => setHovered(true)}
         >
