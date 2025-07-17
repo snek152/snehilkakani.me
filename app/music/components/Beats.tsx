@@ -354,7 +354,7 @@ export default function Beats() {
             delay: 0.08 * (beats.findIndex((b) => b.name === beat.name) % 2),
           }}
         >
-          <div className="flex items-center justify-between h-full px-4 w-52 rounded-md relative bg-background">
+          <div className="flex items-center justify-between h-full px-3 lg:px-4 w-40 lg:w-52 rounded-md relative bg-background">
             {/* Gradient border */}
             <motion.div
               className="absolute inset-0 rounded-md p-[2px] pointer-events-none"
@@ -384,17 +384,17 @@ export default function Beats() {
             <span className="font-ibm font-semibold text-surface z-10">
               {beat.name}
             </span>
-            <div className="z-10 flex items-center gap-2">
+            <div className="z-10 flex items-center lg:flex-row flex-col lg:gap-2 gap-1">
               {beat.spotifyUrl && (
                 <a
                   href={beat.spotifyUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`Listen to ${beat.name} on Spotify`}
-                  className={`p-1 rounded-full z-10 text-surface hover:text-green-500 focus:outline-none transition-colors duration-150`}
+                  className={`lg:p-1 p-0.5 rounded-full z-10 text-surface hover:text-green-500 focus:outline-none transition-colors duration-150`}
                 >
                   <span className="flex group">
-                    <SiSpotify className="w-5 h-5" />
+                    <SiSpotify className="lg:w-5 lg:h-5 w-4 h-4" />
                   </span>
                 </a>
               )}
@@ -404,10 +404,10 @@ export default function Beats() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`Listen to ${beat.name} on Apple Music`}
-                  className={`p-1 rounded-full z-10 text-surface focus:outline-none transition-colors duration-150 hover:text-rose-500`}
+                  className={`lg:p-1 p-0.5 rounded-full z-10 text-surface focus:outline-none transition-colors duration-150 hover:text-rose-500`}
                 >
                   <span className="flex">
-                    <SiApplemusic className="w-5 h-5" />
+                    <SiApplemusic className="lg:w-5 lg:h-5 w-4 h-4" />
                   </span>
                 </a>
               )}
