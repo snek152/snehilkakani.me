@@ -46,13 +46,14 @@ export default function Project({
       {/* Main content */}
       <div className="relative bg-background flex flex-col items-center">
         <Image
-          src={"/projects/" + project.image}
+          src={project.image}
           alt={project.title}
-          fill
+          width={100}
+          height={60}
           loading="lazy"
-          //   quality={10}
+          quality={10}
           //   placeholder="blur"
-          className="object-cover opacity-60"
+          className="object-cover opacity-60 absolute inset-0 w-full h-full"
         />
         <div className="px-6 py-6 relative z-30 flex bg-background/80 backdrop-blur-xs m-6 rounded-xl flex-col items-left text-left overflow-hidden border border-secondary/30 shadow-md">
           <div className="absolute inset-0 pointer-events-none opacity-10 z-0 rounded-xl overflow-hidden">
