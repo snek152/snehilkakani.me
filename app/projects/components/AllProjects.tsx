@@ -1,48 +1,32 @@
 "use client";
+import { Suspense } from "react";
 import { projects } from "../projects";
-import Project from "./Project";
-import { motion } from "motion/react";
+// import Project from "./Project";
+// import { motion } from "motion/react";
+import React from "react";
 
 const evenProjects = projects.filter((_, index) => index % 2 === 0);
 const oddProjects = projects.filter((_, index) => index % 2 !== 0);
 
+const ProjectLazy = React.lazy(() => import("./Project"));
+
 export default function AllProjects() {
   return (
     <>
-      <motion.div
-        className="w-full flex flex-col items-center justify-start gap-5"
-        initial={{ y: 100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        exit={{ y: -100, opacity: 0 }}
-        transition={{
-          type: "spring",
-          stiffness: 60,
-          duration: 0.8,
-          delay: 0.4,
-          damping: 20,
-        }}
-      >
+      <div className="w-full flex flex-col items-center justify-start gap-5">
         {evenProjects.map((project, index) => (
-          <Project key={index} project={project} />
+          <Suspense key={index} fallback={<div>Loading projects...</div>}>
+            <ProjectLazy project={project} i={index} />
+          </Suspense>
         ))}
-      </motion.div>
-      <motion.div
-        className="w-full flex flex-col justify-start items-center gap-5"
-        initial={{ y: 100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        exit={{ y: -100, opacity: 0 }}
-        transition={{
-          type: "spring",
-          stiffness: 60,
-          duration: 0.8,
-          delay: 0.5,
-          damping: 20,
-        }}
-      >
+      </div>
+      <div className="w-full flex flex-col justify-start items-center gap-5">
         {oddProjects.map((project, index) => (
-          <Project key={index} project={project} />
+          <Suspense key={index} fallback={<div>Loading projects...</div>}>
+            <ProjectLazy project={project} i={index} />
+          </Suspense>
         ))}
-      </motion.div>
+      </div>
     </>
   );
 }

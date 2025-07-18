@@ -10,6 +10,7 @@ import {
   ViewfinderCircleIcon,
 } from "@heroicons/react/24/outline";
 import Card from "./Card";
+import aboutphoto from "../../public/about.jpg";
 
 let array = [
   "Software Engineer",
@@ -232,10 +233,10 @@ const HomePage = () => {
               <div className="relative bg-surface">
                 <div className="relative">
                   <Image
-                    src="/about.jpg"
+                    src={aboutphoto}
                     alt="photo of snehil kakani in front of the manhattan bridge"
-                    width={1500}
-                    height={1500}
+                    width={600}
+                    height={600}
                     className="object-cover object-center h-60 lg:h-72 w-full"
                     priority
                   />
