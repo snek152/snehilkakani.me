@@ -49,8 +49,8 @@ export default function Project({
           src={"/projects/" + project.image}
           alt={project.title}
           fill
-          loading="lazy"
-          quality={0}
+          //   loading="lazy"
+          //   quality={10}
           //   placeholder="blur"
           className="object-cover opacity-60"
         />

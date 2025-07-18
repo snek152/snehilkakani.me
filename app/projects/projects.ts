@@ -30,7 +30,7 @@ export const projects: Project[] = [
         title: "GU-Net: Diffuse Glioma Segmentation Research",
         slug: "gu-net-glioma",
         subtitle: "Summer 2023",
-        description: "Developed GU-Net for segmenting gliomas with limited data, achieving 71.58% accuracy. Presented research at UCSB and published findings in JSR.",
+        description: "Developed GU-Net, a novel neural network architecture for segmenting diffuse gliomas in medical images with limited training data. Achieved 71.58% segmentation accuracy by leveraging advanced machine learning techniques and data augmentation. Presented research findings at UCSB, collaborated with experts in medical imaging, and published results in the Journal of Student Research (JSR).",
         link: "https://www.jsr.org/hs/index.php/path/article/view/6376",
         image: "sra.jpg",
         skills: ["machine learning", "medical imaging", "research & presentation"],
@@ -50,5 +50,13 @@ export const projects: Project[] = [
         description: "Showcased projects on neural network-based flood detection using novel algorithms and a full-stack web application for accessible STEAM education for underprivileged youth. Awarded Honorable Mention for physical science and engineering.",
         image: "synopsys.jpg",
         skills: ["machine learning", "full-stack web development", "engineering constraint design", "project presentation"],
+    },
+    {
+        title: "Head of Outreach, Developer @ GenAlt",
+        slug: "diamond-genalt",
+        subtitle: "November 2022 - April 2023",
+        description: "Led outreach and worked on development for an AI-based prototype aimed at improving blind accessibility to the Internet. Collaborated with a multidisciplinary team to form a business plan and design for expansion of innovation. Presented the project at the Diamond Challenge 2023, where it was recognized with the Horn Entrepreneurship through Equity Award for its impact and technical merit.",
+        image: "genalt.jpg",
+        skills: ["machine learning", "business development & strategy", "presentational skills"],
     }
 ]

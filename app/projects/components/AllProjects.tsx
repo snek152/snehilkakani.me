@@ -18,7 +18,7 @@ export default function AllProjects() {
           type: "spring",
           stiffness: 60,
           duration: 0.8,
-          delay: 0.2,
+          delay: 0.4,
           damping: 20,
         }}
       >
@@ -35,7 +35,7 @@ export default function AllProjects() {
           type: "spring",
           stiffness: 60,
           duration: 0.8,
-          delay: 0.2,
+          delay: 0.5,
           damping: 20,
         }}
       >
