@@ -10,6 +10,7 @@ import Navbar from "./components/Navbar";
 const domine = Domine({
   variable: "--gfont-domine",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 const ibm = IBM_Plex_Sans({

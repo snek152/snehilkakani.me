@@ -135,7 +135,7 @@ const HomePage = () => {
             {text.map((t, index) => (
               <motion.div
                 layout
-                className={`text-3xl lg:text-5xl font-normal tracking-tight absolute font-domine self-center text-center block ${
+                className={`text-3xl lg:text-5xl font-normal absolute font-domine self-center text-center block ${
                   index === 1 ? "text-surface" : "text-on-surface"
                 } transition-colors`}
                 initial={{
@@ -318,6 +318,9 @@ const HomePage = () => {
                   <h1 className="text-2xl lg:text-3xl font-bold text-secondary w-full text-left font-domine tracking-tight relative">
                     Snehil Kakani
                   </h1>
+                  <h2 className="text-sm lg:text-base text-on-surface font-domine w-full text-left mb-2">
+                    Incoming Freshman at Cal Poly, SLO
+                  </h2>
                   <p className="text-on-surface font-ibm text-sm w-full lg:text-base lg:w-[38ch]">
                     Focused on computer science and software engineering.
                     Passionate about creating innovative solutions and exploring
