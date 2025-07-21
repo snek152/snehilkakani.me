@@ -15,6 +15,7 @@ export default function FeaturedPhoto({
   aperture,
   iso,
   alt,
+  isBig,
 }: {
   image: StaticImageData | string;
   exp: string;
@@ -22,18 +23,23 @@ export default function FeaturedPhoto({
   aperture: string;
   iso: number;
   alt: string;
+  isBig?: boolean;
 }) {
   return (
-    <div className="relative max-w-72">
+    <div
+      className={
+        "relative " +
+        (isBig ? "w-72 h-full aspect-[3/2]" : "h-72 w-full aspect-[3/2]") // Changed w-full to w-64 for non-big
+      }
+    >
       <Image
         src={image}
         alt={alt}
         width={600}
         height={600}
-        className="object-cover object-center"
+        className="object-cover object-center h-full w-full"
         priority
       />
-      {/* Name and subtitle top-left overlay */}
       {/* <motion.div
                     className="absolute top-4 left-4 z-20 bg-on-surface/70 rounded-lg px-4 py-2 shadow-lg backdrop-blur-sm flex flex-col items-start"
                     initial={{ opacity: 0, y: 0, x: 0 }}

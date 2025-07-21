@@ -5,6 +5,37 @@ import FeaturedPhoto from "./FeaturedPhoto";
 import { motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
+const featPhotos = [
+  {
+    image: "/photos/bridalveil.jpg",
+    exp: "+0.7",
+    shutter: "1/1000",
+    aperture: "3.2",
+    iso: 400,
+    alt: "Bridalveil Falls in Yosemite National Park",
+    isBig: false,
+  },
+  {
+    image: "/photos/bridalveil.jpg",
+    exp: "+0.7",
+    shutter: "1/1000",
+    aperture: "3.2",
+    iso: 400,
+    alt: "Bridalveil Falls in Yosemite National Park",
+    isBig: false,
+  },
+  {
+    image: "/photos/yosemite.jpg",
+    exp: "-1.0",
+    shutter: "1/2000",
+    aperture: "9",
+    iso: 500,
+    alt: "Yosemite Valley viewpoint",
+    isBig: true,
+  },
+  // Add more photos as needed
+];
+
 export default function PhotoGallery() {
   const galleryRowRef = useRef<HTMLDivElement>(null);
   const [isScrolling, setIsScrolling] = useState(true);
@@ -80,12 +111,12 @@ export default function PhotoGallery() {
         onMouseLeave={() => setIsScrolling(true)}
         role="region"
       >
-        {[...Array(40)].map((_, i) => {
-          const isBig = true;
+        {featPhotos.map((p, i) => {
+          const isBig = p.isBig;
           return (
             <motion.div
               key={i}
-              className={`overflow-hidden rounded-lg shadow-lg bg-gray-100 flex items-center justify-center ${
+              className={`overflow-hidden rounded-lg shadow-lg flex items-center justify-center ${
                 isBig ? "row-span-2" : "row-span-1"
               }`}
               whileHover={{
@@ -95,14 +126,7 @@ export default function PhotoGallery() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
             >
-              <FeaturedPhoto
-                image={`/about.jpg`}
-                exp={`+2`}
-                shutter={`1/2`}
-                aperture="2.8"
-                iso={1600}
-                alt="Gallery photo"
-              />
+              <FeaturedPhoto {...p} />
             </motion.div>
           );
         })}
