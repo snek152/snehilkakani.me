@@ -12,7 +12,7 @@ import {
 import Card from "./Card";
 import aboutphoto from "../../public/about.jpg";
 
-let array = [
+const array = [
   "Software Engineer",
   "Full-Stack Developer",
   "Music Producer",
@@ -22,10 +22,10 @@ let array = [
   "Actor",
 ];
 
-array = array
-  .map((value) => ({ value, sort: Math.random() }))
-  .sort((a, b) => a.sort - b.sort)
-  .map(({ value }) => value);
+// array = array
+//   .map((value) => ({ value, sort: Math.random() }))
+//   .sort((a, b) => a.sort - b.sort)
+//   .map(({ value }) => value);
 
 const VISIT_KEY = "lastVisitTimestamp";
 const HOURS_24 = 24 * 60 * 60 * 1000;

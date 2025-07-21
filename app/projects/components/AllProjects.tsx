@@ -16,14 +16,14 @@ export default function AllProjects() {
       <div className="w-full flex flex-col items-center justify-start gap-5">
         {evenProjects.map((project, index) => (
           <Suspense key={index} fallback={<div>Loading projects...</div>}>
-            <ProjectLazy project={project} i={index} />
+            <ProjectLazy project={project} />
           </Suspense>
         ))}
       </div>
       <div className="w-full flex flex-col justify-start items-center gap-5">
         {oddProjects.map((project, index) => (
           <Suspense key={index} fallback={<div>Loading projects...</div>}>
-            <ProjectLazy project={project} i={index} />
+            <ProjectLazy project={project} />
           </Suspense>
         ))}
       </div>
