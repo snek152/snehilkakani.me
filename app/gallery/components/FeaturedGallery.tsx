@@ -5,9 +5,18 @@ import FeaturedPhoto from "./FeaturedPhoto";
 import { motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
-const featPhotos = [
+const featPhotos: {
+  image: string;
+  exp: string;
+  shutter: string;
+  aperture: string;
+  iso: number;
+  alt: string;
+  isBig?: boolean;
+}[] = [
+  // 2 nonBigs
   {
-    image: "/photos/bridalveil.jpg",
+    image: "/photos/yosemite_bridalveil.jpg",
     exp: "+0.7",
     shutter: "1/1000",
     aperture: "3.2",
@@ -16,14 +25,25 @@ const featPhotos = [
     isBig: false,
   },
   {
-    image: "/photos/bridalveil.jpg",
-    exp: "+0.7",
-    shutter: "1/1000",
-    aperture: "3.2",
-    iso: 400,
-    alt: "Bridalveil Falls in Yosemite National Park",
+    image: "/photos/yosemite2.jpg",
+    exp: "+0",
+    shutter: "1/160",
+    aperture: "22",
+    iso: 320,
+    alt: "A mountain view in Yosemite National Park",
     isBig: false,
   },
+  // 1 big
+  {
+    image: "/photos/ollie.jpg",
+    isBig: true,
+    exp: "+0.3",
+    shutter: "1/60",
+    aperture: "5",
+    iso: 4000,
+    alt: "Picture of my dog Ollie",
+  },
+  // 2 nonBigs
   {
     image: "/photos/yosemite.jpg",
     exp: "-1.0",
@@ -31,9 +51,105 @@ const featPhotos = [
     aperture: "9",
     iso: 500,
     alt: "Yosemite Valley viewpoint",
-    isBig: true,
+    isBig: false,
   },
-  // Add more photos as needed
+  {
+    image: "/photos/firework1.jpg",
+    isBig: false,
+    exp: "+0",
+    shutter: "6.0",
+    aperture: "18",
+    iso: 1250,
+    alt: "Fireworks display during 4th of July celebrations",
+  },
+  // 1 big
+  {
+    image: "/photos/firework2.jpg",
+    isBig: true,
+    exp: "+0",
+    shutter: "1/2",
+    aperture: "4.8",
+    iso: 500,
+    alt: "Fireworks display during 4th of July celebrations",
+  },
+  // 2 nonBigs
+  {
+    image: "/photos/sunset.jpg",
+    isBig: false,
+    exp: "+0",
+    aperture: "13",
+    shutter: "1/125",
+    iso: 500,
+    alt: "Sunset near my house",
+  },
+  {
+    image: "/photos/yosemite_camp_curry.jpg",
+    isBig: false,
+    exp: "-0.7",
+    shutter: "1/15",
+    aperture: "2.8",
+    iso: 1600,
+    alt: "Camp Curry sign in Curry Village, Yosemite National Park",
+  },
+  // 1 big
+  {
+    image: "/photos/tompkins.jpg",
+    isBig: true,
+    exp: "+0.7",
+    shutter: "1/950",
+    aperture: "5.6",
+    iso: 500,
+    alt: "Tompkins Drive in San Jose, California",
+  },
+  // 2 nonBigs
+  {
+    image: "/photos/yosemite_meadow.jpg",
+    isBig: false,
+    exp: "+0.3",
+    shutter: "1/1000",
+    aperture: "3.8",
+    iso: 500,
+    alt: "Cook's Meadow in Yosemite National Park",
+  },
+  {
+    image: "/photos/yosemite_road.jpg",
+    isBig: false,
+    exp: "+0",
+    shutter: "1/125",
+    aperture: "4.5",
+    iso: 500,
+    alt: "A road in Yosemite National Park",
+  },
+  // 1 big
+  {
+    image: "/photos/yosemite_reservoir.jpg",
+    isBig: true,
+    exp: "+1.0",
+    shutter: "1/1250",
+    aperture: "6.4",
+    iso: 500,
+    alt: "A reservoir near Yosemite National Park",
+  },
+  // 2 nonBigs
+  {
+    image: "/photos/yosemite_v_falls.jpg",
+    isBig: false,
+    exp: "+0",
+    shutter: "1/1500",
+    aperture: "7.1",
+    iso: 640,
+    alt: "An overhead view of Vernal Falls in Yosemite National Park",
+  },
+  // 1 big
+  {
+    image: "/photos/yosemite_sunset.jpg",
+    isBig: true,
+    exp: "-1.0",
+    shutter: "1/125",
+    aperture: "11",
+    iso: 1250,
+    alt: "Glacier Point in Yosemite National Park",
+  },
 ];
 
 export default function PhotoGallery() {

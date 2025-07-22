@@ -29,7 +29,7 @@ export default function FeaturedPhoto({
     <div
       className={
         "relative " +
-        (isBig ? "w-72 h-full aspect-[3/2]" : "h-72 w-full aspect-[3/2]") // Changed w-full to w-64 for non-big
+        (isBig ? "w-[21.3rem] h-full aspect-[3/2]" : "h-64 w-full aspect-[3/2]") // Changed w-full to w-64 for non-big
       }
     >
       <Image
