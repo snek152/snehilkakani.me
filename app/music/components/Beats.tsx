@@ -258,8 +258,8 @@ export default function Beats() {
     let cancelled = false;
 
     // Helper to initialize wavesurfer in batches
-    const batchSize = 2;
-    const delay = 200; // ms between batches
+    const batchSize = 5;
+    const delay = 100; // ms between batches
 
     const beatNames = beats.map((b) => b.name);
 
