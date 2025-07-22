@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from "motion/react";
 // import Image from "next/image";
 import React, { Suspense, useEffect, useMemo, useState } from "react";
-import LoadingSpinner from "./LoadingSpinner";
+// import LoadingSpinner from "./LoadingSpinner";
 
 const array = [
   "Software Engineer",

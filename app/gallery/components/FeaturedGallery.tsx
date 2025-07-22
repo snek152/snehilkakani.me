@@ -1,6 +1,6 @@
 "use client";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
-import { PlayIcon } from "@heroicons/react/24/outline";
+import { PlayIcon } from "@heroicons/react/24/solid";
 // import FeaturedPhoto from "./FeaturedPhoto";
 import { motion } from "motion/react";
 import { useEffect, useRef, useState, lazy, Suspense } from "react";
@@ -307,10 +307,10 @@ export default function PhotoGallery() {
               setTimeout(() => setIsScrolling(true), 400);
             }
           }}
-          className={`p-2 rounded-full cursor-pointer focus:outline-none transition-colors duration-150 ${"bg-primary/75 hover:bg-primary"}`}
+          className={`p-2.5 rounded-full cursor-pointer focus:outline-none transition-colors duration-150 ${"bg-primary/75 hover:bg-primary"}`}
         >
           <span>
-            <PlayIcon className="w-5 h-10 rotate-180 text-white" />
+            <PlayIcon className="w-5 h-5 rotate-180 text-white" />
           </span>
         </motion.button>
       </div>
@@ -333,7 +333,11 @@ export default function PhotoGallery() {
             <Suspense
               fallback={
                 <LoadingSpinner
-                  className={`${p.isBig ? "row-span-2" : "row-span-1"}`}
+                  className={`${
+                    p.isBig
+                      ? "row-span-2 !w-[18rem] !h-full aspect-[3/2]"
+                      : "row-span-1 !h-56 !w-full aspect-[3/2]"
+                  } overflow-hidden rounded-lg shadow-lg bg-background`}
                 />
               }
               key={i}
@@ -371,10 +375,10 @@ export default function PhotoGallery() {
               setTimeout(() => setIsScrolling(true), 400);
             }
           }}
-          className={`p-2 rounded-full cursor-pointer focus:outline-none transition-colors duration-150 ${"bg-primary/75 hover:bg-primary"}`}
+          className={`p-2.5 rounded-full cursor-pointer focus:outline-none transition-colors duration-150 ${"bg-primary/75 hover:bg-primary"}`}
         >
           <span>
-            <PlayIcon className="w-5 h-10 rotate-0 text-white" />
+            <PlayIcon className="w-5 h-5 rotate-0 text-white" />
           </span>
         </motion.button>
       </div>
