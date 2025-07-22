@@ -1,9 +1,11 @@
-// /Users/snehilk/Desktop/Coding/new-website/app/gallery/components/PhotoGallery.tsx
 "use client";
+import LoadingSpinner from "@/app/components/LoadingSpinner";
 import { PlayIcon } from "@heroicons/react/24/solid";
-import FeaturedPhoto from "./FeaturedPhoto";
+// import FeaturedPhoto from "./FeaturedPhoto";
 import { motion } from "motion/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, lazy, Suspense } from "react";
+
+const FeaturedPhoto = lazy(() => import("./FeaturedPhoto"));
 
 const featPhotos: {
   image: string;
@@ -329,20 +331,16 @@ export default function PhotoGallery() {
         {featPhotos.map((p, i) => {
           // const isBig = p.isBig;
           return (
-            <motion.div
+            <Suspense
+              fallback={
+                <LoadingSpinner
+                  className={`${p.isBig ? "row-span-2" : "row-span-1"}`}
+                />
+              }
               key={i}
-              className={`overflow-hidden rounded-lg shadow-lg flex items-center justify-center ${
-                p.isBig ? "row-span-2" : "row-span-1"
-              }`}
-              whileHover={{
-                scale: 1.05,
-                transition: { duration: 0.2 },
-              }}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
             >
-              <FeaturedPhoto {...p} />
-            </motion.div>
+              <FeaturedPhoto {...p} key={i} />
+            </Suspense>
           );
         })}
       </div>
