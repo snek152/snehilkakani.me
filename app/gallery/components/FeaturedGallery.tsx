@@ -1,6 +1,6 @@
 "use client";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
-import { PlayIcon } from "@heroicons/react/24/solid";
+import { PlayIcon } from "@heroicons/react/24/outline";
 // import FeaturedPhoto from "./FeaturedPhoto";
 import { motion } from "motion/react";
 import { useEffect, useRef, useState, lazy, Suspense } from "react";
@@ -314,7 +314,6 @@ export default function PhotoGallery() {
           </span>
         </motion.button>
       </div>
-
       {/* Gallery Row */}
       <div
         ref={galleryRowRef}
