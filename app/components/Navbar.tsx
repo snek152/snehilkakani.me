@@ -16,6 +16,7 @@ import NavLink from "./NavLink";
 import { type NavLink as navlinkT } from "../types";
 import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
+import ContactModal from "./ContactModal";
 
 const navlinks: navlinkT[] = [
   {
@@ -111,6 +112,7 @@ export default function Navbar() {
           {navlinks.map((navlink) => (
             <NavLink key={navlink.href} navlink={navlink} hovered={hovered} />
           ))}
+          <ContactModal hovered={hovered} setHovered={setHovered} />
         </motion.div>
       </AnimatePresence>
     </nav>

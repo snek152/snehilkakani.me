@@ -15,11 +15,12 @@ import {
   SiSvelte,
   SiTailwindcss,
   SiTypescript,
+  // SiVuedotjs,
 } from "@icons-pack/react-simple-icons";
 
 const iconClasses =
   "lg:w-8 lg:h-8 h-6 w-6 text-surface/80 transition-colors duration-300 drop-shadow-md";
-const iconColors: Record<string, string> = {
+const iconColors = {
   SiJavascript: "hover:text-yellow-400",
   SiTypescript: "hover:text-blue-500",
   SiHtml5: "hover:text-orange-500",
@@ -46,7 +47,7 @@ export default function Tools() {
         <span className="w-3 h-3 rounded-full bg-surface" />
         <span className="w-3 h-3 rounded-full bg-surface" />
         <span className="w-3 h-3 rounded-full bg-surface" />
-        <span className="ml-4 text-xs font-mono text-surface/60">
+        <span className="ml-2 text-xs font-mono text-surface/60">
           projects/tools.tsx
         </span>
       </div>
@@ -116,6 +117,16 @@ export default function Tools() {
               <SiPrisma className={`${iconClasses} ${iconColors.SiPrisma}`} />
             </div>
           </section>
+          {/* <section className="space-y-2 col-span-2 flex flex-col items-center">
+            <h2 className="text-lg font-semibold text-surface/80 font-mono text-center">
+              {"// Learning"}
+            </h2>
+            <div className="flex flex-wrap gap-4 items-center">
+              <SiVuedotjs
+                className={`${iconClasses} ${iconColors.SiVuedotjs}`}
+              />
+            </div>
+          </section> */}
         </div>
       </div>
     </Card>

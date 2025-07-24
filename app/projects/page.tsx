@@ -2,6 +2,7 @@
 import { lazy, Suspense } from "react";
 import Tools from "./components/Tools";
 import LoadingSpinner from "../components/LoadingSpinner";
+import ContactCard from "./components/ContactCard";
 
 const AllProjects = lazy(() => import("./components/AllProjects"));
 
@@ -14,6 +15,7 @@ export default function About() {
       >
         <AllProjects />
       </Suspense>
+      <ContactCard />
     </div>
   );
 }

@@ -24,9 +24,10 @@ const Project = React.memo(({ project }: { project: ProjectT }) => {
       transition={{
         duration: 0.5,
         ease: "easeInOut",
-        stiffness: 60,
-        delay: 0.4,
-        damping: 20,
+        // stiffness: 60,
+        delay: 0.8,
+        // damping: 20,
+        type: "tween",
       }}
     >
       <section
@@ -93,7 +94,7 @@ const Project = React.memo(({ project }: { project: ProjectT }) => {
               <span className="text-primary">{"/>"}</span>
             </h1>
             {project.subtitle && (
-              <h2 className="text-base font-semibold text-surface/80 font-mono text-left mb-4">
+              <h2 className="text-sm font-semibold text-surface/80 font-mono text-left mb-3">
                 <span className="text-surface/80">{"// "}</span>
                 {project.subtitle}
               </h2>
