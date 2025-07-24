@@ -1,142 +1,129 @@
 "use client";
-import LoadingSpinner from "@/app/components/LoadingSpinner";
-import { PlayIcon } from "@heroicons/react/24/solid";
-// import FeaturedPhoto from "./FeaturedPhoto";
-import { motion } from "motion/react";
 import { useEffect, useRef, useState, lazy, Suspense } from "react";
+import { PlayIcon } from "@heroicons/react/24/solid";
+import { motion } from "motion/react";
+import LoadingSpinner from "@/app/components/LoadingSpinner";
 import featPhotos from "../photos";
 
 const FeaturedPhoto = lazy(() => import("./FeaturedPhoto"));
 
-export default function PhotoGallery() {
-  const galleryRowRef = useRef<HTMLDivElement>(null);
-  const [isScrolling, setIsScrolling] = useState(true);
+const BATCH_SIZE = 6;
+
+const PhotoGallery = () => {
+  const galleryRef = useRef<HTMLDivElement>(null);
+  const [photoIndex, setPhotoIndex] = useState(0);
+  const [loadedPhotos, setLoadedPhotos] = useState<typeof featPhotos>([]);
+
+  const [scrolling, setScrolling] = useState(true);
+
+  // Infinite batch loader with looping
+  const loadNextBatch = () => {
+    const nextIndex = photoIndex + BATCH_SIZE;
+    const nextBatch: typeof featPhotos = [];
+
+    for (let i = 0; i < BATCH_SIZE; i++) {
+      const index = (photoIndex + i) % featPhotos.length;
+      nextBatch.push(featPhotos[index]);
+    }
+
+    setLoadedPhotos((prev) => [...prev, ...nextBatch]);
+    setPhotoIndex(nextIndex % featPhotos.length);
+  };
 
   useEffect(() => {
-    if (!isScrolling || !galleryRowRef.current) return;
+    loadNextBatch();
+  }, []);
 
-    let animationFrame: number;
+  // Autoscroll effect
+  useEffect(() => {
+    let frameId: number;
 
     const scrollStep = () => {
-      if (!isScrolling || !galleryRowRef.current) return;
-      galleryRowRef.current.scrollLeft += 1;
-      animationFrame = requestAnimationFrame(scrollStep);
+      if (!scrolling || !galleryRef.current) return;
+      galleryRef.current.scrollLeft += 1;
+      frameId = requestAnimationFrame(scrollStep);
     };
 
-    animationFrame = requestAnimationFrame(scrollStep);
+    if (scrolling) frameId = requestAnimationFrame(scrollStep);
+    return () => cancelAnimationFrame(frameId);
+  }, [scrolling]);
 
-    return () => cancelAnimationFrame(animationFrame);
-  }, [isScrolling]);
+  // Scroll listener to trigger next batch
+  const handleScroll = () => {
+    const el = galleryRef.current;
+    if (!el) return;
+
+    if (el.scrollLeft + el.clientWidth >= el.scrollWidth - 300) {
+      loadNextBatch();
+    }
+  };
 
   return (
-    <div className="relative w-full overflow-hidden flex items-center justify-center">
-      {/* Scroll Buttons */}
+    <div className="relative w-full overflow-hidden flex justify-center items-center">
+      {/* Scroll Left */}
       <div className="h-full flex justify-center relative items-center z-20 p-2">
-        {/* <button
-          className="bg-white/80 rounded-full p-2 shadow hover:bg-white"
-          onClick={() => {
-            setIsScrolling(false);
-            if (galleryRowRef.current) {
-              galleryRowRef.current.scrollBy({
-                left: -300,
-                behavior: "smooth",
-              });
-              setTimeout(() => setIsScrolling(true), 400);
-            }
-          }}
-          aria-label="Scroll Left"
-        >
-          ◀
-        </button> */}
         <motion.button
           whileTap={{ scale: 0.92 }}
           whileHover={{ scale: 1.08 }}
           transition={{ type: "spring", stiffness: 300, damping: 18 }}
           onClick={() => {
-            setIsScrolling(false);
-            if (galleryRowRef.current) {
-              galleryRowRef.current.scrollBy({
-                left: -300,
-                behavior: "smooth",
-              });
-              setTimeout(() => setIsScrolling(true), 400);
-            }
+            setScrolling(false);
+            galleryRef.current?.scrollBy({ left: -300, behavior: "smooth" });
+            setTimeout(() => setScrolling(true), 400);
           }}
           className={`p-2.5 rounded-full cursor-pointer focus:outline-none transition-colors duration-150 ${"bg-primary/75 hover:bg-primary"}`}
         >
-          <span>
-            <PlayIcon className="w-5 h-5 rotate-180 text-white" />
-          </span>
+          <PlayIcon className="w-5 h-5 rotate-180 text-white" />
         </motion.button>
       </div>
-      {/* Gallery Row */}
+
+      {/* Gallery */}
       <div
-        ref={galleryRowRef}
-        className="grid grid-rows-2 grid-flow-col auto-cols-max gap-6 p-6 overflow-x-auto scrollbar-hide"
+        ref={galleryRef}
+        onScroll={handleScroll}
+        onMouseEnter={() => setScrolling(false)}
+        onMouseLeave={() => setScrolling(true)}
+        className="flex overflow-x-auto gap-6 px-4 py-6 scroll-smooth scrollbar-hide lg:grid lg:grid-rows-2 lg:auto-cols-max lg:grid-flow-col"
         style={{
           scrollBehavior: "smooth",
           msOverflowStyle: "none",
           scrollbarWidth: "none",
         }}
-        onMouseEnter={() => setIsScrolling(false)}
-        onMouseLeave={() => setIsScrolling(true)}
-        role="region"
       >
-        {featPhotos.map((p, i) => {
-          // const isBig = p.isBig;
-          return (
-            <Suspense
-              fallback={
-                <LoadingSpinner
-                  className={`${
-                    p.isBig
-                      ? "row-span-2 !w-[18rem] !h-full aspect-[3/2]"
-                      : "row-span-1 !h-56 !w-full aspect-[3/2]"
-                  } overflow-hidden rounded-lg shadow-lg bg-background`}
-                />
-              }
-              key={i}
-            >
-              <FeaturedPhoto {...p} key={i} />
-            </Suspense>
-          );
-        })}
-      </div>
-      <div className="h-full flex justify-center items-center z-20 p-2">
-        {/* <button
-          className="bg-white/80 rounded-full p-2 shadow hover:bg-white"
-          onClick={() => {
-            setIsScrolling(false);
-            if (galleryRowRef.current) {
-              galleryRowRef.current.scrollBy({ left: 300, behavior: "smooth" });
-              setTimeout(() => setIsScrolling(true), 400);
+        {loadedPhotos.map((photo, i) => (
+          <Suspense
+            fallback={
+              <LoadingSpinner
+                className={`${
+                  photo.isBig ? "row-span-2 w-[18rem] h-full" : "h-56 w-full"
+                } rounded-lg shadow-lg bg-background aspect-[3/2]`}
+              />
             }
-          }}
-          aria-label="Scroll Right"
-        >
-          ▶
-        </button> */}
+            key={i + "_" + photo.image}
+          >
+            <FeaturedPhoto {...photo} />
+          </Suspense>
+        ))}
+      </div>
+
+      {/* Scroll Right */}
+      <div className="h-full flex justify-center relative items-center z-20 p-2">
         <motion.button
           whileTap={{ scale: 0.92 }}
           whileHover={{ scale: 1.08 }}
           transition={{ type: "spring", stiffness: 300, damping: 18 }}
           onClick={() => {
-            setIsScrolling(false);
-            if (galleryRowRef.current) {
-              galleryRowRef.current.scrollBy({
-                left: 300,
-                behavior: "smooth",
-              });
-              setTimeout(() => setIsScrolling(true), 400);
-            }
+            setScrolling(false);
+            galleryRef.current?.scrollBy({ left: 300, behavior: "smooth" });
+            setTimeout(() => setScrolling(true), 400);
           }}
           className={`p-2.5 rounded-full cursor-pointer focus:outline-none transition-colors duration-150 ${"bg-primary/75 hover:bg-primary"}`}
         >
-          <span>
-            <PlayIcon className="w-5 h-5 rotate-0 text-white" />
-          </span>
+          <PlayIcon className="w-5 h-5 text-white" />
         </motion.button>
       </div>
     </div>
   );
-}
+};
+
+export default PhotoGallery;
