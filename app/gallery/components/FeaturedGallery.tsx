@@ -101,32 +101,39 @@ export default function PhotoGallery() {
       </div>
 
       {/* 📷 Gallery */}
-      <div
-        ref={galleryRef}
-        onScroll={handleScroll}
-        onMouseEnter={() => setScrolling(false)}
-        onMouseLeave={() => setScrolling(true)}
-        className="grid grid-rows-2 grid-flow-col auto-cols-max gap-6 px-4 py-6 overflow-x-auto scroll-smooth scrollbar-hide"
-        style={{
-          scrollBehavior: "smooth",
-          msOverflowStyle: "none",
-          scrollbarWidth: "none",
-        }}
-      >
-        {photos.map((photo, i) => (
-          <Suspense
-            fallback={
-              <LoadingSpinner
-                className={`${
-                  photo.isBig ? "row-span-2 w-[18rem]" : "h-56 w-full"
-                } rounded-lg shadow-lg bg-background aspect-[3/2]`}
-              />
-            }
-            key={`${i}_${photo.image}`}
-          >
-            <FeaturedPhoto {...photo} />
-          </Suspense>
-        ))}
+      <div className="relative w-full overflow-hidden">
+        <div className="absolute h-full w-6 left-0 top-0 bg-gradient-to-r from-secondary to-transparent pointer-events-none z-20" />
+        <div className="absolute h-full w-6 right-0 top-0 bg-gradient-to-l from-secondary to-transparent pointer-events-none z-20" />
+
+        <div
+          ref={galleryRef}
+          onScroll={handleScroll}
+          onMouseEnter={() => setScrolling(false)}
+          onMouseLeave={() => setScrolling(true)}
+          className="grid grid-rows-2 grid-flow-col auto-cols-max gap-6 px-4 py-6 overflow-x-auto scroll-smooth scrollbar-hide relative"
+          style={{
+            scrollBehavior: "smooth",
+            msOverflowStyle: "none",
+            scrollbarWidth: "none",
+          }}
+        >
+          {photos.map((photo, i) => (
+            <Suspense
+              fallback={
+                <LoadingSpinner
+                  className={`${
+                    photo.isBig
+                      ? "row-span-2 !w-[18rem] !h-full"
+                      : "!h-56 !w-full"
+                  } rounded-lg shadow-lg bg-background aspect-[3/2]`}
+                />
+              }
+              key={`${i}_${photo.image}`}
+            >
+              <FeaturedPhoto {...photo} />
+            </Suspense>
+          ))}
+        </div>
       </div>
 
       {/* ▶ Right Button */}
