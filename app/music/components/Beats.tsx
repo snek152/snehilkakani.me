@@ -431,7 +431,7 @@ export default function Beats() {
               whileHover={{ scale: 1.08 }}
               transition={{ type: "spring", stiffness: 300, damping: 18 }}
               onClick={() => togglePlay(beat.name)}
-              className={`p-2 rounded-full cursor-pointer focus:outline-none transition-colors duration-150 ${
+              className={`p-2 rounded-full cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary transition-colors duration-150 ${
                 playing === beat.name
                   ? "bg-primary/75 hover:bg-primary"
                   : "bg-secondary/50 hover:bg-background"

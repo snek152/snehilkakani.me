@@ -9,7 +9,6 @@ import {
 import { AtSymbolIcon } from "@heroicons/react/24/outline";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
-import LoadingSpinner from "./LoadingSpinner";
 // import Card from "./Card";
 
 export default function ContactModal({
@@ -34,6 +33,8 @@ export default function ContactModal({
 
   function close() {
     setIsOpen(false);
+    setSubmitted(false);
+    setError("");
   }
 
   return (
@@ -173,13 +174,27 @@ export default function ContactModal({
                       setError("");
                       setLoading(true);
                       // Simulate a network request
-                      setTimeout(() => {
+                      fetch("https://formspree.io/f/xyylnqbg", {
+                        headers: {
+                          "Content-Type": "application/json",
+                          "Data-Type": "json",
+                        },
+                        method: "POST",
+                        mode: "no-cors",
+                        body: JSON.stringify({ name, email, message }),
+                      }).then((res) => {
+                        console.log(res);
+                        // if (res.status !== 200 && res.status !== 302) {
+                        //   setError("Failed to send message. Please try again.");
+                        //   setLoading(false);
+                        //   return;
+                        // }
                         setLoading(false);
                         setName("");
                         setEmail("");
                         setMessage("");
                         setSubmitted(true);
-                      }, 2000);
+                      });
                     }}
                   >
                     <motion.div
@@ -263,7 +278,7 @@ export default function ContactModal({
                       exit={{ opacity: 0, scale: 0.98 }}
                       transition={{ delay: 0.25, duration: 0.18 }}
                       type="submit"
-                      className="inline-flex items-center justify-center gap-2 rounded-md bg-primary/90 px-4 py-2 text-base font-semibold text-white shadow-inner shadow-white/10 focus:outline-none hover:bg-primary transition-colors"
+                      className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-primary/80 via-primary to-primary/90 px-6 py-2 text-base font-semibold text-white shadow-lg shadow-primary/20 focus:outline-none focus:ring-2 focus:ring-primary/60 hover:scale-105 hover:bg-primary/95 transition-all duration-200"
                       disabled={submitted}
                     >
                       <AnimatePresence>
