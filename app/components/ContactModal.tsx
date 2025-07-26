@@ -9,6 +9,7 @@ import {
 import { AtSymbolIcon } from "@heroicons/react/24/outline";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
+import LoadingSpinner from "./LoadingSpinner";
 // import Card from "./Card";
 
 export default function ContactModal({
@@ -24,6 +25,7 @@ export default function ContactModal({
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   function open() {
     setHovered(false);
@@ -150,17 +152,12 @@ export default function ContactModal({
                     }}
                     className="text-2xl font-medium font-domine text-center text-white"
                   >
-                    Contact Me
+                    Interested in collaborating?
                   </DialogTitle>
                   <form
-                    className="mt-4 flex flex-col gap-4"
+                    className="mt-8 flex flex-col gap-4"
                     onSubmit={(e) => {
                       e.preventDefault();
-                      // Add validation and submission logic here
-                      //   if (name === "" || email === "" && message === "") {
-                      //     setError("Please fill out all fields.");
-                      //     return;
-                      //   }
                       if (!name.trim()) {
                         setError("Please enter your name.");
                         return;
@@ -174,7 +171,15 @@ export default function ContactModal({
                         return;
                       }
                       setError("");
-                      setSubmitted(true);
+                      setLoading(true);
+                      // Simulate a network request
+                      setTimeout(() => {
+                        setLoading(false);
+                        setName("");
+                        setEmail("");
+                        setMessage("");
+                        setSubmitted(true);
+                      }, 2000);
                     }}
                   >
                     <motion.div
@@ -187,7 +192,7 @@ export default function ContactModal({
                       <input
                         id="name"
                         // type="text"
-                        className="rounded-lg bg-white/10 border border-white/20 px-4 py-2 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-primary/60 transition backdrop-blur-md shadow-sm"
+                        className="rounded-lg bg-white/10 border border-white/20 px-4 py-2 text-white placeholder:text-white/50 placeholder:font-ibm focus:outline-none focus:ring-2 focus:ring-primary/60 transition backdrop-blur-md shadow-sm"
                         placeholder="Your name"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
@@ -205,7 +210,7 @@ export default function ContactModal({
                       <input
                         id="email"
                         // type="email"
-                        className="rounded-lg bg-white/10 border border-white/20 px-4 py-2 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-primary/60 transition backdrop-blur-md shadow-sm"
+                        className="rounded-lg bg-white/10 border border-white/20 px-4 py-2 text-white placeholder:text-white/50 placeholder:font-ibm focus:outline-none focus:ring-2 focus:ring-primary/60 transition backdrop-blur-md shadow-sm"
                         placeholder="you@email.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -222,42 +227,102 @@ export default function ContactModal({
                     >
                       <textarea
                         id="message"
-                        className="rounded-lg bg-white/10 border border-white/20 px-4 py-2 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-primary/60 transition backdrop-blur-md shadow-sm"
+                        className="rounded-lg bg-white/10 border border-white/20 px-4 py-2 text-white placeholder:text-white/50 placeholder:font-ibm focus:outline-none focus:ring-2 focus:ring-primary/60 transition backdrop-blur-md shadow-sm"
                         placeholder="How can I help you?"
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
                         // required
                       />
                     </motion.div>
-                    {error && (
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="text-red-400 text-sm font-medium"
-                      >
-                        {error}
-                      </motion.div>
-                    )}
-                    {submitted && (
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="text-green-400 text-sm font-medium"
-                      >
-                        Thank you for reaching out! I will get back to you soon.
-                      </motion.div>
-                    )}
-                    <Button
+                    <div style={{ minHeight: "1.25rem" }}>
+                      {error && (
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          className="text-red-400 text-sm font-medium"
+                        >
+                          {error}
+                        </motion.div>
+                      )}
+                      {!error && submitted && (
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          className="text-primary text-sm font-medium"
+                        >
+                          Thanks for reaching out! I{"'"}ll get back to you
+                          soon.
+                        </motion.div>
+                      )}
+                    </div>
+                    <motion.button
+                      initial={{ opacity: 0, scale: 0.98 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.98 }}
+                      transition={{ delay: 0.25, duration: 0.18 }}
                       type="submit"
-                      className="mt-2 inline-flex items-center justify-center gap-2 rounded-md bg-primary/90 px-4 py-2 text-base font-semibold text-white shadow-inner shadow-white/10 focus:outline-none hover:bg-primary transition-colors"
+                      className="inline-flex items-center justify-center gap-2 rounded-md bg-primary/90 px-4 py-2 text-base font-semibold text-white shadow-inner shadow-white/10 focus:outline-none hover:bg-primary transition-colors"
                       disabled={submitted}
                     >
-                      Send Message
-                    </Button>
+                      <AnimatePresence>
+                        {loading ? (
+                          <motion.span
+                            key="loading"
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.95 }}
+                            transition={{ duration: 0.2 }}
+                          >
+                            <div
+                              className={`flex items-center justify-center w-full h-full`}
+                            >
+                              <svg
+                                className="text-transparent animate-spin"
+                                viewBox="0 0 64 64"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width={24}
+                                height={24}
+                              >
+                                <circle
+                                  cx="32"
+                                  cy="32"
+                                  r="27"
+                                  stroke="currentColor"
+                                  strokeWidth="10"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                                <path
+                                  d="M32 5a27 27 0 0 1 0 54"
+                                  stroke="currentColor"
+                                  strokeWidth="10"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  className="text-surface"
+                                />
+                              </svg>
+                            </div>
+                          </motion.span>
+                        ) : submitted ? (
+                          <motion.span
+                            key="submitted"
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.95 }}
+                            transition={{ duration: 0.2 }}
+                          >
+                            Sent!
+                          </motion.span>
+                        ) : (
+                          <span key="send">Send Message</span>
+                        )}
+                      </AnimatePresence>
+                    </motion.button>
                   </form>
-                  <motion.div
+                  {/* <motion.div
                     initial={{ opacity: 0, scale: 0.98 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.98 }}
@@ -265,12 +330,12 @@ export default function ContactModal({
                     className="mt-4"
                   >
                     <Button
-                      className="inline-flex items-center gap-2 rounded-md bg-gray-700 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none hover:bg-gray-600 transition-colors"
+                      className="inline-flex items-center gap-2 rounded-md bg-primary/80 px-4 py-2 text-base font-semibold text-white shadow-inner shadow-primary/10 focus:outline-none hover:bg-primary transition-colors"
                       onClick={close}
                     >
                       Got it, thanks!
                     </Button>
-                  </motion.div>
+                  </motion.div> */}
                 </DialogPanel>
               </div>
             </div>
