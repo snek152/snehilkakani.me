@@ -62,8 +62,8 @@ const Project = React.memo(({ project }: { project: ProjectT }) => {
             src={project.image}
             alt={project.title}
             fill
-            loading="lazy"
-            quality={10}
+            // loading="lazy"
+            // quality={10}
             placeholder="empty"
             className="object-cover opacity-60"
           />
