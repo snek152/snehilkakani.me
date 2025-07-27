@@ -1,11 +1,12 @@
 "use client";
-import { useEffect, useRef, useState, lazy, Suspense } from "react";
+import { useEffect, useRef, useState, Suspense } from "react";
 import { PlayIcon } from "@heroicons/react/24/solid";
 import { motion } from "motion/react";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 import featPhotos from "../photos";
+import dynamic from "next/dynamic";
 
-const FeaturedPhoto = lazy(() => import("./FeaturedPhoto"));
+const FeaturedPhoto = dynamic(() => import("./FeaturedPhoto"));
 const BATCH_SIZE = 6;
 // const MAX_PHOTOS = 10; // Cap visible DOM for performance
 

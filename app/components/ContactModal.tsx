@@ -41,12 +41,12 @@ export default function ContactModal({
     <>
       <Button
         onClick={open}
-        className="relative flex lg:flex-row flex-col lg:items-center lg:h-9 lg:w-full w-9 h-full transition-all duration-300 overflow-hidden text-surface focus:outline-none cursor-pointer hover:text-primary"
+        className="relative flex lg:flex-row flex-col lg:items-center lg:h-8 lg:w-full w-8 h-full transition-all duration-300 overflow-hidden text-surface focus:outline-none cursor-pointer hover:text-primary"
         style={{ minWidth: 0 }}
       >
-        <span className="absolute left-0 top-0 lg:h-full lg:w-14 w-full h-14 flex items-center justify-center pointer-events-none">
+        <span className="absolute left-0 top-0 lg:h-full lg:w-12 w-full h-12 flex items-center justify-center pointer-events-none">
           <div
-            className="w-9 h-9 flex items-center justify-center"
+            className="w-8 h-8 flex items-center justify-center"
             style={{ position: "relative" }}
           >
             <span
@@ -61,11 +61,11 @@ export default function ContactModal({
               //   }}
               className="absolute inset-0 flex items-center justify-center"
             >
-              <AtSymbolIcon className="w-9 h-9" />
+              <AtSymbolIcon className="w-8 h-8" />
             </span>
           </div>
         </span>
-        <span className="lg:w-22 w-0" />
+        <span className="lg:w-20 w-0" />
 
         <AnimatePresence>
           {hovered && (
@@ -74,7 +74,7 @@ export default function ContactModal({
               animate={{ width: "100%", opacity: 1 }}
               exit={{ width: "100%", opacity: 0 }}
               transition={{ type: "spring", stiffness: 300, damping: 24 }}
-              className="whitespace-nowrap lg:visible invisible overflow-hidden text-lg text-left font-ibm font-medium inline-block"
+              className="whitespace-nowrap lg:visible invisible overflow-hidden text-base text-left font-ibm font-medium inline-block"
             >
               Contact
             </motion.span>

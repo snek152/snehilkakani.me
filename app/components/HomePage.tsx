@@ -1,8 +1,9 @@
 "use client";
 
 import { motion, AnimatePresence } from "motion/react";
+import dynamic from "next/dynamic";
 // import Image from "next/image";
-import React, { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 // import LoadingSpinner from "./LoadingSpinner";
 
 const array = [
@@ -15,7 +16,7 @@ const array = [
   "Actor",
 ];
 
-const AboutCard = React.lazy(() => import("./AboutCard"));
+const AboutCard = dynamic(() => import("./AboutCard"));
 
 // array = array
 //   .map((value) => ({ value, sort: Math.random() }))

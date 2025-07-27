@@ -61,8 +61,8 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`top-0 fixed left-0 lg:h-screen w-full h-20 ${
-        hovered ? "lg:w-40" : "lg:w-20"
+      className={`top-0 fixed left-0 lg:h-screen w-full h-18 ${
+        hovered ? "lg:w-36" : "lg:w-18"
       } z-50 flex lg:px-2 lg:py-0 py-2 items-center justify-center transition-all duration-300`}
     >
       <AnimatePresence>

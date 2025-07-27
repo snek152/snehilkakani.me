@@ -63,14 +63,14 @@ export default function RootLayout({
       >
         <NavContextProvider>
           <div className="flex flex-col lg:flex-row w-screen h-screen">
-            <div className="lg:w-20 lg:h-screen flex-shrink-0">
+            <div className="lg:w-18 lg:h-screen flex-shrink-0">
               <Navbar />
             </div>
             <div
               id="container"
               className="overflow-x-hidden overflow-y-scroll relative h-full w-screen lg:h-screen lg:w-full flex-1"
             >
-              <div className="w-full h-20 lg:hidden"></div>
+              <div className="w-full h-18 lg:hidden"></div>
               {children}
             </div>
           </div>
