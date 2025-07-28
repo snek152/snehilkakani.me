@@ -81,7 +81,7 @@ const featPhotos: {
   // },
   {
     image: "/photos/grad_party.jpg",
-    exp: "0",
+    exp: "+0",
     shutter: "1/60",
     aperture: "4",
     iso: 400,

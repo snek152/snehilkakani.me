@@ -11,7 +11,7 @@ import aboutphoto from "../../public/about.jpg";
 
 export default function AboutCard() {
   return (
-    <Card className="flex flex-col mx-2 lg:mx-15">
+    <Card className="flex flex-col mx-2 lg:mx-15 lg:h-auto h-auto">
       {/* Top bar with icons */}
       <div className="flex items-center justify-between px-3 lg:px-4 py-2 lg:py-3 bg-background/10 border-b rounded-t-xl border-secondary">
         <div className="flex items-center gap-2">
@@ -80,7 +80,7 @@ export default function AboutCard() {
             alt="photo of snehil kakani in front of the manhattan bridge"
             width={600}
             height={600}
-            className="object-cover object-center h-60 lg:h-72 w-full"
+            className="object-cover object-center h-[32vh] lg:h-[45vh] w-full"
             priority
           />
           {/* Name and subtitle top-left overlay */}
@@ -165,7 +165,7 @@ export default function AboutCard() {
           <h2 className="text-sm lg:text-base text-on-surface font-domine w-full text-left mb-2">
             Incoming Freshman at Cal Poly, SLO
           </h2>
-          <p className="text-on-surface font-ibm text-sm w-full lg:text-base lg:w-[38ch]">
+          <p className="text-on-surface font-ibm text-sm w-full lg:text-base lg:w-[38ch] 2xl:w-[50ch]">
             Focused on computer science and software engineering. Passionate
             about creating innovative solutions and exploring new technologies.
             Exploring music production and photography.

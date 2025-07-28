@@ -182,19 +182,27 @@ export default function ContactModal({
                         method: "POST",
                         mode: "no-cors",
                         body: JSON.stringify({ name, email, message }),
-                      }).then((res) => {
-                        console.log(res);
-                        // if (res.status !== 200 && res.status !== 302) {
-                        //   setError("Failed to send message. Please try again.");
-                        //   setLoading(false);
-                        //   return;
-                        // }
-                        setLoading(false);
-                        setName("");
-                        setEmail("");
-                        setMessage("");
-                        setSubmitted(true);
-                      });
+                      })
+                        .then((res) => {
+                          console.log(res);
+                          // if (res.status !== 200 && res.status !== 302) {
+                          //   setError("Failed to send message. Please try again.");
+                          //   setLoading(false);
+                          //   return;
+                          // }
+                          setLoading(false);
+                          setName("");
+                          setEmail("");
+                          setMessage("");
+                          setSubmitted(true);
+                        })
+                        .catch(() => {
+                          setError(
+                            "Failed to send message. Please try again later."
+                          );
+                          setLoading(false);
+                          return;
+                        });
                     }}
                   >
                     <motion.div

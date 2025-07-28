@@ -70,7 +70,7 @@ export default function RootLayout({
               id="container"
               className="overflow-x-hidden overflow-y-scroll relative h-full w-screen lg:h-screen lg:w-full flex-1"
             >
-              <div className="w-full h-18 lg:hidden"></div>
+              <div className="w-full h-18 lg:hidden" id="topbar"></div>
               {children}
             </div>
           </div>

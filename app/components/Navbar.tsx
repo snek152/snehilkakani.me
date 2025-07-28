@@ -52,6 +52,7 @@ export default function Navbar() {
   const isFirstRender = useRef(true);
 
   useEffect(() => {
+    document.getElementById("topbar")?.scrollIntoView({ behavior: "instant" });
     if (isFirstRender.current) {
       isFirstRender.current = false;
     } else {
