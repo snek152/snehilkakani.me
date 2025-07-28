@@ -25,10 +25,11 @@ export default function FeaturedGallery() {
                 scale: 1.05,
                 transition: { duration: 0.2 },
               }}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
               //   exit={{ opacity: 0, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
+              viewport={{ once: false, amount: 0.02 }}
             >
               <Suspense
                 fallback={
@@ -37,7 +38,10 @@ export default function FeaturedGallery() {
                   />
                 }
               >
-                <FeaturedPhotoLazy {...photo} />
+                {/* <LoadingSpinner
+                  className={`rounded-lg shadow-lg bg-background w-full h-full`}
+                /> */}
+                <FeaturedPhotoLazy {...photo} i={i} />
               </Suspense>
             </motion.div>
           ))}

@@ -16,6 +16,7 @@ specifiers:
   next: 15.3.2
   react: ^19.0.0
   react-dom: ^19.0.0
+  react-intersection-observer: ^9.16.0
   tailwindcss: ^4
   typescript: ^5
   wavesurfer.js: ^7.10.0
@@ -29,6 +30,7 @@ dependencies:
   next: 15.3.2_j6k6oay3ugsr56slyfvma2drry
   react: 19.1.0
   react-dom: 19.1.0_react@19.1.0
+  react-intersection-observer: 9.16.0_j6k6oay3ugsr56slyfvma2drry
   wavesurfer.js: 7.10.0
 
 devDependencies:
@@ -3307,6 +3309,19 @@ packages:
     dependencies:
       react: 19.1.0
       scheduler: 0.26.0
+    dev: false
+
+  /react-intersection-observer/9.16.0_j6k6oay3ugsr56slyfvma2drry:
+    resolution: {integrity: sha512-w9nJSEp+DrW9KmQmeWHQyfaP6b03v+TdXynaoA964Wxt7mdR3An11z4NNCQgL4gKSK7y1ver2Fq+JKH6CWEzUA==}
+    peerDependencies:
+      react: ^17.0.0 || ^18.0.0 || ^19.0.0
+      react-dom: ^17.0.0 || ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+    dependencies:
+      react: 19.1.0
+      react-dom: 19.1.0_react@19.1.0
     dev: false
 
   /react-is/16.13.1:

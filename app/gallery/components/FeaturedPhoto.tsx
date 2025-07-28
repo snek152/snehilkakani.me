@@ -15,6 +15,7 @@ export default function FeaturedPhoto({
   aperture,
   iso,
   alt,
+  i,
 }: // isBig,
 {
   image: StaticImageData | string;
@@ -23,6 +24,7 @@ export default function FeaturedPhoto({
   aperture: string;
   iso: number;
   alt: string;
+  i: number;
   // isBig?: boolean;
 }) {
   return (
@@ -32,13 +34,15 @@ export default function FeaturedPhoto({
         alt={alt}
         fill
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 33vw"
+        quality={80}
         // width={200}
         // height={200}
+        placeholder="empty"
         className="object-cover object-center h-full w-full"
-        // priority
+        priority={i < 3} // Prioritize first few images
       />
       <motion.div
-        className="absolute bottom-4 left-4 flex gap-2 z-10 bg-on-surface/60 rounded-lg px-3 py-2 shadow-lg backdrop-blur-xs"
+        className="absolute bottom-2 left-2 flex gap-2 z-10 bg-secondary/70 rounded-lg px-3 py-2 shadow-lg backdrop-blur-xs"
         initial={{ opacity: 0, y: 20, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{

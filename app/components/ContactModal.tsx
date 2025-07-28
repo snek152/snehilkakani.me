@@ -96,7 +96,7 @@ export default function ContactModal({
               animate={{ opacity: 1, backdropFilter: "blur(0px)" }}
               exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
               //   transition={{ duration: 0.5, ease: "easeInOut" }}
-              className="fixed inset-0 bg-black/30 blur-xs"
+              className="fixed inset-0 bg-black/50 blur-xs"
             />
             <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
               <div className="flex min-h-full items-center justify-center p-4">
@@ -139,7 +139,7 @@ export default function ContactModal({
                   style={{
                     boxShadow: "0 8px 32px 0 rgba(13, 110, 253, 0.13)",
                   }}
-                  className="w-full max-w-md rounded-xl bg-surface/5 p-6 backdrop-blur-xl border border-primary/10 relative overflow-hidden"
+                  className="w-full max-w-md rounded-xl bg-secondary/40 backdrop-blur-xl p-6 border border-primary/10 relative overflow-hidden"
                 >
                   <DialogTitle
                     as={motion.h3}
@@ -278,8 +278,13 @@ export default function ContactModal({
                       exit={{ opacity: 0, scale: 0.98 }}
                       transition={{ delay: 0.25, duration: 0.18 }}
                       type="submit"
-                      className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-primary/80 via-primary to-primary/90 px-6 py-2 text-base font-semibold text-white shadow-lg shadow-primary/20 focus:outline-none focus:ring-2 focus:ring-primary/60 hover:scale-105 hover:bg-primary/95 transition-all duration-200"
-                      disabled={submitted}
+                      className={`inline-flex font-ibm items-center justify-center gap-2 rounded-lg px-6 py-2 text-base font-semibold text-white focus:outline-none focus:ring-2 focus:ring-primary/60 transition-all duration-200 
+                        ${
+                          loading || submitted
+                            ? "opacity-70 bg-on-surface cursor-not-allowed"
+                            : "cursor-pointer bg-gradient-to-r from-primary/80 via-primary to-primary/90 hover:scale-105 hover:bg-primary/95 shadow-lg shadow-primary/20"
+                        }`}
+                      disabled={loading || submitted}
                     >
                       <AnimatePresence>
                         {loading ? (
