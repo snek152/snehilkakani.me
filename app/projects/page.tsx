@@ -2,7 +2,7 @@
 import { Suspense } from "react";
 import Tools from "./components/Tools";
 import LoadingSpinner from "../components/LoadingSpinner";
-import ContactCard from "./components/ContactCard";
+// import ContactCard from "./components/ContactCard";
 import dynamic from "next/dynamic";
 
 const AllProjects = dynamic(() => import("./components/AllProjects"));
@@ -16,7 +16,7 @@ export default function About() {
       >
         <AllProjects />
       </Suspense>
-      <ContactCard />
+      {/* <ContactCard /> */}
     </div>
   );
 }
