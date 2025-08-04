@@ -12,7 +12,7 @@ export default function FeaturedGallery() {
   return (
     <div className="relative w-full overflow-hidden flex justify-center items-center">
       <div className="relative w-full overflow-hidden">
-        <div className="grid grid-cols-3 h-full gap-6 px-4 py-6 relative">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 h-full gap-6 px-4 py-6 relative">
           {photos.map((photo, i) => (
             <motion.div
               key={i}
