@@ -1,41 +1,51 @@
 "use client";
 import Card from "@/app/components/Card";
-import {
-  SiCss,
-  SiFirebase,
-  SiGit,
-  SiHtml5,
-  SiJavascript,
-  SiNextdotjs,
-  SiNodedotjs,
-  SiPrisma,
-  SiPython,
-  SiPytorch,
-  SiReact,
-  SiSvelte,
-  SiTailwindcss,
-  SiTypescript,
-  // SiVuedotjs,
-} from "@icons-pack/react-simple-icons";
+import { skillsList } from "./skills";
+import React from "react";
+import { motion } from "motion/react";
 
-const iconClasses =
-  "lg:w-8 lg:h-8 h-6 w-6 text-surface/80 transition-colors duration-300 drop-shadow-md";
 const iconColors = {
-  SiJavascript: "hover:text-yellow-400",
-  SiTypescript: "hover:text-blue-500",
-  SiHtml5: "hover:text-orange-500",
-  SiCss: "hover:text-purple-500",
-  SiReact: "hover:text-cyan-400",
-  SiNextdotjs: "hover:text-white",
-  SiTailwindcss: "hover:text-teal-400",
-  SiSvelte: "hover:text-orange-400",
-  SiGit: "hover:text-orange-600",
-  SiPython: "hover:text-yellow-300",
-  SiFirebase: "hover:text-yellow-500",
-  SiPytorch: "hover:text-red-500",
-  SiNodedotjs: "hover:text-green-600",
-  SiPrisma: "hover:text-teal-700",
+  SiJavascript: "text-yellow-400",
+  SiTypescript: "text-blue-500",
+  SiHtml5: "text-orange-500",
+  SiCss: "text-purple-500",
+  SiReact: "text-cyan-400",
+  SiNextdotjs: "text-white",
+  SiTailwindcss: "text-teal-400",
+  SiSvelte: "text-orange-400",
+  SiGit: "text-orange-600",
+  SiPython: "text-yellow-300",
+  SiFirebase: "text-yellow-500",
+  SiPytorch: "text-red-500",
+  SiNodedotjs: "text-green-600",
+  SiPrisma: "text-teal-700",
 };
+
+const ToolIcon = ({
+  icon: Icon,
+  label,
+  colorClass,
+}: {
+  icon: React.ComponentType<{ className?: string }>;
+  label: string;
+  colorClass: keyof typeof iconColors;
+}) => (
+  <motion.div
+    whileHover={{
+      y: -5,
+      transition: { duration: 0.2 },
+      boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
+    }}
+    className={`flex flex-col items-center justify-center bg-on-surface border-2 border-surface/5 rounded-lg p-3 gap-1 ${iconColors[colorClass]}`}
+  >
+    <div className="relative flex items-center justify-center mb-1">
+      <Icon className="w-7 h-7 lg:w-8 lg:h-8 transition-colors duration-300 drop-shadow" />
+    </div>
+    <span className="block text-sm font-ibm uppercase text-surface transition-colors duration-300">
+      {label}
+    </span>
+  </motion.div>
+);
 
 export default function Tools() {
   return (
@@ -76,57 +86,29 @@ export default function Tools() {
           <span className="text-primary">{"<"}</span>My Tools
           <span className="text-primary">{"/>"}</span>
         </h1>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 w-full">
-          <section className="space-y-2 flex flex-col items-center">
-            <h2 className="text-lg font-semibold text-surface/80 font-mono text-center">
-              {"// Frontend"}
-            </h2>
-            <div className="flex flex-wrap gap-3 items-center justify-center">
-              <SiJavascript
-                className={`${iconClasses} ${iconColors.SiJavascript}`}
-              />
-              <SiTypescript
-                className={`${iconClasses} ${iconColors.SiTypescript}`}
-              />
-              <SiHtml5 className={`${iconClasses} ${iconColors.SiHtml5}`} />
-              <SiCss className={`${iconClasses} ${iconColors.SiCss}`} />
-              <SiReact className={`${iconClasses} ${iconColors.SiReact}`} />
-              <SiNextdotjs
-                className={`${iconClasses} ${iconColors.SiNextdotjs}`}
-              />
-              <SiTailwindcss
-                className={`${iconClasses} ${iconColors.SiTailwindcss}`}
-              />
-              <SiSvelte className={`${iconClasses} ${iconColors.SiSvelte}`} />
-              <SiGit className={`${iconClasses} ${iconColors.SiGit}`} />
+        <div className="grid grid-cols-1 w-full">
+          {["frontend", "backend"].map((category) => (
+            <div key={category}>
+              <div className="flex items-center gap-2 mt-6 mb-2">
+                <span className="text-xl font-semibold text-surface/80 font-mono text-center">
+                  {category === "frontend" ? "// Frontend" : "// Backend"}
+                </span>
+                <div className="flex-1 h-px bg-surface/20 ml-2" />
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-7 gap-6">
+                {skillsList
+                  .filter((s) => s.type === category)
+                  .map(({ icon, label, colorClass }) => (
+                    <ToolIcon
+                      icon={icon}
+                      label={label}
+                      colorClass={colorClass as keyof typeof iconColors}
+                      key={label}
+                    />
+                  ))}
+              </div>
             </div>
-          </section>
-          <section className="space-y-2 flex flex-col items-center">
-            <h2 className="text-lg font-semibold text-surface/80 font-mono text-center">
-              {"// Backend"}
-            </h2>
-            <div className="flex flex-wrap gap-4 items-center">
-              <SiPython className={`${iconClasses} ${iconColors.SiPython}`} />
-              <SiFirebase
-                className={`${iconClasses} ${iconColors.SiFirebase}`}
-              />
-              <SiPytorch className={`${iconClasses} ${iconColors.SiPytorch}`} />
-              <SiNodedotjs
-                className={`${iconClasses} ${iconColors.SiNodedotjs}`}
-              />
-              <SiPrisma className={`${iconClasses} ${iconColors.SiPrisma}`} />
-            </div>
-          </section>
-          {/* <section className="space-y-2 col-span-2 flex flex-col items-center">
-            <h2 className="text-lg font-semibold text-surface/80 font-mono text-center">
-              {"// Learning"}
-            </h2>
-            <div className="flex flex-wrap gap-4 items-center">
-              <SiVuedotjs
-                className={`${iconClasses} ${iconColors.SiVuedotjs}`}
-              />
-            </div>
-          </section> */}
+          ))}
         </div>
       </div>
     </Card>
