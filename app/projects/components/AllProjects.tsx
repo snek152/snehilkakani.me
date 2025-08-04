@@ -3,7 +3,7 @@ import { Suspense, useEffect, useMemo, useState } from "react";
 import { projects } from "../projects";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 import dynamic from "next/dynamic";
-import { motion } from "motion/react";
+import * as motion from "motion/react-m";
 
 const evenProjects = projects.filter((_, index) => index % 2 === 0);
 const oddProjects = projects.filter((_, index) => index % 2 !== 0);

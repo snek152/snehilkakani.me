@@ -2,7 +2,7 @@
 import Card from "@/app/components/Card";
 import { skillsList } from "./skills";
 import React from "react";
-import { motion } from "motion/react";
+import * as motion from "motion/react-m";
 
 const iconColors = {
   SiJavascript: "text-yellow-400",

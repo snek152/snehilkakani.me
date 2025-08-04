@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import * as motion from "motion/react-m";
 import Card from "./Card";
 import Image from "next/image";
 import {

@@ -7,7 +7,8 @@ import {
   DialogTitle,
 } from "@headlessui/react";
 import { AtSymbolIcon } from "@heroicons/react/24/outline";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence } from "motion/react";
+import * as motion from "motion/react-m";
 import { useState } from "react";
 // import Card from "./Card";
 

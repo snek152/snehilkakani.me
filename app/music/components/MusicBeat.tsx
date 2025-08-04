@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import * as motion from "motion/react-m";
 import { Beat, beats } from "../beats";
 import { RefObject } from "react";
 import { PauseIcon, PlayIcon } from "@heroicons/react/24/outline";

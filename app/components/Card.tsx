@@ -1,5 +1,5 @@
 "use client";
-import { motion } from "motion/react";
+import * as motion from "motion/react-m";
 import React from "react";
 
 export default function Card({

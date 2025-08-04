@@ -2,7 +2,7 @@
 import { AnimatePresence } from "motion/react";
 import { type NavLink } from "../types";
 // import { useState } from "react";
-import { motion } from "motion/react";
+import * as motion from "motion/react-m";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 

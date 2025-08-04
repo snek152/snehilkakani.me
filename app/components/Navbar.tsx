@@ -1,5 +1,7 @@
 "use client";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence } from "motion/react";
+import * as motion from "motion/react-m";
+
 import {
   UserCircleIcon as UserIconOutline,
   CommandLineIcon as CommandOutline,

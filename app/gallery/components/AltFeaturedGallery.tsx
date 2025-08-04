@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import photos from "../photos";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 // import FeaturedPhoto from "./FeaturedPhoto";
-import { motion } from "motion/react";
+import * as motion from "motion/react-m";
 import dynamic from "next/dynamic";
 
 const FeaturedPhotoLazy = dynamic(() => import("./FeaturedPhoto"));

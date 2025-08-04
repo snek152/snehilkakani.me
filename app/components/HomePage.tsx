@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, AnimatePresence } from "motion/react";
+import { AnimatePresence } from "motion/react";
+import * as motion from "motion/react-m";
 import dynamic from "next/dynamic";
 // import Image from "next/image";
 import { Suspense, useEffect, useMemo, useState } from "react";

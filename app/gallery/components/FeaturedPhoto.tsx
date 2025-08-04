@@ -5,7 +5,7 @@ import {
   SunIcon,
   ViewfinderCircleIcon,
 } from "@heroicons/react/24/outline";
-import { motion } from "motion/react";
+import * as motion from "motion/react-m";
 import Image, { StaticImageData } from "next/image";
 
 export default function FeaturedPhoto({
