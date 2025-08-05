@@ -15,9 +15,9 @@ export default function AboutCard() {
       {/* Top bar with icons */}
       <div className="flex items-center justify-between px-3 lg:px-4 py-2 lg:py-3 bg-background/10 border-b rounded-t-xl border-secondary">
         <div className="flex items-center gap-2">
-          <span className="block w-3 h-3 rounded-full bg-surface"></span>
-          <span className="block w-3 h-3 rounded-full bg-surface"></span>
-          <span className="block w-3 h-3 rounded-full bg-surface"></span>
+          <span className="block w-2.5 h-2.5 lg:w-3 lg:h-3 rounded-full bg-surface"></span>
+          <span className="block w-2.5 h-2.5 lg:w-3 lg:h-3 rounded-full bg-surface"></span>
+          <span className="block w-2.5 h-2.5 lg:w-3 lg:h-3 rounded-full bg-surface"></span>
         </div>
         <div className="flex items-center gap-1">
           {/* Viewfinder icon */}
@@ -80,7 +80,7 @@ export default function AboutCard() {
             alt="photo of snehil kakani in front of the manhattan bridge"
             width={600}
             height={600}
-            className="object-cover object-center h-[32vh] lg:h-[45vh] w-full"
+            className="object-cover object-center h-[32dvh] lg:h-[45dvh] w-full"
             priority
           />
           {/* Name and subtitle top-left overlay */}
