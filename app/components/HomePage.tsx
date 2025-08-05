@@ -94,7 +94,7 @@ const HomePage = () => {
   }
 
   return (
-    <div className="relative w-screen max-w-full h-screen lg:max-h-full max-h-[calc(100dvh-4.5rem)] overflow-x-hidden">
+    <div className="relative w-screen max-w-full h-svh lg:h-screen lg:max-h-full max-h-[calc(100svh-4.5rem)] overflow-x-hidden">
       <motion.div
         className="w-full h-full flex items-center justify-center relative overflow-x-hidden"
         initial={{
@@ -108,7 +108,7 @@ const HomePage = () => {
             needsToLoad === false
               ? window.innerWidth >= 1024
                 ? "100%"
-                : "20%"
+                : "25%"
               : "100%",
           scale: needsToLoad === false ? 0.8 : 1,
         }}
@@ -117,7 +117,7 @@ const HomePage = () => {
           height: loaded
             ? window.innerWidth >= 1024
               ? "100%"
-              : "20%"
+              : "25%"
             : "100%",
           scale: 1,
         }}
@@ -162,7 +162,7 @@ const HomePage = () => {
           </AnimatePresence>
         </div>
       </motion.div>
-      <div className="w-full lg:w-[50%] h-[80%] lg:h-screen flex items-center justify-center bottom-0 left-0 lg:right-0 lg:bottom-auto lg:left-auto lg:top-0 absolute">
+      <div className="w-full lg:w-[50%] h-[75%] lg:h-screen flex items-center justify-center bottom-0 left-0 lg:right-0 lg:bottom-auto lg:left-auto lg:top-0 absolute">
         <AnimatePresence>
           {loaded && (
             <Suspense fallback={<></>}>

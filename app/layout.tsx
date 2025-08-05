@@ -59,7 +59,7 @@ export default function RootLayout({
         className={`${domine.variable} ${ibm.variable} antialiased relative overflow-x-hidden overflow-y-hidden h-full bg-secondary`}
       >
         <LazyMotion features={domAnimation}>
-          <div className="flex flex-col lg:flex-row w-screen h-screen">
+          <div className="flex flex-col lg:flex-row w-screen h-svh lg:h-screen">
             <div className="lg:w-18 lg:h-screen flex-shrink-0">
               <Navbar />
             </div>
