@@ -3,6 +3,7 @@ import { Project as ProjectT } from "../projects";
 // import Card from "@/app/components/Card";
 import { ArrowUpRightIcon } from "@heroicons/react/16/solid";
 import React from "react";
+import { SiGithub } from "@icons-pack/react-simple-icons";
 // import { motion } from "motion/react";
 
 /*
@@ -21,40 +22,51 @@ const Project = React.memo(({ project }: { project: ProjectT }) => {
       className="w-full border-secondary bg-background relative p-0 rounded-xl overflow-hidden border-[1.5px] shadow-lg"
     >
       {/* Header bar */}
-      <div className="flex items-center justify-between gap-2 px-2 lg:px-4 py-2 lg:py-3 bg-background relative z-30 text-primary border-b border-secondary rounded-t-xl">
+      <div className="flex items-center justify-between gap-2 px-2 lg:px-4 py-1 lg:py-2 bg-secondary/70 backdrop-blur-xs shadow-lg absolute top-2 right-2 z-30 text-primary border-2 border-primary/5 rounded-2xl">
         {/* <span className="w-3 h-3 rounded-full bg-surface" />
         <span className="w-3 h-3 rounded-full bg-surface" />
         <span className="w-3 h-3 rounded-full bg-surface" /> */}
-        <span className="text-xs font-mono text-surface/60">
+        {/* <span className="text-xs font-mono text-surface/60">
           projects/{project.slug}.tsx
-        </span>
+        </span> */}
+        {project.github && (
+          <a
+            href={project.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center flex-shrink-0 w-6 h-6 text-surface hover:text-primary rounded-full transition-colors duration-300 text-xs"
+            title="More information"
+          >
+            {/* learn more */}
+            <SiGithub className="w-full h-full" />
+          </a>
+        )}
         {project.link && (
           <a
             href={project.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center flex-shrink-0 w-5 h-5 rounded-full transition-colors duration-200 text-xs font-mono text-surface bg-primary"
+            className="flex items-center group justify-center flex-shrink-0 w-6 h-6 rounded-full transition-colors duration-300 text-xs bg-surface hover:bg-primary"
             title="More information"
           >
             {/* learn more */}
-            <ArrowUpRightIcon className="w-4 h-4 text-surface" />
+            <ArrowUpRightIcon className="w-5 h-5 text-secondary/80 group-hover:text-surface transition-colors duration-300" />
           </a>
         )}
       </div>
       {/* Subtle grid background */}
       {/* Main content */}
-      <div className="relative bg-background flex flex-col items-center">
-        <Image
-          src={project.image}
-          alt={project.title}
-          fill
-          // loading="lazy"
-          // quality={10}
-          placeholder="empty"
-          className="object-cover opacity-60"
-        />
-        <div className="px-6 py-6 relative z-30 flex bg-background/90 m-6 rounded-xl flex-col items-left text-left overflow-hidden border border-secondary/30">
-          {/* <div className="absolute inset-0 pointer-events-none opacity-10 z-0 rounded-xl overflow-hidden">
+      <Image
+        src={project.image}
+        alt={project.title}
+        // fill
+        // loading="lazy"
+        // quality={10}
+        placeholder="empty"
+        className="object-cover opacity-60 w-full h-72"
+      />
+      <div className="relative z-30 flex p-6 rounded-xl flex-col items-left text-left overflow-hidden">
+        {/* <div className="absolute inset-0 pointer-events-none opacity-10 z-0 rounded-xl overflow-hidden">
               <svg width="100%" height="100%">
                 <defs>
                   <pattern
@@ -74,33 +86,32 @@ const Project = React.memo(({ project }: { project: ProjectT }) => {
                 <rect width="100%" height="100%" fill="url(#grid)" />
               </svg>
             </div> */}
-          <h1 className="text-2xl font-bold tracking-tight text-surface mb-2 font-domine">
-            <span className="text-primary">{"<"}</span>
-            {project.title}
-            <span className="text-primary">{"/>"}</span>
-          </h1>
-          {project.subtitle && (
-            <h2 className="text-sm font-semibold text-surface/80 font-mono text-left mb-3">
-              <span className="text-surface/80">{"// "}</span>
-              {project.subtitle}
-            </h2>
+        <h1 className="text-2xl font-bold tracking-tight text-surface mb-2 font-domine">
+          <span className="text-primary">{"<"}</span>
+          {project.title}
+          <span className="text-primary">{"/>"}</span>
+        </h1>
+        {project.subtitle && (
+          <h2 className="text-sm font-semibold text-surface/80 font-mono text-left mb-3">
+            <span className="text-surface/80">{"// "}</span>
+            {project.subtitle}
+          </h2>
+        )}
+        <p className="text-surface text-base w-full mb-5 font-ibm leading-relaxed">
+          {project.description}
+        </p>
+        <div className="flex flex-wrap gap-2 justify-left w-full">
+          {project.skills.map(
+            (skill, index) =>
+              skill && (
+                <span
+                  key={index}
+                  className="bg-gradient-to-r from-primary/60 via-primary/40 to-primary/60 text-surface z-20 relative px-3 py-1 rounded-full text-sm font-ibm border-2 border-primary/70 shadow-md hover:scale-105 hover:shadow-lg transition-all duration-200 font-semibold"
+                >
+                  {skill}
+                </span>
+              )
           )}
-          <p className="text-surface text-base w-full mb-5 font-ibm leading-relaxed">
-            {project.description}
-          </p>
-          <div className="flex flex-wrap gap-2 justify-center w-full">
-            {project.skills.map(
-              (skill, index) =>
-                skill && (
-                  <span
-                    key={index}
-                    className="bg-gradient-to-r from-primary/60 via-primary/40 to-primary/60 text-surface px-3 py-1 rounded-full text-sm font-ibm border-2 border-primary/70 shadow-md hover:scale-105 hover:shadow-lg transition-all duration-200 font-semibold"
-                  >
-                    {skill}
-                  </span>
-                )
-            )}
-          </div>
         </div>
       </div>
     </section>
