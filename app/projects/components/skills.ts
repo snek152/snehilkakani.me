@@ -1,11 +1,15 @@
 import {
+  SiCanva,
   SiCss,
+  SiFastapi,
+  SiFigma,
   SiFirebase,
   SiGit,
   SiHtml5,
   SiJavascript,
   SiNextdotjs,
   SiNodedotjs,
+  SiOpenjdk,
   SiPrisma,
   SiPython,
   SiPytorch,
@@ -13,14 +17,17 @@ import {
   SiSvelte,
   SiTailwindcss,
   SiTypescript,
+  SiVuedotjs,
   // SiVuedotjs,
 } from "@icons-pack/react-simple-icons";
+
+export const skillTypes = ["frontend", "backend", "other", "learning"] as const;
 
 export const skillsList: {
   icon: React.ComponentType<{ className?: string }>;
   label: string;
   colorClass: string;
-  type: "frontend" | "backend";
+  type: (typeof skillTypes)[number];
 }[] = [
   {
     icon: SiJavascript,
@@ -74,7 +81,7 @@ export const skillsList: {
     icon: SiGit,
     label: "Git",
     colorClass: "SiGit",
-    type: "frontend",
+    type: "other",
   },
   {
     icon: SiPython,
@@ -89,10 +96,16 @@ export const skillsList: {
     type: "backend",
   },
   {
+    icon: SiFastapi,
+    label: "FastAPI",
+    colorClass: "SiFastapi",
+    type: "backend",
+  },
+  {
     icon: SiPytorch,
     label: "PyTorch",
     colorClass: "SiPytorch",
-    type: "backend",
+    type: "other",
   },
   {
     icon: SiNodedotjs,
@@ -105,5 +118,29 @@ export const skillsList: {
     label: "Prisma",
     colorClass: "SiPrisma",
     type: "backend",
+  },
+  {
+    icon: SiVuedotjs,
+    label: "Vue.js",
+    colorClass: "SiVuedotjs",
+    type: "learning",
+  },
+  {
+    icon: SiCanva,
+    label: "Canva",
+    colorClass: "SiCanva",
+    type: "other",
+  },
+  {
+    icon: SiFigma,
+    label: "Figma",
+    colorClass: "SiFigma",
+    type: "other",
+  },
+  {
+    icon: SiOpenjdk,
+    label: "Java",
+    colorClass: "SiJava",
+    type: "other",
   },
 ];

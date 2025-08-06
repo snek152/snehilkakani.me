@@ -3,6 +3,7 @@ import { Domine, IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import { domAnimation, LazyMotion } from "motion/react";
+// import dynamic from "next/dynamic";
 
 const domine = Domine({
   variable: "--gfont-domine",

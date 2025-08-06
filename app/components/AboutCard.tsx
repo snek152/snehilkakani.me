@@ -165,7 +165,7 @@ export default function AboutCard() {
           <h2 className="text-sm lg:text-base text-on-surface font-domine w-full text-left mb-2">
             Incoming Freshman at Cal Poly, SLO
           </h2>
-          <p className="text-on-surface font-ibm text-sm w-full lg:text-base lg:w-[38ch] 2xl:w-[50ch]">
+          <p className="text-on-surface font-ibm text-sm w-full lg:text-base">
             Focused on computer science and software engineering. Passionate
             about creating innovative solutions and exploring new technologies.
             Exploring music production and photography.

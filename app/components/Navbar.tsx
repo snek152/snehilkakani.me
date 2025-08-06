@@ -16,7 +16,7 @@ import {
 } from "@heroicons/react/24/solid";
 import NavLink from "./NavLink";
 import { type NavLink as navlinkT } from "../types";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import ContactModal from "./ContactModal";
 
@@ -53,6 +53,14 @@ export default function Navbar() {
   const pathname = usePathname();
   const isFirstRender = useRef(true);
 
+  const [width, setWidth] = useState<number | null>(null);
+
+  useEffect(() => {
+    setWidth(window.innerWidth);
+  }, []);
+
+  const lg = useMemo(() => (width === null ? null : width >= 1024), [width]);
+
   useEffect(() => {
     document.getElementById("topbar")?.scrollIntoView({ behavior: "instant" });
     if (isFirstRender.current) {
@@ -61,6 +69,10 @@ export default function Navbar() {
       setShouldAnimate(false);
     }
   }, [pathname]);
+
+  if (lg === null) {
+    return null;
+  }
 
   return (
     <nav
@@ -73,14 +85,8 @@ export default function Navbar() {
           initial={
             shouldAnimate
               ? {
-                  x:
-                    typeof window !== "undefined" && window.innerWidth < 1024
-                      ? 0
-                      : -30,
-                  y:
-                    typeof window !== "undefined" && window.innerWidth < 1024
-                      ? -30
-                      : 0,
+                  x: !lg ? 0 : -30,
+                  y: !lg ? -30 : 0,
                   opacity: 0,
                 }
               : false

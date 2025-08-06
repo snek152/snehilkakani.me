@@ -1,6 +1,6 @@
 "use client";
 import Card from "@/app/components/Card";
-import { skillsList } from "./skills";
+import { skillsList, skillTypes } from "./skills";
 import React from "react";
 import * as motion from "motion/react-m";
 
@@ -19,6 +19,11 @@ const iconColors = {
   SiPytorch: "text-red-500",
   SiNodedotjs: "text-green-600",
   SiPrisma: "text-teal-700",
+  SiFastapi: "text-teal-600",
+  SiVuedotjs: "text-green-400",
+  SiCanva: "text-cyan-400",
+  SiFigma: "text-orange-500",
+  SiJava: "text-white",
 };
 
 const ToolIcon = ({
@@ -33,15 +38,15 @@ const ToolIcon = ({
   <motion.div
     whileHover={{
       y: -5,
-      transition: { duration: 0.2 },
+      transition: { duration: 0.2, ease: [0.25, 0.1, 0.25, 1] },
       boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
     }}
-    className={`flex flex-col items-center justify-center bg-on-surface border-2 border-surface/5 rounded-lg p-3 gap-1 ${iconColors[colorClass]}`}
+    className={`flex flex-col items-center justify-center bg-on-surface/80 border-2 border-surface/5 rounded-lg p-3 gap-1 ${iconColors[colorClass]}`}
   >
     <div className="relative flex items-center justify-center mb-1">
       <Icon className="w-7 h-7 lg:w-8 lg:h-8 transition-colors duration-300 drop-shadow" />
     </div>
-    <span className="block text-sm font-ibm uppercase text-surface transition-colors duration-300">
+    <span className="block text-sm font-ibm font-medium uppercase text-surface transition-colors duration-300 tracking-wide">
       {label}
     </span>
   </motion.div>
@@ -83,16 +88,16 @@ export default function Tools() {
           <span className="text-primary">{"<"}</span>My Tools
           <span className="text-primary">{"/>"}</span>
         </h1>
-        <div className="grid grid-cols-1 w-full">
-          {["frontend", "backend"].map((category) => (
+        <div className="grid grid-cols-1 px-3 w-full">
+          {skillTypes.map((category) => (
             <div key={category}>
-              <div className="flex items-center gap-2 mt-6 mb-2">
-                <span className="text-xl font-semibold text-surface/80 font-mono text-center">
-                  {category === "frontend" ? "// Frontend" : "// Backend"}
+              <div className="flex items-center gap-2 mt-6 mb-5">
+                <span className="text-xl font-semibold text-surface/80 font-mono tracking-tight text-center">
+                  {"// " + category.charAt(0).toUpperCase() + category.slice(1)}
                 </span>
                 <div className="flex-1 h-px bg-surface/20 ml-2" />
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-7 gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-8 gap-6">
                 {skillsList
                   .filter((s) => s.type === category)
                   .map(({ icon, label, colorClass }) => (
