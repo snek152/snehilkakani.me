@@ -7,6 +7,7 @@ import {
   SiGit,
   SiHtml5,
   SiJavascript,
+  SiJupyter,
   SiNextdotjs,
   SiNodedotjs,
   SiOpenjdk,
@@ -78,12 +79,6 @@ export const skillsList: {
     type: "frontend",
   },
   {
-    icon: SiGit,
-    label: "Git",
-    colorClass: "SiGit",
-    type: "other",
-  },
-  {
     icon: SiPython,
     label: "Python",
     colorClass: "SiPython",
@@ -102,12 +97,6 @@ export const skillsList: {
     type: "backend",
   },
   {
-    icon: SiPytorch,
-    label: "PyTorch",
-    colorClass: "SiPytorch",
-    type: "other",
-  },
-  {
     icon: SiNodedotjs,
     label: "Node.js",
     colorClass: "SiNodedotjs",
@@ -120,10 +109,22 @@ export const skillsList: {
     type: "backend",
   },
   {
-    icon: SiVuedotjs,
-    label: "Vue.js",
-    colorClass: "SiVuedotjs",
-    type: "learning",
+    icon: SiGit,
+    label: "Git",
+    colorClass: "SiGit",
+    type: "other",
+  },
+  {
+    icon: SiPytorch,
+    label: "PyTorch",
+    colorClass: "SiPytorch",
+    type: "other",
+  },
+  {
+    icon: SiJupyter,
+    label: "Jupyter",
+    colorClass: "SiJupyter",
+    type: "other",
   },
   {
     icon: SiCanva,
@@ -142,5 +143,11 @@ export const skillsList: {
     label: "Java",
     colorClass: "SiJava",
     type: "other",
+  },
+  {
+    icon: SiVuedotjs,
+    label: "Vue.js",
+    colorClass: "SiVuedotjs",
+    type: "learning",
   },
 ];

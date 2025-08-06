@@ -22,8 +22,9 @@ const iconColors = {
   SiFastapi: "text-teal-600",
   SiVuedotjs: "text-green-400",
   SiCanva: "text-cyan-400",
-  SiFigma: "text-orange-500",
+  SiFigma: "text-orange-600",
   SiJava: "text-white",
+  SiJupyter: "text-orange-500",
 };
 
 const ToolIcon = ({
