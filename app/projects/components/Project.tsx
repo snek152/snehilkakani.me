@@ -19,7 +19,7 @@ const Project = React.memo(({ project }: { project: ProjectT }) => {
   return (
     <section
       style={{ willChange: "transform, opacity" }}
-      className="w-full border-secondary bg-background relative p-0 rounded-xl overflow-hidden border-[1.5px] shadow-lg"
+      className="w-full border-secondary group/project bg-background relative p-0 rounded-xl overflow-hidden border-[1.5px] shadow-lg"
     >
       {/* Header bar */}
       <div className="flex items-center justify-between gap-2 px-2 lg:px-4 py-1 lg:py-2 bg-secondary/70 backdrop-blur-xs shadow-lg absolute top-2 right-2 z-30 text-primary border-2 border-primary/5 rounded-2xl">
@@ -46,11 +46,11 @@ const Project = React.memo(({ project }: { project: ProjectT }) => {
             href={project.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center group justify-center flex-shrink-0 w-6 h-6 rounded-full transition-colors duration-300 text-xs bg-surface hover:bg-primary"
+            className="flex items-center group/button justify-center flex-shrink-0 w-6 h-6 rounded-full transition-colors duration-300 text-xs bg-surface hover:bg-primary"
             title="More information"
           >
             {/* learn more */}
-            <ArrowUpRightIcon className="w-5 h-5 text-secondary/80 group-hover:text-surface transition-colors duration-300" />
+            <ArrowUpRightIcon className="w-5 h-5 text-secondary/80 group-hover/button:text-surface transition-colors duration-300" />
           </a>
         )}
       </div>
@@ -62,8 +62,8 @@ const Project = React.memo(({ project }: { project: ProjectT }) => {
         // fill
         // loading="lazy"
         // quality={10}
-        placeholder="empty"
-        className="object-cover opacity-60 w-full h-72"
+        placeholder="blur"
+        className="object-cover opacity-70 w-full h-72 group-hover/project:opacity-90 transition-opacity duration-300"
       />
       <div className="relative z-30 flex p-6 rounded-xl flex-col items-left text-left overflow-hidden">
         {/* <div className="absolute inset-0 pointer-events-none opacity-10 z-0 rounded-xl overflow-hidden">

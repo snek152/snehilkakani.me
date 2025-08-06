@@ -1,6 +1,7 @@
 import drama from "../../public/projects/drama.jpg";
 import sra from "../../public/projects/sranew.jpg";
 import genalt from "../../public/projects/genaltnew.jpg";
+import floodsafe from "../../public/projects/floodsafe.jpg";
 import { StaticImageData } from "next/image";
 
 export type Project = {
@@ -17,7 +18,7 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    link: "https://lhsdevx.vercel.app/",
+    link: "https://bit.ly/s74lhs",
     github: "https://github.com/lynbrookstudio74/studio74website",
     title: "Website Development for Lynbrook Drama Department",
     subtitle: "April 2024 - October 2024",
@@ -45,7 +46,7 @@ export const projects: Project[] = [
   //   },
   {
     title: "GU-Net: Diffuse Glioma Segmentation Research",
-    subtitle: "Summer 2023",
+    subtitle: "June 2023 - July 2023",
     description:
       "Developed a novel neural network architecture for segmenting diffuse gliomas in medical images with limited training data. Achieved 71.58% segmentation accuracy by leveraging advanced machine learning techniques and data augmentation. Presented research findings at UCSB, collaborated with experts in medical imaging, and published results in the Journal of Student Research (JSR).",
     link: "https://www.jsr.org/hs/index.php/path/article/view/6376",
@@ -56,6 +57,20 @@ export const projects: Project[] = [
       "medical imaging",
       "research & presentation",
     ],
+  },
+  {
+    title: "FloodSafe: Atmospheric River Prediction",
+    subtitle: "January 2023 - March 2023",
+    description:
+      "Designed a custom dataset using webscraped satellite images and weather data based on atmospheric river positive and negative locations. Engineered a neural network architecture based on ResNet18, resulting in accuracies >95%. Hosted the model on a EC2-based FastAPI server and created a web application for real-time predictions. Presented at the Synopsys Science Fair 2023.",
+    image: floodsafe,
+    skills: [
+      "pytorch computer vision",
+      "full-stack web development",
+      "data science & engineering",
+    ],
+    github: "https://github.com/snek152/floodsafe",
+    // link: "https://floodsafe-web.vercel.app",
   },
   //   {
   //     title: "Director of Technology & CS Instructor @ STEMist Education",
