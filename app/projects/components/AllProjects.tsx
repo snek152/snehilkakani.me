@@ -34,12 +34,13 @@ export default function AllProjects() {
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{
-              duration: 0.5,
-              ease: "easeInOut",
-              // stiffness: 60,
-              delay: index <= 1 ? 0.8 : 0.2,
-              // damping: 20,
               type: "tween",
+              // stiffness: 150,
+              duration: 0.5,
+              ease: [0.25, 0.1, 0.25, 1],
+              // stiffness: 60,
+              delay: index <= 0 ? 0.8 : 0.2,
+              // damping: 20,
             }}
           >
             <Suspense
@@ -72,10 +73,11 @@ export default function AllProjects() {
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{
+              // stiffness: 150,
+              ease: [0.25, 0.1, 0.25, 1],
               duration: 0.5,
-              ease: "easeInOut",
               // stiffness: 60,
-              delay: index <= 1 ? 0.8 : 0.2,
+              delay: index <= 0 ? 0.8 : 0.2,
               // damping: 20,
               type: "tween",
             }}
@@ -116,12 +118,13 @@ export default function AllProjects() {
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true, amount: 0.1 }}
           transition={{
+            type: "tween",
+            // stiffness: 150,
+            ease: [0.25, 0.1, 0.25, 1],
             duration: 0.5,
-            ease: "easeInOut",
             // stiffness: 60,
             delay: index === 0 ? 0.8 : 0.2,
             // damping: 20,
-            type: "tween",
           }}
         >
           <Suspense

@@ -80,7 +80,7 @@ export default function AboutCard() {
             alt="photo of snehil kakani in front of the manhattan bridge"
             width={600}
             height={600}
-            className="object-cover object-center h-[32svh] lg:h-[45vh] w-full"
+            className="object-cover object-center h-[30svh] lg:h-[45vh] w-full"
             priority
           />
           {/* Name and subtitle top-left overlay */}

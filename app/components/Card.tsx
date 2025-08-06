@@ -11,15 +11,18 @@ export default function Card({
 }: React.ComponentProps<typeof motion.div>) {
   return (
     <motion.div
-      initial={{ y: 100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      exit={{ y: -100, opacity: 0 }}
+      initial={{ y: 50, scale: 1, opacity: 0 }}
+      animate={{ y: 0, opacity: 1, scale: 1 }}
+      exit={{ y: -50, scale: 0.96, opacity: 0 }}
       transition={{
-        type: "spring",
-        stiffness: 60,
-        duration: 0.8,
+        // type: "spring",
+        type: "tween",
+        // stiffness: 150,
+        duration: 0.6,
         delay: 0.2,
-        damping: 20,
+        ease: [0.25, 0.1, 0.25, 1],
+        // damping: 30,
+        // mass: 2,
         ...transition,
       }}
       className={`w-full rounded-xl border-4 border-secondary bg-background relative overflow-hidden ${className}`}

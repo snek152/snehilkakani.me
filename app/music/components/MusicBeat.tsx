@@ -22,7 +22,10 @@ export default function MusicBeat({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{
+        type: "tween",
+        // stiffness: 150,
         duration: 0.5,
+        ease: [0.25, 0.1, 0.25, 1],
         delay: 0.08 * (beats.findIndex((b) => b.name === beat.name) % 2),
       }}
     >
