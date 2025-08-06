@@ -14,7 +14,7 @@ export type Project = {
   github?: string;
 };
 
-// Projects to include: FloodSafe, Steam Force, Proco, EuclidLearn, Athletes4Others, Cfoch
+// Projects to include: Steam Force, Proco, EuclidLearn, Athletes4Others, Cfoch
 
 export const projects: Project[] = [
   {
@@ -23,7 +23,7 @@ export const projects: Project[] = [
     title: "Website Development for Lynbrook Drama Department",
     subtitle: "April 2024 - October 2024",
     description:
-      "Developed a new website for the Lynbrook High School Drama Department to showcase productions and promote events. Added a production calendar, crew information, and photo gallery. Enabled easy updates via a custom Github-based CMS. Built with Next.js and Tailwind CSS for responsive design.",
+      "Built a responsive website for Lynbrook Drama to showcase productions, events, and crew info. Integrated a custom GitHub-based CMS for easy updates using Next.js and Tailwind CSS.",
     image: drama,
     skills: [
       "next.js & tailwindcss",
@@ -31,24 +31,11 @@ export const projects: Project[] = [
       "responsive design & implementation",
     ],
   },
-  //   {
-  //     title: "Freelance Web Consultant",
-  //     slug: "freelance-web",
-  //     subtitle: "June 2021 - Present",
-  //     description:
-  //       "Designed and deployed custom websites and web applications for clients, emphasizing user experience and performance. Recognized with a gold PVSA and earned over $1K for client projects.",
-  //     image: freelance,
-  //     skills: [
-  //       "client collaboration",
-  //       "custom web solutions",
-  //       "user experience design",
-  //     ],
-  //   },
   {
     title: "GU-Net: Diffuse Glioma Segmentation Research",
     subtitle: "June 2023 - July 2023",
     description:
-      "Developed a novel neural network architecture for segmenting diffuse gliomas in medical images with limited training data. Achieved 71.58% segmentation accuracy by leveraging advanced machine learning techniques and data augmentation. Presented research findings at UCSB, collaborated with experts in medical imaging, and published results in the Journal of Student Research (JSR).",
+      "Developed a neural network for segmenting diffuse gliomas in medical images, achieving 71.58% accuracy. Presented at UCSB and published in the Journal of Student Research.",
     link: "https://www.jsr.org/hs/index.php/path/article/view/6376",
     github: "https://github.com/snek152/GU_Net_Glioma_Segmentation_SRA",
     image: sra,
@@ -62,7 +49,7 @@ export const projects: Project[] = [
     title: "FloodSafe: Atmospheric River Prediction",
     subtitle: "January 2023 - March 2023",
     description:
-      "Designed a custom dataset using webscraped satellite images and weather data based on atmospheric river positive and negative locations. Engineered a neural network architecture based on ResNet18, resulting in accuracies >95%. Hosted the model on a EC2-based FastAPI server and created a web application for real-time predictions. Presented at the Synopsys Science Fair 2023.",
+      "Created a dataset and neural network for atmospheric river prediction, achieving over 95% accuracy. Deployed the model with FastAPI and built a web app for real-time results.",
     image: floodsafe,
     skills: [
       "pytorch computer vision",
@@ -72,40 +59,12 @@ export const projects: Project[] = [
     github: "https://github.com/snek152/floodsafe",
     // link: "https://floodsafe-web.vercel.app",
   },
-  //   {
-  //     title: "Director of Technology & CS Instructor @ STEMist Education",
-  //     slug: "stemist-edu",
-  //     subtitle: "January 2022 - January 2023",
-  //     description:
-  //       "Led the development of the STEMist Education website. Managed a developer team on projects including a Discord bot and student portal. Organized hackathons, trained new tech team members, and created lesson materials for web development and computer science. Awarded a gold PVSA for exceptional community service.",
-  //     image: stemist,
-  //     skills: [
-  //       "team leadership & project management",
-  //       "web development",
-  //       "curriculum design",
-  //       "community service",
-  //     ],
-  //   },
-  //   {
-  //     title: "Synopsys Science Fair Two Time Participant",
-  //     slug: "synopsys-eng",
-  //     subtitle: "2022 & 2023",
-  //     description:
-  //       "Showcased projects on neural network-based flood detection using novel algorithms and a full-stack web application for accessible STEAM education for underprivileged youth. Awarded Honorable Mention for physical science and engineering.",
-  //     image: synopsys,
-  //     skills: [
-  //       "machine learning",
-  //       "full-stack web development",
-  //       "engineering constraint design",
-  //       "project presentation",
-  //     ],
-  //   },
   {
     link: "/projects/genalt.jpg",
     title: "GenAlt: Web Accessibility Initiative",
     subtitle: "November 2022 - April 2023",
     description:
-      "Led outreach and worked on development for an AI-based prototype aimed at improving blind accessibility to the Internet. Collaborated with a multidisciplinary team to form a business plan and design for expansion of innovation. Presented the project at the Diamond Challenge 2023, where it was recognized with the Horn Entrepreneurship through Equity Award for its impact and technical merit.",
+      "Led development of an AI-based tool to improve web accessibility for the blind. Presented at the Diamond Challenge 2023 and received the Horn Entrepreneurship through Equity Award.",
     image: genalt,
     skills: [
       "machine learning model hosting",

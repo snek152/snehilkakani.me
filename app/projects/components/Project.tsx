@@ -63,7 +63,7 @@ const Project = React.memo(({ project }: { project: ProjectT }) => {
         // loading="lazy"
         // quality={10}
         placeholder="blur"
-        className="object-cover opacity-70 w-full h-72 group-hover/project:opacity-90 transition-opacity duration-300"
+        className="object-cover opacity-70 w-full h-64 group-hover/project:opacity-90 transition-opacity duration-300"
       />
       <div className="relative z-30 flex p-6 rounded-xl flex-col items-left text-left overflow-hidden">
         {/* <div className="absolute inset-0 pointer-events-none opacity-10 z-0 rounded-xl overflow-hidden">
