@@ -1,7 +1,7 @@
-import drama from "../../public/projects/drama.jpg";
-import sra from "../../public/projects/sranew.jpg";
-import genalt from "../../public/projects/genaltnew.jpg";
-import floodsafe from "../../public/projects/floodsafe.jpg";
+import drama from "@/public/projects/drama.jpg";
+import sra from "@/public/projects/sranew.jpg";
+import genalt from "@/public/projects/genaltnew.jpg";
+import floodsafe from "@/public/projects/floodsafe.jpg";
 import { StaticImageData } from "next/image";
 
 export type Project = {

@@ -1,7 +1,7 @@
 "use client";
 import { Suspense, useEffect, useMemo, useState } from "react";
-import { projects } from "../projects";
-import LoadingSpinner from "@/app/components/LoadingSpinner";
+import { projects } from "../data/projects";
+import LoadingSpinner from "@/app/lib/components/LoadingSpinner";
 import dynamic from "next/dynamic";
 import * as motion from "motion/react-m";
 

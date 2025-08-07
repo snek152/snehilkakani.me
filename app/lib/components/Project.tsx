@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Project as ProjectT } from "../projects";
+import { Project as ProjectT } from "../data/projects";
 // import Card from "@/app/components/Card";
 import { ArrowUpRightIcon } from "@heroicons/react/16/solid";
 import React from "react";

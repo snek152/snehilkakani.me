@@ -1,4 +1,4 @@
-import Beats from "./components/Beats";
+import Beats from "../lib/components/Beats";
 
 export default function MusicPage() {
   return (

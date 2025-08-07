@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import WaveSurfer from "wavesurfer.js";
-import { beats, categories } from "../beats";
+import { beats, categories } from "../data/beats";
 import MusicBeat from "./MusicBeat";
 
 // const categories = Array.from(new Set(beats.map((beat) => beat.category)));

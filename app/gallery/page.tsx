@@ -1,5 +1,5 @@
 // import LoadingSpinner from "../components/LoadingSpinner";
-import PhotoGallery from "./components/AltFeaturedGallery";
+import PhotoGallery from "../lib/components/FeaturedGallery";
 
 export default function Gallery() {
   return (

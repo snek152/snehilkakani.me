@@ -6,7 +6,7 @@ import NavLink from "./NavLink";
 import { useState, useEffect, useRef, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import ContactModal from "./ContactModal";
-import { navlinks } from "../navlinks";
+import { navlinks } from "../data/navlinks";
 
 export default function Navbar() {
   const [hovered, setHovered] = useState<boolean>(false);

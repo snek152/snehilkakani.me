@@ -2,7 +2,7 @@
 // import { Code, Music } from "lucide-react";
 "use client";
 import Link from "next/link";
-import { navlinks } from "../navlinks";
+import { navlinks } from "../data/navlinks";
 
 export default function Footer() {
   return (

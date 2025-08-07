@@ -1,6 +1,6 @@
 "use client";
-import Card from "@/app/components/Card";
-import { skillsList, skillTypes } from "./skills";
+import Card from "@/app/lib/components/Card";
+import { skillsList, skillTypes } from "../data/skills";
 import React from "react";
 import * as motion from "motion/react-m";
 

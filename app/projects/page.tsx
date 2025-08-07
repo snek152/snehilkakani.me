@@ -1,11 +1,11 @@
 // import AllProjects from "./components/AllProjects";
 import { Suspense } from "react";
-import Tools from "./components/Tools";
-import LoadingSpinner from "../components/LoadingSpinner";
+import Tools from "../lib/components/Tools";
+import LoadingSpinner from "../lib/components/LoadingSpinner";
 // import ContactCard from "./components/ContactCard";
 import dynamic from "next/dynamic";
 
-const AllProjects = dynamic(() => import("./components/AllProjects"));
+const AllProjects = dynamic(() => import("../lib/components/AllProjects"));
 
 export default function About() {
   return (

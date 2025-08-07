@@ -1,7 +1,7 @@
 "use client";
 import { Suspense } from "react";
-import photos from "../photos";
-import LoadingSpinner from "@/app/components/LoadingSpinner";
+import photos from "../data/photos";
+import LoadingSpinner from "@/app/lib/components/LoadingSpinner";
 // import FeaturedPhoto from "./FeaturedPhoto";
 import * as motion from "motion/react-m";
 import dynamic from "next/dynamic";

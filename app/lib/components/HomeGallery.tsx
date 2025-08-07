@@ -30,7 +30,7 @@ export default function HomeGallery() {
               selected === idx ? "invisible" : "visible"
             }`}
           >
-            <div className="aspect-[4/3] w-full">
+            <div className="aspect-[3/4] w-full">
               <motion.div
                 layoutId={`photo-img-${idx}`}
                 className="w-full h-full bg-cover bg-center will-change-transform"
@@ -68,7 +68,7 @@ export default function HomeGallery() {
               layoutId={`photo-wrapper-${selected}`}
               className="relative z-50 bg-white rounded-xl shadow-xl overflow-hidden w-[90vw] max-w-3xl"
             >
-              <div className="aspect-[4/3] w-full">
+              <div className="aspect-[3/4] w-full">
                 <motion.div
                   layoutId={`photo-img-${selected}`}
                   className="w-full h-full bg-cover bg-center aspect-[4/3] will-change-transform"
