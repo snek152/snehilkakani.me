@@ -5,7 +5,7 @@ import * as motion from "motion/react-m";
 import NavLink from "./NavLink";
 import { useState, useEffect, useRef, useMemo } from "react";
 import { usePathname } from "next/navigation";
-import ContactModal from "./ContactModal";
+// import ContactModal from "./ContactModal";
 import { navlinks } from "../data/navlinks";
 
 export default function Navbar() {
@@ -82,7 +82,7 @@ export default function Navbar() {
           {navlinks.map((navlink) => (
             <NavLink key={navlink.href} navlink={navlink} hovered={hovered} />
           ))}
-          <ContactModal hovered={hovered} setHovered={setHovered} />
+          {/* <ContactModal hovered={hovered} setHovered={setHovered} /> */}
         </motion.div>
       </AnimatePresence>
     </nav>
