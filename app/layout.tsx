@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Domine, IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
-import { domAnimation, LazyMotion } from "motion/react";
+import { domAnimation, domMax, LazyMotion } from "motion/react";
+import Footer from "./components/Footer";
 // import dynamic from "next/dynamic";
 
 const domine = Domine({
@@ -59,7 +60,7 @@ export default function RootLayout({
       <body
         className={`${domine.variable} ${ibm.variable} antialiased relative overflow-x-hidden overflow-y-hidden h-full bg-secondary`}
       >
-        <LazyMotion features={domAnimation}>
+        <LazyMotion features={domMax}>
           <div className="flex flex-col lg:flex-row w-screen h-svh lg:h-screen">
             <div className="lg:w-18 lg:h-screen flex-shrink-0">
               <Navbar />
@@ -70,6 +71,7 @@ export default function RootLayout({
             >
               <div className="w-full h-18 lg:hidden" id="topbar"></div>
               {children}
+              <Footer />
             </div>
           </div>
         </LazyMotion>

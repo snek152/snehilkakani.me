@@ -52,3 +52,21 @@
 #container::-webkit-scrollbar-corner {
   background: #fff; /* Optional, cleaner corner */
 }
+/* @keyframes bounce-smooth {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-6px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  70% {
+    transform: translateY(-6px);
+  }
+}
+.bouncesmooth {
+  animation: bounce-smooth 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+} */

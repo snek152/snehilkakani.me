@@ -1,6 +1,6 @@
 "use client";
 import { AnimatePresence } from "motion/react";
-import { type NavLink } from "../types";
+import { type NavLink } from "../navlinks";
 // import { useState } from "react";
 import * as motion from "motion/react-m";
 import { usePathname } from "next/navigation";
