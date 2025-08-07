@@ -6,20 +6,12 @@ import * as motion from "motion/react-m";
 
 const photos = [
   {
-    src: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800",
+    src: "/music_prod.jpg",
     caption: "Mountain View",
   },
   {
-    src: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?w=800",
+    src: "/photography.jpeg",
     caption: "Forest Path",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?w=800",
-    caption: "Desert Dunes",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=800",
-    caption: "City Skyline",
   },
 ];
 
@@ -34,16 +26,17 @@ export default function HomeGallery() {
             key={idx}
             layoutId={`photo-wrapper-${idx}`}
             onClick={() => setSelected(idx)}
-            className={`rounded-xl shadow-lg bg-white cursor-pointer overflow-hidden ${
+            className={`rounded-xl shadow-lg cursor-pointer overflow-hidden ${
               selected === idx ? "invisible" : "visible"
             }`}
           >
             <div className="aspect-[4/3] w-full">
-              <motion.img
-                src={photo.src}
-                alt={photo.caption}
-                className="object-cover w-full h-full"
+              <motion.div
                 layoutId={`photo-img-${idx}`}
+                className="w-full h-full bg-cover bg-center will-change-transform"
+                style={{
+                  backgroundImage: `url(${photo.src})`,
+                }}
               />
             </div>
             <div className="p-4 text-center">
@@ -76,11 +69,12 @@ export default function HomeGallery() {
               className="relative z-50 bg-white rounded-xl shadow-xl overflow-hidden w-[90vw] max-w-3xl"
             >
               <div className="aspect-[4/3] w-full">
-                <motion.img
-                  src={photos[selected].src}
-                  alt={photos[selected].caption}
-                  className="object-cover w-full h-full"
+                <motion.div
                   layoutId={`photo-img-${selected}`}
+                  className="w-full h-full bg-cover bg-center aspect-[4/3] will-change-transform"
+                  style={{
+                    backgroundImage: `url(${photos[selected].src})`,
+                  }}
                 />
               </div>
               <motion.div
