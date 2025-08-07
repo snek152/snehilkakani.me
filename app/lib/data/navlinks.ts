@@ -3,12 +3,14 @@ import {
   CommandLineIcon as CommandOutline,
   MusicalNoteIcon as MusicOutline,
   CameraIcon as CameraOutline,
+  ChatBubbleOvalLeftEllipsisIcon as ChatIconOutline,
 } from "@heroicons/react/24/outline";
 import {
   UserCircleIcon as UserIconSolid,
   CommandLineIcon as CommandSolid,
   MusicalNoteIcon as MusicSolid,
   CameraIcon as CameraSolid,
+  ChatBubbleOvalLeftEllipsisIcon as ChatIconSolid,
 } from "@heroicons/react/24/solid";
 
 export type NavLink = {
@@ -42,5 +44,11 @@ export const navlinks: NavLink[] = [
     iconInactive: CameraOutline,
     href: "/gallery",
     label: "Gallery",
+  },
+  {
+    iconActive: ChatIconSolid,
+    iconInactive: ChatIconOutline,
+    href: "/contact",
+    label: "Contact",
   },
 ];

@@ -3,7 +3,7 @@ import { Domine, IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "./lib/components/Navbar";
 import { domAnimation, LazyMotion } from "motion/react";
-import Footer from "./lib/components/Footer";
+// import Footer from "./lib/components/Footer";
 // import dynamic from "next/dynamic";
 
 const domine = Domine({
@@ -71,7 +71,7 @@ export default function RootLayout({
             >
               <div className="w-full h-18 lg:hidden" id="topbar"></div>
               {children}
-              <Footer />
+              {/* <Footer /> */}
             </div>
           </div>
         </LazyMotion>
