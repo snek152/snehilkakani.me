@@ -42,7 +42,7 @@ export default function FeaturedPhoto({
         priority={i < 3} // Prioritize first few images
       />
       <motion.div
-        className="absolute bottom-2 left-2 flex gap-2 z-10 bg-secondary/70 rounded-lg px-3 py-2 shadow-lg backdrop-blur-xs"
+        className="absolute bottom-2 left-2 flex gap-2 z-10 bg-secondary/70 rounded-xl px-3 py-2 shadow-lg backdrop-blur-xs border-2 border-primary/5"
         initial={{ opacity: 0, y: 20, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{
