@@ -20,13 +20,13 @@ export default function MusicBeat({
       className="flex items-center h-16 w-full rounded-xl overflow-hidden shadow-lg relative bg-on-surface border-secondary border-2"
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
+      viewport={{ once: true }}
       transition={{
         type: "tween",
         // stiffness: 150,
         duration: 0.5,
         ease: [0.25, 0.46, 0.45, 0.94],
-        delay: 0.08 * (beats.findIndex((b) => b.name === beat.name) % 2),
+        delay: 0.1 + 0.08 * (beats.findIndex((b) => b.name === beat.name) % 2),
       }}
     >
       <div className="flex items-center justify-between h-full px-3 lg:px-4 w-40 lg:w-52 rounded-md relative bg-background">

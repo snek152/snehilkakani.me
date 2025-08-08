@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import WaveSurfer from "wavesurfer.js";
 import { beats, categories } from "../data/beats";
 import MusicBeat from "./MusicBeat";
+import * as motion from "motion/react-m";
 
 // const categories = Array.from(new Set(beats.map((beat) => beat.category)));
 
@@ -104,10 +105,17 @@ export default function Beats() {
 
   return categories.map((c) => (
     <div key={c}>
-      <div className="flex items-center gap-2 px-4">
+      <motion.div
+        className="flex items-center gap-2 px-4"
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+      >
         <span className="inline-block w-1 h-6 bg-primary/30 rounded-full shadow-lg"></span>
-        <h2 className="text-2xl font-bold text-surface font-ibm">{c}</h2>
-      </div>
+        <h2 className="text-2xl font-bold text-surface font-ibm">
+          {c.charAt(0).toUpperCase() + c.slice(1)} Beats
+        </h2>
+      </motion.div>
       <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4 p-4">
         {beats
           .filter((b) => b.category === c)

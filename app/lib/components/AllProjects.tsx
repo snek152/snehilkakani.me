@@ -32,7 +32,7 @@ export default function AllProjects() {
             initial={{ y: 40, opacity: 0 }}
             //   animate={{ y: 0, opacity: 1 }}
             whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true, amount: 0.2 }}
+            viewport={{ once: true }}
             transition={{
               type: "tween",
               // stiffness: 150,
@@ -71,7 +71,7 @@ export default function AllProjects() {
             initial={{ y: 40, opacity: 0 }}
             //   animate={{ y: 0, opacity: 1 }}
             whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true, amount: 0.2 }}
+            viewport={{ once: true }}
             transition={{
               // stiffness: 150,
               ease: [0.25, 0.46, 0.45, 0.94],
@@ -116,7 +116,7 @@ export default function AllProjects() {
           initial={{ y: 40, opacity: 0 }}
           //   animate={{ y: 0, opacity: 1 }}
           whileInView={{ y: 0, opacity: 1 }}
-          viewport={{ once: true, amount: 0.1 }}
+          viewport={{ once: true }}
           transition={{
             type: "tween",
             // stiffness: 150,
