@@ -29,8 +29,8 @@ const photos = [
 
 export default function HomeGallery() {
   return (
-    <div className="lg:max-h-screen w-full px-4 lg:px-10 py-10 lg:py-20">
-      <div className="grid grid-cols-2 grid-rows-2 gap-6 h-full">
+    <div className="lg:max-h-screen w-full px-4 lg:px-10 pt-2 pb-5 lg:py-20">
+      <div className="grid lg:grid-cols-2 lg:grid-rows-2 grid-cols-2 grid-rows-2 gap-6 h-full">
         {photos.map((photo, idx) => (
           <motion.div
             key={idx}
@@ -51,7 +51,7 @@ export default function HomeGallery() {
                 alt={photo.caption}
               />
             </div>
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-secondary/20 transition-colors duration-300" />
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-secondary/20 group-active:bg-secondary/20 transition-colors duration-300" />
             {/* <div className="absolute top-2 right-2 bg-black/30 backdrop-blur-sm rounded-full p-2">
               <svg
                 className="w-5 h-5 text-white"
@@ -67,8 +67,8 @@ export default function HomeGallery() {
                 />
               </svg>
             </div> */}
-            <motion.div
-              className="absolute bottom-2 left-2 right-2 bg-secondary/70 backdrop-blur-xs rounded-xl px-3 py-2 shadow-lg border-2 border-primary/5 group-hover:opacity-100 opacity-0 transition-opacity duration-300 ease-in-out"
+            <div
+              className="absolute bottom-2 left-2 right-2 bg-secondary/70 backdrop-blur-xs rounded-xl px-3 py-2 shadow-lg border-2 border-primary/5 group-hover:opacity-100 group-active:opacity-100 opacity-0 transition-opacity duration-300 ease-in-out"
               // initial={{ opacity: 0, y: 20 }}
               // animate={{ opacity: 1, y: 0 }}
               // transition={{
@@ -82,7 +82,7 @@ export default function HomeGallery() {
               // }}
             >
               <p className="text-surface text-sm font-ibm">{photo.caption}</p>
-            </motion.div>
+            </div>
           </motion.div>
         ))}
       </div>

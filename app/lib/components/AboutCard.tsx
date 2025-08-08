@@ -60,7 +60,7 @@ export default function AboutCard() {
             alt="photo of snehil kakani in front of the manhattan bridge"
             width={600}
             height={600}
-            className="object-cover object-center h-[25svh] lg:h-[40vh] w-full"
+            className="object-cover object-center h-[25dvh] lg:h-[40vh] w-full"
             priority
           />
         </div>

@@ -94,7 +94,7 @@ const HomePage = () => {
   }
 
   return (
-    <div className="relative w-screen max-w-full h-svh lg:h-screen lg:max-h-full max-h-[calc(100svh-4.5rem)] overflow-x-hidden">
+    <div className="relative w-screen max-w-full h-dvh lg:h-screen lg:max-h-full max-h-[calc(100dvh-4.5rem)] overflow-x-hidden">
       <motion.div
         className="w-full h-full flex items-center justify-center relative overflow-x-hidden"
         initial={{
