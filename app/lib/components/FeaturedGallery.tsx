@@ -27,7 +27,7 @@ export default function FeaturedGallery() {
               }}
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
+              transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
               //   exit={{ opacity: 0, y: 0 }}
               viewport={{ once: false, amount: 0.02 }}
             >

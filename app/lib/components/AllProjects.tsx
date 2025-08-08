@@ -37,7 +37,7 @@ export default function AllProjects() {
               type: "tween",
               // stiffness: 150,
               duration: 0.5,
-              ease: [0.25, 0.1, 0.25, 1],
+              ease: [0.25, 0.46, 0.45, 0.94],
               // stiffness: 60,
               delay: index <= 0 ? 0.1 : 0.1,
               // damping: 20,
@@ -74,7 +74,7 @@ export default function AllProjects() {
             viewport={{ once: true, amount: 0.2 }}
             transition={{
               // stiffness: 150,
-              ease: [0.25, 0.1, 0.25, 1],
+              ease: [0.25, 0.46, 0.45, 0.94],
               duration: 0.5,
               // stiffness: 60,
               delay: index <= 0 ? 0.1 : 0.1,
@@ -120,7 +120,7 @@ export default function AllProjects() {
           transition={{
             type: "tween",
             // stiffness: 150,
-            ease: [0.25, 0.1, 0.25, 1],
+            ease: [0.25, 0.46, 0.45, 0.94],
             duration: 0.5,
             // stiffness: 60,
             delay: index === 0 ? 0.1 : 0.1,

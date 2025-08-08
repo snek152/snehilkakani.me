@@ -39,7 +39,7 @@ const ToolIcon = ({
   <motion.div
     whileHover={{
       y: -5,
-      transition: { duration: 0.2, ease: [0.25, 0.1, 0.25, 1] },
+      transition: { duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] },
       boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
     }}
     className={`flex flex-col items-center justify-center bg-on-surface/80 border-2 border-surface/5 rounded-lg p-3 gap-1 ${iconColors[colorClass]}`}

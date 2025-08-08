@@ -20,7 +20,7 @@ export default function Card({
         // stiffness: 150,
         duration: 0.6,
         delay: 0.2,
-        ease: [0.25, 0.1, 0.25, 1],
+        ease: [0.25, 0.46, 0.45, 0.94],
         // damping: 30,
         // mass: 2,
         ...transition,

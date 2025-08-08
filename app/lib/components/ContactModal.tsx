@@ -150,7 +150,7 @@ export default function ContactModal({
                     transition={{
                       delay: 0.05,
                       duration: 0.28,
-                      ease: "easeOut",
+                      ease: [0.25, 0.46, 0.45, 0.94],
                     }}
                     className="text-2xl font-medium font-domine text-center text-white"
                   >

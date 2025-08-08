@@ -6,23 +6,25 @@ import * as motion from "motion/react-m";
 import Image from "next/image";
 import musicprod from "@/public/music_prod.jpg";
 import photography from "@/public/photography.jpeg";
+import blessings from "@/public/blessings.png";
+import lenaea from "@/public/lenaea.jpg";
 
 const photos = [
   {
     src: musicprod,
-    caption: "Mountain View",
+    caption: "Putting together a new beat",
   },
   {
     src: photography,
-    caption: "Forest Path",
+    caption: "Prepping my camera for a shoot in NYC",
   },
   {
-    src: musicprod,
-    caption: "Mountain View",
+    src: blessings,
+    caption: "Hosting a recording studio session",
   },
   {
-    src: photography,
-    caption: "Forest Path",
+    src: lenaea,
+    caption: "Performing onstage at a theatre festival",
   },
 ];
 
@@ -30,11 +32,24 @@ export default function HomeGallery() {
   const [selected, setSelected] = useState<number | null>(null);
 
   return (
-    <div className="max-h-screen w-full px-4 lg:px-10 py-10 lg:py-20">
+    <div className="lg:max-h-screen w-full px-4 lg:px-10 py-10 lg:py-20">
       <div className="grid grid-cols-2 grid-rows-2 gap-6 h-full">
         {photos.map((photo, idx) => (
           <motion.div
             key={idx}
+            initial={{ opacity: 0, scale: 0.8, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{
+              duration: 0.6,
+              delay: idx * 0.1,
+              ease: [0.25, 0.46, 0.45, 0.94],
+            }}
+            // whileHover={{
+            //   scale: 1.01,
+            //   y: -5,
+            //   transition: { duration: 0.2, ease: "easeInOut" },
+            // }}
+            // whileTap={{ scale: 0.98 }}
             // layoutId={`photo-wrapper-${idx}`}
             // onClick={() => setSelected(idx)}
             className={`rounded-xl shadow-lg group h-full w-full relative overflow-hidden ${
@@ -49,7 +64,6 @@ export default function HomeGallery() {
                 // style={{
                 //   backgroundImage: `url(${photo.src})`,
                 // }}
-
                 src={photo.src}
                 alt={photo.caption}
               />
@@ -70,11 +84,22 @@ export default function HomeGallery() {
                 />
               </svg>
             </div> */}
-            <div className="absolute bottom-2 left-2 right-2 bg-secondary/70 backdrop-blur-xs rounded-xl px-3 py-2 transition-opacity duration-300 shadow-lg border-2 border-primary/5">
-              <p className="text-surface text-sm font-medium">
-                {photo.caption}
-              </p>
-            </div>
+            <motion.div
+              className="absolute bottom-2 left-2 right-2 bg-secondary/70 backdrop-blur-xs rounded-xl px-3 py-2 shadow-lg border-2 border-primary/5"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.4,
+                delay: idx * 0.1 + 0.3,
+                ease: [0.25, 0.46, 0.45, 0.94],
+              }}
+              // whileHover={{
+              //   y: -2,
+              //   transition: { duration: 0.2 },
+              // }}
+            >
+              <p className="text-surface text-sm font-ibm">{photo.caption}</p>
+            </motion.div>
           </motion.div>
         ))}
       </div>

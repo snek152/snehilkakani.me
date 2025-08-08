@@ -58,7 +58,7 @@ export default function ContactForm() {
         transition={{
           delay: 0.05,
           duration: 0.28,
-          ease: "easeOut",
+          ease: [0.25, 0.46, 0.45, 0.94],
         }}
         className="text-2xl font-medium font-domine text-center text-white"
       >
@@ -116,7 +116,11 @@ export default function ContactForm() {
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 6 }}
-          transition={{ delay: 0.15, duration: 0.22 }}
+          transition={{
+            delay: 0.15,
+            duration: 0.22,
+            ease: [0.25, 0.46, 0.45, 0.94],
+          }}
           className="flex flex-col gap-2"
         >
           <input
@@ -134,7 +138,11 @@ export default function ContactForm() {
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 6 }}
-          transition={{ delay: 0.18, duration: 0.22 }}
+          transition={{
+            delay: 0.18,
+            duration: 0.22,
+            ease: [0.25, 0.46, 0.45, 0.94],
+          }}
           className="flex flex-col gap-2"
         >
           <input
@@ -152,7 +160,11 @@ export default function ContactForm() {
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 6 }}
-          transition={{ delay: 0.21, duration: 0.22 }}
+          transition={{
+            delay: 0.21,
+            duration: 0.22,
+            ease: [0.25, 0.46, 0.45, 0.94],
+          }}
           className="flex flex-col gap-2"
         >
           <textarea
@@ -170,6 +182,7 @@ export default function ContactForm() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              transition={{ duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
               className="text-red-400 text-sm font-medium"
             >
               {error}
@@ -180,6 +193,7 @@ export default function ContactForm() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              transition={{ duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
               className="text-primary text-sm font-medium"
             >
               Thanks for reaching out! I{"'"}ll get back to you soon.
@@ -190,7 +204,11 @@ export default function ContactForm() {
           initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.98 }}
-          transition={{ delay: 0.25, duration: 0.18 }}
+          transition={{
+            delay: 0.25,
+            duration: 0.18,
+            ease: [0.25, 0.46, 0.45, 0.94],
+          }}
           type="submit"
           className={`inline-flex font-ibm items-center justify-center gap-2 rounded-lg px-6 py-2 text-base font-semibold text-white focus:outline-none focus:ring-2 focus:ring-primary/60 transition-all duration-200 
             ${
@@ -207,7 +225,7 @@ export default function ContactForm() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.2 }}
+                transition={{ duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
               >
                 <div
                   className={`flex items-center justify-center w-full h-full`}
@@ -246,7 +264,7 @@ export default function ContactForm() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.2 }}
+                transition={{ duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
               >
                 Sent!
               </motion.span>
