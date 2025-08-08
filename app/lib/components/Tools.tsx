@@ -38,11 +38,18 @@ const ToolIcon = ({
 }) => (
   <motion.div
     whileHover={{
-      y: -5,
-      transition: { duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] },
-      boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
+      y: -8,
+      scale: 1.05,
+      rotate: 1,
+      transition: {
+        duration: 0.1,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      },
     }}
-    className={`flex flex-col items-center justify-center bg-on-surface/80 border-2 border-surface/5 rounded-lg p-3 gap-1 ${iconColors[colorClass]}`}
+    transition={{
+      duration: 0.1,
+    }}
+    className={`flex flex-col items-center justify-center bg-on-surface/80 border-2 border-surface/5 rounded-lg p-3 gap-1 ${iconColors[colorClass]} hover:border-surface/20 cursor-default transition-all duration-300 hover:shadow-lg`}
   >
     <div className="relative flex items-center justify-center mb-1">
       <Icon className="w-7 h-7 lg:w-8 lg:h-8 transition-colors duration-300 drop-shadow" />
@@ -92,22 +99,43 @@ export default function Tools() {
         <div className="grid grid-cols-1 px-3 w-full">
           {skillTypes.map((category) => (
             <div key={category}>
-              <div className="flex items-center gap-2 mt-6 mb-5">
+              <motion.div
+                className="flex items-center gap-2 mt-6 mb-5"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3, delay: 0.2 }}
+              >
                 <span className="text-xl font-semibold text-surface/80 font-mono tracking-tight text-center">
                   {"// " + category.charAt(0).toUpperCase() + category.slice(1)}
                 </span>
-                <div className="flex-1 h-px bg-surface/20 ml-2" />
-              </div>
+                <motion.div
+                  className="flex-1 h-px bg-surface/20 ml-2"
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }}
+                  style={{ originX: 0 }}
+                />
+              </motion.div>
               <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-8 gap-6">
                 {skillsList
                   .filter((s) => s.type === category)
-                  .map(({ icon, label, colorClass }) => (
-                    <ToolIcon
-                      icon={icon}
-                      label={label}
-                      colorClass={colorClass as keyof typeof iconColors}
+                  .map(({ icon, label, colorClass }, index) => (
+                    <motion.div
                       key={label}
-                    />
+                      initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      transition={{
+                        duration: 0.4,
+                        delay: index * 0.08,
+                        ease: [0.25, 0.46, 0.45, 0.94],
+                      }}
+                    >
+                      <ToolIcon
+                        icon={icon}
+                        label={label}
+                        colorClass={colorClass as keyof typeof iconColors}
+                      />
+                    </motion.div>
                   ))}
               </div>
             </div>

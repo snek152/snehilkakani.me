@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 // import { Dialog, DialogPanel } from "@headlessui/react";
 // import { AnimatePresence } from "motion/react";
 import * as motion from "motion/react-m";
@@ -29,8 +28,6 @@ const photos = [
 ];
 
 export default function HomeGallery() {
-  const [selected, setSelected] = useState<number | null>(null);
-
   return (
     <div className="lg:max-h-screen w-full px-4 lg:px-10 py-10 lg:py-20">
       <div className="grid grid-cols-2 grid-rows-2 gap-6 h-full">
@@ -44,26 +41,12 @@ export default function HomeGallery() {
               delay: idx * 0.1,
               ease: [0.25, 0.46, 0.45, 0.94],
             }}
-            // whileHover={{
-            //   scale: 1.01,
-            //   y: -5,
-            //   transition: { duration: 0.2, ease: "easeInOut" },
-            // }}
-            // whileTap={{ scale: 0.98 }}
-            // layoutId={`photo-wrapper-${idx}`}
-            // onClick={() => setSelected(idx)}
-            className={`rounded-xl shadow-lg group h-full w-full relative overflow-hidden ${
-              selected === idx ? "invisible" : "visible"
-            }`}
+            className="rounded-xl shadow-lg group h-full w-full relative overflow-hidden"
           >
             <div className="w-full h-full relative">
               <Image
-                // layoutId={`photo-img-${idx}`}
                 className="w-full h-full object-cover object-center will-change-transform"
                 placeholder="blur"
-                // style={{
-                //   backgroundImage: `url(${photo.src})`,
-                // }}
                 src={photo.src}
                 alt={photo.caption}
               />
@@ -85,14 +68,14 @@ export default function HomeGallery() {
               </svg>
             </div> */}
             <motion.div
-              className="absolute bottom-2 left-2 right-2 bg-secondary/70 backdrop-blur-xs rounded-xl px-3 py-2 shadow-lg border-2 border-primary/5"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.4,
-                delay: idx * 0.1 + 0.3,
-                ease: [0.25, 0.46, 0.45, 0.94],
-              }}
+              className="absolute bottom-2 left-2 right-2 bg-secondary/70 backdrop-blur-xs rounded-xl px-3 py-2 shadow-lg border-2 border-primary/5 group-hover:opacity-100 opacity-0 transition-opacity duration-300 ease-in-out"
+              // initial={{ opacity: 0, y: 20 }}
+              // animate={{ opacity: 1, y: 0 }}
+              // transition={{
+              //   duration: 0.4,
+              //   delay: idx * 0.1 + 0.3,
+              //   ease: [0.25, 0.46, 0.45, 0.94],
+              // }}
               // whileHover={{
               //   y: -2,
               //   transition: { duration: 0.2 },
