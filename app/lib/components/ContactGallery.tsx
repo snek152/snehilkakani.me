@@ -5,8 +5,9 @@ import * as motion from "motion/react-m";
 import Image from "next/image";
 import musicprod from "@/public/music_prod.jpg";
 import photography from "@/public/photography.jpeg";
-import blessings from "@/public/blessings.png";
+// import blessings from "@/public/blessings.png";
 import lenaea from "@/public/lenaea.jpg";
+import webdev from "@/public/webdev.jpg";
 
 const photos = [
   {
@@ -17,9 +18,13 @@ const photos = [
     src: photography,
     caption: "Prepping my camera for a shoot in NYC",
   },
+  // {
+  //   src: blessings,
+  //   caption: "Hosting a recording studio session",
+  // },
   {
-    src: blessings,
-    caption: "Hosting a recording studio session",
+    src: webdev,
+    caption: "Presenting about Git at Web Dev club",
   },
   {
     src: lenaea,
@@ -27,9 +32,9 @@ const photos = [
   },
 ];
 
-export default function HomeGallery() {
+export default function ContactGallery() {
   return (
-    <div className="lg:max-h-screen w-full px-4 lg:px-10 pt-2 pb-5 lg:py-20">
+    <div className="lg:max-h-screen w-full px-4 lg:px-4 pt-2 pb-5 lg:py-20">
       <div className="grid lg:grid-cols-2 lg:grid-rows-2 grid-cols-2 grid-rows-2 gap-6 h-full">
         {photos.map((photo, idx) => (
           <motion.div
@@ -41,7 +46,7 @@ export default function HomeGallery() {
               delay: idx * 0.1,
               ease: [0.25, 0.46, 0.45, 0.94],
             }}
-            className="rounded-xl shadow-lg group h-full w-full relative overflow-hidden"
+            className="rounded-xl shadow-lg group hover:rotate-1 hover:scale-105 active:rotate-1 active:scale-105 transition-all duration-300 h-full w-full relative overflow-hidden"
           >
             <div className="w-full h-full relative">
               <Image
