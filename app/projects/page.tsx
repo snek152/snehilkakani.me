@@ -4,6 +4,11 @@ import Tools from "../lib/components/Tools";
 import LoadingSpinner from "../lib/components/LoadingSpinner";
 // import ContactCard from "./components/ContactCard";
 import dynamic from "next/dynamic";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Projects",
+};
 
 const AllProjects = dynamic(() => import("../lib/components/AllProjects"));
 

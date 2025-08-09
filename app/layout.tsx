@@ -43,11 +43,37 @@ const ibm = IBM_Plex_Sans({
 // };
 
 // sdf
-
+const title = "Snehil Kakani - Software Engineer & Creative Developer";
+const description =
+  "Full-stack developer and creative technologist crafting innovative web solutions, producing music, and building meaningful digital experiences.";
 export const metadata: Metadata = {
-  title: "Snehil Kakani | Portfolio",
-  description:
-    "Explore Snehil Kakani's portfolio: software engineering projects, technical skills, and professional experience.",
+  title: {
+    template: "%s | Snehil Kakani",
+    default: title,
+  },
+  description: description,
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    type: "website",
+    title: {
+      template: "%s | Snehil Kakani",
+      default: title,
+    },
+    description: description,
+    siteName: title,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: {
+      template: "%s | Snehil Kakani",
+      default: title,
+    },
+    description: description,
+    images: ["https://snehilkakani.me/images/Snehil Kakani.webp"],
+  },
 };
 
 export default function RootLayout({

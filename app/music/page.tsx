@@ -1,4 +1,9 @@
+import { Metadata } from "next";
 import Beats from "../lib/components/Beats";
+
+export const metadata: Metadata = {
+  title: "Music",
+};
 
 export default function MusicPage() {
   return (
