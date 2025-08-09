@@ -87,7 +87,7 @@ export default function AboutCard() {
               <span>Resume</span>
             </a>
             <a
-              href="https://github.com/snehilk"
+              href="https://github.com/snek152"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-transparent hover:bg-on-surface/5 text-on-surface z-20 relative text-sm font-domine hover:shadow-sm rounded-lg p-1 transition-all duration-200 flex gap-1 items-center h-full"

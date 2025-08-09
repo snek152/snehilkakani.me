@@ -1,11 +1,20 @@
 import ContactForm from "../lib/components/ContactForm";
 import Footer from "../lib/components/Footer";
-import ContactGallery from "../lib/components/ContactGallery";
+// import ContactGallery from "../lib/components/ContactGallery";
 import { Metadata } from "next";
+import dynamic from "next/dynamic";
+import LoadingSpinner from "../lib/components/LoadingSpinner";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Contact",
 };
+
+const ContactGallery = dynamic(
+  () => import("../lib/components/ContactGallery")
+);
+
+// const ContactForm = dynamic(() => import("../lib/components/ContactForm"));
 
 export default function ContactPage() {
   return (
@@ -18,7 +27,9 @@ export default function ContactPage() {
           <Footer />
         </div>
       </div>
-      <ContactGallery />
+      <Suspense fallback={<LoadingSpinner />}>
+        <ContactGallery />
+      </Suspense>
     </section>
   );
 }
