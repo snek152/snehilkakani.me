@@ -74,9 +74,9 @@ const Project = React.memo(({ project }: { project: ProjectT }) => {
 
       <div className="relative z-30 flex p-6 rounded-xl flex-col items-left text-left overflow-hidden">
         <h1 className="text-2xl font-bold tracking-tight text-surface mb-2 font-domine">
-          <span className="text-primary">{"<"}</span>
+          <span className="text-primary text-lg mr-0.25">{"<"}</span>
           {project.title}
-          <span className="text-primary">{"/>"}</span>
+          <span className="text-primary text-lg ml-0.25">{"/>"}</span>
         </h1>
 
         {project.subtitle && (

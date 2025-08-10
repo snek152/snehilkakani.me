@@ -68,8 +68,11 @@ export default function AboutCard() {
           <h1 className="text-2xl lg:text-3xl font-bold text-secondary w-full text-left font-domine tracking-tight relative">
             Snehil Kakani
           </h1>
-          <h2 className="text-sm lg:text-base text-on-surface font-domine mb-2">
-            Computer Science @ Cal Poly SLO
+          <h2 className="text-sm lg:text-base text-on-surface/80 font-ibm italic mb-2">
+            I build websites, among other things.
+          </h2>
+          <h2 className="text-sm lg:text-base text-on-surface font-domine mb-1">
+            CompSci @ Cal Poly SLO
           </h2>
           <p className="text-on-surface font-ibm text-sm w-full lg:text-base">
             Focused on computer science and software engineering. Passionate
