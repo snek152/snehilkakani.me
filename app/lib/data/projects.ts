@@ -2,6 +2,7 @@ import drama from "@/public/projects/drama.jpg";
 import sra from "@/public/projects/sranew.jpg";
 import genalt from "@/public/projects/genaltnew.jpg";
 import floodsafe from "@/public/projects/floodsafe.jpg";
+import steamforce from "@/public/projects/steamforce.jpg";
 import { StaticImageData } from "next/image";
 
 export type Project = {
@@ -60,16 +61,29 @@ export const projects: Project[] = [
     // link: "https://floodsafe-web.vercel.app",
   },
   {
-    link: "/projects/genalt.jpg",
-    title: "GenAlt: Web Accessibility Initiative",
+    title: "Steam Force: Accessible STEAM Learning App",
+    subtitle: "November 2021 - April 2022",
+    description:
+      "Developed an offline-capable STEAM learning app for underprivileged youth, focusing on accessibility. Won Honorable Mention at the 2022 Synopsys Science Fair.",
+    image: steamforce,
+    skills: [
+      "next.js & firebase",
+      "accessibility & ux design",
+      "constraint optimization",
+    ],
+    github: "https://github.com/snek152/steamforce",
+    // link: "https://steamforce.snehilkakani.me",
+  },
+  {
+    title: "GenAlt: AI-Powered Web Accessibility",
     subtitle: "November 2022 - April 2023",
     description:
-      "Led development of an AI-based tool to improve web accessibility for the blind. Presented at the Diamond Challenge 2023 and received the Horn Entrepreneurship through Equity Award.",
+      "Led development of an AI tool to improve web accessibility for the visually impaired. Received the Horn Entrepreneurship through Equity Award at the Diamond Challenge 2023.",
     image: genalt,
-    skills: [
-      "machine learning model hosting",
-      "business development & strategy",
-      "presentational skills",
-    ],
+    skills: ["ml model deployment", "business development", "public speaking"],
+    link: "/projects/genalt.jpg",
   },
+  // {
+
+  // }
 ];

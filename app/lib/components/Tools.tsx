@@ -91,16 +91,16 @@ export default function Tools() {
           <rect width="100%" height="100%" fill="url(#grid)" />
         </svg>
       </div>
-      <div className="relative z-10 px-2 lg:px-10 py-4 lg:py-5 flex flex-col items-center">
+      <div className="relative z-10 px-2 lg:px-5 py-4 lg:py-5 flex flex-col items-center">
         <h1 className="text-3xl lg:text-4xl font-bold text-center tracking-tight text-surface mb-2 font-domine">
           <span className="text-primary">{"<"}</span>My Tools
           <span className="text-primary">{"/>"}</span>
         </h1>
-        <div className="grid grid-cols-1 px-3 w-full">
+        <div className="grid lg:grid-cols-2 px-3 py-1 w-full gap-10">
           {skillTypes.map((category) => (
             <div key={category}>
               <motion.div
-                className="flex items-center gap-2 mt-6 mb-5"
+                className="flex items-center gap-2 mb-5"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3, delay: 0.2 }}
@@ -116,7 +116,7 @@ export default function Tools() {
                   style={{ originX: 0 }}
                 />
               </motion.div>
-              <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-8 gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
                 {skillsList
                   .filter((s) => s.type === category)
                   .map(({ icon, label, colorClass }, index) => (

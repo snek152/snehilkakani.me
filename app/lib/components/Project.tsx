@@ -68,7 +68,7 @@ const Project = React.memo(({ project }: { project: ProjectT }) => {
           src={project.image}
           alt={project.title}
           placeholder="blur"
-          className="object-cover opacity-70 w-full h-64 group-hover/project:opacity-90 transition-opacity duration-300"
+          className="object-cover object-top opacity-70 w-full h-64 group-hover/project:opacity-90 transition-opacity duration-300"
         />
       </motion.div>
 
