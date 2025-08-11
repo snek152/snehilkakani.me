@@ -1,7 +1,7 @@
 // import * as motion from "motion/react-m";
 import Card from "./Card";
 import Image from "next/image";
-import aboutphoto from "@/public/about.jpg";
+import aboutphoto from "@/public/about5.jpg";
 import { DocumentTextIcon } from "@heroicons/react/24/solid";
 import { SiGithub } from "@icons-pack/react-simple-icons";
 
@@ -69,7 +69,7 @@ export default function AboutCard() {
             Snehil Kakani
           </h1>
           <h2 className="text-sm lg:text-base text-on-surface/80 font-ibm italic mb-2">
-            I build websites, among other things.
+            {'"'}I build websites{'"'}
           </h2>
           <h2 className="text-sm lg:text-base text-on-surface font-domine mb-1">
             CompSci @ Cal Poly SLO
