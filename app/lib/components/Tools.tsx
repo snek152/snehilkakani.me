@@ -36,20 +36,20 @@ const ToolIcon = ({
   label: string;
   colorClass: keyof typeof iconColors;
 }) => (
-  <motion.div
-    whileHover={{
-      y: -8,
-      scale: 1.05,
-      rotate: 1,
-      transition: {
-        duration: 0.1,
-        ease: [0.25, 0.46, 0.45, 0.94],
-      },
-    }}
-    transition={{
-      duration: 0.1,
-    }}
-    className={`flex flex-col items-center justify-center bg-on-surface/80 border-2 border-surface/5 rounded-lg p-3 gap-1 ${iconColors[colorClass]} hover:border-surface/20 cursor-default transition-all duration-300 hover:shadow-lg`}
+  <div
+    // whileHover={{
+    //   y: -8,
+    //   scale: 1.05,
+    //   rotate: 1,
+    //   transition: {
+    //     duration: 0.1,
+    //     ease: [0.25, 0.46, 0.45, 0.94],
+    //   },
+    // }}
+    // transition={{
+    //   duration: 0.1,
+    // }}
+    className={`flex flex-col items-center justify-center bg-on-surface/80 border-2 border-surface/5 rounded-lg p-3 gap-1 ${iconColors[colorClass]} hover:border-surface/20 hover:-translate-y-2 hover:scale-105 hover:rotate-1 cursor-default transition-all duration-300 hover:shadow-lg`}
   >
     <div className="relative flex items-center justify-center mb-1">
       <Icon className="w-7 h-7 lg:w-8 lg:h-8 transition-colors duration-300 drop-shadow" />
@@ -57,7 +57,7 @@ const ToolIcon = ({
     <span className="block text-sm font-ibm font-medium uppercase text-surface transition-colors duration-300 tracking-wide">
       {label}
     </span>
-  </motion.div>
+  </div>
 );
 
 export default function Tools() {
