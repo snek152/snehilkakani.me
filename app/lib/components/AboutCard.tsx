@@ -1,7 +1,7 @@
 // import * as motion from "motion/react-m";
 import Card from "./Card";
 import Image from "next/image";
-import aboutphoto from "@/public/about.jpg";
+import aboutphoto from "@/public/about5.jpg";
 import { DocumentTextIcon } from "@heroicons/react/24/solid";
 import { SiGithub } from "@icons-pack/react-simple-icons";
 

@@ -16,7 +16,7 @@ export type Project = {
   github?: string;
 };
 
-// Projects to include: Proco, EuclidLearn, Athletes4Others, Cfoch
+// Projects to include: EuclidLearn, Athletes4Others, Cfoch
 
 export const projects: Project[] = [
   {

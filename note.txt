@@ -1,0 +1,6 @@
+Todo list for website before public beta
+- Finish adding all projects
+- Figure out where to put acting stuff (maybe acting resume, link to current resume?)
+- Get all the metadata right
+- Add favicons/og images
+- Finalize the pictures I'm using (esp homepage)
