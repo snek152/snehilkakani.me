@@ -4,6 +4,8 @@ import genalt from "@/public/projects/genaltnew.jpg";
 import floodsafe from "@/public/projects/floodsafe.jpg";
 import steamforce from "@/public/projects/steamforce.jpg";
 import proco from "@/public/projects/proco.jpg";
+import euclidlearn from "@/public/projects/euclidlearn.jpg";
+import swordselection from "@/public/projects/swordselection.png";
 import { StaticImageData } from "next/image";
 
 export type Project = {
@@ -16,14 +18,12 @@ export type Project = {
   github?: string;
 };
 
-// Projects to include: EuclidLearn, Athletes4Others, Cfoch
-
 export const projects: Project[] = [
   {
     title: "GU-Net: Diffuse Glioma Segmentation Research",
     subtitle: "June 2023 - July 2023",
     description:
-      "Developed a neural network for segmenting diffuse gliomas in medical images, achieving 71.58% accuracy. Presented at UCSB and published in the Journal of Student Research.",
+      "Developed a neural network for segmenting diffuse gliomas in medical images under data and processing constraints, achieving 71.58% accuracy. Presented at UCSB and published in the Journal of Student Research.",
     link: "https://www.jsr.org/hs/index.php/path/article/view/6376",
     github: "https://github.com/snek152/GU_Net_Glioma_Segmentation_SRA",
     image: sra,
@@ -53,7 +53,7 @@ export const projects: Project[] = [
     title: "Website Development for Lynbrook Drama Department",
     subtitle: "April 2024 - October 2024",
     description:
-      "Architected a responsive website for Lynbrook Drama to showcase productions, events, and crew info. Implemented a custom GitHub-based CMS for seamless updates using Next.js and Tailwind CSS.",
+      "Architected a custom design and responsive website for Lynbrook Drama to showcase productions, events, and crew info. Implemented a custom GitHub-based CMS for seamless updates.",
     image: drama,
     skills: [
       "next.js & tailwindcss",
@@ -65,7 +65,7 @@ export const projects: Project[] = [
     title: "FloodSafe: Atmospheric River Prediction",
     subtitle: "January 2023 - March 2023",
     description:
-      "Assembled a dataset and constructed a neural network for atmospheric river prediction, achieving over 95% accuracy. Deployed the model with FastAPI and produced a web app for real-time results.",
+      "Assembled a dataset from scratch and constructed a neural network for atmospheric river prediction, achieving over 95% accuracy. Deployed the model with FastAPI and produced a web app for real-time results.",
     image: floodsafe,
     skills: [
       "pytorch computer vision",
@@ -94,12 +94,33 @@ export const projects: Project[] = [
     title: "GenAlt: AI-Powered Web Accessibility",
     subtitle: "November 2022 - April 2023",
     description:
-      "Collaborated with a team to develop an AI prototype improving web accessibility for the visually impaired. Received the Horn Entrepreneurship through Equity Award at the Diamond Challenge 2023.",
+      "Collaborated on an AI prototype improving web accessibility for the visually impaired. Received the Horn Entrepreneurship through Equity Award at the Diamond Challenge 2023.",
     image: genalt,
     skills: ["ml model deployment", "business development", "public speaking"],
     link: "/projects/genalt.jpg",
   },
-  // {
-
-  // }
+  {
+    title: "Website Development for EuclidLearn",
+    subtitle: "November 2023 - February 2024",
+    description:
+      "Designed and developed a custom website for EuclidLearn, a consulting company focused on high school test prep, emphasizing user experience and responsive design.",
+    image: euclidlearn,
+    skills: [
+      "next.js & tailwindcss",
+      "tailored design",
+      "responsive web development",
+    ],
+    github: "https://github.com/snek152/euclidlearn",
+    link: "https://euclidlearn.vercel.app",
+  },
+  {
+    title: "SwordSelection: Medieval-Inspired Minecraft Mod",
+    subtitle: "June 2021 - October 2021",
+    description:
+      "Developed a Minecraft mod introducing medieval-themed swords with unique abilities, enhancing gameplay with custom animations and mechanics. Promoted extensively on relevant forums and websites, resulting in 2.2k+ downloads.",
+    image: swordselection,
+    skills: ["java & gradle", "documentation & promotion", "minecraft modding"],
+    github: "https://github.com/snek152/SwordSelection",
+    link: "https://swordselection.snehilkakani.me",
+  },
 ];
