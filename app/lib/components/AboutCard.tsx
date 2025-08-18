@@ -7,7 +7,11 @@ import { SiGithub } from "@icons-pack/react-simple-icons";
 
 export default function AboutCard() {
   return (
-    <Card className="flex flex-col mx-2 lg:mx-10 lg:h-auto h-auto">
+    <Card
+      className="flex flex-col mx-3 lg:mx-10 lg:h-auto"
+      initial={{ y: 50, scale: 1, opacity: 0, height: 0 }}
+      animate={{ y: 0, opacity: 1, scale: 1, height: "auto" }}
+    >
       <div className="flex items-center justify-between px-2 lg:px-3 py-1 lg:py-2 bg-background/10 border-b rounded-t-xl border-secondary">
         <div className="flex items-center gap-2">
           <span className="block w-2 h-2 lg:w-2.5 lg:h-2.5 rounded-full bg-surface"></span>
@@ -64,7 +68,7 @@ export default function AboutCard() {
             priority
           />
         </div>
-        <div className="flex flex-col m-4 items-left">
+        <div className="flex flex-col m-3 lg:m-4 items-left">
           <h1 className="text-2xl lg:text-3xl font-bold text-secondary w-full text-left font-domine tracking-tight relative">
             Snehil Kakani
           </h1>
@@ -84,9 +88,9 @@ export default function AboutCard() {
               href="/resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-gradient-to-r from-primary/90 via-primary to-primary/90 text-surface z-20 relative px-4 py-2 rounded-xl text-sm font-domine shadow-md hover:scale-105 hover:shadow-lg active:scale-105 active:shadow-lg transition-all duration-200 flex gap-1 items-center h-full"
+              className="bg-gradient-to-r from-primary/90 via-primary to-primary/90 text-surface z-20 relative px-2 lg:px-4 py-2 lg:py-2 rounded-xl text-xs lg:text-sm font-domine shadow-md hover:scale-105 hover:shadow-lg active:scale-105 active:shadow-lg transition-all duration-200 flex gap-1 items-center h-full"
             >
-              <DocumentTextIcon className="w-6 h-6" />
+              <DocumentTextIcon className="w-4 h-4 lg:w-6 lg:h-6" />
               <span>Resume</span>
             </a>
             <a
@@ -95,7 +99,7 @@ export default function AboutCard() {
               rel="noopener noreferrer"
               className="bg-transparent hover:bg-on-surface/5 active:bg-on-surface/5 text-on-surface z-20 relative text-sm font-domine hover:shadow-sm active:shadow-sm rounded-lg p-1 transition-all duration-200 flex gap-1 items-center h-full"
             >
-              <SiGithub className="w-6 h-6" />
+              <SiGithub className="w-5 h-5 lg:w-6 lg:h-6" />
             </a>
             <a
               href="https://linkedin.com/in/snehilkakani/"
@@ -104,7 +108,7 @@ export default function AboutCard() {
               className="bg-transparent hover:bg-on-surface/5 active:bg-on-surface/5 text-on-surface z-20 relative text-sm font-domine hover:shadow-sm active:shadow-sm rounded-lg p-1 transition-all duration-200 flex gap-1 items-center h-full"
             >
               <svg
-                className="w-6 h-6"
+                className="lg:w-6 lg:h-6 w-5 h-5"
                 viewBox="0 0 72 72"
                 xmlns="http://www.w3.org/2000/svg"
                 color="currentColor"
@@ -125,7 +129,7 @@ export default function AboutCard() {
           </div>
         </div>
       </div>
-      <div className="flex items-center justify-center gap-4 py-1.5 lg:py-2 bg-secondary">
+      <div className="lg:flex items-center justify-center hidden gap-4 py-1.5 lg:py-2 bg-secondary">
         <span className="w-4 h-4 rounded-full bg-surface border-2 border-on-surface shadow-inner"></span>
         <span className="w-3 h-3 rounded-full bg-secondary border border-surface"></span>
         <svg

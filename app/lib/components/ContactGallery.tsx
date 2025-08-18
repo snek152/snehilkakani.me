@@ -52,8 +52,8 @@ export default function ContactGallery() {
             <div className="w-full h-full relative">
               <Image
                 className="w-full h-full object-cover object-center will-change-transform"
-                fill
-                sizes="(min-width: 1024px) 50vw, 100vw"
+                // fill
+                // sizes="(min-width: 1024px) 50vw, 100vw"
                 quality={70}
                 placeholder="blur"
                 src={photo.src}
