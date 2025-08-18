@@ -69,7 +69,7 @@ export default function MusicBeat({
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`Listen to ${beat.name} on Spotify`}
-              className={`lg:p-1 p-0.5 rounded-full z-10 text-surface hover:text-green-500 focus:outline-none transition-colors duration-150`}
+              className={`lg:p-1 p-0.5 rounded-full z-10 text-surface hover:text-green-500 active:text-green-500 focus:outline-none transition-colors duration-150`}
             >
               <span className="flex group">
                 <SiSpotify className="lg:w-5 lg:h-5 w-4 h-4" />
@@ -82,7 +82,7 @@ export default function MusicBeat({
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`Listen to ${beat.name} on Apple Music`}
-              className={`lg:p-1 p-0.5 rounded-full z-10 text-surface focus:outline-none transition-colors duration-150 hover:text-rose-500`}
+              className={`lg:p-1 p-0.5 rounded-full z-10 text-surface focus:outline-none transition-colors duration-150 hover:text-rose-500 active:text-rose-500`}
             >
               <span className="flex">
                 <SiApplemusic className="lg:w-5 lg:h-5 w-4 h-4" />
@@ -111,8 +111,8 @@ export default function MusicBeat({
           onClick={() => togglePlay(beat.name)}
           className={`p-2 rounded-full cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary transition-colors duration-150 ${
             playing === beat.name
-              ? "bg-primary/75 hover:bg-primary"
-              : "bg-secondary/50 hover:bg-background"
+              ? "bg-primary/75 hover:bg-primary active:bg-primary"
+              : "bg-secondary/50 hover:bg-background active:bg-background"
           }`}
           aria-label={playing === beat.name ? "Pause" : "Play"}
         >

@@ -49,7 +49,7 @@ const ToolIcon = ({
     // transition={{
     //   duration: 0.1,
     // }}
-    className={`flex flex-col items-center justify-center bg-on-surface/80 border-2 border-surface/5 rounded-lg p-3 gap-1 ${iconColors[colorClass]} hover:border-surface/20 hover:-translate-y-2 hover:scale-105 hover:rotate-1 cursor-default transition-all duration-300 hover:shadow-lg`}
+    className={`flex flex-col items-center justify-center bg-on-surface/80 border-2 border-surface/5 rounded-lg p-3 gap-1 ${iconColors[colorClass]} hover:border-surface/20 hover:-translate-y-2 hover:scale-105 hover:rotate-1 cursor-default transition-all duration-300 hover:shadow-lg active:border-surface/20 active:-translate-y-2 active:scale-105 active:rotate-1 active:shadow-lg`}
   >
     <div className="relative flex items-center justify-center mb-1">
       <Icon className="w-7 h-7 lg:w-8 lg:h-8 transition-colors duration-300 drop-shadow" />

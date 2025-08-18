@@ -34,13 +34,14 @@ const photos = [
 
 export default function ContactGallery() {
   return (
-    <div className="lg:max-h-screen w-full px-4 lg:px-4 pt-2 pb-5 lg:py-20">
+    <div className="lg:max-h-screen w-full px-4 lg:px-4 pt-2 pb-5 lg:py-20 [content-visibility:auto] [contain-intrinsic-size:800px]">
       <div className="grid lg:grid-cols-2 lg:grid-rows-2 grid-cols-2 grid-rows-2 gap-6 h-full">
         {photos.map((photo, idx) => (
           <motion.div
             key={idx}
-            initial={{ opacity: 0, scale: 0.8, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
+            initial={{ opacity: 0, y: 20, filter: "blur(3px)" }}
+            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            viewport={{ once: true }}
             transition={{
               duration: 0.6,
               delay: idx * 0.1,
@@ -51,9 +52,13 @@ export default function ContactGallery() {
             <div className="w-full h-full relative">
               <Image
                 className="w-full h-full object-cover object-center will-change-transform"
+                fill
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                quality={70}
                 placeholder="blur"
                 src={photo.src}
                 alt={photo.caption}
+                priority
               />
             </div>
             <div className="absolute inset-0 bg-black/0 group-hover:bg-secondary/20 group-active:bg-secondary/20 transition-colors duration-300" />

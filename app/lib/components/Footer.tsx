@@ -15,7 +15,7 @@ export default function Footer() {
               <Link
                 key={i}
                 href={n.href}
-                className="text-surface hover:text-primary transition-colors duration-200"
+                className="text-surface hover:text-primary active:text-primary transition-colors duration-200"
                 title={n.label || n.href}
               >
                 <n.iconInactive className="w-6 h-6 " />

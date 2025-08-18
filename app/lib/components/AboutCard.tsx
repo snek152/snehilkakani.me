@@ -84,7 +84,7 @@ export default function AboutCard() {
               href="/resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-gradient-to-r from-primary/90 via-primary to-primary/90 text-surface z-20 relative px-4 py-2 rounded-xl text-sm font-domine shadow-md hover:scale-105 hover:shadow-lg transition-all duration-200 flex gap-1 items-center h-full"
+              className="bg-gradient-to-r from-primary/90 via-primary to-primary/90 text-surface z-20 relative px-4 py-2 rounded-xl text-sm font-domine shadow-md hover:scale-105 hover:shadow-lg active:scale-105 active:shadow-lg transition-all duration-200 flex gap-1 items-center h-full"
             >
               <DocumentTextIcon className="w-6 h-6" />
               <span>Resume</span>
@@ -93,7 +93,7 @@ export default function AboutCard() {
               href="https://github.com/snek152"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-transparent hover:bg-on-surface/5 text-on-surface z-20 relative text-sm font-domine hover:shadow-sm rounded-lg p-1 transition-all duration-200 flex gap-1 items-center h-full"
+              className="bg-transparent hover:bg-on-surface/5 active:bg-on-surface/5 text-on-surface z-20 relative text-sm font-domine hover:shadow-sm active:shadow-sm rounded-lg p-1 transition-all duration-200 flex gap-1 items-center h-full"
             >
               <SiGithub className="w-6 h-6" />
             </a>
@@ -101,7 +101,7 @@ export default function AboutCard() {
               href="https://linkedin.com/in/snehilkakani/"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-transparent hover:bg-on-surface/5 text-on-surface z-20 relative text-sm font-domine hover:shadow-sm rounded-lg p-1 transition-all duration-200 flex gap-1 items-center h-full"
+              className="bg-transparent hover:bg-on-surface/5 active:bg-on-surface/5 text-on-surface z-20 relative text-sm font-domine hover:shadow-sm active:shadow-sm rounded-lg p-1 transition-all duration-200 flex gap-1 items-center h-full"
             >
               <svg
                 className="w-6 h-6"

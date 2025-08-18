@@ -16,7 +16,7 @@ export default function FeaturedGallery() {
           {photos.map((photo, i) => (
             <motion.div
               key={i}
-              className={`overflow-hidden rounded-lg hover:scale-105 transition-all duration-200 ease-in-out shadow-lg flex h-full w-full items-center justify-center ${
+              className={`overflow-hidden rounded-lg hover:scale-105 active:scale-105 transition-all duration-200 ease-in-out shadow-lg flex h-full w-full items-center justify-center ${
                 photo.isBig
                   ? "row-span-2 aspect-[2/3]"
                   : "row-span-1 aspect-[3/2]"

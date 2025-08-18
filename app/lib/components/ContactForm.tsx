@@ -214,7 +214,7 @@ export default function ContactForm() {
             ${
               loading || submitted
                 ? "opacity-70 bg-on-surface cursor-not-allowed"
-                : "cursor-pointer bg-gradient-to-r from-primary/80 via-primary to-primary/90 scale-100 hover:scale-105 hover:bg-primary/95 shadow-lg shadow-primary/20"
+                : "cursor-pointer bg-gradient-to-r from-primary/80 via-primary to-primary/90 scale-100 hover:scale-105 hover:bg-primary/95 active:scale-105 active:bg-primary/95 shadow-lg shadow-primary/20"
             }`}
           disabled={loading || submitted}
         >
