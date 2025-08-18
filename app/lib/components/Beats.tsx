@@ -108,7 +108,8 @@ export default function Beats() {
       <motion.div
         className="flex items-center gap-2 px-4"
         initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
         transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
       >
         <span className="inline-block w-1 h-6 bg-primary/30 rounded-full shadow-lg"></span>
