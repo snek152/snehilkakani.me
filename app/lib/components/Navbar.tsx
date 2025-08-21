@@ -69,11 +69,13 @@ export default function Navbar() {
               : undefined
           }
           transition={{
-            type: "spring",
-            stiffness: 60,
-            duration: 0.8,
-            delay: 0,
-            damping: 20,
+            // type: "spring",
+            // stiffness: 60,
+            // duration: 0.8,
+            // delay: 0,
+            // damping: 20,
+            duration: 0.5,
+            ease: [0.25, 0.46, 0.45, 0.94],
           }}
           className="bg-gradient-to-br from-primary/20 via-background to-primary/10 border border-primary/5 rounded-2xl shadow-xl lg:w-full lg:h-auto h-full w-auto lg:py-4 lg:px-0.25 py-0.25 px-4 gap-2 flex lg:flex-col justify-center items-center backdrop-blur-md"
           onHoverEnd={() => setHovered(false)}

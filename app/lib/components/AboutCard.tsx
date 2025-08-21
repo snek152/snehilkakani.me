@@ -3,6 +3,7 @@ import Card from "./Card";
 import Image from "next/image";
 import aboutphoto from "@/public/about5.jpg";
 import { DocumentTextIcon } from "@heroicons/react/24/solid";
+import { EnvelopeIcon } from "@heroicons/react/24/solid";
 import { SiGithub } from "@icons-pack/react-simple-icons";
 
 export default function AboutCard() {
@@ -100,6 +101,14 @@ export default function AboutCard() {
               className="bg-transparent hover:bg-on-surface/5 active:bg-on-surface/5 text-on-surface z-20 relative text-sm font-domine hover:shadow-sm active:shadow-sm rounded-lg p-1 transition-all duration-200 flex gap-1 items-center h-full"
             >
               <SiGithub className="w-5 h-5 lg:w-6 lg:h-6" />
+            </a>
+            <a
+              href="mailto:kakanisnehil@gmail.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-transparent hover:bg-on-surface/5 active:bg-on-surface/5 text-on-surface z-20 relative text-sm font-domine hover:shadow-sm active:shadow-sm rounded-lg p-1 transition-all duration-200 flex gap-1 items-center h-full"
+            >
+              <EnvelopeIcon className="w-5 h-5 lg:w-6 lg:h-6" />
             </a>
             <a
               href="https://linkedin.com/in/snehilkakani/"

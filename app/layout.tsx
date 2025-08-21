@@ -46,6 +46,7 @@ const ibm = IBM_Plex_Sans({
 const title = "Snehil Kakani - Software Engineer & Creative Developer";
 const description =
   "Full-stack developer and creative technologist crafting innovative web solutions, producing music, and building meaningful digital experiences.";
+
 export const metadata: Metadata = {
   title: {
     template: "%s | Snehil Kakani",
@@ -72,7 +73,6 @@ export const metadata: Metadata = {
       default: title,
     },
     description: description,
-    images: ["https://snehilkakani.me/images/Snehil Kakani.webp"],
   },
 };
 

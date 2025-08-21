@@ -56,13 +56,13 @@ export default function MusicBeat({
           className="absolute inset-0 rounded-md bg-background z-0"
           style={{ margin: 2 }}
         />
-        <span className="font-ibm flex flex-col font-semibold text-surface z-10">
+        <span className="font-ibm flex flex-col font-semibold text-sm lg:text-base text-surface z-10">
           {beat.name}
           <span className="font-ibm font-light text-xs text-surface/80">
             {beat.tempo} BPM
           </span>
         </span>
-        <div className="z-10 flex items-center lg:flex-row flex-col lg:gap-2 gap-1">
+        <div className="z-10 flex items-center lg:flex-row flex-row lg:gap-2 gap-2">
           {beat.spotifyUrl && (
             <a
               href={beat.spotifyUrl}
@@ -72,7 +72,7 @@ export default function MusicBeat({
               className={`lg:p-1 p-0.5 rounded-full z-10 text-surface hover:text-green-500 active:text-green-500 focus:outline-none transition-colors duration-150`}
             >
               <span className="flex group">
-                <SiSpotify className="lg:w-5 lg:h-5 w-4 h-4" />
+                <SiSpotify className="w-5 h-5" />
               </span>
             </a>
           )}
@@ -85,7 +85,7 @@ export default function MusicBeat({
               className={`lg:p-1 p-0.5 rounded-full z-10 text-surface focus:outline-none transition-colors duration-150 hover:text-rose-500 active:text-rose-500`}
             >
               <span className="flex">
-                <SiApplemusic className="lg:w-5 lg:h-5 w-4 h-4" />
+                <SiApplemusic className="w-5 h-5" />
               </span>
             </a>
           )}
