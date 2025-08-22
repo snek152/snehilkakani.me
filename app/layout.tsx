@@ -18,36 +18,12 @@ const ibm = IBM_Plex_Sans({
   weight: ["100", "200", "300", "400", "500", "600", "700"],
 });
 
-// export const metadata: Metadata = {
-//   title: {
-//     template: "%s | Snehil Kakani",
-//     default: "Home",
-//   },
-//   description: "",
-//   openGraph: {
-//     type: "website",
-//     title: {
-//       template: "%s | Snehil Kakani",
-//       default: "Home",
-//     },
-//     description:
-//       "Explore Snehil Kakani's portfolio: software engineering projects, technical skills, and professional experience.",
-//     locale: "en_US",
-//     siteName: "Snehil Kakani Portfolio",
-//     url: "https://euclidlearn.com",
-//   },
-//   robots: {
-//     follow: true,
-//     index: true,
-//   },
-// };
-
-// sdf
 const title = "Snehil Kakani - Software Engineer & Creative Developer";
 const description =
   "Full-stack developer and creative technologist crafting innovative web solutions, producing music, and building meaningful digital experiences.";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://snehilkakani.me"),
   title: {
     template: "%s | Snehil Kakani",
     default: title,
@@ -56,15 +32,41 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  keywords: [
+    "Snehil Kakani",
+    "Software Engineer",
+    "Full-stack Developer",
+    "Creative Developer",
+    "Web Development",
+    "Music Production",
+    "Portfolio",
+    "Cal Poly SLO",
+    "Computer Science",
+  ],
+  authors: [{ name: "Snehil Kakani", url: "https://snehilkakani.me" }],
+  creator: "Snehil Kakani",
+  // manifest: "/manifest.json",
+  alternates: {
+    canonical: "/",
   },
   openGraph: {
-    type: "website",
     title: {
       template: "%s | Snehil Kakani",
       default: title,
     },
     description: description,
-    siteName: title,
+    url: "/",
+    siteName: "Snehil Kakani",
+    locale: "en_US",
+    type: "website",
   },
   twitter: {
     card: "summary_large_image",
@@ -75,6 +77,19 @@ export const metadata: Metadata = {
     description: description,
   },
 };
+
+/*
+  You can add a manifest.ts file in your app directory to generate a manifest.json file.
+  Based on your metadata, the content of app/manifest.ts would be:
+
+ 
+  export default function manifest(): MetadataRoute.Manifest {
+    return 
+  }
+
+  Then, you can uncomment the 'manifest' line in your metadata object:
+  manifest: "/manifest.json",
+*/
 
 export default function RootLayout({
   children,
