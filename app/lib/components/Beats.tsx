@@ -77,6 +77,10 @@ export default function Beats() {
     });
   }, [playing]);
 
+  const setWave = useCallback((beatName: string, el: HTMLDivElement | null) => {
+    waveformRefs.current[beatName] = el;
+  }, []);
+
   const togglePlay = useCallback(
     (beatName: string) => {
       const current = wavesurferRefs.current[beatName];
@@ -119,7 +123,7 @@ export default function Beats() {
               key={beat.name}
               beat={beat}
               playing={playing}
-              waves={waveformRefs}
+              setWave={setWave}
               togglePlay={togglePlay}
             />
           ))}

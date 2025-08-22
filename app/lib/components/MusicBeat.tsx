@@ -2,19 +2,18 @@
 
 import * as motion from "motion/react-m";
 import { Beat, beats } from "../data/beats";
-import { RefObject } from "react";
 import { PauseIcon, PlayIcon } from "@heroicons/react/24/outline";
 import { SiApplemusic, SiSpotify } from "@icons-pack/react-simple-icons";
 
 export default function MusicBeat({
   beat,
   playing,
-  waves,
+  setWave,
   togglePlay,
 }: {
   beat: Beat;
   playing: string | null;
-  waves: RefObject<Record<string, HTMLDivElement | null>>;
+  setWave: (beatName: string, el: HTMLDivElement | null) => void;
   togglePlay: (beatName: string) => void;
 }) {
   return (
@@ -94,7 +93,7 @@ export default function MusicBeat({
       <div className="flex-1 px-4 relative">
         <div
           ref={(el) => {
-            waves.current[beat.name] = el;
+            setWave(beat.name, el);
           }}
           className="w-full max-w-15vw] h-10 mx-auto cursor-pointer"
         />
