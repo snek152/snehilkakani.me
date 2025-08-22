@@ -1,0 +1,52 @@
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: {
+      index: false,
+      follow: false,
+    },
+  },
+};
+
+const array = [
+  "Software Engineer",
+  "Full-Stack Developer",
+  "Music Producer",
+  "Photographer",
+  "Audio Engineer",
+  "Graphic Designer",
+  "Actor",
+  "Creator",
+];
+
+const MetaPage = () => {
+  return (
+    <div className="w-screen max-w-screen fixed left-0 top-0 z-[1000] bg-secondary h-dvh lg:h-screen lg:max-h-full max-h-[calc(100dvh-4.5rem)] overflow-x-hidden ">
+      <div className="w-full h-full flex items-center justify-center relative overflow-x-hidden bg-secondary p-8 bg-gradient-to-bl from-primary/20 via-background to-primary/10 border-0 border-primary/5 shadow-xl">
+        <div className="flex flex-col items-center justify-center text-center text-surface">
+          <h1 className="font-domine text-5xl md:text-7xl font-bold">
+            Snehil Kakani
+          </h1>
+          <div className="mt-4 flex items-center font-ibm justify-center gap-x-2 gap-y-1 px-4">
+            {array.map((t, index) => (
+              <div
+                key={t}
+                className="flex items-center gap-x-2 text-lg text-surface/80"
+              >
+                <span>{t}</span>
+                {index < array.length - 2 && (
+                  <span className="text-surface/70 select-none">•</span>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default MetaPage;

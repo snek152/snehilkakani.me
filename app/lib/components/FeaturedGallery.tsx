@@ -1,8 +1,8 @@
 "use client";
+
 import { Suspense } from "react";
 import photos from "../data/photos";
 import LoadingSpinner from "@/app/lib/components/LoadingSpinner";
-// import FeaturedPhoto from "./FeaturedPhoto";
 import * as motion from "motion/react-m";
 import dynamic from "next/dynamic";
 
@@ -21,14 +21,9 @@ export default function FeaturedGallery() {
                   ? "row-span-2 aspect-[2/3]"
                   : "row-span-1 aspect-[3/2]"
               }`}
-              // whileHover={{
-              //   scale: 1.05,
-              //   transition: { duration: 0.2 },
-              // }}
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-              //   exit={{ opacity: 0, y: 0 }}
               viewport={{ once: false }}
             >
               <Suspense
@@ -38,9 +33,6 @@ export default function FeaturedGallery() {
                   />
                 }
               >
-                {/* <LoadingSpinner
-                  className={`rounded-lg shadow-lg bg-background w-full h-full`}
-                /> */}
                 <FeaturedPhotoLazy {...photo} i={i} />
               </Suspense>
             </motion.div>

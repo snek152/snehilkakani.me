@@ -15,14 +15,10 @@ export default function Card({
       animate={{ y: 0, opacity: 1, scale: 1 }}
       exit={{ y: -50, scale: 0.96, opacity: 0 }}
       transition={{
-        // type: "spring",
         type: "tween",
-        // stiffness: 150,
         duration: 0.6,
         delay: 0.2,
         ease: [0.25, 0.46, 0.45, 0.94],
-        // damping: 30,
-        // mass: 2,
         ...transition,
       }}
       className={`w-full rounded-xl border-4 border-secondary bg-background relative overflow-hidden ${className}`}

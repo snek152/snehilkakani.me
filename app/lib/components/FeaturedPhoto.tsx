@@ -25,7 +25,6 @@ export default function FeaturedPhoto({
   iso: number;
   alt: string;
   i: number;
-  // isBig?: boolean;
 }) {
   return (
     <div className="relative w-full h-full">
@@ -35,11 +34,9 @@ export default function FeaturedPhoto({
         fill
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 33vw"
         quality={80}
-        // width={200}
-        // height={200}
         placeholder="empty"
         className="object-cover object-center h-full w-full"
-        priority={i < 3} // Prioritize first few images
+        priority={i < 3}
       />
       <motion.div
         className="absolute bottom-2 left-2 flex gap-2 z-10 bg-secondary/70 rounded-xl px-3 py-2 shadow-lg backdrop-blur-xs border-2 border-primary/5"
@@ -52,7 +49,6 @@ export default function FeaturedPhoto({
           delay: 0.7,
         }}
       >
-        {/* Exposure */}
         <motion.span
           className="flex items-center text-white text-[0.6rem] font-mono gap-0.5"
           initial={{ opacity: 0, x: 10 }}
@@ -62,7 +58,6 @@ export default function FeaturedPhoto({
           <SunIcon className="w-3 h-3 opacity-70 mb-[1.5px]" />
           {exp}
         </motion.span>
-        {/* Shutter Speed */}
         <motion.span
           className="flex items-center text-white text-[0.6rem] font-mono gap-0.5"
           initial={{ opacity: 0, x: 10 }}
@@ -72,7 +67,6 @@ export default function FeaturedPhoto({
           <ClockIcon className="w-3 h-3 opacity-70 mb-[1.5px]" />
           {shutter}
         </motion.span>
-        {/* Aperture */}
         <motion.span
           className="flex items-center text-white text-[0.6rem] font-mono gap-0.5"
           initial={{ opacity: 0, x: 10 }}
@@ -82,7 +76,6 @@ export default function FeaturedPhoto({
           <ViewfinderCircleIcon className="w-3 h-3 opacity-70 mb-[1.5px]" />
           f/{aperture}
         </motion.span>
-        {/* ISO */}
         <motion.span
           className="flex items-center text-white text-[0.6rem] font-mono gap-0.5"
           initial={{ opacity: 0, x: 10 }}

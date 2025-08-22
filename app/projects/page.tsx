@@ -1,8 +1,6 @@
-// import AllProjects from "./components/AllProjects";
 import { Suspense } from "react";
 import Tools from "../lib/components/Tools";
 import LoadingSpinner from "../lib/components/LoadingSpinner";
-// import ContactCard from "./components/ContactCard";
 import dynamic from "next/dynamic";
 import { Metadata } from "next";
 
@@ -21,7 +19,6 @@ export default function About() {
       >
         <AllProjects />
       </Suspense>
-      {/* <ContactCard /> */}
     </div>
   );
 }

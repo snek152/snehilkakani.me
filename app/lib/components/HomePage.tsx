@@ -3,9 +3,7 @@
 import { AnimatePresence } from "motion/react";
 import * as motion from "motion/react-m";
 import dynamic from "next/dynamic";
-// import Image from "next/image";
 import { Suspense, useEffect, useMemo, useState } from "react";
-// import LoadingSpinner from "./LoadingSpinner";
 
 const array = [
   "Software Engineer",
@@ -19,25 +17,19 @@ const array = [
 
 const AboutCard = dynamic(() => import("./AboutCard"));
 
-// array = array
-//   .map((value) => ({ value, sort: Math.random() }))
-//   .sort((a, b) => a.sort - b.sort)
-//   .map(({ value }) => value);
-
 const VISIT_KEY = "lastVisitTimestamp";
 const HOURS_24 = 24 * 60 * 60 * 1000;
-// const spacing = 50;
 
 const HomePage = () => {
   const spacing = useMemo(() => {
     if (typeof window === "undefined") {
-      return 50; // Default value for server-side rendering
+      return 50;
     }
     return window.innerWidth >= 1024 ? 50 : 35;
   }, []);
   const outValue = useMemo(() => {
     if (typeof window === "undefined") {
-      return 125; // Default value for server-side rendering
+      return 125;
     }
     return window.innerWidth >= 1024 ? 125 : 100;
   }, []);
@@ -60,7 +52,7 @@ const HomePage = () => {
   useEffect(() => {
     if (needsToLoad === false) {
       setLoaded(true);
-      document.getElementById("container")!.style.overflowY = "scroll"; // Ensure overflow is reset
+      document.getElementById("container")!.style.overflowY = "scroll";
       return;
     }
     document.getElementById("container")!.style.overflowY = "hidden";
@@ -89,7 +81,6 @@ const HomePage = () => {
   }, [animate]);
 
   if (needsToLoad === null) {
-    // Prevent rendering until needsToLoad is determined
     return null;
   }
 

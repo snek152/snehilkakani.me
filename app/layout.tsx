@@ -78,19 +78,6 @@ export const metadata: Metadata = {
   },
 };
 
-/*
-  You can add a manifest.ts file in your app directory to generate a manifest.json file.
-  Based on your metadata, the content of app/manifest.ts would be:
-
- 
-  export default function manifest(): MetadataRoute.Manifest {
-    return 
-  }
-
-  Then, you can uncomment the 'manifest' line in your metadata object:
-  manifest: "/manifest.json",
-*/
-
 export default function RootLayout({
   children,
 }: Readonly<{

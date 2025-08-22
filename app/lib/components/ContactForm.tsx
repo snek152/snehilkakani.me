@@ -10,6 +10,7 @@ export default function ContactForm() {
   const [error, setError] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+
   return (
     <motion.div
       initial={{
@@ -82,7 +83,6 @@ export default function ContactForm() {
           }
           setError("");
           setLoading(true);
-          // Simulate a network request
           fetch("https://formspree.io/f/xyylnqbg", {
             headers: {
               "Content-Type": "application/json",
@@ -92,13 +92,7 @@ export default function ContactForm() {
             mode: "no-cors",
             body: JSON.stringify({ name, email, message }),
           })
-            .then((res) => {
-              console.log(res);
-              // if (res.status !== 200 && res.status !== 302) {
-              //   setError("Failed to send message. Please try again.");
-              //   setLoading(false);
-              //   return;
-              // }
+            .then(() => {
               setLoading(false);
               setName("");
               setEmail("");
@@ -125,13 +119,11 @@ export default function ContactForm() {
         >
           <input
             id="name"
-            // type="text"
             className="rounded-lg bg-white/10 border border-white/20 px-4 py-2 text-white placeholder:text-white/50 placeholder:font-ibm focus:outline-none focus:ring-2 focus:ring-primary/60 transition backdrop-blur-md shadow-sm"
             placeholder="Your name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             autoComplete="off"
-            // required
           />
         </motion.div>
         <motion.div
@@ -147,13 +139,11 @@ export default function ContactForm() {
         >
           <input
             id="email"
-            // type="email"
             className="rounded-lg bg-white/10 border border-white/20 px-4 py-2 text-white placeholder:text-white/50 placeholder:font-ibm focus:outline-none focus:ring-2 focus:ring-primary/60 transition backdrop-blur-md shadow-sm"
             placeholder="you@email.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             autoComplete="off"
-            // required
           />
         </motion.div>
         <motion.div
@@ -173,7 +163,6 @@ export default function ContactForm() {
             placeholder="How can I help you?"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            // required
           />
         </motion.div>
         <div style={{ minHeight: "1.25rem" }}>
@@ -274,20 +263,6 @@ export default function ContactForm() {
           </AnimatePresence>
         </motion.button>
       </form>
-      {/* <motion.div
-                    initial={{ opacity: 0, scale: 0.98 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.98 }}
-                    transition={{ delay: 0.25, duration: 0.18 }}
-                    className="mt-4"
-                  >
-                    <Button
-                      className="inline-flex items-center gap-2 rounded-md bg-primary/80 px-4 py-2 text-base font-semibold text-white shadow-inner shadow-primary/10 focus:outline-none hover:bg-primary transition-colors"
-                      onClick={close}
-                    >
-                      Got it, thanks!
-                    </Button>
-                  </motion.div> */}
     </motion.div>
   );
 }

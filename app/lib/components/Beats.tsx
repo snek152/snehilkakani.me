@@ -6,8 +6,6 @@ import { beats, categories } from "../data/beats";
 import MusicBeat from "./MusicBeat";
 import * as motion from "motion/react-m";
 
-// const categories = Array.from(new Set(beats.map((beat) => beat.category)));
-
 export default function Beats() {
   const waveformRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const wavesurferRefs = useRef<Record<string, WaveSurfer>>({});
@@ -16,9 +14,8 @@ export default function Beats() {
   useEffect(() => {
     let cancelled = false;
 
-    // Helper to initialize wavesurfer in batches
     const batchSize = 5;
-    const delay = 100; // ms between batches
+    const delay = 100;
 
     const beatNames = beats.map((b) => b.name);
 
@@ -60,7 +57,6 @@ export default function Beats() {
       cancelled = true;
       Object.values(wavesurferRefs.current).forEach((ws) => {
         if (ws && typeof ws.destroy === "function") {
-          // Only destroy if ready or not loading
           if ((ws as WaveSurfer & { isReady?: boolean }).isReady) {
             ws.destroy();
           } else {
@@ -69,17 +65,14 @@ export default function Beats() {
           }
         }
       });
-      // Clear the refs to avoid stale instances
       wavesurferRefs.current = {};
     };
   }, []);
   useEffect(() => {
-    // Attach "finish" event listeners to all wavesurfer instances
     Object.entries(wavesurferRefs.current).forEach(([name, ws]) => {
       if (!ws) return;
       const onFinish = () => setPlaying((p) => (p === name ? null : p));
       ws.on("finish", onFinish);
-      // Clean up listener on unmount or re-run
       return () => ws.un("finish", onFinish);
     });
   }, [playing]);

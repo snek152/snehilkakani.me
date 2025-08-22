@@ -9,7 +9,6 @@ export default function LoadingSpinner({
   height?: number;
   style?: React.CSSProperties;
 }) {
-  // console.log(style);
   return (
     <div
       className={`flex items-center justify-center w-full h-full ${className}`}

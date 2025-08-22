@@ -9,7 +9,6 @@ export default function Footer() {
     <footer className="w-full py-6 px-6 border-t-2 border-on-surface">
       <div className="max-w-4xl mx-auto">
         <div className="flex flex-col items-center gap-4 text-center">
-          {/* Nav Links */}
           <div className="flex gap-2">
             {navlinks.map((n, i) => (
               <Link
@@ -23,7 +22,6 @@ export default function Footer() {
             ))}
           </div>
 
-          {/* Copyright & Attribution */}
           <div className="flex flex-col items-center gap-1">
             <p className="text-lg font-domine flex items-center gap-2 tracking-tight text-surface">
               <span>© {year}</span>

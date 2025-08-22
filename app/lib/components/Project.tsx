@@ -1,28 +1,16 @@
 import Image from "next/image";
 import { Project as ProjectT } from "../data/projects";
-// import Card from "@/app/components/Card";
 import { ArrowUpRightIcon } from "@heroicons/react/16/solid";
 import React from "react";
 import { SiGithub } from "@icons-pack/react-simple-icons";
 import * as motion from "motion/react-m";
-// import { motion } from "motion/react";
 
-/*
-initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{
-            duration: 0.5,
-            delay: 0.08 * (beats.findIndex((b) => b.name === beat.name) % 2),
-          }}
- */
 const Project = React.memo(({ project }: { project: ProjectT }) => {
   return (
     <section
       style={{ willChange: "transform, opacity" }}
       className="w-full border-secondary group/project bg-background relative p-0 rounded-xl overflow-hidden border-[1.5px] shadow-lg"
     >
-      {/* Header bar */}
       <motion.div
         initial={{ opacity: 0, x: 20 }}
         whileInView={{ opacity: 1, x: 0 }}

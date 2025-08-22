@@ -37,18 +37,6 @@ const ToolIcon = ({
   colorClass: keyof typeof iconColors;
 }) => (
   <div
-    // whileHover={{
-    //   y: -8,
-    //   scale: 1.05,
-    //   rotate: 1,
-    //   transition: {
-    //     duration: 0.1,
-    //     ease: [0.25, 0.46, 0.45, 0.94],
-    //   },
-    // }}
-    // transition={{
-    //   duration: 0.1,
-    // }}
     className={`flex flex-col items-center justify-center bg-on-surface/80 border-2 border-surface/5 rounded-lg p-3 gap-1 ${iconColors[colorClass]} hover:border-surface/20 hover:-translate-y-2 hover:scale-105 hover:rotate-1 cursor-default transition-all duration-300 hover:shadow-lg active:border-surface/20 active:-translate-y-2 active:scale-105 active:rotate-1 active:shadow-lg`}
   >
     <div className="relative flex items-center justify-center mb-1">
@@ -67,9 +55,6 @@ export default function Tools() {
         <span className="w-2 h-2 lg:w-2.5 lg:h-2.5 rounded-full bg-surface" />
         <span className="w-2 h-2 lg:w-2.5 lg:h-2.5 rounded-full bg-surface" />
         <span className="w-2 h-2 lg:w-2.5 lg:h-2.5 rounded-full bg-surface" />
-        {/* <span className="ml-1 text-xs font-mono text-surface/60">
-          projects/tools.tsx
-        </span> */}
       </div>
       <div className="absolute inset-0 pointer-events-none opacity-10 z-0">
         <svg width="100%" height="100%">

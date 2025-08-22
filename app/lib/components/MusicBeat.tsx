@@ -1,3 +1,5 @@
+"use client";
+
 import * as motion from "motion/react-m";
 import { Beat, beats } from "../data/beats";
 import { RefObject } from "react";
@@ -23,14 +25,12 @@ export default function MusicBeat({
       viewport={{ once: true }}
       transition={{
         type: "tween",
-        // stiffness: 150,
         duration: 0.5,
         ease: [0.25, 0.46, 0.45, 0.94],
         delay: 0.1 + 0.08 * (beats.findIndex((b) => b.name === beat.name) % 2),
       }}
     >
       <div className="flex items-center justify-between h-full px-3 lg:px-4 w-40 lg:w-52 rounded-md relative bg-background">
-        {/* Gradient border */}
         <motion.div
           className="absolute inset-0 rounded-md p-[2px] pointer-events-none"
           style={{
@@ -51,7 +51,6 @@ export default function MusicBeat({
             repeatType: "reverse",
           }}
         />
-        {/* Inner content with background, inset to show border */}
         <div
           className="absolute inset-0 rounded-md bg-background z-0"
           style={{ margin: 2 }}
@@ -92,7 +91,6 @@ export default function MusicBeat({
         </div>
       </div>
 
-      {/* Waveform */}
       <div className="flex-1 px-4 relative">
         <div
           ref={(el) => {
@@ -102,7 +100,6 @@ export default function MusicBeat({
         />
       </div>
 
-      {/* Controls */}
       <div className="pr-4 flex items-center">
         <motion.button
           whileTap={{ scale: 0.92 }}

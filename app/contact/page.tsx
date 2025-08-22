@@ -14,8 +14,6 @@ const ContactGallery = dynamic(
   () => import("../lib/components/ContactGallery")
 );
 
-// const ContactForm = dynamic(() => import("../lib/components/ContactForm"));
-
 export default function ContactPage() {
   return (
     <section className="min-h-screen grid grid-cols-1 lg:grid-cols-2">
