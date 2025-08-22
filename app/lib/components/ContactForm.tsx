@@ -66,7 +66,7 @@ export default function ContactForm() {
         Interested in collaborating?
       </motion.h3>
       <form
-        className="mt-8 flex flex-col gap-4"
+        className="mt-5 flex flex-col gap-4"
         onSubmit={(e) => {
           e.preventDefault();
           if (!name.trim()) {
@@ -165,30 +165,7 @@ export default function ContactForm() {
             onChange={(e) => setMessage(e.target.value)}
           />
         </motion.div>
-        <div style={{ minHeight: "1.25rem" }}>
-          {error && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="text-red-400 text-sm font-medium"
-            >
-              {error}
-            </motion.div>
-          )}
-          {!error && submitted && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="text-primary text-sm font-medium"
-            >
-              Thanks for reaching out! I{"'"}ll get back to you soon.
-            </motion.div>
-          )}
-        </div>
+
         <motion.button
           initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -199,7 +176,7 @@ export default function ContactForm() {
             ease: [0.25, 0.46, 0.45, 0.94],
           }}
           type="submit"
-          className={`inline-flex font-ibm items-center justify-center gap-2 rounded-lg px-6 py-2 text-base font-semibold text-white focus:outline-none focus:ring-2 focus:ring-primary/60 transition-all duration-200 
+          className={`inline-flex font-ibm mt-2 mb-1 items-center justify-center gap-2 rounded-lg px-6 py-2 text-base font-semibold text-white focus:outline-none focus:ring-2 focus:ring-primary/60 transition-all duration-200 
             ${
               loading || submitted
                 ? "opacity-70 bg-on-surface cursor-not-allowed"
@@ -262,6 +239,32 @@ export default function ContactForm() {
             )}
           </AnimatePresence>
         </motion.button>
+        <AnimatePresence>
+          {error && (
+            <motion.div
+              key="error"
+              initial={{ opacity: 0, y: -4, height: 0 }}
+              animate={{ opacity: 1, y: 0, height: "auto" }}
+              exit={{ opacity: 0, y: 4, height: 0 }}
+              transition={{ duration: 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
+              className="text-red-400 text-sm font-medium"
+            >
+              {error}
+            </motion.div>
+          )}
+          {!error && submitted && (
+            <motion.div
+              key="success"
+              initial={{ opacity: 0, y: -4, height: 0 }}
+              animate={{ opacity: 1, y: 0, height: "auto" }}
+              exit={{ opacity: 0, y: 4, height: 0 }}
+              transition={{ duration: 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
+              className="text-primary text-sm font-medium"
+            >
+              Thanks for reaching out! I{"'"}ll get back to you soon.
+            </motion.div>
+          )}
+        </AnimatePresence>
       </form>
     </motion.div>
   );
