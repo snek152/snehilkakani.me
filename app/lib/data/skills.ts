@@ -1,4 +1,5 @@
 import {
+  SiC,
   SiCanva,
   SiCss,
   SiFastapi,
@@ -15,11 +16,11 @@ import {
   SiPython,
   SiPytorch,
   SiReact,
+  SiSupabase,
   SiSvelte,
   SiTailwindcss,
   SiTypescript,
   SiVuedotjs,
-  // SiVuedotjs,
 } from "@icons-pack/react-simple-icons";
 
 export const skillTypes = ["frontend", "backend", "other", "learning"] as const;
@@ -109,6 +110,12 @@ export const skillsList: {
     type: "backend",
   },
   {
+    icon: SiSupabase,
+    label: "Supabase",
+    colorClass: "SiSupabase",
+    type: "backend",
+  },
+  {
     icon: SiGit,
     label: "Git",
     colorClass: "SiGit",
@@ -148,6 +155,12 @@ export const skillsList: {
     icon: SiVuedotjs,
     label: "Vue.js",
     colorClass: "SiVuedotjs",
+    type: "learning",
+  },
+  {
+    icon: SiC,
+    label: "C",
+    colorClass: "SiC",
     type: "learning",
   },
 ];

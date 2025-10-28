@@ -25,6 +25,8 @@ const iconColors = {
   SiFigma: "text-orange-600",
   SiJava: "text-white",
   SiJupyter: "text-orange-500",
+  SiSupabase: "text-green-500",
+  SiC: "text-slate-400",
 };
 
 const ToolIcon = ({
