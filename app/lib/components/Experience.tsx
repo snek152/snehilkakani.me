@@ -10,15 +10,15 @@ const ExperienceCard = ({
   period,
   description,
   skills,
-  index,
-}: {
+}: // index,
+{
   title: string;
   company: string;
   location: string;
   period: string;
   description: string[];
   skills?: string[];
-  index: number;
+  // index: number;
 }) => (
   <motion.div
     initial={{ opacity: 0, y: 30 }}
@@ -26,13 +26,13 @@ const ExperienceCard = ({
     viewport={{ once: true }}
     transition={{
       duration: 0.5,
-      delay: index * 0.1,
+      // delay: index * 0.1,
       ease: [0.25, 0.46, 0.45, 0.94],
     }}
     className="w-full border-secondary group/experience bg-background relative rounded-xl overflow-hidden border-4 shadow-lg"
-    style={{
-      boxShadow: "0 8px 32px 0 rgba(13, 110, 253, 0.19)",
-    }}
+    // style={{
+    //   boxShadow: "0 8px 32px 0 rgba(13, 110, 253, 0.19)",
+    // }}
   >
     <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary/60 group-hover/experience:w-1.5 transition-all duration-300 z-10" />
 
@@ -52,13 +52,15 @@ const ExperienceCard = ({
         </div>
       </div>
 
-      <ul className="space-y-1.5 mb-3">
+      <ul className="space-y-2 mb-4">
         {description.map((item, i) => (
           <li
             key={i}
-            className="text-sm lg:text-base text-surface font-ibm leading-relaxed flex items-start gap-2"
+            className="text-sm lg:text-base text-surface/90 font-ibm leading-relaxed flex items-center gap-2.5"
           >
-            <span className="text-primary mt-1 flex-shrink-0">•</span>
+            <span className="text-primary flex-shrink-0 text-base leading-none">
+              •
+            </span>
             <span className="flex-1">{item}</span>
           </li>
         ))}
@@ -97,7 +99,7 @@ export default function Experience() {
         </motion.div>
         <div className="space-y-5 lg:space-y-6">
           {experiences.map((exp, index) => (
-            <ExperienceCard key={index} {...exp} index={index} />
+            <ExperienceCard key={index} {...exp} />
           ))}
         </div>
       </div>
