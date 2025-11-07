@@ -79,15 +79,15 @@ const featPhotos: {
     iso: 4000,
     alt: "The U-Bahn in Berlin",
   },
-  {
-    image: "/photos/ny_stop.jpg",
-    exp: "+0",
-    shutter: "1/80",
-    aperture: "3.5",
-    iso: 100,
-    isBig: false,
-    alt: "A pedestrian stop sign in New York City",
-  },
+  // {
+  //   image: "/photos/ny_stop.jpg",
+  //   exp: "+0",
+  //   shutter: "1/80",
+  //   aperture: "3.5",
+  //   iso: 100,
+  //   isBig: false,
+  //   alt: "A pedestrian stop sign in New York City",
+  // },
 
   {
     image: "/photos/firework2.jpg",
