@@ -29,7 +29,6 @@ export const beats: Beat[] = [
     tempo: 146,
     key: "Gmin",
   },
-  //   { name: "alien trap 2", file: "/beats/alien_trap_2.mp3" },
   {
     name: "alien trap 3",
     file: "/beats/alien_trap_3.mp3",
@@ -40,6 +39,12 @@ export const beats: Beat[] = [
     category: "spacey",
     tempo: 134,
     key: "C#min",
+  },
+  {
+    name: "alien trap 4",
+    file: "/beats/alien_trap_4.mp3",
+    category: "synth",
+    tempo: 134,
   },
   {
     name: "all i do",
@@ -66,15 +71,12 @@ export const beats: Beat[] = [
     tempo: 130,
     key: "Dmin",
   },
-  //   {
-  //     name: "apocalypse 2",
-  //     file: "/beats/apocalypse_2.mp3",
-  //     spotifyUrl:
-  //       "https://open.spotify.com/track/3iUffdXMAfeAn2VMAOUVwD?si=457f6f1ca71a4e81",
-  //     appleMusicUrl:
-  //       "https://music.apple.com/us/album/hit-and-miss/1823553490?i=1823553496",
-  //   },
-  //   { name: "be right", file: "/beats/be_right.mp3" },
+  {
+    name: "ascension",
+    file: "/beats/ascension.mp3",
+    category: "trap",
+    tempo: 160,
+  },
   {
     name: "boat",
     file: "/beats/boat.mp3",
@@ -111,10 +113,12 @@ export const beats: Beat[] = [
     tempo: 140,
     key: "F#min",
   },
-  //   { name: "boat 5", file: "/beats/boat_5.mp3" },
-  //   { name: "bollybeat", file: "/beats/bollybeat.mp3" },
-  //   { name: "sea", file: "/beats/c_soup.mp3" },
-  //   { name: "come back", file: "/beats/come_back.mp3" },
+  {
+    name: "college dropout beat",
+    file: "/beats/college_dropout_beat.mp3",
+    category: "acoustic",
+    tempo: 80,
+  },
   {
     name: "comedy",
     file: "/beats/comedy_crazy.mp3",
@@ -126,8 +130,6 @@ export const beats: Beat[] = [
     tempo: 145,
     key: "Gmin",
   },
-  //   { name: "danger", file: "/beats/danger.mp3" },
-  //   { name: "deserted", file: "/beats/deserted.mp3" },
   {
     name: "drama",
     file: "/beats/drama.mp3",
@@ -151,11 +153,29 @@ export const beats: Beat[] = [
     key: "Gmaj",
   },
   {
+    name: "dumb",
+    file: "/beats/dumb.mp3",
+    category: "spacey",
+    tempo: 132,
+  },
+  {
     name: "e",
     file: "/beats/e.mp3",
     category: "other",
     tempo: 139,
     key: "Emin",
+  },
+  {
+    name: "feelings",
+    file: "/beats/feelings.mp3",
+    category: "mellow",
+    tempo: 84,
+  },
+  {
+    name: "galaxy",
+    file: "/beats/galaxy.mp3",
+    category: "trap",
+    tempo: 142,
   },
   {
     name: "game over",
@@ -217,7 +237,6 @@ export const beats: Beat[] = [
     category: "acoustic",
     tempo: 95,
   },
-  //   { name: "lonely", file: "/beats/lonely.mp3" },
   {
     name: "lowkey vibe",
     file: "/beats/lowkey_vibe.mp3",
@@ -262,14 +281,12 @@ export const beats: Beat[] = [
     category: "acoustic",
     tempo: 130,
   },
-  //   { name: "office", file: "/beats/office.mp3" },
   {
     name: "operator",
     file: "/beats/operator.mp3",
     category: "spacey",
     tempo: 130,
   },
-  //   { name: "rain falling", file: "/beats/rain_falling.mp3" },
   {
     name: "shadow",
     file: "/beats/shadow.mp3",
@@ -289,6 +306,12 @@ export const beats: Beat[] = [
       "https://music.apple.com/us/album/lost-my-youth/1812580779?i=1812580781",
     category: "trap",
     tempo: 140,
+  },
+  {
+    name: "space",
+    file: "/beats/space.mp3",
+    category: "spacey",
+    tempo: 127,
   },
   {
     name: "spooky",
@@ -324,6 +347,12 @@ export const beats: Beat[] = [
   },
   { name: "sunset", file: "/beats/sunset.mp3", category: "synth", tempo: 130 },
   {
+    name: "the bag",
+    file: "/beats/the_bag.mp3",
+    category: "acoustic",
+    tempo: 95,
+  },
+  {
     name: "thirty three",
     file: "/beats/thirty_three.mp3",
     spotifyUrl:
@@ -339,6 +368,12 @@ export const beats: Beat[] = [
     file: "/beats/thunder.mp3",
     category: "other",
     tempo: 140,
+  },
+  {
+    name: "trouble",
+    file: "/beats/trouble.mp3",
+    category: "acoustic",
+    tempo: 100,
   },
   {
     name: "utopia",
