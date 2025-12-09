@@ -47,6 +47,12 @@ export const beats: Beat[] = [
     tempo: 134,
   },
   {
+    name: "alien trap 5",
+    file: "/beats/alien_trap_5.mp3",
+    category: "trap",
+    tempo: 146,
+  },
+  {
     name: "all i do",
     file: "/beats/all_i_do.mp3",
     category: "acoustic",
@@ -59,6 +65,12 @@ export const beats: Beat[] = [
     category: "spacey",
     tempo: 120,
     key: "Bbmaj",
+  },
+  {
+    name: "alone 2",
+    file: "/beats/alone_2.mp3",
+    category: "synth",
+    tempo: 144,
   },
   {
     name: "apocalypse",
@@ -112,6 +124,12 @@ export const beats: Beat[] = [
     category: "synth",
     tempo: 140,
     key: "F#min",
+  },
+  {
+    name: "bounce back",
+    file: "/beats/bounce_back.mp3",
+    category: "synth",
+    tempo: 110,
   },
   {
     name: "college dropout beat",
@@ -262,6 +280,12 @@ export const beats: Beat[] = [
     file: "/beats/music_box.mp3",
     category: "mellow",
     tempo: 140,
+  },
+  {
+    name: "new rage",
+    file: "/beats/new_rage.mp3",
+    category: "synth",
+    tempo: 144,
   },
   {
     name: "ny beat",
