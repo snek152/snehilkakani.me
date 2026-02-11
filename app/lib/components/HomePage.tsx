@@ -9,6 +9,7 @@ const array = [
   "Software Engineer",
   "Full-Stack Developer",
   "Music Producer",
+  "AI Architect",
   "Photographer",
   "Audio Engineer",
   "Graphic Designer",
