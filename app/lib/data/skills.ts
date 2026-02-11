@@ -2,16 +2,20 @@ import {
   SiC,
   SiCanva,
   SiCss,
+  SiDeepgram,
   SiFastapi,
   SiFigma,
   SiFirebase,
   SiGit,
+  SiGooglegemini,
   SiHtml5,
   SiJavascript,
   SiJupyter,
+  SiLangchain,
   SiNextdotjs,
   SiNodedotjs,
   SiOpenjdk,
+  SiPostgresql,
   SiPrisma,
   SiPython,
   SiPytorch,
@@ -23,7 +27,7 @@ import {
   SiVuedotjs,
 } from "@icons-pack/react-simple-icons";
 
-export const skillTypes = ["frontend", "backend", "other", "learning"] as const;
+export const skillTypes = ["frontend", "backend", "ai", "other"] as const;
 
 export const skillsList: {
   icon: React.ComponentType<{ className?: string }>;
@@ -116,6 +120,12 @@ export const skillsList: {
     type: "backend",
   },
   {
+    icon: SiPostgresql,
+    label: "PostgreSQL",
+    colorClass: "SiPostgresql",
+    type: "backend",
+  },
+  {
     icon: SiGit,
     label: "Git",
     colorClass: "SiGit",
@@ -125,13 +135,13 @@ export const skillsList: {
     icon: SiPytorch,
     label: "PyTorch",
     colorClass: "SiPytorch",
-    type: "other",
+    type: "ai",
   },
   {
     icon: SiJupyter,
     label: "Jupyter",
     colorClass: "SiJupyter",
-    type: "other",
+    type: "ai",
   },
   {
     icon: SiCanva,
@@ -155,12 +165,30 @@ export const skillsList: {
     icon: SiVuedotjs,
     label: "Vue.js",
     colorClass: "SiVuedotjs",
-    type: "learning",
+    type: "frontend",
   },
   {
     icon: SiC,
     label: "C",
     colorClass: "SiC",
-    type: "learning",
+    type: "other",
+  },
+  {
+    icon: SiLangchain,
+    label: "LangChain",
+    colorClass: "SiLangchain",
+    type: "ai",
+  },
+  {
+    icon: SiGooglegemini,
+    label: "Gemini",
+    colorClass: "SiGooglegemini",
+    type: "ai",
+  },
+  {
+    icon: SiDeepgram,
+    label: "Deepgram",
+    colorClass: "SiDeepgram",
+    type: "ai",
   },
 ];

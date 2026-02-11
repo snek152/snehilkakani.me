@@ -33,6 +33,7 @@ export const projects: Project[] = [
       "research & presentation",
     ],
   },
+  // orbis
   {
     title: "Steam Force: Accessible STEAM Learning App",
     subtitle: "November 2021 - April 2022",
@@ -47,20 +48,7 @@ export const projects: Project[] = [
     github: "https://github.com/snek152/steamforce",
     // link: "https://steamforce.snehilkakani.me",
   },
-  {
-    link: "https://bit.ly/s74lhs",
-    github: "https://github.com/lynbrookstudio74/studio74website",
-    title: "Website Development for Lynbrook Drama Department",
-    subtitle: "April 2024 - October 2024",
-    description:
-      "Architected a custom design and responsive website for Lynbrook Drama to showcase productions, events, and crew info. Implemented a custom GitHub-based CMS for seamless updates.",
-    image: drama,
-    skills: [
-      "next.js & tailwindcss",
-      "client collaboration",
-      "responsive design & implementation",
-    ],
-  },
+  // impasse
   {
     title: "FloodSafe: Atmospheric River Prediction",
     subtitle: "January 2023 - March 2023",
@@ -98,6 +86,20 @@ export const projects: Project[] = [
     image: genalt,
     skills: ["ml model deployment", "business development", "public speaking"],
     link: "/projects/genalt.jpg",
+  },
+  {
+    title: "Website Development for Lynbrook Drama Department",
+    link: "https://bit.ly/s74lhs",
+    github: "https://github.com/lynbrookstudio74/studio74website",
+    subtitle: "April 2024 - October 2024",
+    description:
+      "Architected a custom design and responsive website for Lynbrook Drama to showcase productions, events, and crew info. Implemented a custom GitHub-based CMS for seamless updates.",
+    image: drama,
+    skills: [
+      "next.js & tailwindcss",
+      "client collaboration",
+      "responsive design & implementation",
+    ],
   },
   {
     title: "Website Development for EuclidLearn",

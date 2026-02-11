@@ -27,6 +27,10 @@ const iconColors = {
   SiJupyter: "text-orange-500",
   SiSupabase: "text-green-500",
   SiC: "text-slate-400",
+  SiLangchain: "text-emerald-400",
+  SiGooglegemini: "text-blue-400",
+  SiPostgresql: "text-blue-500",
+  SiDeepgram: "text-green-400",
 };
 
 const ToolIcon = ({
@@ -39,10 +43,12 @@ const ToolIcon = ({
   colorClass: keyof typeof iconColors;
 }) => (
   <div
-    className={`flex flex-col items-center justify-center bg-on-surface/80 border-2 border-surface/5 rounded-lg p-3 gap-1 ${iconColors[colorClass]} hover:border-surface/20 hover:-translate-y-2 hover:scale-105 hover:rotate-1 cursor-default transition-all duration-300 hover:shadow-lg active:border-surface/20 active:-translate-y-2 active:scale-105 active:rotate-1 active:shadow-lg`}
+    className={`flex flex-col items-center justify-center bg-on-surface/80 border-2 border-surface/5 rounded-lg p-3 gap-1 hover:border-surface/20 hover:-translate-y-2 hover:scale-105 hover:rotate-1 cursor-default transition-all duration-300 hover:shadow-lg active:border-surface/20 active:-translate-y-2 active:scale-105 active:rotate-1 active:shadow-lg`}
   >
     <div className="relative flex items-center justify-center mb-1">
-      <Icon className="w-7 h-7 lg:w-8 lg:h-8 transition-colors duration-300 drop-shadow" />
+      <Icon
+        className={`${iconColors[colorClass]} w-7 h-7 lg:w-8 lg:h-8 transition-colors duration-300 drop-shadow`}
+      />
     </div>
     <span className="block text-sm font-ibm font-medium uppercase text-surface transition-colors duration-300 tracking-wide">
       {label}
