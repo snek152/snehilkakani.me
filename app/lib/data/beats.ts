@@ -4,7 +4,6 @@ export const categories = [
   "acoustic",
   "spacey",
   "synth",
-  "other",
 ] as const;
 
 export type Beat = {
@@ -29,29 +28,29 @@ export const beats: Beat[] = [
     tempo: 146,
     key: "Gmin",
   },
-  {
-    name: "alien trap 3",
-    file: "/beats/alien_trap_3.mp3",
-    // spotifyUrl:
-    //   "https://open.spotify.com/track/19e91wHdNxh0pikniC4fz3?si=586efe57ddcb473b",
-    // appleMusicUrl:
-    //   "https://music.apple.com/us/album/overflow/1823553490?i=1823553491",
-    category: "spacey",
-    tempo: 134,
-    key: "C#min",
-  },
-  {
-    name: "alien trap 4",
-    file: "/beats/alien_trap_4.mp3",
-    category: "synth",
-    tempo: 134,
-  },
-  {
-    name: "alien trap 5",
-    file: "/beats/alien_trap_5.mp3",
-    category: "trap",
-    tempo: 146,
-  },
+  // {
+  //   name: "alien trap 3",
+  //   file: "/beats/alien_trap_3.mp3",
+  //   // spotifyUrl:
+  //   //   "https://open.spotify.com/track/19e91wHdNxh0pikniC4fz3?si=586efe57ddcb473b",
+  //   // appleMusicUrl:
+  //   //   "https://music.apple.com/us/album/overflow/1823553490?i=1823553491",
+  //   category: "spacey",
+  //   tempo: 134,
+  //   key: "C#min",
+  // },
+  // {
+  //   name: "alien trap 4",
+  //   file: "/beats/alien_trap_4.mp3",
+  //   category: "synth",
+  //   tempo: 134,
+  // },
+  // {
+  //   name: "alien trap 5",
+  //   file: "/beats/alien_trap_5.mp3",
+  //   category: "trap",
+  //   tempo: 146,
+  // },
   {
     name: "all i do",
     file: "/beats/all_i_do.mp3",
@@ -59,30 +58,30 @@ export const beats: Beat[] = [
     tempo: 72,
     key: "Gmaj",
   },
-  {
-    name: "alone",
-    file: "/beats/alone.mp3",
-    category: "spacey",
-    tempo: 120,
-    key: "Bbmaj",
-  },
-  {
-    name: "alone 2",
-    file: "/beats/alone_2.mp3",
-    category: "synth",
-    tempo: 144,
-  },
-  {
-    name: "apocalypse",
-    file: "/beats/apocalypse.mp3",
-    // spotifyUrl:
-    //   "https://open.spotify.com/track/0Uv09DdE0nfqmiQUEM1rKE?si=484e72530e8e4833",
-    // appleMusicUrl:
-    //   "https://music.apple.com/us/album/no-bodies/1812580779?i=1812580789",
-    category: "spacey",
-    tempo: 130,
-    key: "Dmin",
-  },
+  // {
+  //   name: "alone",
+  //   file: "/beats/alone.mp3",
+  //   category: "spacey",
+  //   tempo: 120,
+  //   key: "Bbmaj",
+  // },
+  // {
+  //   name: "alone 2",
+  //   file: "/beats/alone_2.mp3",
+  //   category: "synth",
+  //   tempo: 144,
+  // },
+  // {
+  //   name: "apocalypse",
+  //   file: "/beats/apocalypse.mp3",
+  //   // spotifyUrl:
+  //   //   "https://open.spotify.com/track/0Uv09DdE0nfqmiQUEM1rKE?si=484e72530e8e4833",
+  //   // appleMusicUrl:
+  //   //   "https://music.apple.com/us/album/no-bodies/1812580779?i=1812580789",
+  //   category: "spacey",
+  //   tempo: 130,
+  //   key: "Dmin",
+  // },
   {
     name: "ascension",
     file: "/beats/ascension.mp3",
@@ -100,31 +99,31 @@ export const beats: Beat[] = [
     tempo: 140,
     key: "C#min",
   },
-  {
-    name: "boat 2",
-    file: "/beats/boat_2.mp3",
-    // spotifyUrl:
-    //   "https://open.spotify.com/track/4pTtxQRgYiG3HTfOY3g4K0?si=ef377d95e1c74191",
-    // appleMusicUrl:
-    //   "https://music.apple.com/us/album/who/1741673619?i=1741674482",
-    category: "synth",
-    tempo: 130,
-    key: "Dmaj",
-  },
-  {
-    name: "boat 3",
-    file: "/beats/boat_3.mp3",
-    category: "mellow",
-    tempo: 130,
-    key: "F#min",
-  },
-  {
-    name: "boat 4",
-    file: "/beats/boat_4.mp3",
-    category: "synth",
-    tempo: 140,
-    key: "F#min",
-  },
+  // {
+  //   name: "boat 2",
+  //   file: "/beats/boat_2.mp3",
+  //   // spotifyUrl:
+  //   //   "https://open.spotify.com/track/4pTtxQRgYiG3HTfOY3g4K0?si=ef377d95e1c74191",
+  //   // appleMusicUrl:
+  //   //   "https://music.apple.com/us/album/who/1741673619?i=1741674482",
+  //   category: "synth",
+  //   tempo: 130,
+  //   key: "Dmaj",
+  // },
+  // {
+  //   name: "boat 3",
+  //   file: "/beats/boat_3.mp3",
+  //   category: "mellow",
+  //   tempo: 130,
+  //   key: "F#min",
+  // },
+  // {
+  //   name: "boat 4",
+  //   file: "/beats/boat_4.mp3",
+  //   category: "synth",
+  //   tempo: 140,
+  //   key: "F#min",
+  // },
   {
     name: "bounce back",
     file: "/beats/bounce_back.mp3",
@@ -148,41 +147,41 @@ export const beats: Beat[] = [
     tempo: 145,
     key: "Gmin",
   },
-  {
-    name: "drama",
-    file: "/beats/drama.mp3",
-    // spotifyUrl:
-    //   "https://open.spotify.com/track/6KWNvyljumISmf0nMYbxcJ?si=17093579a1e24fda",
-    // appleMusicUrl:
-    //   "https://music.apple.com/us/album/drama/1812580779?i=1812580881",
-    category: "trap",
-    tempo: 158,
-    key: "Amaj",
-  },
-  {
-    name: "drifting",
-    file: "/beats/drifting.mp3",
-    // spotifyUrl:
-    //   "https://open.spotify.com/track/4TKJnrXB6m0Uk0OsSKWvhX?si=bad63108da9847b6",
-    // appleMusicUrl:
-    //   "https://music.apple.com/us/album/jailed/1741673619?i=1741674181",
-    category: "mellow",
-    tempo: 130,
-    key: "Gmaj",
-  },
-  {
-    name: "dumb",
-    file: "/beats/dumb.mp3",
-    category: "spacey",
-    tempo: 132,
-  },
-  {
-    name: "e",
-    file: "/beats/e.mp3",
-    category: "other",
-    tempo: 139,
-    key: "Emin",
-  },
+  // {
+  //   name: "drama",
+  //   file: "/beats/drama.mp3",
+  //   // spotifyUrl:
+  //   //   "https://open.spotify.com/track/6KWNvyljumISmf0nMYbxcJ?si=17093579a1e24fda",
+  //   // appleMusicUrl:
+  //   //   "https://music.apple.com/us/album/drama/1812580779?i=1812580881",
+  //   category: "trap",
+  //   tempo: 158,
+  //   key: "Amaj",
+  // },
+  // {
+  //   name: "drifting",
+  //   file: "/beats/drifting.mp3",
+  //   // spotifyUrl:
+  //   //   "https://open.spotify.com/track/4TKJnrXB6m0Uk0OsSKWvhX?si=bad63108da9847b6",
+  //   // appleMusicUrl:
+  //   //   "https://music.apple.com/us/album/jailed/1741673619?i=1741674181",
+  //   category: "mellow",
+  //   tempo: 130,
+  //   key: "Gmaj",
+  // },
+  // {
+  //   name: "dumb",
+  //   file: "/beats/dumb.mp3",
+  //   category: "spacey",
+  //   tempo: 132,
+  // },
+  // {
+  //   name: "e",
+  //   file: "/beats/e.mp3",
+  //   category: "other",
+  //   tempo: 139,
+  //   key: "Emin",
+  // },
   {
     name: "feelings",
     file: "/beats/feelings.mp3",
@@ -211,24 +210,24 @@ export const beats: Beat[] = [
     tempo: 140,
     key: "Amin",
   },
-  {
-    name: "hell 2",
-    file: "/beats/hell_2.mp3",
-    // spotifyUrl:
-    //   "https://open.spotify.com/track/5hmbLXxXMDxPobjKDQusFn?si=fd9b726f7a2244cc",
-    // appleMusicUrl:
-    //   "https://music.apple.com/us/album/look-at-me/1823553490?i=1823553492",
-    category: "trap",
-    tempo: 142,
-    key: "Amin",
-  },
-  {
-    name: "hero",
-    file: "/beats/hero.mp3",
-    category: "synth",
-    tempo: 160,
-    key: "Bbmaj",
-  },
+  // {
+  //   name: "hell 2",
+  //   file: "/beats/hell_2.mp3",
+  //   // spotifyUrl:
+  //   //   "https://open.spotify.com/track/5hmbLXxXMDxPobjKDQusFn?si=fd9b726f7a2244cc",
+  //   // appleMusicUrl:
+  //   //   "https://music.apple.com/us/album/look-at-me/1823553490?i=1823553492",
+  //   category: "trap",
+  //   tempo: 142,
+  //   key: "Amin",
+  // },
+  // {
+  //   name: "hero",
+  //   file: "/beats/hero.mp3",
+  //   category: "synth",
+  //   tempo: 160,
+  //   key: "Bbmaj",
+  // },
   {
     name: "in my mind",
     file: "/beats/in_my_mind.mp3",
@@ -239,92 +238,92 @@ export const beats: Beat[] = [
     category: "synth",
     tempo: 126,
   },
-  {
-    name: "king",
-    file: "/beats/king.mp3",
-    // spotifyUrl:
-    //   "https://open.spotify.com/track/1olMepH9LQeO1aQOAOzvpQ?si=e6150e6608c34d3b",
-    // appleMusicUrl:
-    //   "https://music.apple.com/us/album/the-king/1741673619?i=1741674489",
-    category: "acoustic",
-    tempo: 95,
-  },
-  {
-    name: "lowkey vibe",
-    file: "/beats/lowkey_vibe.mp3",
-    // spotifyUrl:
-    //   "https://open.spotify.com/track/2uFt52Z49TSq7iTjkJ1y0y?si=9985c91b5d604fb8",
-    // appleMusicUrl:
-    //   "https://music.apple.com/us/album/low-key/1812580779?i=1812580880",
-    category: "mellow",
-    tempo: 132,
-  },
-  {
-    name: "memories",
-    file: "/beats/memories.mp3",
-    category: "mellow",
-    tempo: 150,
-  },
-  {
-    name: "monster",
-    file: "/beats/cringe_beat.mp3",
-    // spotifyUrl:
-    //   "https://open.spotify.com/track/1tMznSU41DVnqaIrjun2ME?si=da09069952794a47",
-    // appleMusicUrl:
-    //   "https://music.apple.com/us/album/i-am/1741673619?i=1741674177",
-    category: "trap",
-    tempo: 136,
-  },
-  {
-    name: "music box",
-    file: "/beats/music_box.mp3",
-    category: "mellow",
-    tempo: 140,
-  },
-  {
-    name: "new rage",
-    file: "/beats/new_rage.mp3",
-    category: "synth",
-    tempo: 144,
-  },
-  {
-    name: "ny beat",
-    file: "/beats/ny_beat.mp3",
-    category: "acoustic",
-    tempo: 130,
-  },
-  {
-    name: "operator",
-    file: "/beats/operator.mp3",
-    category: "spacey",
-    tempo: 130,
-  },
-  {
-    name: "shadow",
-    file: "/beats/shadow.mp3",
-    // spotifyUrl:
-    //   "https://open.spotify.com/track/6IcItQ2bYVshKjjb88zh2f?si=32c9d7b5cf1a48cd",
-    // appleMusicUrl:
-    //   "https://music.apple.com/us/album/attn-addict/1812580779?i=1812580787",
-    category: "trap",
-    tempo: 115,
-  },
-  {
-    name: "shut the front door",
-    file: "/beats/shut_the_front_door.mp3",
-    // spotifyUrl:
-    //   "https://open.spotify.com/track/2Z4vcwNRINjoJ2XAu4acDd?si=27442a0956d9404a",
-    // appleMusicUrl:
-    //   "https://music.apple.com/us/album/lost-my-youth/1812580779?i=1812580781",
-    category: "trap",
-    tempo: 140,
-  },
-  {
-    name: "space",
-    file: "/beats/space.mp3",
-    category: "spacey",
-    tempo: 127,
-  },
+  // {
+  //   name: "king",
+  //   file: "/beats/king.mp3",
+  //   // spotifyUrl:
+  //   //   "https://open.spotify.com/track/1olMepH9LQeO1aQOAOzvpQ?si=e6150e6608c34d3b",
+  //   // appleMusicUrl:
+  //   //   "https://music.apple.com/us/album/the-king/1741673619?i=1741674489",
+  //   category: "acoustic",
+  //   tempo: 95,
+  // },
+  // {
+  //   name: "lowkey vibe",
+  //   file: "/beats/lowkey_vibe.mp3",
+  //   // spotifyUrl:
+  //   //   "https://open.spotify.com/track/2uFt52Z49TSq7iTjkJ1y0y?si=9985c91b5d604fb8",
+  //   // appleMusicUrl:
+  //   //   "https://music.apple.com/us/album/low-key/1812580779?i=1812580880",
+  //   category: "mellow",
+  //   tempo: 132,
+  // },
+  // {
+  //   name: "memories",
+  //   file: "/beats/memories.mp3",
+  //   category: "mellow",
+  //   tempo: 150,
+  // },
+  // {
+  //   name: "monster",
+  //   file: "/beats/cringe_beat.mp3",
+  //   // spotifyUrl:
+  //   //   "https://open.spotify.com/track/1tMznSU41DVnqaIrjun2ME?si=da09069952794a47",
+  //   // appleMusicUrl:
+  //   //   "https://music.apple.com/us/album/i-am/1741673619?i=1741674177",
+  //   category: "trap",
+  //   tempo: 136,
+  // },
+  // {
+  //   name: "music box",
+  //   file: "/beats/music_box.mp3",
+  //   category: "mellow",
+  //   tempo: 140,
+  // },
+  // {
+  //   name: "new rage",
+  //   file: "/beats/new_rage.mp3",
+  //   category: "synth",
+  //   tempo: 144,
+  // },
+  // {
+  //   name: "ny beat",
+  //   file: "/beats/ny_beat.mp3",
+  //   category: "acoustic",
+  //   tempo: 130,
+  // },
+  // {
+  //   name: "operator",
+  //   file: "/beats/operator.mp3",
+  //   category: "spacey",
+  //   tempo: 130,
+  // },
+  // {
+  //   name: "shadow",
+  //   file: "/beats/shadow.mp3",
+  //   // spotifyUrl:
+  //   //   "https://open.spotify.com/track/6IcItQ2bYVshKjjb88zh2f?si=32c9d7b5cf1a48cd",
+  //   // appleMusicUrl:
+  //   //   "https://music.apple.com/us/album/attn-addict/1812580779?i=1812580787",
+  //   category: "trap",
+  //   tempo: 115,
+  // },
+  // {
+  //   name: "shut the front door",
+  //   file: "/beats/shut_the_front_door.mp3",
+  //   // spotifyUrl:
+  //   //   "https://open.spotify.com/track/2Z4vcwNRINjoJ2XAu4acDd?si=27442a0956d9404a",
+  //   // appleMusicUrl:
+  //   //   "https://music.apple.com/us/album/lost-my-youth/1812580779?i=1812580781",
+  //   category: "trap",
+  //   tempo: 140,
+  // },
+  // {
+  //   name: "space",
+  //   file: "/beats/space.mp3",
+  //   category: "spacey",
+  //   tempo: 127,
+  // },
   {
     name: "spooky",
     file: "/beats/spooky_extended.mp3",
@@ -347,17 +346,17 @@ export const beats: Beat[] = [
     category: "mellow",
     tempo: 122,
   },
-  {
-    name: "sunken",
-    file: "/beats/sunken.mp3",
-    // spotifyUrl:
-    //   "https://open.spotify.com/track/2Hp4NpdI4uNXP6Z2ZKHcWW?si=18fe786740f14b92",
-    // appleMusicUrl:
-    //   "https://music.apple.com/us/album/on-my-own-tonight/1741673619?i=1741673627",
-    category: "trap",
-    tempo: 170,
-  },
-  { name: "sunset", file: "/beats/sunset.mp3", category: "synth", tempo: 130 },
+  // {
+  //   name: "sunken",
+  //   file: "/beats/sunken.mp3",
+  //   // spotifyUrl:
+  //   //   "https://open.spotify.com/track/2Hp4NpdI4uNXP6Z2ZKHcWW?si=18fe786740f14b92",
+  //   // appleMusicUrl:
+  //   //   "https://music.apple.com/us/album/on-my-own-tonight/1741673619?i=1741673627",
+  //   category: "trap",
+  //   tempo: 170,
+  // },
+  // { name: "sunset", file: "/beats/sunset.mp3", category: "synth", tempo: 130 },
   {
     name: "the bag",
     file: "/beats/the_bag.mp3",
@@ -375,12 +374,12 @@ export const beats: Beat[] = [
     tempo: 145,
     key: "Bbmin",
   },
-  {
-    name: "thunder",
-    file: "/beats/thunder.mp3",
-    category: "other",
-    tempo: 140,
-  },
+  // {
+  //   name: "thunder",
+  //   file: "/beats/thunder.mp3",
+  //   category: "other",
+  //   tempo: 140,
+  // },
   {
     name: "trouble",
     file: "/beats/trouble.mp3",
@@ -407,16 +406,16 @@ export const beats: Beat[] = [
     category: "synth",
     tempo: 150,
   },
-  {
-    name: "vengeance 2",
-    file: "/beats/vengeance_2.mp3",
-    // spotifyUrl:
-    //   "https://open.spotify.com/track/6QzkhU10zGDONjh8VOTDns?si=293f21d98abe47da",
-    // appleMusicUrl:
-    //   "https://music.apple.com/us/album/puppy-coat/1741673619?i=1741674062",
-    category: "synth",
-    tempo: 160,
-  },
+  // {
+  //   name: "vengeance 2",
+  //   file: "/beats/vengeance_2.mp3",
+  //   // spotifyUrl:
+  //   //   "https://open.spotify.com/track/6QzkhU10zGDONjh8VOTDns?si=293f21d98abe47da",
+  //   // appleMusicUrl:
+  //   //   "https://music.apple.com/us/album/puppy-coat/1741673619?i=1741674062",
+  //   category: "synth",
+  //   tempo: 160,
+  // },
   {
     name: "vengeance 3",
     file: "/beats/vengeance_3.mp3",
