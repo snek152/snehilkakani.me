@@ -7,6 +7,7 @@ import proco from "@/public/projects/proco.jpg";
 import euclidlearn from "@/public/projects/euclidlearn.jpg";
 import swordselection from "@/public/projects/swordselection.png";
 import impasse from "@/public/projects/impasse.png";
+import orbis from "@/public/projects/orbis.png";
 import { StaticImageData } from "next/image";
 
 export type Project = {
@@ -34,8 +35,6 @@ export const projects: Project[] = [
       "research & presentation",
     ],
   },
-  // orbis
-
   {
     title: "Impasse: AI-Powered Negotiation Training Platform",
     subtitle: "January 2026",
@@ -49,6 +48,20 @@ export const projects: Project[] = [
     ],
     github: "https://github.com/RahulThennarasu/impasse",
     link: "https://youtu.be/VSajuy4SSEM",
+  },
+  {
+    title: "Orbis: AI Agent Observability Dashboard",
+    subtitle: "October 2025 - December 2025",
+    description:
+      "Built a full-stack platform connected to a Python SDK for devs to track AI agent executions, costs, and performance. Engineered DAG visualizations, and integrated analytics and prompt versioning.",
+    image: orbis,
+    skills: [
+      "next.js & tailwindcss",
+      "python sdk development",
+      "data visualization & analytics",
+      "postgresql & redis",
+    ],
+    github: "https://github.com/sbalaji09/Orbis",
   },
   {
     title: "Steam Force: Accessible STEAM Learning App",
