@@ -27,7 +27,7 @@ import {
   SiVuedotjs,
 } from "@icons-pack/react-simple-icons";
 
-export const skillTypes = ["frontend", "backend", "ai", "other"] as const;
+export const skillTypes = ["frontend", "backend", "AI", "other"] as const;
 
 export const skillsList: {
   icon: React.ComponentType<{ className?: string }>;
@@ -135,13 +135,13 @@ export const skillsList: {
     icon: SiPytorch,
     label: "PyTorch",
     colorClass: "SiPytorch",
-    type: "ai",
+    type: "AI",
   },
   {
     icon: SiJupyter,
     label: "Jupyter",
     colorClass: "SiJupyter",
-    type: "ai",
+    type: "AI",
   },
   {
     icon: SiCanva,
@@ -177,18 +177,18 @@ export const skillsList: {
     icon: SiLangchain,
     label: "LangChain",
     colorClass: "SiLangchain",
-    type: "ai",
+    type: "AI",
   },
   {
     icon: SiGooglegemini,
     label: "Gemini",
     colorClass: "SiGooglegemini",
-    type: "ai",
+    type: "AI",
   },
   {
     icon: SiDeepgram,
     label: "Deepgram",
     colorClass: "SiDeepgram",
-    type: "ai",
+    type: "AI",
   },
 ];

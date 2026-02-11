@@ -6,13 +6,14 @@ import steamforce from "@/public/projects/steamforce.jpg";
 import proco from "@/public/projects/proco.jpg";
 import euclidlearn from "@/public/projects/euclidlearn.jpg";
 import swordselection from "@/public/projects/swordselection.png";
+import impasse from "@/public/projects/impasse.png";
 import { StaticImageData } from "next/image";
 
 export type Project = {
   title: string;
   subtitle?: string;
   description: string;
-  image: StaticImageData | string; // Use StaticImageData for local images or string for remote URLs
+  image: StaticImageData | string;
   skills: string[];
   link?: string;
   github?: string;
@@ -34,6 +35,21 @@ export const projects: Project[] = [
     ],
   },
   // orbis
+
+  {
+    title: "Impasse: AI-Powered Negotiation Training Platform",
+    subtitle: "January 2026",
+    description:
+      "Engineered a full-stack AI negotiation simulator with agentic opponent, coaching, and analysis agents. Built real-time voice interaction via WebSockets using FastAPI and Next.js, with session analytics and persistent storage.",
+    image: impasse,
+    skills: [
+      "next.js & tailwindcss",
+      "fastapi & websockets",
+      "agentic ai development",
+    ],
+    github: "https://github.com/RahulThennarasu/impasse",
+    link: "https://youtu.be/VSajuy4SSEM",
+  },
   {
     title: "Steam Force: Accessible STEAM Learning App",
     subtitle: "November 2021 - April 2022",
@@ -48,7 +64,6 @@ export const projects: Project[] = [
     github: "https://github.com/snek152/steamforce",
     // link: "https://steamforce.snehilkakani.me",
   },
-  // impasse
   {
     title: "FloodSafe: Atmospheric River Prediction",
     subtitle: "January 2023 - March 2023",
