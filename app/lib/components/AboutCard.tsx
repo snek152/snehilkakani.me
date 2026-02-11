@@ -74,15 +74,16 @@ export default function AboutCard() {
             Snehil Kakani
           </h1>
           <h2 className="text-sm lg:text-base text-on-surface/80 font-ibm italic mb-2">
-            {'"'}I build websites{'"'}
+            Building intelligent systems.
           </h2>
           <h2 className="text-sm lg:text-base text-on-surface font-domine mb-1">
-            CompSci @ Cal Poly SLO
+            Computer Science @ Cal Poly
           </h2>
           <p className="text-on-surface font-ibm text-sm w-full lg:text-base">
-            Focused on computer science and software engineering. Passionate
-            about creating innovative solutions and exploring new technologies.
-            Exploring music production and photography.
+            Focused on computer science, software engineering, and AI
+            integration. Passionate about creating innovative solutions and
+            learning new technologies. Exploring music production and
+            photography.
           </p>
           <div className="flex gap-2 mt-4 items-center">
             <a
