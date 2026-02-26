@@ -1,51 +1,92 @@
-# Hi there, I’m Snehil Kakani! 👋
+<div align="center">
+  <img src="./public/about.jpeg" alt="Snehil Kakani" width="100%" />
+</div>
 
-I’m a **web developer**, **music producer**, and **actor** with a passion for creative tech, storytelling, and community. By day I build interactive experiences online; by night, I’m composing beats or stepping into character—sometimes both at once!
+<div align="center">
 
----
+# Snehil Kakani
 
-##  About Me
-- I specialize in **full-stack web development**, particularly using **Next.js**, **Svelte**, **React**, and **TypeScript**—among many other tools :contentReference[oaicite:2]{index=2}.
-- In the creative realm, I produce **hip-hop beats**, play **drums**, **piano**, and **clarinet**, and delve into music production :contentReference[oaicite:3]{index=3}.
-- Outside code and music, I’m active in **acting**, **sound design**, and **graphic design**—a blend that makes storytelling multidimensional :contentReference[oaicite:4]{index=4}.
+[![Typing SVG](https://readme-typing-svg.herokuapp.com?font=IBM+Plex+Sans&weight=600&size=24&duration=2800&pause=900&color=4FA3FF&center=true&vCenter=true&width=960&lines=Software+Engineer;AI+Builder;Full-Stack+Developer;Music+Producer+%2F+Audio+Engineer;Photographer+%2F+Actor)](https://git.io/typing-svg)
 
----
+[![Website](https://img.shields.io/badge/Portfolio-snehilkakani.me-0A66C2?style=for-the-badge&logo=google-chrome&logoColor=white)](https://snehilkakani.me)
+[![Email](https://img.shields.io/badge/Gmail-kakanisnehil%40gmail.com-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:kakanisnehil@gmail.com)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-snehilkakani-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/snehilkakani/)
+[![GitHub](https://img.shields.io/badge/GitHub-snek152-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/snek152)
 
-##  Skills & Tools
+![](https://komarev.com/ghpvc/?username=snek152&style=for-the-badge&color=0e75b6)
+![](https://img.shields.io/github/followers/snek152?style=for-the-badge&logo=github&color=24292e)
+![](https://img.shields.io/github/stars/snek152?style=for-the-badge&logo=github&color=f5c518)
 
-| Area              | Technologies & Tools                                                                 |
-|------------------|--------------------------------------------------------------------------------------|
-| **Frontend**      | Next.js, React, Svelte, Vue.js, Tailwind CSS, Sass, jQuery, Bootstrap               |
-| **Backend**       | Node.js, Express, Flask, FastAPI, MongoDB, SQL, Firebase                            |
-| **General Purpose** | TypeScript, JavaScript, Python, Java, Git                                         |
-| **Design & Graphics** | Figma, Canva, Procreate, Blender, Creative Cloud tools                        |
-| **Music**         | Logic Pro, Piano, Drums, Percussion, Music Production                              |
-| **Machine Learning** | PyTorch (e.g., GU-Net for brain tumor segmentation)                          |
-| **In Progress**   | Angular, Flutter, React Native                                                     | :contentReference[oaicite:5]{index=5}
+</div>
 
----
+## About
 
-##  Projects & Experience
+I am a Computer Science student at Cal Poly building products at the intersection of software, AI, and creativity.
+I work across full-stack engineering, AI systems, music production, and visual storytelling.
 
-### Selected Projects
-- **GU-Net** – A machine learning model for segmenting gliomas, achieving 71.6% accuracy with limited data and compute—built under challenging constraints :contentReference[oaicite:6]{index=6}.
-- **STEAM Force** – Developed an education platform to deliver interactive learning to under-resourced communities (recognized with an Honorable Mention at Synopsys Science Fair) :contentReference[oaicite:7]{index=7}.
-- **Sword Selection** – My first Minecraft mod, which added dagger, longsword, and sickle variations—with over 1,500 downloads :contentReference[oaicite:8]{index=8}.
+## Core Projects
 
-### Professional Roles
-- **Director of Technology & CS Instructor** at STEMist Education — Led web dev efforts, tech team, and created lesson materials for student developers :contentReference[oaicite:9]{index=9}.
-- **Web Developer & Designer** for “Care for our Common Home” — Built organization’s website with donations and blog features :contentReference[oaicite:10]{index=10}.
+- **Impasse**: AI negotiation training platform with real-time voice interaction, coaching agents, and analytics.
+- **Orbis**: AI agent observability dashboard with execution tracing, cost/performance analytics, and DAG visualization.
+- **GU-Net Research**: Diffuse glioma segmentation model (71.58% accuracy), presented at UCSB and published in JSR.
+- **FloodSafe**: Atmospheric river prediction system with data pipeline, neural net, FastAPI backend, and web app.
+- **Steam Force**: Offline-capable STEAM learning app recognized with Synopsys Science Fair Honorable Mention.
+- **SwordSelection**: Medieval-themed Minecraft mod with custom mechanics and 2.2k+ downloads.
 
-### Theatre & Sound Design
-- **Lead Sound Designer**, **Actor**, and **Performer** in numerous school theatre productions—most notably *Laughing Stock*, *The Laramie Project*, *Ranked, the Musical*, *The Lion in Winter*, and *Romeo and Juliet* :contentReference[oaicite:11]{index=11}.
+<div align="center">
 
----
+[![Impasse](https://img.shields.io/badge/Impasse-Repo-111827?style=flat-square&logo=github)](https://github.com/RahulThennarasu/impasse)
+[![Orbis](https://img.shields.io/badge/Orbis-Repo-111827?style=flat-square&logo=github)](https://github.com/sbalaji09/Orbis)
+[![GU-Net](https://img.shields.io/badge/GU--Net-Repo-111827?style=flat-square&logo=github)](https://github.com/snek152/GU_Net_Glioma_Segmentation_SRA)
+[![FloodSafe](https://img.shields.io/badge/FloodSafe-Repo-111827?style=flat-square&logo=github)](https://github.com/snek152/floodsafe)
+[![Steam Force](https://img.shields.io/badge/Steam%20Force-Repo-111827?style=flat-square&logo=github)](https://github.com/snek152/steamforce)
+[![SwordSelection](https://img.shields.io/badge/SwordSelection-Repo-111827?style=flat-square&logo=github)](https://github.com/snek152/SwordSelection)
 
-##  Let’s Connect!
+</div>
 
-I’m always open to collaborations—whether it’s on a beat, a drama production, or a web app. Let’s build something inspiring together:
+## Tech Stack
 
-- **Email:** kakanisnehil@gmail.com :contentReference[oaicite:12]{index=12}  
-- **GitHub:** [SneK152](https://github.com/SneK152) :contentReference[oaicite:13]{index=13}  
-- **Website:** [snehilkakani.me](https://www.snehilkakani.me/) :contentReference[oaicite:14]{index=14}  
-- **Socials:** Connect with me on LinkedIn, Instagram, etc.—links listed on my website! 
+<div align="center">
+  <img src="https://skillicons.dev/icons?i=ts,js,react,nextjs,svelte,vue,tailwind,nodejs,python,fastapi,postgres,prisma,supabase,firebase,pytorch,java,c,git,figma&perline=10" />
+</div>
+
+## GitHub Analytics
+
+<div align="center">
+  <img height="170" src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=snek152&theme=github_dark" />
+  <img height="170" src="https://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=snek152&theme=github_dark" />
+</div>
+
+<div align="center">
+  <img height="170" src="https://streak-stats.demolab.com?user=snek152&theme=github-dark-blue&hide_border=true" />
+</div>
+
+<div align="center">
+  <img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=snek152&theme=github_dark" />
+</div>
+
+<div align="center">
+  <img src="https://github-readme-activity-graph.vercel.app/graph?username=snek152&bg_color=0d1117&color=58a6ff&line=2f81f7&point=f0f6fc&area=true&area_color=1f6feb&hide_border=true" />
+</div>
+
+## Beyond Code
+
+- Produce and engineer hip-hop and cinematic beats.
+- Shoot photography (travel, city, and landscape).
+- Perform in theatre and work in live sound design.
+
+```javascript
+export const snehil = {
+  pronouns: "he/him",
+  education: "Computer Science @ Cal Poly",
+  website: "https://snehilkakani.me",
+  currentlyBuilding: ["AI products", "full-stack apps", "creative tooling"],
+  interests: ["AI systems", "music production", "photography", "theatre"],
+  experience: [
+    "Lynbrook DevX Club (President / VP / Head of Frontend)",
+    "Freelance Website Developer",
+    "Director of Technology & CS Instructor @ STEMist Education",
+    "Music Producer & Audio Engineer (Independent)",
+  ],
+};
+```
