@@ -9,6 +9,42 @@ export interface Experience {
 
 export const experiences: Experience[] = [
   {
+    title: "Software Engineer",
+    company: "Hack4Impact Cal Poly",
+    location: "San Luis Obispo, CA",
+    period: "Sep 2025 - Present",
+    description: [
+      "Completed a two-month engineering bootcamp before contributing to the Paso Robles Food Co-op member portal",
+      "Built server actions for group messaging and admin blasts with role-based auth and Zod validation",
+      "Developed modals with member search, owner-pinned ordering, and accessibility support",
+    ],
+    skills: [
+      "next.js & server actions",
+      "back-end development",
+      "role-based auth",
+      "zod & validation",
+      "typescript",
+    ],
+  },
+  {
+    title: "Software Engineer",
+    company: "CodeBox",
+    location: "San Luis Obispo, CA",
+    period: "Sep 2025 - Present",
+    description: [
+      "Contributed to Mustang Maps, a React Native campus navigation app for Cal Poly students",
+      "Implemented A* pathfinding and integrated it into the routing UI",
+      "Built map layer filtering and building category matching, and fixed core search and directions UX across bottom sheets and input handling",
+    ],
+    skills: [
+      "react native",
+      "front-end development",
+      "algorithms & pathfinding",
+      "typescript",
+      "mobile development",
+    ],
+  },
+  {
     title: "President / Vice President / Head of Frontend",
     company: "Lynbrook DevX Club",
     location: "San Jose, CA",
