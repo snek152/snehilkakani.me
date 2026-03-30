@@ -3,7 +3,7 @@
 import * as motion from "motion/react-m";
 import { Beat, beats } from "../data/beats";
 import { PauseIcon, PlayIcon } from "@heroicons/react/24/outline";
-import { SiApplemusic, SiSpotify } from "@icons-pack/react-simple-icons";
+// import { SiApplemusic, SiSpotify } from "@icons-pack/react-simple-icons";
 
 export default function MusicBeat({
   beat,
@@ -61,7 +61,7 @@ export default function MusicBeat({
           </span>
         </span>
         <div className="z-10 flex items-center lg:flex-row flex-row lg:gap-2 gap-2">
-          {beat.spotifyUrl && (
+          {/* {beat.spotifyUrl && (
             <a
               href={beat.spotifyUrl}
               target="_blank"
@@ -86,7 +86,7 @@ export default function MusicBeat({
                 <SiApplemusic className="w-5 h-5" />
               </span>
             </a>
-          )}
+          )} */}
         </div>
       </div>
 
