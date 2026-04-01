@@ -109,7 +109,7 @@ export default function Experience() {
           className="mb-10 lg:mb-12 text-center"
         >
           <h1 className="text-3xl lg:text-4xl font-bold tracking-tight text-surface font-domine">
-            Work Experience
+            Experience & Education
           </h1>
         </motion.div>
         <div className="pl-1">
