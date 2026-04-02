@@ -50,9 +50,9 @@ export const experiences: Experience[] = [
     location: "San Jose, CA",
     period: "May 2022 - Jun 2025",
     description: [
-      "Led development of numerous club projects and taught variety of software-related topics weekly to 50+ members",
-      "Expanded club to include passion project development, fostering creativity and technical skill growth",
-      "Organized workshops, hackathons, and collaborative coding sessions to enhance member engagement",
+      "Led a 50+ member coding club as President, directing full-stack project development and delivering weekly technical workshops on TypeScript, Next.js, and system design",
+      "Expanded club scope to support member-led passion projects, enabling students to ideate, build, and ship their own software",
+      "Organized hackathons, workshops, and collaborative sprints, growing active participation year over year across all four years of high school",
     ],
     skills: [
       "typescript & next.js",
@@ -67,9 +67,9 @@ export const experiences: Experience[] = [
     location: "San Jose, CA",
     period: "Feb 2025 - Sep 2025",
     description: [
-      "Took phone and in-person orders and served pizza for 500+ customers per week, ensuring high-quality service",
-      "Led shifts and coordinated team members to maintain efficient restaurant operations during peak hours",
-      "Managed cleanup tasks, inventory, and resolved customer issues professionally across all areas of the business",
+      "Led shift operations at a high-volume pizzeria, coordinating team members to maintain consistent service for 500+ weekly customers",
+      "Managed inventory and resolved customer escalations across all areas of the business, maintaining quality standards under pressure",
+      "Balanced phone, in-person, and operational responsibilities simultaneously in a fast-paced customer-facing environment",
     ],
     skills: [
       "customer service",
@@ -85,9 +85,9 @@ export const experiences: Experience[] = [
     location: "Remote",
     period: "Jun 2021 - Present",
     description: [
-      "Developed and delivered tailored web solutions for organizations including EuclidLearn and Care for Our Common Home",
-      "Provided professional and pro bono contributions, creating responsive, modern websites with optimal user experience",
-      "Collaborated with clients to understand requirements and delivered projects on time with ongoing maintenance support",
+      "Built and deployed responsive websites for clients including EuclidLearn and Care for Our Common Home using Next.js and Tailwind CSS",
+      "Managed full project lifecycle for both paid and pro bono engagements",
+      "Maintained and iterated on live sites post-launch, providing ongoing technical support and feature additions as needed",
     ],
     skills: [
       "next.js & tailwindcss",
@@ -101,9 +101,9 @@ export const experiences: Experience[] = [
     location: "San Jose, CA",
     period: "Jan 2022 - Jan 2023",
     description: [
-      "Created organization website from scratch and led a team of developers to implement new features and improvements",
-      "Taught comprehensive CS curriculum to students, covering programming fundamentals and web development concepts",
-      "Mentored students in coding projects and provided guidance on best practices in software development",
+      "Built the organization's website from scratch and led a developer team to ship new features and improvements",
+      "Designed and taught a structured CS curriculum covering programming fundamentals and web development across multiple sessions",
+      "Guided students through end-to-end coding projects, from concept to working software, with hands-on mentorship",
     ],
     skills: [
       "web development",
