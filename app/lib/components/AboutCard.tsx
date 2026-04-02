@@ -74,16 +74,16 @@ export default function AboutCard() {
             Snehil Kakani
           </h1>
           <h2 className="text-sm lg:text-base text-on-surface/80 font-ibm italic mb-2">
-            Building full-stack and AI systems.
+            Building intelligent systems.
           </h2>
           <h2 className="text-sm lg:text-base text-on-surface font-domine mb-1">
-            B.S. Computer Science, Cal Poly SLO — Class of 2029
+            B.S. Computer Science, Cal Poly SLO — Class of 2028
           </h2>
           <p className="text-on-surface font-ibm text-sm w-full lg:text-base">
-            CS student at Cal Poly SLO building full-stack web apps and
-            AI-integrated tools. Interested in back-end systems, developer
-            tooling, and applied ML — actively seeking summer 2026 software
-            engineering internships.
+            Focused on computer science, software engineering, and AI
+            integration. Passionate about creating innovative solutions and
+            learning new technologies. Exploring music production and
+            photography.
           </p>
           <div className="flex gap-2 mt-4 items-center">
             <a

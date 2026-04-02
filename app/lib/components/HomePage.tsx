@@ -8,8 +8,12 @@ import { Suspense, useEffect, useMemo, useState } from "react";
 const array = [
   "Software Engineer",
   "Full-Stack Developer",
-  "AI Engineer",
   "Music Producer",
+  "AI Engineer",
+  "Photographer",
+  "Audio Engineer",
+  "Graphic Designer",
+  "Actor",
 ];
 
 const AboutCard = dynamic(() => import("./AboutCard"));

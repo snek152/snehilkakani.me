@@ -9,17 +9,6 @@ export interface Experience {
 
 export const experiences: Experience[] = [
   {
-    title: "B.S. Computer Science",
-    company: "Cal Poly San Luis Obispo",
-    location: "San Luis Obispo, CA",
-    period: "Sep 2025 – Jun 2029",
-    description: [
-      "Pursuing a Bachelor of Science in Computer Science",
-      "Active member of Hack4Impact and CodeBox, building production software for nonprofits and campus use",
-    ],
-    skills: [],
-  },
-  {
     title: "Software Engineer",
     company: "Hack4Impact Cal Poly",
     location: "San Luis Obispo, CA",
@@ -97,7 +86,7 @@ export const experiences: Experience[] = [
     period: "Jun 2021 - Present",
     description: [
       "Built and deployed responsive websites for clients including EuclidLearn and Care for Our Common Home using Next.js and Tailwind CSS",
-      "Managed full project lifecycle — requirements, design, development, and launch — for both paid and pro bono engagements",
+      "Managed full project lifecycle for both paid and pro bono engagements",
       "Maintained and iterated on live sites post-launch, providing ongoing technical support and feature additions as needed",
     ],
     skills: [
@@ -114,7 +103,7 @@ export const experiences: Experience[] = [
     description: [
       "Built the organization's website from scratch and led a developer team to ship new features and improvements",
       "Designed and taught a structured CS curriculum covering programming fundamentals and web development across multiple sessions",
-      "Guided students through end-to-end coding projects — from concept to working software — with hands-on mentorship",
+      "Guided students through end-to-end coding projects, from concept to working software, with hands-on mentorship",
     ],
     skills: [
       "web development",
