@@ -3,6 +3,7 @@ import {
   SiCanva,
   SiCss,
   SiDeepgram,
+  SiElectron,
   SiFastapi,
   SiFigma,
   SiFirebase,
@@ -190,5 +191,11 @@ export const skillsList: {
     label: "Deepgram",
     colorClass: "SiDeepgram",
     type: "AI",
+  },
+  {
+    icon: SiElectron,
+    label: "Electron",
+    colorClass: "SiElectron",
+    type: "other",
   },
 ];

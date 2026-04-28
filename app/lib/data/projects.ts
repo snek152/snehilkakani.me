@@ -22,24 +22,10 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    title: "GU-Net: Diffuse Glioma Segmentation Research",
-    subtitle: "June 2023 - July 2023",
-    description:
-      "Developed a neural network for segmenting diffuse gliomas in medical images under data and processing constraints, achieving 71.58% accuracy. Presented at UCSB and published in the Journal of Student Research.",
-    link: "https://www.jsr.org/hs/index.php/path/article/view/6376",
-    github: "https://github.com/snek152/GU_Net_Glioma_Segmentation_SRA",
-    image: sra,
-    skills: [
-      "pytorch neural network",
-      "medical imaging",
-      "research & presentation",
-    ],
-  },
-  {
     title: "Impasse: AI-Powered Negotiation Training Platform",
     subtitle: "January 2026",
     description:
-      "Engineered a full-stack AI negotiation simulator with agentic opponent, coaching, and analysis agents. Built real-time voice interaction via WebSockets using FastAPI and Next.js, with session analytics and persistent storage.",
+      "Engineered a full-stack AI negotiation simulator with agentic opponent, coaching, and analysis agents running concurrently at a 24-hour hackathon. Designed a multi-agent orchestration layer with real-time voice interaction via WebSockets, session analytics, and persistent storage.",
     image: impasse,
     skills: [
       "next.js & tailwindcss",
@@ -53,7 +39,7 @@ export const projects: Project[] = [
     title: "Orbis: AI Agent Observability Dashboard",
     subtitle: "October 2025 - December 2025",
     description:
-      "Built a full-stack platform connected to a Python SDK for devs to track AI agent executions, costs, and performance. Engineered DAG visualizations, and integrated analytics and prompt versioning.",
+      "Built a full-stack observability platform and Python SDK for devs to instrument and track AI agent executions, costs, and performance in real time. Engineered interactive DAG visualizations mapping agent execution graphs, integrated prompt versioning, and built cost analytics across runs.",
     image: orbis,
     skills: [
       "next.js & tailwindcss",
@@ -64,18 +50,33 @@ export const projects: Project[] = [
     github: "https://github.com/sbalaji09/Orbis",
   },
   {
-    title: "Steam Force: Accessible STEAM Learning App",
-    subtitle: "November 2021 - April 2022",
+    title: "GU-Net: Diffuse Glioma Segmentation Research",
+    subtitle: "June 2023 - July 2023",
     description:
-      "Built an offline-capable STEAM learning app for underprivileged youth, focusing on accessibility. Won Honorable Mention at the 2022 Synopsys Science Fair.",
-    image: steamforce,
+      "Developed a novel U-Net-based architecture for segmenting diffuse gliomas in medical images under data and processing constraints, achieving 71.58% accuracy. Applied advanced data augmentation to compensate for limited training data. Presented at UCSB and published in the Journal of Student Research.",
+    link: "https://www.jsr.org/hs/index.php/path/article/view/6376",
+    github: "https://github.com/snek152/GU_Net_Glioma_Segmentation_SRA",
+    image: sra,
     skills: [
-      "next.js & firebase",
-      "accessibility & ux design",
-      "constraint optimization",
+      "pytorch neural network",
+      "medical imaging",
+      "research & presentation",
     ],
-    github: "https://github.com/snek152/steamforce",
-    // link: "https://steamforce.snehilkakani.me",
+  },
+  {
+    title: "ProCo: Code Contest Platform",
+    subtitle: "September 2022 - June 2025",
+    description:
+      "Contributed to and maintained a competitive programming platform for 200+ users across 4 high schools. Engineered a remote code execution and grading server, SQL-based user management, and a responsive contest UI.",
+    // github: "https://github.com/lhsdevx/proco",
+    link: "https://proco.vercel.app",
+    skills: [
+      "next.js & prisma",
+      "full-stack web development",
+      "code collaboration",
+      "ec2 server hosting",
+    ],
+    image: proco,
   },
   {
     title: "FloodSafe: Atmospheric River Prediction",
@@ -90,30 +91,6 @@ export const projects: Project[] = [
     ],
     github: "https://github.com/snek152/floodsafe",
     // link: "https://floodsafe-web.vercel.app",
-  },
-  {
-    title: "ProCo: Code Contest Platform",
-    subtitle: "September 2022 - June 2025",
-    description:
-      "Contributed to and maintained a competitive programming platform for 200+ users across 4 high schools. Engineered a remote grading server, SQL-based user management, and a responsive UI.",
-    // github: "https://github.com/lhsdevx/proco",
-    link: "https://proco.vercel.app",
-    skills: [
-      "next.js & prisma",
-      "full-stack web development",
-      "code collaboration",
-      "ec2 server hosting",
-    ],
-    image: proco,
-  },
-  {
-    title: "GenAlt: AI-Powered Web Accessibility",
-    subtitle: "November 2022 - April 2023",
-    description:
-      "Collaborated on an AI prototype improving web accessibility for the visually impaired. Received the Horn Entrepreneurship through Equity Award at the Diamond Challenge 2023.",
-    image: genalt,
-    skills: ["ml model deployment", "business development", "public speaking"],
-    link: "/projects/genalt.jpg",
   },
   {
     title: "Website Development for Lynbrook Drama Department",
@@ -142,6 +119,29 @@ export const projects: Project[] = [
     ],
     github: "https://github.com/snek152/euclidlearn",
     link: "https://euclidlearn.vercel.app",
+  },
+  {
+    title: "GenAlt: AI-Powered Web Accessibility",
+    subtitle: "November 2022 - April 2023",
+    description:
+      "Collaborated on an AI prototype improving web accessibility for the visually impaired. Received the Horn Entrepreneurship through Equity Award at the Diamond Challenge 2023.",
+    image: genalt,
+    skills: ["ml model deployment", "business development", "public speaking"],
+    link: "/projects/genalt.jpg",
+  },
+  {
+    title: "Steam Force: Accessible STEAM Learning App",
+    subtitle: "November 2021 - April 2022",
+    description:
+      "Built an offline-capable STEAM learning app for underprivileged youth, focusing on accessibility. Won Honorable Mention at the 2022 Synopsys Science Fair.",
+    image: steamforce,
+    skills: [
+      "next.js & firebase",
+      "accessibility & ux design",
+      "constraint optimization",
+    ],
+    github: "https://github.com/snek152/steamforce",
+    // link: "https://steamforce.snehilkakani.me",
   },
   {
     title: "SwordSelection: Medieval-Inspired Minecraft Mod",

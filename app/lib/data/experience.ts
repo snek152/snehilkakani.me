@@ -6,8 +6,19 @@ export interface Experience {
   description: string[];
   skills?: string[];
 }
-
 export const experiences: Experience[] = [
+  {
+    title: "Co-Founder & Lead Engineer",
+    company: "Fere",
+    location: "San Luis Obispo, CA",
+    period: "Jan 2026 - Present",
+    description: [
+      "Co-founded a desktop dev tooling platform that visualizes local environments for indie developers",
+      "Built AI-powered querying, debugging, and proactive background monitoring with service-scoped context and adaptive suggestions",
+      "Won 2nd place ($10K) at Cal Poly's Innovation Quest",
+    ],
+    skills: ["electron", "typescript", "agentic ai", "desktop development"],
+  },
   {
     title: "Software Engineer",
     company: "Hack4Impact Cal Poly",
@@ -50,9 +61,9 @@ export const experiences: Experience[] = [
     location: "San Jose, CA",
     period: "May 2022 - Jun 2025",
     description: [
-      "Led a 50+ member coding club as President, directing full-stack project development and delivering weekly technical workshops on TypeScript, Next.js, and system design",
+      "Led a 50+ member coding club, directing full-stack project development and delivering weekly technical workshops on TypeScript, Next.js, and system design",
       "Expanded club scope to support member-led passion projects, enabling students to ideate, build, and ship their own software",
-      "Organized hackathons, workshops, and collaborative sprints, growing active participation year over year across all four years of high school",
+      "Organized hackathons and collaborative sprints, growing active participation year over year",
     ],
     skills: [
       "typescript & next.js",
@@ -62,32 +73,13 @@ export const experiences: Experience[] = [
     ],
   },
   {
-    title: "Cashier, Customer Service & Shift Leader",
-    company: "Cicero's Pizza",
-    location: "San Jose, CA",
-    period: "Feb 2025 - Sep 2025",
-    description: [
-      "Led shift operations at a high-volume pizzeria, coordinating team members to maintain consistent service for 500+ weekly customers",
-      "Managed inventory and resolved customer escalations across all areas of the business, maintaining quality standards under pressure",
-      "Balanced phone, in-person, and operational responsibilities simultaneously in a fast-paced customer-facing environment",
-    ],
-    skills: [
-      "customer service",
-      "leadership",
-      "team management",
-      "problem solving",
-      "communication",
-    ],
-  },
-  {
     title: "Freelance Website Developer",
     company: "Various Organizations",
     location: "Remote",
     period: "Jun 2021 - Present",
     description: [
       "Built and deployed responsive websites for clients including EuclidLearn and Care for Our Common Home using Next.js and Tailwind CSS",
-      "Managed full project lifecycle for both paid and pro bono engagements",
-      "Maintained and iterated on live sites post-launch, providing ongoing technical support and feature additions as needed",
+      "Managed full project lifecycle for paid and pro bono engagements, including post-launch support and feature iterations",
     ],
     skills: [
       "next.js & tailwindcss",
@@ -102,7 +94,7 @@ export const experiences: Experience[] = [
     period: "Jan 2022 - Jan 2023",
     description: [
       "Built the organization's website from scratch and led a developer team to ship new features and improvements",
-      "Designed and taught a structured CS curriculum covering programming fundamentals and web development across multiple sessions",
+      "Designed and taught a structured CS curriculum covering programming fundamentals and web development",
       "Guided students through end-to-end coding projects, from concept to working software, with hands-on mentorship",
     ],
     skills: [
@@ -119,8 +111,7 @@ export const experiences: Experience[] = [
     period: "Nov 2022 - Present",
     description: [
       "Produced and released hip-hop albums across streaming platforms, collaborating with multiple artists",
-      "Developed studio-quality music using professional audio engineering techniques and industry-standard software",
-      "Served as Head of Sound for multiple theatre productions, managing live audio systems and ensuring optimal acoustics",
+      "Served as Head of Sound for multiple theatre productions, managing live audio systems",
     ],
     skills: [
       "audio engineering",

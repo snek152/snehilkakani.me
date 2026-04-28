@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./public/about.jpeg" alt="Snehil Kakani" width="100%" />
+  <img src="./public/about.jpg" alt="Snehil Kakani" width="100%" />
 </div>
 
 <div align="center">

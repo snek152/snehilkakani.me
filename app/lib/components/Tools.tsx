@@ -31,6 +31,7 @@ const iconColors = {
   SiGooglegemini: "text-blue-400",
   SiPostgresql: "text-blue-500",
   SiDeepgram: "text-green-400",
+  SiElectron: "text-teal-500",
 };
 
 const ToolIcon = ({
