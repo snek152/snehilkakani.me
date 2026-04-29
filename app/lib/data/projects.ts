@@ -36,20 +36,6 @@ export const projects: Project[] = [
     link: "https://youtu.be/VSajuy4SSEM",
   },
   {
-    title: "Orbis: AI Agent Observability Dashboard",
-    subtitle: "October 2025 - December 2025",
-    description:
-      "Built a full-stack observability platform and Python SDK for devs to instrument and track AI agent executions, costs, and performance in real time. Engineered interactive DAG visualizations mapping agent execution graphs, integrated prompt versioning, and built cost analytics across runs.",
-    image: orbis,
-    skills: [
-      "next.js & tailwindcss",
-      "python sdk development",
-      "data visualization & analytics",
-      "postgresql & redis",
-    ],
-    github: "https://github.com/sbalaji09/Orbis",
-  },
-  {
     title: "GU-Net: Diffuse Glioma Segmentation Research",
     subtitle: "June 2023 - July 2023",
     description:
@@ -62,6 +48,20 @@ export const projects: Project[] = [
       "medical imaging",
       "research & presentation",
     ],
+  },
+  {
+    title: "Orbis: AI Agent Observability Dashboard",
+    subtitle: "October 2025 - December 2025",
+    description:
+      "Built a full-stack observability platform and Python SDK for devs to instrument and track AI agent executions, costs, and performance in real time. Engineered interactive DAG visualizations mapping agent execution graphs, integrated prompt versioning, and built cost analytics across runs.",
+    image: orbis,
+    skills: [
+      "next.js & tailwindcss",
+      "python sdk development",
+      "data visualization & analytics",
+      "postgresql & redis",
+    ],
+    github: "https://github.com/sbalaji09/Orbis",
   },
   {
     title: "ProCo: Code Contest Platform",
