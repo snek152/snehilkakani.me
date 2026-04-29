@@ -6,6 +6,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Projects",
+  description: "TODO",
 };
 
 const AllProjects = dynamic(() => import("../lib/components/AllProjects"));
@@ -13,6 +14,9 @@ const AllProjects = dynamic(() => import("../lib/components/AllProjects"));
 export default function About() {
   return (
     <div className="w-full grid gap-5 px-5 py-2 lg:py-5 grid-cols-2">
+      <h1 className="col-span-2 text-3xl lg:text-4xl font-bold text-white mb-0 font-domine text-center">
+        Projects
+      </h1>
       <Tools />
       <Suspense
         fallback={<LoadingSpinner className="col-span-2 h-full mt-10" />}

@@ -18,12 +18,13 @@ export type Project = {
   skills: string[];
   link?: string;
   github?: string;
+  privateRepo?: boolean;
 };
 
 export const projects: Project[] = [
   {
     title: "Impasse: AI-Powered Negotiation Training Platform",
-    subtitle: "January 2026",
+    subtitle: "January 2026 - 24hr Hackathon",
     description:
       "Engineered a full-stack AI negotiation simulator with agentic opponent, coaching, and analysis agents running concurrently at a 24-hour hackathon. Designed a multi-agent orchestration layer with real-time voice interaction via WebSockets, session analytics, and persistent storage.",
     image: impasse,
@@ -70,6 +71,7 @@ export const projects: Project[] = [
       "Contributed to and maintained a competitive programming platform for 200+ users across 4 high schools. Engineered a remote code execution and grading server, SQL-based user management, and a responsive contest UI.",
     // github: "https://github.com/lhsdevx/proco",
     link: "https://proco.vercel.app",
+    privateRepo: true,
     skills: [
       "next.js & prisma",
       "full-stack web development",
@@ -128,6 +130,7 @@ export const projects: Project[] = [
     image: genalt,
     skills: ["ml model deployment", "business development", "public speaking"],
     link: "/projects/genalt.jpg",
+    privateRepo: true,
   },
   {
     title: "Steam Force: Accessible STEAM Learning App",
