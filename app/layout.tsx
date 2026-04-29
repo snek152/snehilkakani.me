@@ -88,13 +88,19 @@ export default function RootLayout({
       <body
         className={`${domine.variable} ${ibm.variable} antialiased relative overflow-x-hidden overflow-y-hidden h-full bg-secondary`}
       >
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-primary text-surface px-3 py-1 rounded z-50 font-ibm text-sm"
+        >
+          Skip to content
+        </a>
         <LazyMotion features={domAnimation} strict>
           <div className="flex flex-col lg:flex-row w-screen h-dvh lg:h-screen">
             <div className="lg:w-18 lg:h-screen flex-shrink-0">
               <Navbar />
             </div>
             <div
-              id="container"
+              id="main"
               className="overflow-x-hidden overflow-y-scroll relative h-full w-screen lg:h-screen lg:w-full flex-1"
             >
               <div className="w-full h-18 lg:hidden" id="topbar"></div>
