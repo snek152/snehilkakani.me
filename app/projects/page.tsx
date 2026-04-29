@@ -14,10 +14,11 @@ const AllProjects = dynamic(() => import("../lib/components/AllProjects"));
 export default function About() {
   return (
     <div className="w-full grid gap-5 px-5 py-2 lg:py-5 grid-cols-2">
-      <h1 className="col-span-2 text-3xl lg:text-4xl font-bold text-white mb-0 font-domine text-center">
-        Projects
-      </h1>
       <Tools />
+      {/* <h1 className="text-3xl col-span-2 lg:text-4xl font-bold text-center tracking-tight text-surface mb-2 font-domine">
+        <span className="text-primary">{"<"}</span>Projects
+        <span className="text-primary">{"/>"}</span>
+      </h1> */}
       <Suspense
         fallback={<LoadingSpinner className="col-span-2 h-full mt-10" />}
       >
