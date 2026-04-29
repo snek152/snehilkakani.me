@@ -77,13 +77,13 @@ export default function AboutCard() {
             Building intelligent systems.
           </h2>
           <h2 className="text-sm lg:text-base text-on-surface font-domine mb-1">
-            B.S. Computer Science, Cal Poly SLO — Class of 2028
+            B.S. Computer Science, Cal Poly SLO - Class of 2028
           </h2>
           <p className="text-on-surface font-ibm text-sm w-full lg:text-base">
-            Focused on computer science, software engineering, and AI
-            integration. Passionate about creating innovative solutions and
-            learning new technologies. Exploring music production and
-            photography.
+            First-year CS student focused on computer science, software
+            engineering, and AI integration. Passionate about creating
+            innovative solutions and learning new technologies. Exploring music
+            production and photography. Published researcher. NMSC Finalist.
           </p>
           <div className="flex gap-2 mt-4 items-center">
             <a
