@@ -3,6 +3,7 @@ import Beats from "../lib/components/Beats";
 
 export const metadata: Metadata = {
   title: "Music",
+  description: "TODO",
 };
 
 export default function MusicPage() {
