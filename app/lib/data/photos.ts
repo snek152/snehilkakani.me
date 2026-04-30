@@ -180,6 +180,15 @@ const featPhotos: {
     alt: "Cook's Meadow in Yosemite National Park",
   },
   {
+    image: "/photos/aborn.jpg",
+    isBig: false,
+    exp: "+0.7",
+    shutter: "1/14",
+    aperture: "2.8",
+    iso: 12800,
+    alt: "The San Jose cityscape from Aborn Road",
+  },
+  {
     image: "/photos/g_cathedral.jpg",
     isBig: true,
     exp: "-0.7",
@@ -242,7 +251,15 @@ const featPhotos: {
     iso: 640,
     alt: "The Brandenburg Gate in Berlin",
   },
-
+  {
+    image: "/photos/pismo.jpg",
+    isBig: true,
+    exp: "-0.3",
+    shutter: "1/60",
+    aperture: "9",
+    iso: 1250,
+    alt: "Producing beats at the Pismo Beach dunes",
+  },
   {
     image: "/photos/car_dash.jpg",
     isBig: false,
@@ -315,6 +332,15 @@ const featPhotos: {
     aperture: "4.7",
     iso: 4000,
     alt: "A waterfall in the German Alps",
+  },
+  {
+    image: "/photos/union_tree.jpg",
+    isBig: false,
+    exp: "+1.0",
+    shutter: "1/15",
+    aperture: "4.8",
+    iso: 2000,
+    alt: "The Union Square Christmas tree in San Francisco",
   },
 ];
 
