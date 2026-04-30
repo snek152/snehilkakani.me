@@ -160,7 +160,7 @@ export default function ContactForm() {
           <textarea
             id="message"
             className="rounded-lg bg-white/10 border border-white/20 px-4 py-2 text-white placeholder:text-white/50 placeholder:font-ibm focus:outline-none focus:ring-2 focus:ring-primary/60 transition backdrop-blur-md shadow-sm"
-            placeholder="How can I help you?"
+            placeholder="Tell me about your project or just say hi."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
