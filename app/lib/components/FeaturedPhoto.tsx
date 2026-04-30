@@ -16,8 +16,7 @@ export default function FeaturedPhoto({
   iso,
   alt,
   i,
-}: // isBig,
-{
+}: {
   image: StaticImageData | string;
   exp: string;
   shutter: string;
@@ -39,52 +38,59 @@ export default function FeaturedPhoto({
         priority={i < 3}
       />
       <motion.div
-        className="absolute bottom-2 left-2 flex gap-2 z-10 bg-secondary/70 rounded-xl px-3 py-2 shadow-lg backdrop-blur-xs border-2 border-primary/5"
+        className="absolute bottom-2 left-2 flex flex-col gap-1.5 z-10 bg-secondary/70 rounded-xl px-3 py-2 shadow-lg backdrop-blur-xs border-2 border-primary/5"
         initial={{ opacity: 0, y: 20, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{
-          type: "spring",
-          stiffness: 120,
-          damping: 14,
-          delay: 0.7,
-        }}
+        transition={{ type: "spring", stiffness: 120, damping: 14, delay: 0.7 }}
       >
-        <motion.span
-          className="flex items-center text-white text-[0.6rem] font-mono gap-0.5"
-          initial={{ opacity: 0, x: 10 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.85, duration: 0.3 }}
-        >
-          <SunIcon className="w-3 h-3 opacity-70 mb-[1.5px]" />
-          {exp}
-        </motion.span>
-        <motion.span
-          className="flex items-center text-white text-[0.6rem] font-mono gap-0.5"
-          initial={{ opacity: 0, x: 10 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.95, duration: 0.3 }}
-        >
-          <ClockIcon className="w-3 h-3 opacity-70 mb-[1.5px]" />
-          {shutter}
-        </motion.span>
-        <motion.span
-          className="flex items-center text-white text-[0.6rem] font-mono gap-0.5"
-          initial={{ opacity: 0, x: 10 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 1.05, duration: 0.3 }}
-        >
-          <ViewfinderCircleIcon className="w-3 h-3 opacity-70 mb-[1.5px]" />
-          f/{aperture}
-        </motion.span>
-        <motion.span
-          className="flex items-center text-white text-[0.6rem] font-mono gap-0.5"
-          initial={{ opacity: 0, x: 10 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 1.15, duration: 0.3 }}
-        >
-          <CameraIcon className="w-3 h-3 opacity-70 mb-[1.5px]" />
-          {iso}
-        </motion.span>
+        {alt && (
+          <motion.span
+            className="text-white/90 text-[0.65rem] font-ibm leading-tight"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8, duration: 0.3 }}
+          >
+            {alt}
+          </motion.span>
+        )}
+        <div className="flex gap-2">
+          <motion.span
+            className="flex items-center text-white text-[0.6rem] font-mono gap-0.5"
+            initial={{ opacity: 0, x: 10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.85, duration: 0.3 }}
+          >
+            <SunIcon className="w-3 h-3 opacity-70 mb-[1.5px]" />
+            {exp}
+          </motion.span>
+          <motion.span
+            className="flex items-center text-white text-[0.6rem] font-mono gap-0.5"
+            initial={{ opacity: 0, x: 10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.95, duration: 0.3 }}
+          >
+            <ClockIcon className="w-3 h-3 opacity-70 mb-[1.5px]" />
+            {shutter}
+          </motion.span>
+          <motion.span
+            className="flex items-center text-white text-[0.6rem] font-mono gap-0.5"
+            initial={{ opacity: 0, x: 10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 1.05, duration: 0.3 }}
+          >
+            <ViewfinderCircleIcon className="w-3 h-3 opacity-70 mb-[1.5px]" />
+            f/{aperture}
+          </motion.span>
+          <motion.span
+            className="flex items-center text-white text-[0.6rem] font-mono gap-0.5"
+            initial={{ opacity: 0, x: 10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 1.15, duration: 0.3 }}
+          >
+            <CameraIcon className="w-3 h-3 opacity-70 mb-[1.5px]" />
+            {iso}
+          </motion.span>
+        </div>
       </motion.div>
     </div>
   );
