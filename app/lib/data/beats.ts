@@ -44,6 +44,13 @@ export const beats: Beat[] = [
     description: "High-energy trap beat with fast hi-hats and booming 808s",
   },
   {
+    name: "Beach",
+    file: "/beats/beach.mp3",
+    category: "mellow",
+    tempo: 105,
+    description: "Laid-back beat with bouncy chords and catchy drums",
+  },
+  {
     name: "Boat",
     file: "/beats/boat.mp3",
     category: "synth",
@@ -56,6 +63,14 @@ export const beats: Beat[] = [
     category: "synth",
     tempo: 110,
     description: "Layered synths, a rhythmic bass, and a bouncy drum pattern",
+  },
+  {
+    name: "Cloud",
+    file: "/beats/cloud.mp3",
+    category: "spacey",
+    tempo: 134,
+    description:
+      "Emotional synths and airy pads with a trap-inspired drum pattern",
   },
   {
     name: "College Dropout Beat",
@@ -115,25 +130,11 @@ export const beats: Beat[] = [
       "An emotional piano beat with soft synths and a simple drum pattern",
   },
   {
-    name: "Stranded",
-    file: "/beats/stranded.mp3",
-    category: "mellow",
-    tempo: 122,
-    description: "A sentimental piano loop chopped with a triplet drum pattern",
-  },
-  {
     name: "The Bag",
     file: "/beats/the_bag.mp3",
     category: "acoustic",
     tempo: 95,
     description: "Jazzy sample flip paired with a boom bap drum pattern",
-  },
-  {
-    name: "Thirty Three",
-    file: "/beats/thirty_three.mp3",
-    category: "spacey",
-    tempo: 145,
-    description: "A spacey beat with ethereal synths and a trap rhythm",
   },
   {
     name: "Trouble",
