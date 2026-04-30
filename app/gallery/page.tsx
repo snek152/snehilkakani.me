@@ -3,7 +3,8 @@ import PhotoGallery from "../lib/components/FeaturedGallery";
 
 export const metadata: Metadata = {
   title: "Gallery",
-  description: "TODO",
+  description:
+    "My photography portfolio, including landscapes, cityscapes, street scenes, and candid moments.",
 };
 
 export default function Gallery() {

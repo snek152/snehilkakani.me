@@ -3,7 +3,8 @@ import Beats from "../lib/components/Beats";
 
 export const metadata: Metadata = {
   title: "Music",
-  description: "TODO",
+  description:
+    "A collection of hip-hop and electronic beats I've produced varying in style, mood, and subgenre.",
 };
 
 export default function MusicPage() {

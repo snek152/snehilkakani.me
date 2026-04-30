@@ -8,11 +8,12 @@ import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "TODO",
+  description:
+    "Interested in collaborating on a web project, creative venture, or anything in between? Send a message and let's build something together.",
 };
 
 const ContactGallery = dynamic(
-  () => import("../lib/components/ContactGallery")
+  () => import("../lib/components/ContactGallery"),
 );
 
 export default function ContactPage() {

@@ -6,7 +6,8 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Projects",
-  description: "TODO",
+  description:
+    "Full-stack web apps, AI tools, and research projects I've developed spanning machine learning, mobile development, and creative technology, and a breakdown of the tools I use.",
 };
 
 const AllProjects = dynamic(() => import("../lib/components/AllProjects"));
