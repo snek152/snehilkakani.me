@@ -1,6 +1,6 @@
 import {
   SiC,
-  SiCanva,
+  // SiCanva,
   SiCss,
   SiDeepgram,
   SiElectron,
@@ -144,12 +144,12 @@ export const skillsList: {
     colorClass: "SiJupyter",
     type: "AI",
   },
-  {
-    icon: SiCanva,
-    label: "Canva",
-    colorClass: "SiCanva",
-    type: "other",
-  },
+  // {
+  //   icon: SiCanva,
+  //   label: "Canva",
+  //   colorClass: "SiCanva",
+  //   type: "other",
+  // },
   {
     icon: SiFigma,
     label: "Figma",
