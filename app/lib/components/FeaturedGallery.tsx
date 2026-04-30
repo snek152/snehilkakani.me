@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState, useEffect, useCallback } from "react";
+import { Suspense, useState, useEffect, useCallback, useRef } from "react";
 import photos from "../data/photos";
 import LoadingSpinner from "@/app/lib/components/LoadingSpinner";
 import * as motion from "motion/react-m";
@@ -23,6 +23,30 @@ const EASE = [0.25, 0.46, 0.45, 0.94] as const;
 
 export default function FeaturedGallery() {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const preloadedImages = useRef(new Set<string>());
+
+  const preloadImage = useCallback((src: string) => {
+    if (preloadedImages.current.has(src)) return;
+    preloadedImages.current.add(src);
+    // Preload at w=1920 q=80 — matches what Next.js serves for sizes="90vw" on most screens
+    const url = `/_next/image?url=${encodeURIComponent(src)}&w=1920&q=80`;
+    const link = document.createElement("link");
+    link.rel = "preload";
+    link.as = "image";
+    link.href = url;
+    document.head.appendChild(link);
+  }, []);
+
+  // Preload prev/next when navigating the lightbox
+  useEffect(() => {
+    if (lightboxIndex === null) return;
+    const prevIdx = (lightboxIndex - 1 + photos.length) % photos.length;
+    const nextIdx = (lightboxIndex + 1) % photos.length;
+    [prevIdx, nextIdx].forEach((idx) => {
+      const src = photos[idx].image;
+      if (typeof src === "string") preloadImage(src);
+    });
+  }, [lightboxIndex, preloadImage]);
 
   const closeLightbox = useCallback(() => setLightboxIndex(null), []);
   const prev = useCallback(
@@ -70,6 +94,9 @@ export default function FeaturedGallery() {
                 whileInView={{ opacity: 1 }}
                 transition={{ duration: 0.5, ease: EASE }}
                 viewport={{ once: false }}
+                onMouseEnter={() => {
+                  if (typeof photo.image === "string") preloadImage(photo.image);
+                }}
                 onClick={() => setLightboxIndex(i)}
               >
                 <Suspense
@@ -144,7 +171,7 @@ export default function FeaturedGallery() {
                 width={0}
                 height={0}
                 sizes="90vw"
-                quality={90}
+                quality={80}
                 style={{
                   width: "auto",
                   height: "auto",
