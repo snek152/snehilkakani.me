@@ -63,8 +63,8 @@ export default function FeaturedGallery() {
                 key={i}
                 className={`overflow-hidden rounded-lg hover:scale-105 active:scale-105 transition-all duration-200 ease-in-out shadow-lg flex h-full w-full items-center justify-center cursor-pointer ${
                   photo.isBig
-                    ? "row-span-2 aspect-[2/3]"
-                    : "row-span-1 aspect-[3/2]"
+                    ? "row-span-2 aspect-2/3"
+                    : "row-span-1 aspect-3/2"
                 }`}
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}

@@ -25,7 +25,7 @@ const Project = React.memo(({ project }: { project: ProjectT }) => {
             href={project.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center flex-shrink-0 w-7 h-7 lg:w-6 lg:h-6 text-surface hover:text-primary active:text-primary rounded-full transition-colors duration-300 text-xs"
+            className="flex items-center justify-center shrink-0 w-7 h-7 lg:w-6 lg:h-6 text-surface hover:text-primary active:text-primary rounded-full transition-colors duration-300 text-xs"
             title="More information"
           >
             <SiGithub className="w-full h-full" />
@@ -43,7 +43,7 @@ const Project = React.memo(({ project }: { project: ProjectT }) => {
             href={project.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center group/button justify-center flex-shrink-0 w-7 h-7 lg:w-6 lg:h-6 rounded-full transition-colors duration-300 text-xs bg-surface hover:bg-primary active:bg-primary"
+            className="flex items-center group/button justify-center shrink-0 w-7 h-7 lg:w-6 lg:h-6 rounded-full transition-colors duration-300 text-xs bg-surface hover:bg-primary active:bg-primary"
             title="More information"
           >
             <ArrowUpRightIcon className="w-6 h-6 lg:w-5 lg:h-5 text-secondary/80 group-hover/button:text-surface transition-colors duration-300" />
@@ -67,9 +67,9 @@ const Project = React.memo(({ project }: { project: ProjectT }) => {
 
       <div className="relative z-30 flex p-6 rounded-xl flex-col items-left text-left overflow-hidden">
         <h1 className="text-2xl font-bold tracking-tight text-surface mb-2 font-domine">
-          <span className="text-primary text-lg mr-0.25">{"<"}</span>
+          <span className="text-primary text-lg mr-px">{"<"}</span>
           {project.title}
-          <span className="text-primary text-lg ml-0.25">{"/>"}</span>
+          <span className="text-primary text-lg ml-px">{"/>"}</span>
         </h1>
 
         {project.subtitle && (
@@ -89,11 +89,11 @@ const Project = React.memo(({ project }: { project: ProjectT }) => {
               skill && (
                 <span
                   key={index}
-                  className="bg-gradient-to-r from-primary/60 via-primary/40 to-primary/60 text-surface z-20 relative px-3 py-1 rounded-full text-sm font-ibm border-2 border-primary/70 shadow-md hover:scale-105 hover:shadow-lg active:scale-105 active:shadow-lg transition-all duration-200 font-semibold"
+                  className="bg-linear-to-r from-primary/60 via-primary/40 to-primary/60 text-surface z-20 relative px-3 py-1 rounded-full text-sm font-ibm border-2 border-primary/70 shadow-md hover:scale-105 hover:shadow-lg active:scale-105 active:shadow-lg transition-all duration-200 font-semibold"
                 >
                   {skill}
                 </span>
-              )
+              ),
           )}
         </div>
       </div>

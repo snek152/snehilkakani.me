@@ -26,7 +26,7 @@ export default function Footer() {
             <p className="text-lg font-domine flex items-center gap-2 tracking-tight text-surface">
               <span>© {year}</span>
               <span className="text-primary/80 text-xl">•</span>
-              <span className="font-semibold font-domine tracking-normal bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+              <span className="font-semibold font-domine tracking-normal bg-linear-to-r from-primary to-primary/70 bg-clip-text text-transparent">
                 Snehil Kakani
               </span>
             </p>

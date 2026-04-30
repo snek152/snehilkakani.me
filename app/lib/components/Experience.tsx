@@ -22,13 +22,13 @@ const ExperienceCard = ({
 }) => (
   <div className="relative flex gap-5 lg:gap-7">
     {/* Timeline spine */}
-    <div className="flex flex-col items-center flex-shrink-0 w-4">
+    <div className="flex flex-col items-center shrink-0 w-4">
       <motion.div
         initial={{ scale: 0, opacity: 0 }}
         whileInView={{ scale: 1, opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
-        className="w-2.5 h-2.5 rounded-full bg-primary mt-4 flex-shrink-0 z-10"
+        className="w-2.5 h-2.5 rounded-full bg-primary mt-4 shrink-0 z-10"
       />
       <div className="w-px flex-1 mt-2 mb-5 bg-primary/20" />
     </div>
@@ -56,11 +56,11 @@ const ExperienceCard = ({
               {company}
             </p>
           </div>
-          <div className="flex flex-row lg:flex-col lg:items-end gap-2 lg:gap-0.5 mt-1 lg:mt-0.5 flex-shrink-0">
+          <div className="flex flex-row lg:flex-col lg:items-end gap-2 lg:gap-0.5 mt-1 lg:mt-0.5 shrink-0">
             <span className="text-surface/60 font-ibm text-sm whitespace-nowrap flex items-center gap-1">
               {period}
               {period.includes("Present") && (
-                <span className="inline-block w-1.5 h-1.5 rounded-full bg-green-400 flex-shrink-0" />
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-green-400 shrink-0" />
               )}
             </span>
             <span className="text-surface/50 font-ibm text-sm whitespace-nowrap lg:text-right">
@@ -76,7 +76,7 @@ const ExperienceCard = ({
               key={i}
               className="text-sm lg:text-base text-surface font-ibm leading-relaxed flex items-start gap-2.5"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-primary/50 flex-shrink-0 mt-[0.65rem]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-primary/50 shrink-0 mt-[0.65rem]" />
               <span>{item}</span>
             </li>
           ))}
@@ -88,7 +88,7 @@ const ExperienceCard = ({
             {skills.map((skill, i) => (
               <span
                 key={i}
-                className="bg-gradient-to-r from-primary/60 via-primary/40 to-primary/60 text-surface z-20 relative px-3 py-1 rounded-full text-sm font-ibm border-2 border-primary/70 shadow-md hover:scale-105 hover:shadow-lg active:scale-105 active:shadow-lg transition-all duration-200 font-semibold"
+                className="bg-linear-to-r from-primary/60 via-primary/40 to-primary/60 text-surface z-20 relative px-3 py-1 rounded-full text-sm font-ibm border-2 border-primary/70 shadow-md hover:scale-105 hover:shadow-lg active:scale-105 active:shadow-lg transition-all duration-200 font-semibold"
               >
                 {skill}
               </span>

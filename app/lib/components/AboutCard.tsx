@@ -90,7 +90,7 @@ export default function AboutCard() {
               href="/resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-gradient-to-r from-primary/90 via-primary to-primary/90 text-surface z-20 relative px-2 lg:px-4 py-2 lg:py-2 rounded-xl text-xs lg:text-sm font-domine shadow-md hover:scale-105 hover:shadow-lg active:scale-105 active:shadow-lg transition-all duration-200 flex gap-1 items-center h-full"
+              className="bg-linear-to-r from-primary/90 via-primary to-primary/90 text-surface z-20 relative px-2 lg:px-4 py-2 lg:py-2 rounded-xl text-xs lg:text-sm font-domine shadow-md hover:scale-105 hover:shadow-lg active:scale-105 active:shadow-lg transition-all duration-200 flex gap-1 items-center h-full"
             >
               <DocumentTextIcon className="w-4 h-4 lg:w-6 lg:h-6" />
               <span>Resume</span>
