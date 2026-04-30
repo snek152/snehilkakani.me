@@ -41,7 +41,7 @@ const ExperienceCard = ({
         viewport={{ once: true }}
         transition={{
           duration: 0.45,
-          delay: index * 0.08,
+          delay: Math.min(index, 4) * 0.08,
           ease: [0.25, 0.46, 0.45, 0.94],
         }}
         className="w-full bg-background border-[1.5px] border-secondary/60 rounded-xl overflow-hidden shadow-lg p-4 lg:p-5"
@@ -57,8 +57,11 @@ const ExperienceCard = ({
             </p>
           </div>
           <div className="flex flex-row lg:flex-col lg:items-end gap-2 lg:gap-0.5 mt-1 lg:mt-0.5 flex-shrink-0">
-            <span className="text-surface/60 font-ibm text-sm whitespace-nowrap">
+            <span className="text-surface/60 font-ibm text-sm whitespace-nowrap flex items-center gap-1">
               {period}
+              {period.includes("Present") && (
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-green-400 flex-shrink-0" />
+              )}
             </span>
             <span className="text-surface/50 font-ibm text-sm whitespace-nowrap lg:text-right">
               {location}
