@@ -9,15 +9,15 @@ export default function Footer() {
     <footer className="w-full py-6 px-6 border-t-2 border-on-surface">
       <div className="max-w-4xl mx-auto">
         <div className="flex flex-col items-center gap-4 text-center">
-          <div className="flex gap-2">
+          <div className="flex gap-4">
             {navlinks.map((n, i) => (
               <Link
                 key={i}
                 href={n.href}
-                className="text-surface hover:text-primary active:text-primary transition-colors duration-200"
-                title={n.label || n.href}
+                className="text-surface hover:text-primary active:text-primary transition-colors duration-200 flex flex-col items-center gap-0.5"
               >
-                <n.iconInactive className="w-6 h-6 " />
+                <n.iconInactive className="w-5 h-5" />
+                <span className="text-xs font-ibm">{n.label}</span>
               </Link>
             ))}
           </div>
