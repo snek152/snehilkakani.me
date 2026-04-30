@@ -61,9 +61,9 @@ export default function Tools() {
   return (
     <Card className="col-span-2 p-0">
       <div className="flex items-center gap-2 px-2 lg:px-3 py-1.5 lg:py-2.5 bg-background relative z-20 text-primary border-b border-secondary rounded-t-xl">
-        <span className="w-2 h-2 lg:w-2.5 lg:h-2.5 rounded-full bg-surface" />
-        <span className="w-2 h-2 lg:w-2.5 lg:h-2.5 rounded-full bg-surface" />
-        <span className="w-2 h-2 lg:w-2.5 lg:h-2.5 rounded-full bg-surface" />
+        <span className="block w-2 h-2 lg:w-2.5 lg:h-2.5 rounded-full bg-[#ff5f57]"></span>
+        <span className="block w-2 h-2 lg:w-2.5 lg:h-2.5 rounded-full bg-[#febc2e]"></span>
+        <span className="block w-2 h-2 lg:w-2.5 lg:h-2.5 rounded-full bg-[#28c840]"></span>
       </div>
       <div className="absolute inset-0 pointer-events-none opacity-10 z-0">
         <svg width="100%" height="100%">

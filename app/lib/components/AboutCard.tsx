@@ -15,9 +15,9 @@ export default function AboutCard() {
     >
       <div className="flex items-center justify-between px-2 lg:px-3 py-1 lg:py-2 bg-background/10 border-b rounded-t-xl border-secondary">
         <div className="flex items-center gap-2">
-          <span className="block w-2 h-2 lg:w-2.5 lg:h-2.5 rounded-full bg-surface"></span>
-          <span className="block w-2 h-2 lg:w-2.5 lg:h-2.5 rounded-full bg-surface"></span>
-          <span className="block w-2 h-2 lg:w-2.5 lg:h-2.5 rounded-full bg-surface"></span>
+          <span className="block w-2 h-2 lg:w-2.5 lg:h-2.5 rounded-full bg-[#ff5f57]"></span>
+          <span className="block w-2 h-2 lg:w-2.5 lg:h-2.5 rounded-full bg-[#febc2e]"></span>
+          <span className="block w-2 h-2 lg:w-2.5 lg:h-2.5 rounded-full bg-[#28c840]"></span>
         </div>
         <div className="flex items-center gap-1">
           <svg
