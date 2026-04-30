@@ -10,6 +10,8 @@ export const metadata: Metadata = {
   title: "Contact",
   description:
     "Interested in collaborating on a web project, creative venture, or anything in between? Send a message and let's build something together.",
+  alternates: { canonical: "/contact" },
+  openGraph: { url: "/contact" },
 };
 
 const ContactGallery = dynamic(

@@ -5,6 +5,8 @@ export const metadata: Metadata = {
   title: "Music",
   description:
     "A collection of hip-hop and electronic beats I've produced varying in style, mood, and subgenre.",
+  alternates: { canonical: "/music" },
+  openGraph: { url: "/music" },
 };
 
 export default function MusicPage() {

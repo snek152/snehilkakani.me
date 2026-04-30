@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   title: "Projects",
   description:
     "Full-stack web apps, AI tools, and research projects I've developed spanning machine learning, mobile development, and creative technology, and a breakdown of the tools I use.",
+  alternates: { canonical: "/projects" },
+  openGraph: { url: "/projects" },
 };
 
 const AllProjects = dynamic(() => import("../lib/components/AllProjects"));

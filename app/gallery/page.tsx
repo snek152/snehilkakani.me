@@ -5,6 +5,8 @@ export const metadata: Metadata = {
   title: "Gallery",
   description:
     "My photography portfolio, including landscapes, cityscapes, street scenes, and candid moments.",
+  alternates: { canonical: "/gallery" },
+  openGraph: { url: "/gallery" },
 };
 
 export default function Gallery() {
