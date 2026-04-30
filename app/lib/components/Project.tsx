@@ -31,6 +31,11 @@ const Project = React.memo(({ project }: { project: ProjectT }) => {
             <SiGithub className="w-full h-full" />
           </motion.a>
         )}
+        {project.privateRepo && !project.github && (
+          <span className="text-surface/50 font-ibm text-xs px-2 py-0.5 rounded-full border border-surface/20 whitespace-nowrap">
+            Private Repo
+          </span>
+        )}
         {project.link && (
           <motion.a
             whileHover={{ scale: 1.1 }}
