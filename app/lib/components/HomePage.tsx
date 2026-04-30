@@ -53,12 +53,12 @@ const HomePage = () => {
   useEffect(() => {
     if (needsToLoad === false) {
       setLoaded(true);
-      document.getElementById("container")!.style.overflowY = "scroll";
+      document.getElementById("main")!.style.overflowY = "scroll";
       return;
     }
-    document.getElementById("container")!.style.overflowY = "hidden";
+    document.getElementById("main")!.style.overflowY = "hidden";
     const timer = setTimeout(() => {
-      document.getElementById("container")!.style.overflowY = "scroll";
+      document.getElementById("main")!.style.overflowY = "scroll";
       setLoaded(true);
     }, 3000);
 
