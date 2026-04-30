@@ -80,6 +80,7 @@ export const experiences: Experience[] = [
     description: [
       "Built and deployed responsive websites for clients including EuclidLearn and Care for Our Common Home using Next.js and Tailwind CSS",
       "Managed full project lifecycle for paid and pro bono engagements, including post-launch support and feature iterations",
+      "Delivered across education, nonprofit, and local business sectors from initial scoping through long-term maintenance",
     ],
     skills: [
       "next.js & tailwindcss",
@@ -107,7 +108,7 @@ export const experiences: Experience[] = [
   {
     title: "Music Producer & Audio Engineer",
     company: "Freelance/Independent",
-    location: "San Jose, CA",
+    location: "Remote",
     period: "Nov 2022 - Present",
     description: [
       "Produced and released hip-hop albums across streaming platforms, collaborating with multiple artists",
