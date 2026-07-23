@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# agent/editor tooling
+.claude/
+.claude-flow/
+.agents/
+.codex/
+figma-redesign/

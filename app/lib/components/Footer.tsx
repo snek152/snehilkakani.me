@@ -1,40 +1,31 @@
-"use client";
-import Link from "next/link";
-import { navlinks } from "../data/navlinks";
+import { Github, Linkedin, Mail, FileText } from "lucide-react";
+
+const LINKS = [
+  { href: "https://github.com/snek152", label: "GitHub", Icon: Github },
+  { href: "https://linkedin.com/in/snehilkakani", label: "LinkedIn", Icon: Linkedin },
+  { href: "mailto:kakanisnehil@gmail.com", label: "Email", Icon: Mail },
+  { href: "/resume.pdf", label: "Résumé", Icon: FileText },
+] as const;
 
 export default function Footer() {
-  const year = new Date().getFullYear();
-
   return (
-    <footer className="w-full py-6 px-6 border-t-2 border-on-surface">
-      <div className="max-w-4xl mx-auto">
-        <div className="flex flex-col items-center gap-4 text-center">
-          <div className="flex gap-4">
-            {navlinks.map((n, i) => (
-              <Link
-                key={i}
-                href={n.href}
-                className="text-surface hover:text-primary active:text-primary transition-colors duration-200 flex flex-col items-center gap-0.5"
-              >
-                <n.iconInactive className="w-5 h-5" />
-                <span className="text-xs font-ibm">{n.label}</span>
-              </Link>
-            ))}
-          </div>
-
-          <div className="flex flex-col items-center gap-1">
-            <p className="text-lg font-domine flex items-center gap-2 tracking-tight text-surface">
-              <span>© {year}</span>
-              <span className="text-primary/80 text-xl">•</span>
-              <span className="font-semibold font-domine tracking-normal bg-linear-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-                Snehil Kakani
-              </span>
-            </p>
-            <div className="font-ibm text-sm text-surface">
-              All rights reserved.
-            </div>
-          </div>
-        </div>
+    <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-border px-6 py-5 sm:px-10">
+      <span className="font-sans text-sm text-dim2">
+        © {new Date().getFullYear()} Snehil Kakani
+      </span>
+      <div className="flex gap-6">
+        {LINKS.map(({ href, label, Icon }) => (
+          <a
+            key={label}
+            href={href}
+            target={href.startsWith("http") ? "_blank" : undefined}
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 font-sans text-sm text-dim transition-colors duration-150 hover:text-fg"
+          >
+            <Icon size={13} strokeWidth={1.75} />
+            {label}
+          </a>
+        ))}
       </div>
     </footer>
   );

@@ -1,21 +1,24 @@
 import type { Metadata } from "next";
-import { Domine, IBM_Plex_Sans } from "next/font/google";
+import { Epilogue, Plus_Jakarta_Sans, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "./lib/components/Navbar";
-import { domAnimation, LazyMotion } from "motion/react";
-// import Footer from "./lib/components/Footer";
-// import dynamic from "next/dynamic";
+import AppShell from "./lib/components/AppShell";
 
-const domine = Domine({
-  variable: "--gfont-domine",
+const epilogue = Epilogue({
+  variable: "--font-epilogue",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["700", "800"],
 });
 
-const ibm = IBM_Plex_Sans({
-  variable: "--gfont-ibm",
+const plusJakartaSans = Plus_Jakarta_Sans({
+  variable: "--font-plus-jakarta-sans",
   subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700"],
+  weight: ["400", "500", "600"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+  weight: ["400", "500"],
 });
 
 const title = "Snehil Kakani - Software Engineer & Creative Developer";
@@ -53,7 +56,6 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Snehil Kakani", url: "https://snehilkakani.me" }],
   creator: "Snehil Kakani",
-  // manifest: "/manifest.json",
   alternates: {
     canonical: "/",
   },
@@ -86,29 +88,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${domine.variable} ${ibm.variable} antialiased relative overflow-x-hidden overflow-y-hidden h-full bg-secondary`}
+        className={`${epilogue.variable} ${plusJakartaSans.variable} ${geistMono.variable} antialiased`}
       >
-        <a
-          href="#main"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-primary text-surface px-3 py-1 rounded z-50 font-ibm text-sm"
-        >
-          Skip to content
-        </a>
-        <LazyMotion features={domAnimation} strict>
-          <div className="flex flex-col lg:flex-row w-screen h-dvh lg:h-screen">
-            <div className="lg:w-18 lg:h-screen flex-shrink-0">
-              <Navbar />
-            </div>
-            <div
-              id="main"
-              className="overflow-x-hidden overflow-y-scroll relative h-full w-screen lg:h-screen lg:w-full flex-1"
-            >
-              <div className="w-full h-18 lg:hidden" id="topbar"></div>
-              {children}
-              {/* <Footer /> */}
-            </div>
-          </div>
-        </LazyMotion>
+        <AppShell>{children}</AppShell>
       </body>
     </html>
   );

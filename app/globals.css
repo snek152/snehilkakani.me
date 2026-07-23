@@ -1,72 +1,67 @@
 @import "tailwindcss";
 
+:root {
+  --bg: #080808;
+  --card: #0e0e0e;
+  --fg: #efefef;
+  --dim: #a8a8a8;
+  --dim2: #7d7d7d;
+  --accent: #2563eb;
+  --border: rgba(255, 255, 255, 0.07);
+}
+
 @theme inline {
-  --font-ibm: var(--gfont-ibm);
-  --font-domine: var(--gfont-domine);
-  --font-sans: var(--gfont-ibm);
+  --color-bg: var(--bg);
+  --color-card: var(--card);
+  --color-fg: var(--fg);
+  --color-dim: var(--dim);
+  --color-dim2: var(--dim2);
+  --color-accent: var(--accent);
+  --color-border: var(--border);
+
+  --font-display: var(--font-epilogue);
+  --font-sans: var(--font-plus-jakarta-sans);
+  --font-mono: var(--font-geist-mono);
 }
-@theme {
-  --color-primary: #0d6efd;
-  --color-secondary: #262626;
-  --color-surface: #fbfbfb;
-  --color-background: #2b2b2b;
-  --color-on-surface: #404040;
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
 }
-/* For Firefox */
-#container {
-  scrollbar-color: var(--color-surface) var(--color-secondary); /* thumb and track */
-  scrollbar-radius: 0; /* Remove rounded corners */
+
+::selection {
+  background: var(--accent);
+  color: #fff;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Thin dark scrollbar */
+* {
   scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.15) var(--bg);
 }
 
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-/* make the scrollbar not rounded */
-#container::-webkit-scrollbar {
-  border-radius: 0; /* Remove rounded corners */
-}
-
-/* WebKit Browsers (Chrome, Safari, Arc, Edge) */
-#container::-webkit-scrollbar {
+::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
-#container::-webkit-scrollbar-track {
-  background: var(--color-secondary) !important; /* White background track */
+::-webkit-scrollbar-track {
+  background: var(--bg);
 }
 
-#container::-webkit-scrollbar-thumb {
-  background: var(--color-surface) !important; /* Dark gray thumb */
-  border-radius: 0px;
-  border: 2px solid #fff; /* adds spacing around thumb for clean look */
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 0;
 }
 
-#container::-webkit-scrollbar-corner {
-  background: #fff; /* Optional, cleaner corner */
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
 }
-/* @keyframes bounce-smooth {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  30% {
-    transform: translateY(-6px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-  70% {
-    transform: translateY(-6px);
-  }
-}
-.bouncesmooth {
-  animation: bounce-smooth 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-} */
