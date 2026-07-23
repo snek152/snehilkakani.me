@@ -68,7 +68,7 @@ export default function Hero() {
   const STATUS = [
     {
       label: "Currently at",
-      value: `${featuredExperience.company} — ${featuredExperience.title}`,
+      value: `${featuredExperience.company} - ${featuredExperience.title}`,
     },
     { label: "Studying", value: "Computer Science @ Cal Poly SLO" },
     { label: "Based", value: "San Luis Obispo, CA" },
@@ -91,7 +91,7 @@ export default function Hero() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 items-end gap-10 lg:grid-cols-[1.5fr_minmax(220px,1.2fr)] lg:gap-8">
+      <div className="grid grid-cols-1 items-end gap-10 lg:grid-cols-[1.5fr_minmax(220px,1.2fr)] lg:gap-8 mt-10">
         <div>
           <motion.h1
             layoutId={reduceMotion ? undefined : "hero-name"}
@@ -138,24 +138,26 @@ export default function Hero() {
         </div>
 
         <motion.div
-          className="justify-self-center lg:justify-self-end"
+          className="justify-self-center lg:justify-self-end bg-card z-10 border border-border"
           initial={reduceMotion ? false : "hidden"}
           animate={reduceMotion ? undefined : state}
           variants={photoVariants}
           style={{ y: reduceMotion ? undefined : photoY }}
         >
           <ViewfinderFrame>
-            <div className="relative aspect-4/5 h-55 overflow-hidden bg-card sm:h-65 lg:h-70 w-full">
-              <Image
-                src="/about.jpg"
-                alt="Snehil Kakani"
-                fill
-                priority
-                sizes="(min-width: 1024px) 280px, 260px"
-                className="object-cover grayscale-15"
-              />
+            <div className="p-3">
+              <div className="relative aspect-4/5 h-55 overflow-hidden sm:h-65 lg:h-70 w-full">
+                <Image
+                  src="/about.jpg"
+                  alt="Snehil Kakani"
+                  fill
+                  priority
+                  sizes="(min-width: 1024px) 280px, 260px"
+                  className="object-cover grayscale-15"
+                />
+              </div>
             </div>
-            <div className="border border-border bg-card p-4">
+            <div className="p-4 border-t-border border-t">
               <dl className="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2">
                 {STATUS.map(({ label, value }) => (
                   <div key={label}>
@@ -168,12 +170,6 @@ export default function Hero() {
                   </div>
                 ))}
               </dl>
-              <div className="mt-6 border-t border-border pt-4">
-                <p className="text-sm font-medium text-dim2">Pacific time</p>
-                <p className="mt-1 min-h-5 text-sm tabular-nums text-fg">
-                  <Clock />
-                </p>
-              </div>
             </div>
           </ViewfinderFrame>
         </motion.div>
