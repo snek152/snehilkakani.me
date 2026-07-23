@@ -1,14 +1,24 @@
 "use client";
 
 import Image from "next/image";
-import { motion, useReducedMotion, useScroll, useTransform, type Variants } from "motion/react";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+  type Variants,
+} from "motion/react";
 import { useIntroReady } from "@/app/lib/components/AppShell";
 import { EASE_OUT, EASE_INOUT } from "@/app/lib/motion";
 import ViewfinderFrame from "@/app/lib/components/shared/ViewfinderFrame";
 import RoleCycle from "@/app/lib/components/home/RoleCycle";
 import { useRef } from "react";
+import Clock from "./Clock";
+import { experiences } from "@/app/lib/data/experience";
 
 const NAME_LINES = ["Snehil", "Kakani"];
+
+const featuredExperience = experiences[0];
 
 const riseVariants: Variants = {
   hidden: { opacity: 0, y: 14 },
@@ -17,7 +27,11 @@ const riseVariants: Variants = {
 
 const photoVariants: Variants = {
   hidden: { opacity: 0, x: 24 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.7, delay: 0.15, ease: EASE_OUT } },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.7, delay: 0.15, ease: EASE_OUT },
+  },
 };
 
 /**
@@ -45,7 +59,21 @@ export default function Hero() {
     target: sectionRef,
     offset: ["start start", "end start"],
   });
-  const photoY = useTransform(scrollYProgress, [0, 1], [0, reduceMotion ? 0 : 46]);
+  const photoY = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [0, reduceMotion ? 0 : 46],
+  );
+  const entrance = reduceMotion ? undefined : { opacity: 1, y: 0 };
+  const STATUS = [
+    {
+      label: "Currently at",
+      value: `${featuredExperience.company} — ${featuredExperience.title}`,
+    },
+    { label: "Studying", value: "Computer Science @ Cal Poly SLO" },
+    { label: "Based", value: "San Luis Obispo, CA" },
+    { label: "Seeking", value: "Software engineering internships" },
+  ];
 
   return (
     <section
@@ -55,16 +83,24 @@ export default function Hero() {
       {/* faint vertical lines — structural texture */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
         {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="absolute inset-y-0 w-px bg-border" style={{ left: `${25 * i}%` }} />
+          <div
+            key={i}
+            className="absolute inset-y-0 w-px bg-border"
+            style={{ left: `${25 * i}%` }}
+          />
         ))}
       </div>
 
-      <div className="grid grid-cols-1 items-end gap-10 lg:grid-cols-[1.6fr_minmax(220px,0.9fr)] lg:gap-8">
+      <div className="grid grid-cols-1 items-end gap-10 lg:grid-cols-[1.5fr_minmax(220px,1.2fr)] lg:gap-8">
         <div>
           <motion.h1
             layoutId={reduceMotion ? undefined : "hero-name"}
             initial={reduceMotion ? false : { opacity: 0 }}
-            animate={reduceMotion ? undefined : { opacity: state === "visible" ? 1 : 0 }}
+            animate={
+              reduceMotion
+                ? undefined
+                : { opacity: state === "visible" ? 1 : 0 }
+            }
             transition={{
               layout: { duration: 0.5, ease: EASE_INOUT },
               opacity: { duration: 0.4, ease: EASE_OUT },
@@ -82,40 +118,23 @@ export default function Hero() {
             initial={reduceMotion ? false : "hidden"}
             animate={reduceMotion ? undefined : state}
             variants={riseVariants}
-            className="mb-6"
           >
             <RoleCycle />
           </motion.div>
-
           <motion.p
-            initial={reduceMotion ? false : "hidden"}
-            animate={reduceMotion ? undefined : state}
-            variants={riseVariants}
-            className="m-0 mb-6 max-w-md text-[1.05rem] leading-[1.65] text-dim"
+            aria-labelledby="home-introduction"
+            initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+            whileInView={entrance}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{ duration: 0.45, ease: EASE_OUT }}
+            className="mb-14 mt-4 text-[0.975rem] leading-[1.82] text-dim"
+            id="home-introduction"
           >
-            Computer science student, software engineer, and photographer — building tools by day,
-            producing tracks and framing shots the rest of the time.
+            Computer science student at Cal Poly SLO. I build software, produce
+            music, and shoot photos. Open to internships and interesting
+            problems.
+            {/* <ViewfinderFrame></ViewfinderFrame> */}
           </motion.p>
-
-          <motion.div
-            className="flex flex-wrap items-center gap-6"
-            initial={reduceMotion ? false : "hidden"}
-            animate={reduceMotion ? undefined : state}
-            variants={{
-              hidden: { opacity: 0, y: 12 },
-              visible: { opacity: 1, y: 0, transition: { duration: 0.5, delay: 0.1, ease: EASE_OUT } },
-            }}
-          >
-            <p className="m-0 text-sm leading-none text-dim">CS · Cal Poly SLO</p>
-            <span className="block h-3.5 w-px bg-border" />
-            <p className="m-0 text-sm text-dim">Software · Music · Photography</p>
-            <motion.div
-              className="h-0.5 w-12 origin-left bg-accent"
-              initial={reduceMotion ? false : { scaleX: 0 }}
-              animate={reduceMotion ? undefined : { scaleX: state === "visible" ? 1 : 0 }}
-              transition={{ duration: 0.45, delay: 0.3, ease: EASE_OUT }}
-            />
-          </motion.div>
         </div>
 
         <motion.div
@@ -125,16 +144,36 @@ export default function Hero() {
           variants={photoVariants}
           style={{ y: reduceMotion ? undefined : photoY }}
         >
-          <ViewfinderFrame captionLeft="San Luis Obispo, CA" captionRight="01/05">
-            <div className="relative aspect-[4/5] w-[220px] overflow-hidden bg-card sm:w-[260px] lg:w-[280px]">
+          <ViewfinderFrame>
+            <div className="relative aspect-4/5 h-55 overflow-hidden bg-card sm:h-65 lg:h-70 w-full">
               <Image
                 src="/about.jpg"
                 alt="Snehil Kakani"
                 fill
                 priority
                 sizes="(min-width: 1024px) 280px, 260px"
-                className="object-cover object-[50%_20%] grayscale-[15%]"
+                className="object-cover grayscale-15"
               />
+            </div>
+            <div className="border border-border bg-card p-4">
+              <dl className="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2">
+                {STATUS.map(({ label, value }) => (
+                  <div key={label}>
+                    <dt className="mb-1 text-sm font-medium text-dim2">
+                      {label}
+                    </dt>
+                    <dd className="text-[0.92rem] leading-5 font-medium text-fg">
+                      {value}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+              <div className="mt-6 border-t border-border pt-4">
+                <p className="text-sm font-medium text-dim2">Pacific time</p>
+                <p className="mt-1 min-h-5 text-sm tabular-nums text-fg">
+                  <Clock />
+                </p>
+              </div>
             </div>
           </ViewfinderFrame>
         </motion.div>

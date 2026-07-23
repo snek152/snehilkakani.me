@@ -32,7 +32,10 @@ export default function Marquee() {
   });
   // Blend a small velocity-derived boost onto the base speed, symmetric for
   // scroll direction so fast scrolling either way accelerates the ticker.
-  const speed = useTransform(smoothVelocity, (v) => BASE_SPEED + Math.min(Math.abs(v) * 0.015, BASE_SPEED * 6));
+  const speed = useTransform(
+    smoothVelocity,
+    (v) => BASE_SPEED + Math.min(Math.abs(v) * 0.015, BASE_SPEED * 6),
+  );
 
   const x = useMotionValue(0);
   const lastTimeRef = useRef<number | null>(null);
@@ -60,7 +63,7 @@ export default function Marquee() {
   return (
     <div
       aria-hidden="true"
-      className="-mx-6 overflow-hidden border-y border-border py-[0.48rem] sm:-mx-8 lg:-mx-12"
+      className="-mx-6 overflow-hidden border-y border-border border-t-0 py-[0.48rem] sm:-mx-8 lg:-mx-12"
     >
       {reduceMotion ? (
         <div className={`w-max whitespace-nowrap ${textClass}`}>{TICKER}</div>
