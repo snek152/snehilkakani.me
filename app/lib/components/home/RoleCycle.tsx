@@ -12,7 +12,7 @@ const FRAME_COUNT = 12;
 const SCRAMBLE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&*";
 
 /**
- * Rotating role title under the hero name. Each role change scramble-decodes
+ * Rotating role title above the hero name. Each role change scramble-decodes
  * into place: characters flicker through random glyphs and settle into the
  * target word in a shuffled (non-linear) order, evoking a deliberate
  * "decrypt" rather than a mechanical typewriter sweep. Deliberately
@@ -70,20 +70,16 @@ export default function RoleCycle() {
     return () => clearInterval(id);
   }, [index, reduceMotion]);
 
+  const textClass =
+    "m-0 font-display text-[1.15rem] font-semibold tracking-[-0.01em] text-accent tabular-nums sm:text-[1.3rem]";
+
   if (reduceMotion) {
-    return (
-      <p className="m-0 font-display text-[1.15rem] font-semibold tracking-[-0.01em] text-accent sm:text-[1.3rem]">
-        {ROLES[0]}
-      </p>
-    );
+    return <p className={textClass}>{ROLES[0]}</p>;
   }
 
   return (
     <div className="relative h-[1.6em] overflow-hidden">
-      <p
-        aria-live="off"
-        className="m-0 font-display text-[1.15rem] font-semibold tracking-[-0.01em] text-accent tabular-nums sm:text-[1.3rem]"
-      >
+      <p aria-live="off" className={textClass}>
         {display}
       </p>
     </div>

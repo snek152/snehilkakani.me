@@ -23,7 +23,6 @@ import Sidebar from "./Sidebar";
 import Footer from "./Footer";
 import { navItems } from "@/app/lib/nav";
 
-const SESSION_KEY = "sk-loaded";
 
 const IntroReadyContext = createContext(false);
 
@@ -70,16 +69,10 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     prevIndexRef.current = currentIndex;
   }, [pathname, currentIndex]);
 
-  const [introReady, setIntroReady] = useState(false);
-
-  useEffect(() => {
-    if (sessionStorage.getItem(SESSION_KEY)) {
-      setIntroReady(true);
-    }
-  }, []);
+  const isLoaderPreview = pathname.startsWith("/loader-");
+  const [introReady, setIntroReady] = useState(isLoaderPreview);
 
   const handleLoaderDone = useCallback(() => {
-    sessionStorage.setItem(SESSION_KEY, "1");
     setIntroReady(true);
   }, []);
 

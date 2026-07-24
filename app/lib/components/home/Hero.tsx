@@ -9,11 +9,10 @@ import {
   type Variants,
 } from "motion/react";
 import { useIntroReady } from "@/app/lib/components/AppShell";
-import { EASE_OUT, EASE_INOUT } from "@/app/lib/motion";
+import { EASE_OUT } from "@/app/lib/motion";
 import ViewfinderFrame from "@/app/lib/components/shared/ViewfinderFrame";
 import RoleCycle from "@/app/lib/components/home/RoleCycle";
 import { useRef } from "react";
-import Clock from "./Clock";
 import { experiences } from "@/app/lib/data/experience";
 
 const NAME_LINES = ["Snehil", "Kakani"];
@@ -35,18 +34,14 @@ const photoVariants: Variants = {
 };
 
 /**
- * Asymmetric hero. The name itself is a TRUE shared element: the `<h1>`
- * below shares `layoutId="hero-name"` with `LoadingScreen`'s name box.
- * Both are mounted simultaneously (`AppShell` renders `children`
- * unconditionally alongside the loader), so when the loader's copy
- * unmounts, Framer Motion's projection engine FLIP-animates this `<h1>`
- * in from the loader's last screen position/size — the same technique
- * used for the Gallery lightbox (`GalleryCell`/`Lightbox`). This `<h1>`
- * is the single accessible instance of the name; the loader's copy is
- * `aria-hidden`. `useIntroReady()` still gates a cascade of the
- * SUPPORTING elements only (index/coordinate readout, tagline, photo,
- * scroll cue), which appear to settle into place around the name once
- * the curtain lifts. A subtle scroll-linked parallax on the photo adds
+ * Asymmetric hero. `useIntroReady()` flips to `visible` the instant
+ * `LoadingScreen` calls `onDone` — the same tick `OrbitStage` begins its
+ * counterclockwise release — so the role label, name, photo/status card,
+ * and grid all start settling into place while the loader is still
+ * fading out above them, rather than only appearing once it's gone. This
+ * is the single accessible instance of the name; nothing in the loader
+ * shares a layout id with it, so there is no duplicate name at any point
+ * in the handoff. A subtle scroll-linked parallax on the photo adds
  * depth without a gradient or a second competing motif.
  */
 export default function Hero() {
@@ -61,9 +56,13 @@ export default function Hero() {
   });
   const photoY = useTransform(
     scrollYProgress,
-    [0, 1],
-    [0, reduceMotion ? 0 : 46],
+    [0, 0.68, 1],
+    [0, 28, reduceMotion ? 0 : 94],
   );
+  const photoX = useTransform(scrollYProgress, [0, 1], [0, reduceMotion ? 0 : -42]);
+  const photoRotate = useTransform(scrollYProgress, [0, 1], [0, reduceMotion ? 0 : -1.25]);
+  const gridOpacity = useTransform(scrollYProgress, [0, 0.7, 1], [1, 0.72, reduceMotion ? 1 : 0.16]);
+  const gridY = useTransform(scrollYProgress, [0, 1], [0, reduceMotion ? 0 : -52]);
   const entrance = reduceMotion ? undefined : { opacity: 1, y: 0 };
   const STATUS = [
     {
@@ -81,7 +80,11 @@ export default function Hero() {
       className="relative flex min-h-[95vh] flex-col justify-end overflow-hidden border-b border-border px-6 pb-10 sm:px-8 sm:pb-12 lg:px-12 lg:pb-14"
     >
       {/* faint vertical lines — structural texture */}
-      <div aria-hidden className="pointer-events-none absolute inset-0">
+      <motion.div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{ opacity: gridOpacity, y: gridY }}
+      >
         {[1, 2, 3, 4].map((i) => (
           <div
             key={i}
@@ -89,22 +92,27 @@ export default function Hero() {
             style={{ left: `${25 * i}%` }}
           />
         ))}
-      </div>
+      </motion.div>
 
       <div className="grid grid-cols-1 items-end gap-10 lg:grid-cols-[1.5fr_minmax(220px,1.2fr)] lg:gap-8 mt-10">
         <div>
+          <motion.div
+            initial={reduceMotion ? false : "hidden"}
+            animate={reduceMotion ? undefined : state}
+            variants={riseVariants}
+            className="mb-3"
+          >
+            <RoleCycle />
+          </motion.div>
+
           <motion.h1
-            layoutId={reduceMotion ? undefined : "hero-name"}
-            initial={reduceMotion ? false : { opacity: 0 }}
+            initial={reduceMotion ? false : { opacity: 0, y: 14 }}
             animate={
               reduceMotion
                 ? undefined
-                : { opacity: state === "visible" ? 1 : 0 }
+                : { opacity: state === "visible" ? 1 : 0, y: state === "visible" ? 0 : 14 }
             }
-            transition={{
-              layout: { duration: 0.5, ease: EASE_INOUT },
-              opacity: { duration: 0.4, ease: EASE_OUT },
-            }}
+            transition={{ duration: 0.5, ease: EASE_OUT }}
             className="m-0 mb-4 font-display text-[clamp(3.2rem,8.5vw,7.4rem)] leading-[0.95] font-extrabold tracking-[-0.04em] text-fg"
           >
             {NAME_LINES.map((line) => (
@@ -113,14 +121,6 @@ export default function Hero() {
               </span>
             ))}
           </motion.h1>
-
-          <motion.div
-            initial={reduceMotion ? false : "hidden"}
-            animate={reduceMotion ? undefined : state}
-            variants={riseVariants}
-          >
-            <RoleCycle />
-          </motion.div>
           <motion.p
             aria-labelledby="home-introduction"
             initial={reduceMotion ? false : { opacity: 0, y: 10 }}
@@ -142,7 +142,7 @@ export default function Hero() {
           initial={reduceMotion ? false : "hidden"}
           animate={reduceMotion ? undefined : state}
           variants={photoVariants}
-          style={{ y: reduceMotion ? undefined : photoY }}
+          style={{ x: reduceMotion ? undefined : photoX, y: reduceMotion ? undefined : photoY, rotate: reduceMotion ? undefined : photoRotate }}
         >
           <ViewfinderFrame>
             <div className="p-3">

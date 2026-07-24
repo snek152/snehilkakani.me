@@ -1,45 +1,27 @@
 "use client";
 
 import { useState } from "react";
-import type { MouseEvent } from "react";
 import Image from "next/image";
-import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "motion/react";
-import { projects } from "@/app/lib/data/projects";
+import { motion, useReducedMotion } from "motion/react";
 import type { Project } from "@/app/lib/data/projects";
 import { EASE_OUT } from "@/app/lib/motion";
 import ViewfinderFrame from "@/app/lib/components/shared/ViewfinderFrame";
 import { ProjectLinks, ProjectSkills } from "./ProjectMeta";
 import { projectYear, shortTitle } from "./utils";
 
-const TILT_RANGE = 5;
-
 export default function FeaturedProject({ project }: { project: Project }) {
   const reduceMotion = useReducedMotion();
   const [active, setActive] = useState(false);
+  const year = projectYear(project.subtitle);
+  const hasPublicRepository = Boolean(project.github && !project.privateRepo);
+  const accessLabel = project.privateRepo ? "Private" : hasPublicRepository ? "Public" : null;
+  const readout = [
+    year,
+    `${project.skills.length} stack`,
+    accessLabel,
+  ].filter(Boolean) as string[];
+  const cropTransition = { duration: reduceMotion ? 0 : 0.65, ease: EASE_OUT };
 
-  const pointerX = useMotionValue(0);
-  const pointerY = useMotionValue(0);
-  const springConfig = { stiffness: 300, damping: 30, mass: 0.6 };
-  const rotateX = useSpring(
-    useTransform(pointerY, [-0.5, 0.5], [TILT_RANGE, -TILT_RANGE]),
-    springConfig
-  );
-  const rotateY = useSpring(
-    useTransform(pointerX, [-0.5, 0.5], [-TILT_RANGE, TILT_RANGE]),
-    springConfig
-  );
-
-  const handleImageMouseMove = (event: MouseEvent<HTMLDivElement>) => {
-    if (reduceMotion) return;
-    const rect = event.currentTarget.getBoundingClientRect();
-    pointerX.set((event.clientX - rect.left) / rect.width - 0.5);
-    pointerY.set((event.clientY - rect.top) / rect.height - 0.5);
-  };
-
-  const handleImageMouseLeave = () => {
-    pointerX.set(0);
-    pointerY.set(0);
-  };
 
   return (
     <motion.article
@@ -54,20 +36,11 @@ export default function FeaturedProject({ project }: { project: Project }) {
       }}
       className="mb-16 grid overflow-hidden border border-border lg:mb-[4.5rem] lg:grid-cols-[55fr_45fr]"
     >
-      <ViewfinderFrame
-        className="min-h-[220px] overflow-hidden bg-card [perspective:800px] sm:min-h-[290px] lg:min-h-[360px]"
-      >
+      <ViewfinderFrame className="min-h-[220px] overflow-hidden bg-card sm:min-h-[290px] lg:min-h-[360px]">
         <motion.div
           className="absolute inset-0"
-          style={
-            reduceMotion
-              ? undefined
-              : { rotateX, rotateY, transformStyle: "preserve-3d" }
-          }
-          animate={{ scale: !reduceMotion && active ? 1.04 : 1 }}
-          transition={{ duration: reduceMotion ? 0 : 0.75, ease: EASE_OUT }}
-          onMouseMove={reduceMotion ? undefined : handleImageMouseMove}
-          onMouseLeave={reduceMotion ? undefined : handleImageMouseLeave}
+          animate={{ scale: !reduceMotion && active ? 1.025 : 1 }}
+          transition={cropTransition}
         >
           <Image
             src={project.image}
@@ -82,8 +55,17 @@ export default function FeaturedProject({ project }: { project: Project }) {
           aria-hidden="true"
           className="absolute inset-x-0 bottom-0 h-0.5 origin-left bg-accent"
           animate={{ scaleX: active ? 1 : 0 }}
-          transition={{ duration: reduceMotion ? 0 : 0.28, ease: EASE_OUT }}
+          transition={cropTransition}
         />
+        <motion.div
+          aria-hidden="true"
+          className="pointer-events-none absolute bottom-0 left-0 bg-bg/85 px-2.5 py-1.5 text-sm tabular-nums text-fg"
+          initial={false}
+          animate={{ opacity: active ? 1 : 0, y: active ? 0 : 8 }}
+          transition={cropTransition}
+        >
+          {readout.join(" · ")}
+        </motion.div>
       </ViewfinderFrame>
 
       <div className="flex flex-col justify-end border-t border-border px-6 py-8 sm:px-8 sm:py-9 lg:border-l lg:border-t-0">

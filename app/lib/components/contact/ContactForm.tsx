@@ -57,15 +57,18 @@ export default function ContactForm() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
   const messageId = useId();
 
   const submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setSending(true);
     const url = buildMailtoUrl(name, email, message);
-    // Assigning location.href (rather than window.open) triggers the mail
-    // client without leaving a blank tab behind or tripping popup blockers.
-    window.location.href = url;
-    setSent(true);
+    window.setTimeout(() => {
+      window.location.href = url;
+      setSending(false);
+      setSent(true);
+    }, reduceMotion ? 0 : 420);
   };
 
   const reset = () => {
@@ -106,9 +109,16 @@ export default function ContactForm() {
       initial={reduceMotion ? false : "hidden"}
       animate="visible"
       variants={staggerContainer}
-      className="flex flex-col gap-[1.875rem]"
+      className="relative flex flex-col gap-[1.875rem]"
       aria-label={`Send a message to ${CONTACT_EMAIL}`}
     >
+      <motion.span
+        aria-hidden
+        initial={false}
+        animate={{ scaleX: sending ? 1 : 0, opacity: sending ? 1 : 0 }}
+        transition={{ duration: reduceMotion ? 0 : 0.38, ease: EASE_OUT }}
+        className="absolute -bottom-2 left-0 h-px w-full origin-left bg-accent"
+      />
       <motion.div variants={fieldMotion}>
         <Field
           id="name"
@@ -157,7 +167,7 @@ export default function ContactForm() {
         transition={{ type: "spring", stiffness: 400, damping: 25 }}
         className="inline-flex list-none items-center gap-[0.45rem] self-start bg-accent px-[1.375rem] py-[0.7rem] text-[0.875rem] font-medium text-white transition-opacity duration-150 hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent focus-visible:opacity-80"
       >
-        Send <ArrowRight size={13} strokeWidth={1.75} />
+        {sending ? "Sending" : "Send"} <ArrowRight size={13} strokeWidth={1.75} />
       </motion.button>
     </motion.form>
   );

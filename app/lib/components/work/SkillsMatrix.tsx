@@ -2,7 +2,6 @@
 
 import { motion, useReducedMotion } from "motion/react";
 import { skillsList, skillTypes } from "@/app/lib/data/skills";
-import { EASE_OUT } from "@/app/lib/motion";
 
 type SkillType = (typeof skillTypes)[number];
 

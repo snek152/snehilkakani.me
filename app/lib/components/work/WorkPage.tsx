@@ -5,6 +5,7 @@ import { projects } from "@/app/lib/data/projects";
 import { fadeUp } from "@/app/lib/motion";
 import FeaturedProject from "./FeaturedProject";
 import ProjectCard from "./ProjectCard";
+import ProjectRail from "./ProjectRail";
 import SkillsMatrix from "./SkillsMatrix";
 
 export default function WorkPage() {
@@ -32,7 +33,8 @@ export default function WorkPage() {
 
       <FeaturedProject project={featured} />
 
-      <section aria-label="More projects" className="grid grid-cols-1 gap-x-10 gap-y-14 lg:grid-cols-2">
+      <ProjectRail projects={remaining} />
+      <section aria-label="More projects" className="grid grid-cols-1 gap-x-10 gap-y-14 lg:hidden">
         {remaining.map((project, index) => (
           <ProjectCard key={project.title} project={project} index={index} />
         ))}

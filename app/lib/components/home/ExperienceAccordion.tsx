@@ -7,12 +7,11 @@ import { EASE_OUT } from "@/app/lib/motion";
 
 type ExperienceRowProps = {
   experience: Experience;
-  index: number;
   open: boolean;
   onToggle: () => void;
 };
 
-function ExperienceRow({ experience, index, open, onToggle }: ExperienceRowProps) {
+function ExperienceRow({ experience, open, onToggle }: ExperienceRowProps) {
   const reduceMotion = useReducedMotion();
   const id = useId();
   const buttonId = `experience-button-${id}`;
@@ -20,14 +19,8 @@ function ExperienceRow({ experience, index, open, onToggle }: ExperienceRowProps
 
   return (
     <motion.div
-      initial={reduceMotion ? false : { opacity: 0, y: 10, rotate: index % 2 === 0 ? -0.5 : 0.5 }}
-      whileInView={reduceMotion ? undefined : { opacity: 1, y: 0, rotate: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={
-        reduceMotion
-          ? { duration: 0 }
-          : { type: "spring", stiffness: 260, damping: 22, delay: index * 0.05 }
-      }
+      layout={!reduceMotion}
+      transition={reduceMotion ? { duration: 0 } : { duration: 0.32, ease: EASE_OUT }}
     >
       <button
         id={buttonId}
@@ -65,7 +58,7 @@ function ExperienceRow({ experience, index, open, onToggle }: ExperienceRowProps
             initial={reduceMotion ? false : { height: 0, opacity: 0 }}
             animate={reduceMotion ? undefined : { height: "auto", opacity: 1 }}
             exit={reduceMotion ? undefined : { height: 0, opacity: 0 }}
-            transition={{ duration: 0.24, ease: EASE_OUT }}
+            transition={{ duration: 0.32, ease: EASE_OUT }}
             className="overflow-hidden border-b border-border"
           >
             <div className="py-4 sm:pl-[calc(34%+1.5rem)]">
@@ -97,7 +90,6 @@ export default function ExperienceAccordion({ experiences }: { experiences: Expe
         <ExperienceRow
           key={experience.company + experience.title}
           experience={experience}
-          index={index}
           open={openIndex === index}
           onToggle={() => setOpenIndex(openIndex === index ? null : index)}
         />

@@ -261,13 +261,20 @@ export default function MusicPage() {
               type="button"
               aria-pressed={isActive}
               onClick={() => setFilter(category)}
-              className={`rounded px-3 py-1.5 font-sans text-sm capitalize transition-colors duration-150 ${
+              className={`relative rounded px-3 py-1.5 font-sans text-sm capitalize transition-colors duration-150 ${
                 isActive
                   ? "bg-white/[0.06] text-fg"
                   : "text-dim hover:text-fg"
               }`}
             >
               {category}
+              {isActive && !prefersReducedMotion && (
+                <motion.span
+                  layoutId="music-filter-indicator"
+                  className="absolute inset-x-3 bottom-0 h-px bg-accent"
+                  transition={{ duration: 0.2, ease: EASE_OUT }}
+                />
+              )}
             </button>
           );
         })}
@@ -284,10 +291,14 @@ export default function MusicPage() {
                 key={beat.name}
                 type="button"
                 layout={!prefersReducedMotion}
-                initial={prefersReducedMotion ? false : { opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: prefersReducedMotion ? 0 : 0.15, ease: EASE_OUT }}
+                initial={prefersReducedMotion ? false : { opacity: 0, y: 8 }}
+                animate={{ opacity: 1, x: isActive ? 8 : 0, y: 0, scale: isActive ? 1.008 : 1 }}
+                exit={{ opacity: 0, x: -8, y: -6 }}
+                transition={
+                  prefersReducedMotion
+                    ? { duration: 0 }
+                    : { type: "spring", stiffness: 360, damping: 30, mass: 0.55 }
+                }
                 onClick={() => toggleTrack(index)}
                 aria-pressed={isActive}
                 aria-label={`${isPlaybackRow ? "Pause" : "Play"} ${beat.name}, ${beat.category}, ${beat.tempo} BPM`}
@@ -397,10 +408,11 @@ export default function MusicPage() {
                 >
                   <SkipBack size={14} strokeWidth={1.75} />
                 </button>
-                <button
+                <motion.button
                   type="button"
                   onClick={() => activeIndex !== null && toggleTrack(activeIndex)}
                   aria-label={isPlaybackActive ? "Pause" : "Play"}
+                  whileTap={prefersReducedMotion ? undefined : { scale: 0.9 }}
                   className="flex h-[30px] w-[30px] items-center justify-center rounded bg-accent text-white"
                 >
                   {isPlaybackActive ? (
@@ -408,7 +420,7 @@ export default function MusicPage() {
                   ) : (
                     <Play size={12} strokeWidth={1.75} />
                   )}
-                </button>
+                </motion.button>
                 <button
                   type="button"
                   onClick={() => skip(1)}

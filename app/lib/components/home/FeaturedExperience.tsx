@@ -2,7 +2,6 @@
 
 import { motion, useReducedMotion } from "motion/react";
 import type { Experience } from "@/app/lib/data/experience";
-import { EASE_OUT } from "@/app/lib/motion";
 import ViewfinderFrame from "@/app/lib/components/shared/ViewfinderFrame";
 
 /** Matches "Won 2nd place ($10K) at Cal Poly's Innovation Quest" style lines. */
