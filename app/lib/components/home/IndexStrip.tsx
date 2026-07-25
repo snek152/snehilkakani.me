@@ -3,7 +3,12 @@
 import { useRef } from "react";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "motion/react";
 import { EASE_OUT } from "@/app/lib/motion";
 import { navItems } from "@/app/lib/nav";
 
@@ -52,12 +57,12 @@ export default function IndexStrip() {
     >
       <motion.div
         aria-hidden
-        className="absolute inset-x-0 top-0 h-px bg-accent"
+        className="absolute inset-x-0 top-0 h-px bg-border"
         style={{ opacity: lineOpacity }}
       />
       <motion.div
         aria-hidden
-        className="absolute inset-x-0 bottom-0 h-px bg-accent"
+        className="absolute inset-x-0 bottom-0 h-px bg-border"
         style={{ opacity: lineOpacity }}
       />
 
@@ -70,12 +75,20 @@ export default function IndexStrip() {
           initial={reduceMotion ? false : { scaleY: 0 }}
           whileInView={reduceMotion ? undefined : { scaleY: 1 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.5, delay: 0.15 + index * 0.1, ease: EASE_OUT }}
+          transition={{
+            duration: 0.5,
+            delay: 0.15 + index * 0.1,
+            ease: EASE_OUT,
+          }}
         />
       ))}
 
       {items.map((item) => (
-        <Link key={item.href} href={item.href} className="group block no-underline">
+        <Link
+          key={item.href}
+          href={item.href}
+          className="group block no-underline"
+        >
           <div className="flex h-full flex-col justify-between gap-6 px-1 py-7 sm:px-6 sm:py-9">
             <ArrowUpRight
               size={17}
@@ -86,7 +99,9 @@ export default function IndexStrip() {
               <div className="font-display text-xl font-bold tracking-[-0.02em] text-fg transition-colors duration-150 group-hover:text-accent sm:text-[1.35rem]">
                 {item.label}
               </div>
-              <div className="mt-1.5 text-sm leading-snug text-dim">{BLURBS[item.href]}</div>
+              <div className="mt-1.5 text-sm leading-snug text-dim">
+                {BLURBS[item.href]}
+              </div>
             </div>
           </div>
         </Link>

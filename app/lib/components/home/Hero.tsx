@@ -61,10 +61,26 @@ export default function Hero() {
     target: sectionRef,
     offset: ["start start", "end start"],
   });
-  const lineScaleY0 = useTransform(scrollYProgress, [0, 0.65], [1, reduceMotion ? 1 : 0]);
-  const lineScaleY1 = useTransform(scrollYProgress, [0.05, 0.7], [1, reduceMotion ? 1 : 0]);
-  const lineScaleY2 = useTransform(scrollYProgress, [0.1, 0.75], [1, reduceMotion ? 1 : 0]);
-  const lineScaleY3 = useTransform(scrollYProgress, [0.15, 0.8], [1, reduceMotion ? 1 : 0]);
+  const lineScaleY0 = useTransform(
+    scrollYProgress,
+    [0, 0.65],
+    [1, reduceMotion ? 1 : 0],
+  );
+  const lineScaleY1 = useTransform(
+    scrollYProgress,
+    [0.05, 0.7],
+    [1, reduceMotion ? 1 : 0],
+  );
+  const lineScaleY2 = useTransform(
+    scrollYProgress,
+    [0.1, 0.75],
+    [1, reduceMotion ? 1 : 0],
+  );
+  const lineScaleY3 = useTransform(
+    scrollYProgress,
+    [0.15, 0.8],
+    [1, reduceMotion ? 1 : 0],
+  );
   const lineScaleY = [lineScaleY0, lineScaleY1, lineScaleY2, lineScaleY3];
 
   const entrance = reduceMotion ? undefined : { opacity: 1, y: 0 };
@@ -88,20 +104,29 @@ export default function Hero() {
           the section scrolls out, converging into the bottom border right
           where IndexStrip's column dividers pick up the same four
           positions directly below. */}
-      <div aria-hidden className="pointer-events-none absolute inset-0">
+      <div aria-hidden className="pointer-events-none z-0 absolute inset-0">
         {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="absolute inset-y-0 w-px bg-border" style={{ left: `${25 * i}%` }} />
+          <div
+            key={i}
+            className="absolute inset-y-0 w-px bg-border"
+            style={{ left: `${25 * i}%` }}
+          />
         ))}
         {[1, 2, 3, 4].map((i, index) => (
           <motion.div
             key={`accent-${i}`}
             className="absolute inset-y-0 w-px bg-accent"
-            style={{ left: `${25 * i}%`, scaleY: lineScaleY[index], transformOrigin: "bottom", opacity: 0.4 }}
+            style={{
+              left: `${25 * i}%`,
+              scaleY: lineScaleY[index],
+              transformOrigin: "bottom",
+              opacity: 0.55,
+            }}
           />
         ))}
       </div>
 
-      <div className="grid grid-cols-1 items-end gap-10 lg:grid-cols-[1.5fr_minmax(220px,1.2fr)] lg:gap-8 mt-10">
+      <div className="grid grid-cols-1 items-end gap-10 lg:grid-cols-[1.5fr_minmax(220px,1.2fr)] lg:gap-8 mt-10 z-10">
         <div>
           <motion.div
             initial={reduceMotion ? false : "hidden"}
@@ -117,7 +142,10 @@ export default function Hero() {
             animate={
               reduceMotion
                 ? undefined
-                : { opacity: state === "visible" ? 1 : 0, y: state === "visible" ? 0 : 14 }
+                : {
+                    opacity: state === "visible" ? 1 : 0,
+                    y: state === "visible" ? 0 : 14,
+                  }
             }
             transition={{ duration: 0.5, ease: EASE_OUT }}
             className="m-0 mb-4 font-display text-[clamp(3.2rem,8.5vw,7.4rem)] leading-[0.95] font-extrabold tracking-[-0.04em] text-fg"
@@ -166,8 +194,12 @@ export default function Hero() {
               <dl className="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2">
                 {STATUS.map(({ label, value }) => (
                   <div key={label}>
-                    <dt className="mb-1 text-sm font-medium text-dim2">{label}</dt>
-                    <dd className="text-[0.92rem] leading-5 font-medium text-fg">{value}</dd>
+                    <dt className="mb-1 text-sm font-medium text-dim2">
+                      {label}
+                    </dt>
+                    <dd className="text-[0.92rem] leading-5 font-medium text-fg">
+                      {value}
+                    </dd>
                   </div>
                 ))}
               </dl>
