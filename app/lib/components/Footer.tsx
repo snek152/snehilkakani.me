@@ -1,4 +1,5 @@
 import { Github, Linkedin, Mail, FileText } from "lucide-react";
+import Clock from "@/app/lib/components/shared/Clock";
 
 const LINKS = [
   { href: "https://github.com/snek152", label: "GitHub", Icon: Github },
@@ -10,9 +11,15 @@ const LINKS = [
 export default function Footer() {
   return (
     <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-border px-6 py-5 sm:px-10">
-      <span className="font-sans text-sm text-dim2">
-        © {new Date().getFullYear()} Snehil Kakani
-      </span>
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+        <span className="font-sans text-sm text-dim2">
+          © {new Date().getFullYear()} Snehil Kakani
+        </span>
+        <span className="hidden h-3 w-px bg-border sm:inline-block" aria-hidden />
+        <span className="font-mono text-sm text-dim2">
+          <Clock />
+        </span>
+      </div>
       <div className="flex gap-6">
         {LINKS.map(({ href, label, Icon }) => (
           <a

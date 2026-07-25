@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
-import OrbitStage from "./loader/OrbitStage";
+import OrbitStage, { RELEASE_MS } from "./loader/OrbitStage";
 
 /**
  * The `/loader-orbit` study mechanic (see `OrbitStage`), shown once per
@@ -10,12 +10,12 @@ import OrbitStage from "./loader/OrbitStage";
  * same mark the study page uses; `onDone` fires at that identical instant,
  * so Hero's own entrance animation starts exactly as the marks begin
  * releasing — the same overlap the study page's `HeroResolve` demonstrates.
- * No shared-element text morph: that fought the orbit motion and kept
- * breaking. The loader simply fades out over the marks' own release,
- * handing off to Hero's existing, already-working entrance.
+ * The backdrop's own exit fade shares `RELEASE_MS` with `OrbitStage` so the
+ * black backdrop and the marks/lines/group finish dissolving on the same
+ * frame — nothing disappears early, nothing keeps moving after it's gone.
  */
 const COMPLETE_MS = 1500;
-const EXIT_MS = 650;
+const EXIT_MS = RELEASE_MS;
 
 export default function LoadingScreen({ onDone }: { onDone: () => void }) {
   const prefersReducedMotion = useReducedMotion();

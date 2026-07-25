@@ -8,11 +8,11 @@ import {
   useTransform,
   type Variants,
 } from "motion/react";
+import { useRef } from "react";
 import { useIntroReady } from "@/app/lib/components/AppShell";
 import { EASE_OUT } from "@/app/lib/motion";
 import ViewfinderFrame from "@/app/lib/components/shared/ViewfinderFrame";
 import RoleCycle from "@/app/lib/components/home/RoleCycle";
-import { useRef } from "react";
 import { experiences } from "@/app/lib/data/experience";
 
 const NAME_LINES = ["Snehil", "Kakani"];
@@ -41,8 +41,15 @@ const photoVariants: Variants = {
  * fading out above them, rather than only appearing once it's gone. This
  * is the single accessible instance of the name; nothing in the loader
  * shares a layout id with it, so there is no duplicate name at any point
- * in the handoff. A subtle scroll-linked parallax on the photo adds
- * depth without a gradient or a second competing motif.
+ * in the handoff.
+ *
+ * Hero itself does nothing clever on exit — its faint vertical grid lines
+ * (at 25/50/75/100%) simply dim as the section scrolls away. The actual
+ * "flow" into the rest of the page lives in `HomeContent`: those same
+ * four positions are echoed by `IndexStrip`'s column dividers directly
+ * below, which draw themselves in as Hero's lines fade — one continuous
+ * structural idea handed from this component to the next, rather than an
+ * isolated effect contained entirely inside Hero.
  */
 export default function Hero() {
   const introReady = useIntroReady();
@@ -54,15 +61,12 @@ export default function Hero() {
     target: sectionRef,
     offset: ["start start", "end start"],
   });
-  const photoY = useTransform(
-    scrollYProgress,
-    [0, 0.68, 1],
-    [0, 28, reduceMotion ? 0 : 94],
-  );
-  const photoX = useTransform(scrollYProgress, [0, 1], [0, reduceMotion ? 0 : -42]);
-  const photoRotate = useTransform(scrollYProgress, [0, 1], [0, reduceMotion ? 0 : -1.25]);
-  const gridOpacity = useTransform(scrollYProgress, [0, 0.7, 1], [1, 0.72, reduceMotion ? 1 : 0.16]);
-  const gridY = useTransform(scrollYProgress, [0, 1], [0, reduceMotion ? 0 : -52]);
+  const lineScaleY0 = useTransform(scrollYProgress, [0, 0.65], [1, reduceMotion ? 1 : 0]);
+  const lineScaleY1 = useTransform(scrollYProgress, [0.05, 0.7], [1, reduceMotion ? 1 : 0]);
+  const lineScaleY2 = useTransform(scrollYProgress, [0.1, 0.75], [1, reduceMotion ? 1 : 0]);
+  const lineScaleY3 = useTransform(scrollYProgress, [0.15, 0.8], [1, reduceMotion ? 1 : 0]);
+  const lineScaleY = [lineScaleY0, lineScaleY1, lineScaleY2, lineScaleY3];
+
   const entrance = reduceMotion ? undefined : { opacity: 1, y: 0 };
   const STATUS = [
     {
@@ -79,20 +83,23 @@ export default function Hero() {
       ref={sectionRef}
       className="relative flex min-h-[95vh] flex-col justify-end overflow-hidden border-b border-border px-6 pb-10 sm:px-8 sm:pb-12 lg:px-12 lg:pb-14"
     >
-      {/* faint vertical lines — structural texture */}
-      <motion.div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{ opacity: gridOpacity, y: gridY }}
-      >
+      {/* structural grid — a faint ambient line always sits at each
+          position; a dimmer accent line retracts from the top down as
+          the section scrolls out, converging into the bottom border right
+          where IndexStrip's column dividers pick up the same four
+          positions directly below. */}
+      <div aria-hidden className="pointer-events-none absolute inset-0">
         {[1, 2, 3, 4].map((i) => (
-          <div
-            key={i}
-            className="absolute inset-y-0 w-px bg-border"
-            style={{ left: `${25 * i}%` }}
+          <div key={i} className="absolute inset-y-0 w-px bg-border" style={{ left: `${25 * i}%` }} />
+        ))}
+        {[1, 2, 3, 4].map((i, index) => (
+          <motion.div
+            key={`accent-${i}`}
+            className="absolute inset-y-0 w-px bg-accent"
+            style={{ left: `${25 * i}%`, scaleY: lineScaleY[index], transformOrigin: "bottom", opacity: 0.4 }}
           />
         ))}
-      </motion.div>
+      </div>
 
       <div className="grid grid-cols-1 items-end gap-10 lg:grid-cols-[1.5fr_minmax(220px,1.2fr)] lg:gap-8 mt-10">
         <div>
@@ -133,7 +140,6 @@ export default function Hero() {
             Computer science student at Cal Poly SLO. I build software, produce
             music, and shoot photos. Open to internships and interesting
             problems.
-            {/* <ViewfinderFrame></ViewfinderFrame> */}
           </motion.p>
         </div>
 
@@ -142,7 +148,6 @@ export default function Hero() {
           initial={reduceMotion ? false : "hidden"}
           animate={reduceMotion ? undefined : state}
           variants={photoVariants}
-          style={{ x: reduceMotion ? undefined : photoX, y: reduceMotion ? undefined : photoY, rotate: reduceMotion ? undefined : photoRotate }}
         >
           <ViewfinderFrame>
             <div className="p-3">
@@ -161,12 +166,8 @@ export default function Hero() {
               <dl className="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2">
                 {STATUS.map(({ label, value }) => (
                   <div key={label}>
-                    <dt className="mb-1 text-sm font-medium text-dim2">
-                      {label}
-                    </dt>
-                    <dd className="text-[0.92rem] leading-5 font-medium text-fg">
-                      {value}
-                    </dd>
+                    <dt className="mb-1 text-sm font-medium text-dim2">{label}</dt>
+                    <dd className="text-[0.92rem] leading-5 font-medium text-fg">{value}</dd>
                   </div>
                 ))}
               </dl>

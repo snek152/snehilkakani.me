@@ -61,8 +61,12 @@ export default function Marquee() {
   const xPercent = useTransform(x, (v) => `${v}%`);
 
   return (
-    <div
+    <motion.div
       aria-hidden="true"
+      initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+      whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.6 }}
+      transition={{ duration: 0.4 }}
       className="-mx-6 overflow-hidden border-y border-border border-t-0 py-[0.48rem] sm:-mx-8 lg:-mx-12"
     >
       {reduceMotion ? (
@@ -76,6 +80,6 @@ export default function Marquee() {
           <span className={textClass}>{TICKER}</span>
         </motion.div>
       )}
-    </div>
+    </motion.div>
   );
 }

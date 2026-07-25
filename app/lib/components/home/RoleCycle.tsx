@@ -3,7 +3,14 @@
 import { useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
-const ROLES = ["Software Engineer", "Music Producer", "Photographer"];
+export const ROLES = [
+  "AI Engineer",
+  "Photographer",
+  "Software Engineer",
+  "Audio Engineer",
+  "Full-Stack Developer",
+  "Music Producer",
+];
 
 const HOLD_MS = 4000;
 const FRAME_MS = 40;
@@ -43,7 +50,9 @@ export default function RoleCycle() {
     // rigid left-to-right sweep.
     resolveFramesRef.current = target
       .split("")
-      .map((char) => (char === " " ? 0 : 1 + Math.floor(Math.random() * FRAME_COUNT)));
+      .map((char) =>
+        char === " " ? 0 : 1 + Math.floor(Math.random() * FRAME_COUNT),
+      );
     frameRef.current = 0;
 
     const id = setInterval(() => {
@@ -56,7 +65,9 @@ export default function RoleCycle() {
         .map((char, i) => {
           if (char === " ") return " ";
           if (frame >= resolveFrames[i]) return char;
-          return SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+          return SCRAMBLE_CHARS[
+            Math.floor(Math.random() * SCRAMBLE_CHARS.length)
+          ];
         })
         .join("");
       setDisplay(next);
