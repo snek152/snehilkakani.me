@@ -17,8 +17,11 @@ import { createContext, useCallback, useContext, useEffect, useRef, useState } f
 import { usePathname } from "next/navigation";
 import { AnimatePresence } from "motion/react";
 import CursorGlow from "./CursorGlow";
+import { CursorFieldProvider } from "./shared/CursorField";
 import FilmGrain from "./shared/FilmGrain";
 import LoadingScreen from "./LoadingScreen";
+import { MotionPreferenceProvider } from "./shared/MotionPreference";
+import ScrollProgressRail from "./shared/ScrollProgressRail";
 import Sidebar from "./Sidebar";
 import Footer from "./Footer";
 import { navItems } from "@/app/lib/nav";
@@ -77,21 +80,26 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <div className="relative">
-      <FilmGrain />
-      <CursorGlow />
-      <AnimatePresence>
-        {!introReady && <LoadingScreen key="loader" onDone={handleLoaderDone} />}
-      </AnimatePresence>
-      <Sidebar />
-      <IntroReadyContext.Provider value={introReady}>
-        <NavDirectionContext.Provider value={direction}>
-          <div className="flex min-h-[100dvh] flex-col lg:pl-[52px]">
-            <div className="relative z-[1] flex-1">{children}</div>
-            <Footer />
-          </div>
-        </NavDirectionContext.Provider>
-      </IntroReadyContext.Provider>
-    </div>
+    <MotionPreferenceProvider>
+      <CursorFieldProvider>
+        <div className="relative">
+          <FilmGrain />
+          <CursorGlow />
+          <ScrollProgressRail />
+          <AnimatePresence>
+            {!introReady && <LoadingScreen key="loader" onDone={handleLoaderDone} />}
+          </AnimatePresence>
+          <Sidebar />
+          <IntroReadyContext.Provider value={introReady}>
+            <NavDirectionContext.Provider value={direction}>
+              <div className="flex min-h-[100dvh] flex-col lg:pl-[52px]">
+                <div className="relative z-[1] flex-1">{children}</div>
+                <Footer />
+              </div>
+            </NavDirectionContext.Provider>
+          </IntroReadyContext.Provider>
+        </div>
+      </CursorFieldProvider>
+    </MotionPreferenceProvider>
   );
 }

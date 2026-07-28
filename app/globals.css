@@ -65,3 +65,14 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.25);
 }
+
+/* Page scrollbar hidden — ScrollProgressRail (fixed accent line, right
+ * edge) replaces it as the scroll indicator. Internal scrollable elements
+ * keep the thin styled scrollbar above. */
+html {
+  scrollbar-width: none; /* Firefox */
+}
+
+html::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}
