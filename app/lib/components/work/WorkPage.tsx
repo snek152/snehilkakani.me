@@ -1,15 +1,16 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import { projects } from "@/app/lib/data/projects";
 import { fadeUp } from "@/app/lib/motion";
+import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import FeaturedProject from "./FeaturedProject";
 import ProjectCard from "./ProjectCard";
 import ProjectRail from "./ProjectRail";
 import SkillsMatrix from "./SkillsMatrix";
 
 export default function WorkPage() {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useMotionPreference();
   const featured = projects[0];
   const remaining = projects.slice(1);
 

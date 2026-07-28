@@ -1,8 +1,9 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { useRef, useState } from "react";
+import { motion, useMotionValueEvent, useScroll, useTransform } from "motion/react";
 import type { Project } from "@/app/lib/data/projects";
+import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import ProjectCard from "./ProjectCard";
 
 /**
@@ -13,13 +14,18 @@ import ProjectCard from "./ProjectCard";
  */
 export default function ProjectRail({ projects }: { projects: Project[] }) {
   const sectionRef = useRef<HTMLElement>(null);
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useMotionPreference();
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end end"],
   });
   const distance = Math.max(projects.length - 1, 0) * 72;
   const x = useTransform(scrollYProgress, [0, 1], ["0vw", `-${distance}vw`]);
+  const [active, setActive] = useState(0);
+  useMotionValueEvent(scrollYProgress, "change", (value) => {
+    const lastIndex = Math.max(projects.length - 1, 0);
+    setActive(Math.min(lastIndex, Math.max(0, Math.round(value * lastIndex))));
+  });
 
   if (reduceMotion || projects.length === 0) return null;
 
@@ -40,17 +46,16 @@ export default function ProjectRail({ projects }: { projects: Project[] }) {
               More work, in sequence.
             </h2>
           </div>
-          <p className="text-sm tabular-nums text-dim2">SCROLL TO ADVANCE</p>
+          <p className="text-sm tabular-nums text-dim2">
+            <span className="text-accent">{String(active + 2).padStart(2, "0")}</span>
+            <span className="mx-1.5 text-dim2/60">/</span>
+            {String(projects.length + 1).padStart(2, "0")}
+          </p>
         </header>
 
         <motion.div style={{ x }} className="flex flex-1 gap-[8vw] pr-[12vw] will-change-transform">
           {projects.map((project, index) => (
             <div key={project.title} className="w-[64vw] shrink-0">
-              <div className="mb-4 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.14em] text-dim2">
-                <span className="text-accent">{String(index + 2).padStart(2, "0")}</span>
-                <span className="h-px w-8 bg-border" />
-                <span>{String(projects.length + 1).padStart(2, "0")}</span>
-              </div>
               <ProjectCard project={project} index={index} />
             </div>
           ))}

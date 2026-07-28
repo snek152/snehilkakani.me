@@ -1,7 +1,8 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import { skillsList, skillTypes } from "@/app/lib/data/skills";
+import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 
 type SkillType = (typeof skillTypes)[number];
 
@@ -13,7 +14,7 @@ const CATEGORY_LABELS: Record<SkillType, string> = {
 };
 
 export default function SkillsMatrix() {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useMotionPreference();
 
   return (
     <motion.section

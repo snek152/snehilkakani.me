@@ -2,15 +2,16 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import type { Project } from "@/app/lib/data/projects";
 import { EASE_OUT } from "@/app/lib/motion";
 import ViewfinderFrame from "@/app/lib/components/shared/ViewfinderFrame";
+import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import { ProjectLinks, ProjectSkills } from "./ProjectMeta";
 import { projectYear, shortTitle } from "./utils";
 
 export default function FeaturedProject({ project }: { project: Project }) {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useMotionPreference();
   const [active, setActive] = useState(false);
   const year = projectYear(project.subtitle);
   const hasPublicRepository = Boolean(project.github && !project.privateRepo);

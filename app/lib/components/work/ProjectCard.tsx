@@ -1,20 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
-import { motion, useReducedMotion } from "motion/react";
+import { motion, useTransform } from "motion/react";
 import type { Project } from "@/app/lib/data/projects";
 import { EASE_OUT } from "@/app/lib/motion";
+import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
+import { useProximity } from "@/app/lib/components/shared/CursorField";
 import { ProjectLinks, ProjectSkills } from "./ProjectMeta";
 import { projectYear, shortTitle } from "./utils";
 
 export default function ProjectCard({ project, index }: { project: Project; index: number }) {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useMotionPreference();
+  const articleRef = useRef<HTMLElement>(null);
+  const proximity = useProximity(articleRef, 260);
+  const glowOpacity = useTransform(proximity, [0, 1], [0, 0.1]);
   const [active, setActive] = useState(false);
   const year = projectYear(project.subtitle);
 
   return (
     <motion.article
+      ref={articleRef}
       initial={reduceMotion ? false : { opacity: 0, y: 16, rotate: index % 2 === 0 ? -0.6 : 0.6 }}
       whileInView={{ opacity: 1, y: 0, rotate: 0 }}
       viewport={{ once: true, margin: "0px 0px -50px 0px" }}
@@ -34,8 +40,13 @@ export default function ProjectCard({ project, index }: { project: Project; inde
       onBlurCapture={(event) => {
         if (!event.currentTarget.contains(event.relatedTarget)) setActive(false);
       }}
-      className="group"
+      className="group relative isolate"
     >
+      <motion.div
+        aria-hidden="true"
+        className="pointer-events-none absolute -inset-4 -z-10 bg-accent blur-2xl"
+        style={{ opacity: glowOpacity }}
+      />
       <div className="relative mb-4 aspect-video overflow-hidden bg-card">
         <motion.div
           className="absolute inset-0"
