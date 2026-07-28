@@ -1,99 +1,76 @@
 "use client";
 
-import { useId, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { useRef } from "react";
+import { motion, useTransform } from "motion/react";
 import type { Experience } from "@/app/lib/data/experience";
-import { EASE_OUT } from "@/app/lib/motion";
+import { Reveal } from "@/app/lib/components/shared/Reveal";
+import { useProximity } from "@/app/lib/components/shared/CursorField";
+import { beats } from "@/app/lib/tempo";
 
-type ExperienceRowProps = {
-  experience: Experience;
-  open: boolean;
-  onToggle: () => void;
-};
-
-function ExperienceRow({ experience, open, onToggle }: ExperienceRowProps) {
-  const reduceMotion = useReducedMotion();
-  const id = useId();
-  const buttonId = `experience-button-${id}`;
-  const panelId = `experience-panel-${id}`;
-
-  return (
-    <motion.div
-      layout={!reduceMotion}
-      transition={reduceMotion ? { duration: 0 } : { duration: 0.32, ease: EASE_OUT }}
-    >
-      <button
-        id={buttonId}
-        type="button"
-        aria-expanded={open}
-        aria-controls={panelId}
-        onClick={onToggle}
-        className="grid w-full cursor-pointer grid-cols-[minmax(0,1fr)_auto] items-start gap-x-4 gap-y-1 border-b border-border bg-transparent py-4 text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent sm:grid-cols-[minmax(0,0.85fr)_minmax(0,1.35fr)_auto_auto] sm:items-baseline sm:gap-x-6"
-      >
-        <span className="col-start-1 row-start-1 text-[0.95rem] font-medium text-fg">
-          {experience.company}
-        </span>
-        <span className="col-span-2 col-start-1 row-start-2 text-sm text-dim sm:col-span-1 sm:col-start-2 sm:row-start-1">
-          {experience.title}
-        </span>
-        <span className="col-span-2 col-start-1 row-start-3 text-sm tracking-[0.02em] text-dim2 sm:col-span-1 sm:col-start-3 sm:row-start-1">
-          {experience.period}
-        </span>
-        <span
-          aria-hidden="true"
-          className={`col-start-2 row-start-1 inline-block text-base leading-none text-dim2 sm:col-start-4 ${
-            open ? "rotate-45" : "rotate-0"
-          } ${reduceMotion ? "" : "transition-transform duration-150"}`}
-        >
-          +
-        </span>
-      </button>
-
-      <AnimatePresence initial={false}>
-        {open ? (
-          <motion.div
-            id={panelId}
-            role="region"
-            aria-labelledby={buttonId}
-            initial={reduceMotion ? false : { height: 0, opacity: 0 }}
-            animate={reduceMotion ? undefined : { height: "auto", opacity: 1 }}
-            exit={reduceMotion ? undefined : { height: 0, opacity: 0 }}
-            transition={{ duration: 0.32, ease: EASE_OUT }}
-            className="overflow-hidden border-b border-border"
-          >
-            <div className="py-4 sm:pl-[calc(34%+1.5rem)]">
-              <p className="mb-3 text-sm font-medium tracking-[0.04em] text-dim2 uppercase">
-                {experience.location}
-              </p>
-              <ul className="space-y-2">
-                {experience.description.map((description) => (
-                  <li key={description} className="flex gap-3 text-sm leading-7 text-dim">
-                    <span aria-hidden="true" className="mt-[0.68rem] h-1 w-1 shrink-0 rounded-full bg-accent" />
-                    <span>{description}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
-    </motion.div>
-  );
-}
-
+/** The full experience list, always fully shown — no accordion toggle, no
+ * separate "featured" treatment for the first entry. The previous design
+ * split Fere into its own bigger card and collapsed the rest behind a
+ * click, with an expanded-panel indent hand-tuned against the collapsed
+ * header's column widths (`pl-[calc(34%+1.5rem)]`) that drifted out of
+ * alignment the moment either changed. Every entry now renders identically
+ * — accent bullets, tabular period, skill chips, always visible, plus a
+ * left-edge accent bar that reads the shared `CursorField` and rises as
+ * the cursor nears that row — the same ambient light `IndexStrip`'s links
+ * react to, reaching this list too rather than stopping at the nav. */
 export default function ExperienceAccordion({ experiences }: { experiences: Experience[] }) {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-
   return (
     <div className="border-t border-border">
       {experiences.map((experience, index) => (
-        <ExperienceRow
-          key={experience.company + experience.title}
-          experience={experience}
-          open={openIndex === index}
-          onToggle={() => setOpenIndex(openIndex === index ? null : index)}
-        />
+        <ExperienceRow key={experience.company + experience.title} experience={experience} index={index} />
       ))}
     </div>
+  );
+}
+
+function ExperienceRow({ experience, index }: { experience: Experience; index: number }) {
+  const rowRef = useRef<HTMLDivElement>(null);
+  const proximity = useProximity(rowRef, 260);
+  const barScale = useTransform(proximity, [0, 1], [0, 1]);
+
+  return (
+    <Reveal
+      ref={rowRef}
+      y={14}
+      duration={beats(0.6)}
+      delay={Math.min(index, 3) * beats(0.125)}
+      amount={0.3}
+      className="relative border-b border-border py-6 pl-4 sm:py-7"
+    >
+      <motion.span
+        aria-hidden="true"
+        className="absolute inset-y-2 left-0 w-0.5 origin-center bg-accent"
+        style={{ scaleY: barScale }}
+      />
+      <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+        <div className="flex flex-wrap items-baseline gap-x-2.5">
+          <h3 className="font-display text-lg font-bold tracking-[-0.01em] text-fg">{experience.company}</h3>
+          <span className="text-sm text-dim">{experience.title}</span>
+        </div>
+        <span className="text-sm tabular-nums text-dim2">{experience.period}</span>
+      </div>
+      <p className="mt-1.5 text-sm font-medium tracking-[0.03em] text-dim2 uppercase">{experience.location}</p>
+      <ul className="mt-4 space-y-2">
+        {experience.description.map((line) => (
+          <li key={line} className="flex gap-3 text-sm leading-6 text-dim">
+            <span aria-hidden="true" className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent" />
+            <span>{line}</span>
+          </li>
+        ))}
+      </ul>
+      {experience.skills && (
+        <ul className="mt-4 flex flex-wrap gap-2">
+          {experience.skills.map((skill) => (
+            <li key={skill} className="border border-border px-2.5 py-1 text-sm text-dim">
+              {skill}
+            </li>
+          ))}
+        </ul>
+      )}
+    </Reveal>
   );
 }

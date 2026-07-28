@@ -1,21 +1,18 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useInView, useReducedMotion } from "motion/react";
+import { motion, useInView } from "motion/react";
 import { experiences } from "@/app/lib/data/experience";
 import { EASE_OUT } from "@/app/lib/motion";
+import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 
 import ExperienceAccordion from "./ExperienceAccordion";
-import FeaturedExperience from "./FeaturedExperience";
 import IndexStrip from "./IndexStrip";
 import ManifestoHeading from "./ManifestoHeading";
 import Marquee from "./Marquee";
 
-const featuredExperience = experiences[0];
-const remainingExperiences = experiences.slice(1);
-
 export default function HomeContent() {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useMotionPreference();
   const entrance = reduceMotion ? undefined : { opacity: 1, y: 0 };
   const headingRef = useRef<HTMLDivElement>(null);
   // The heading scramble-decodes the instant the reader scrolls this far
@@ -34,17 +31,16 @@ export default function HomeContent() {
         whileInView={entrance}
         viewport={{ once: true, amount: 0.08 }}
         transition={{ duration: 0.4, ease: EASE_OUT }}
-        className="mt-12"
+        className="mt-10"
       >
-        <div ref={headingRef} className="mb-5 flex items-end justify-between gap-6">
+        <div ref={headingRef} className="mb-5">
           <ManifestoHeading
             text="Experience"
             active={manifestoActive}
             className="font-display text-[1.6rem] font-bold tracking-[-0.02em] text-fg"
           />
         </div>
-        <FeaturedExperience experience={featuredExperience} />
-        <ExperienceAccordion experiences={remainingExperiences} />
+        <ExperienceAccordion experiences={experiences} />
       </motion.section>
     </div>
   );

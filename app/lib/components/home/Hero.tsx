@@ -3,7 +3,6 @@
 import Image from "next/image";
 import {
   motion,
-  useReducedMotion,
   useScroll,
   useTransform,
   type Variants,
@@ -12,6 +11,7 @@ import { useRef } from "react";
 import { useIntroReady } from "@/app/lib/components/AppShell";
 import { EASE_OUT } from "@/app/lib/motion";
 import ViewfinderFrame from "@/app/lib/components/shared/ViewfinderFrame";
+import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import RoleCycle from "@/app/lib/components/home/RoleCycle";
 import { experiences } from "@/app/lib/data/experience";
 
@@ -44,16 +44,11 @@ const photoVariants: Variants = {
  * in the handoff.
  *
  * Hero itself does nothing clever on exit — its faint vertical grid lines
- * (at 25/50/75/100%) simply dim as the section scrolls away. The actual
- * "flow" into the rest of the page lives in `HomeContent`: those same
- * four positions are echoed by `IndexStrip`'s column dividers directly
- * below, which draw themselves in as Hero's lines fade — one continuous
- * structural idea handed from this component to the next, rather than an
- * isolated effect contained entirely inside Hero.
- */
+ * (at 25/50/75/100%) simply dim as the section scrolls away, leaving a
+ * clean handoff to `IndexStrip`'s own reveal below. */
 export default function Hero() {
   const introReady = useIntroReady();
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useMotionPreference();
   const state = introReady ? "visible" : "hidden";
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -108,7 +103,7 @@ export default function Hero() {
         {[1, 2, 3, 4].map((i) => (
           <div
             key={i}
-            className="absolute inset-y-0 w-px bg-border"
+            className="absolute inset-y-0 w-px bg-dim2/15"
             style={{ left: `${25 * i}%` }}
           />
         ))}
@@ -120,7 +115,7 @@ export default function Hero() {
               left: `${25 * i}%`,
               scaleY: lineScaleY[index],
               transformOrigin: "bottom",
-              opacity: 0.55,
+              opacity: 0.25,
             }}
           />
         ))}

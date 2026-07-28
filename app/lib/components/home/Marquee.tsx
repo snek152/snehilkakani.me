@@ -5,12 +5,13 @@ import {
   motion,
   useAnimationFrame,
   useMotionValue,
-  useReducedMotion,
   useScroll,
   useSpring,
   useTransform,
   useVelocity,
 } from "motion/react";
+import { Reveal } from "@/app/lib/components/shared/Reveal";
+import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 
 const TICKER =
   "SOFTWARE ENGINEERING · MUSIC PRODUCTION · AI RESEARCH · PHOTOGRAPHY · CAL POLY SLO · HIP-HOP PRODUCTION · FULL-STACK DEVELOPMENT · ";
@@ -19,7 +20,7 @@ const TICKER =
 const BASE_SPEED = 50 / 38;
 
 export default function Marquee() {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useMotionPreference();
   const textClass =
     "shrink-0 text-[0.62rem] tracking-[0.14em] text-dim2 uppercase";
 
@@ -61,12 +62,11 @@ export default function Marquee() {
   const xPercent = useTransform(x, (v) => `${v}%`);
 
   return (
-    <motion.div
+    <Reveal
       aria-hidden="true"
-      initial={reduceMotion ? false : { opacity: 0, y: 8 }}
-      whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.6 }}
-      transition={{ duration: 0.4 }}
+      y={8}
+      duration={0.4}
+      amount={0.6}
       className="-mx-6 overflow-hidden border-y border-border border-t-0 py-[0.48rem] sm:-mx-8 lg:-mx-12"
     >
       {reduceMotion ? (
@@ -80,6 +80,6 @@ export default function Marquee() {
           <span className={textClass}>{TICKER}</span>
         </motion.div>
       )}
-    </motion.div>
+    </Reveal>
   );
 }

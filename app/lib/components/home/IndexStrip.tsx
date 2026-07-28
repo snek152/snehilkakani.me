@@ -3,14 +3,11 @@
 import { useRef } from "react";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import {
-  motion,
-  useReducedMotion,
-  useScroll,
-  useTransform,
-} from "motion/react";
+import { motion, useTransform } from "motion/react";
 import { EASE_OUT } from "@/app/lib/motion";
-import { navItems } from "@/app/lib/nav";
+import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
+import { useProximity } from "@/app/lib/components/shared/CursorField";
+import { navItems, type NavItem } from "@/app/lib/nav";
 
 const BLURBS: Record<string, string> = {
   "/projects": "Selected builds and products",
@@ -21,91 +18,63 @@ const BLURBS: Record<string, string> = {
 
 const items = navItems.filter((item) => item.href in BLURBS);
 
-/** Compact content-led rail between Hero and Experience, previewing every
- * other route so the homepage's middle has a destination instead of empty
- * vertical space. Reuses the site's real nav items rather than decoration.
+/** A quiet wayfinding strip between Hero and Experience — a single thin
+ * bar, not a section of its own. Previous versions gave this four full-
+ * width rows and an elaborate scroll-linked reveal; none of that content
+ * needs that much of the page, so it's collapsed to one line of compact
+ * links. The blurb moves to a title tooltip rather than visible text.
  *
- * The three internal column dividers sit at 25/50/75% — the same three
- * positions Hero's own vertical grid lines retract into as it scrolls out.
- * Their blue ink fades in and back out over the strip's full passage through
- * the viewport; a restrained peak opacity keeps the change legible without
- * overpowering the cards. */
+ * Each link also reads the shared `CursorField`: as the pointer nears
+ * (not yet hovering), a faint accent glow rises behind it — the same
+ * light `CursorGlow` casts across the page, now legible on the
+ * interface itself. Purely a background layer, so it never fights with
+ * the label's own hover/focus color (plain CSS, unaffected by this). */
 export default function IndexStrip() {
-  const reduceMotion = useReducedMotion();
-  const entrance = reduceMotion ? undefined : { opacity: 1, y: 0 };
-  const navRef = useRef<HTMLElement>(null);
-
-  const { scrollYProgress } = useScroll({
-    target: navRef,
-    offset: ["start end", "end start"],
-  });
-  const lineOpacity = useTransform(
-    scrollYProgress,
-    [0, 0.35, 0.65, 1],
-    reduceMotion ? [1, 1, 1, 1] : [0, 0.55, 0.55, 0],
-  );
+  const reduceMotion = useMotionPreference();
 
   return (
     <motion.nav
-      ref={navRef}
       aria-label="Explore the site"
-      initial={reduceMotion ? false : { opacity: 0, y: 10 }}
-      whileInView={entrance}
-      viewport={{ once: true, amount: 0.3 }}
+      initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+      whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.4 }}
       transition={{ duration: 0.4, ease: EASE_OUT }}
-      className="relative mt-10 grid grid-cols-1 divide-y divide-border sm:mt-12 sm:grid-cols-4 sm:divide-y-0"
+      className="mt-8 border-y border-border sm:mt-10"
     >
-      <motion.div
-        aria-hidden
-        className="absolute inset-x-0 top-0 h-px bg-border"
-        style={{ opacity: lineOpacity }}
-      />
-      <motion.div
-        aria-hidden
-        className="absolute inset-x-0 bottom-0 h-px bg-border"
-        style={{ opacity: lineOpacity }}
-      />
-
-      {[25, 50, 75].map((left, index) => (
-        <motion.div
-          key={left}
-          aria-hidden
-          className="absolute top-0 hidden w-px origin-top bg-accent sm:block"
-          style={{ left: `${left}%`, height: "100%", opacity: lineOpacity }}
-          initial={reduceMotion ? false : { scaleY: 0 }}
-          whileInView={reduceMotion ? undefined : { scaleY: 1 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{
-            duration: 0.5,
-            delay: 0.15 + index * 0.1,
-            ease: EASE_OUT,
-          }}
-        />
-      ))}
-
-      {items.map((item) => (
-        <Link
-          key={item.href}
-          href={item.href}
-          className="group block no-underline"
-        >
-          <div className="flex h-full flex-col justify-between gap-6 px-1 py-7 sm:px-6 sm:py-9">
-            <ArrowUpRight
-              size={17}
-              strokeWidth={1.75}
-              className="text-dim2 opacity-0 transition-all duration-200 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent group-hover:opacity-100"
-            />
-            <div>
-              <div className="font-display text-xl font-bold tracking-[-0.02em] text-fg transition-colors duration-150 group-hover:text-accent sm:text-[1.35rem]">
-                {item.label}
-              </div>
-              <div className="mt-1.5 text-sm leading-snug text-dim">
-                {BLURBS[item.href]}
-              </div>
-            </div>
-          </div>
-        </Link>
-      ))}
+      <ul className="flex flex-wrap">
+        {items.map((item) => (
+          <li key={item.href} className="border-r border-border last:border-r-0">
+            <IndexLink item={item} />
+          </li>
+        ))}
+      </ul>
     </motion.nav>
+  );
+}
+
+function IndexLink({ item }: { item: NavItem }) {
+  const ref = useRef<HTMLAnchorElement>(null);
+  const proximity = useProximity(ref, 140);
+  const glowOpacity = useTransform(proximity, [0, 1], [0, 0.16]);
+
+  return (
+    <Link
+      ref={ref}
+      href={item.href}
+      title={BLURBS[item.href]}
+      className="group relative flex items-center gap-1.5 px-5 py-3 text-sm font-medium text-dim2 no-underline transition-colors duration-150 hover:text-accent sm:px-6"
+    >
+      <motion.span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-accent"
+        style={{ opacity: glowOpacity }}
+      />
+      <span className="relative">{item.label}</span>
+      <ArrowUpRight
+        size={13}
+        strokeWidth={2}
+        className="relative text-dim2/70 transition-colors duration-150 group-hover:text-accent"
+      />
+    </Link>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useReducedMotion } from "motion/react";
+import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import { useEffect, useRef, useState } from "react";
 
 export const ROLES = [
@@ -27,7 +27,7 @@ const SCRAMBLE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&*";
  * as a considered detail, not a twitchy effect.
  */
 export default function RoleCycle() {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useMotionPreference();
   const [index, setIndex] = useState(0);
   const [display, setDisplay] = useState(ROLES[0]);
   const frameRef = useRef(0);
