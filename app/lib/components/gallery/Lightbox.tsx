@@ -2,9 +2,10 @@
 
 import { useEffect, useId, useRef } from "react";
 import Image from "next/image";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { EASE_OUT, EASE_INOUT } from "@/app/lib/motion";
+import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import { getPhotoDims } from "./photo-dims";
 import ViewfinderFrame from "@/app/lib/components/shared/ViewfinderFrame";
 import type { Photo } from "./GalleryCell";
@@ -22,7 +23,7 @@ export default function Lightbox({
   onNavigate: (index: number) => void;
   returnFocusRef: React.MutableRefObject<HTMLButtonElement | null>;
 }) {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useMotionPreference();
   const closeRef = useRef<HTMLButtonElement | null>(null);
   const titleId = useId();
   const descId = useId();

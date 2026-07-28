@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import type featPhotos from "@/app/lib/data/photos";
 import { getPhotoDims } from "./photo-dims";
 import { EASE_OUT, EASE_INOUT } from "@/app/lib/motion";
+import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 
 export type Photo = (typeof featPhotos)[number];
 
@@ -22,7 +23,7 @@ export default function GalleryCell({
 }) {
   const [hover, setHover] = useState(false);
   const [focused, setFocused] = useState(false);
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useMotionPreference();
   const { w, h } = getPhotoDims(photo.image);
   const showCaption = hover || focused;
   const [captionReady, setCaptionReady] = useState(false);
