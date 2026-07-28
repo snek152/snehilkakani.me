@@ -1,9 +1,10 @@
 "use client";
 
 import { useId, useState } from "react";
-import { motion, useReducedMotion, type Variants } from "motion/react";
+import { motion, type Variants } from "motion/react";
 import { ArrowRight, Check } from "lucide-react";
 import { EASE_OUT, staggerContainer } from "@/app/lib/motion";
+import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import { buildMailtoUrl, CONTACT_EMAIL } from "./mailto";
 
 const fieldMotion: Variants = {
@@ -52,7 +53,7 @@ function Field({
 }
 
 export default function ContactForm() {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useMotionPreference();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");

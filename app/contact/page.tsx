@@ -1,10 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import ContactForm from "@/app/lib/components/contact/ContactForm";
 import { CONTACT_EMAIL } from "@/app/lib/components/contact/mailto";
 import ViewfinderFrame from "@/app/lib/components/shared/ViewfinderFrame";
+import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import { EASE_OUT } from "@/app/lib/motion";
 import musicProd from "@/public/music_prod.jpg";
 import photography from "@/public/photography.jpeg";
@@ -31,7 +32,7 @@ const contactPhotos = [
 ] as const;
 
 export default function ContactPage() {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useMotionPreference();
 
   return (
     <main className="px-6 pb-20 pt-16 sm:px-8 lg:px-12 lg:pb-20 lg:pt-[4.5rem]">
