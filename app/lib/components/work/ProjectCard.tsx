@@ -97,7 +97,7 @@ export default function ProjectCard({ project }: { project: Project }) {
         {!reduceMotion && (
           <motion.span
             aria-hidden="true"
-            className="absolute inset-0 origin-right bg-bg"
+            className="absolute inset-0 origin-right bg-card"
             variants={{
               hidden: { scaleX: 1 },
               shown: { scaleX: 0, transition: { duration: beats(1.4), ease: EASE_OUT } },

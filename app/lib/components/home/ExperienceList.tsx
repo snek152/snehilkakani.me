@@ -6,6 +6,7 @@ import { EASE_OUT } from "@/app/lib/motion";
 import { beats } from "@/app/lib/tempo";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import DrawnRule from "@/app/lib/components/shared/DrawnRule";
+import ColumnGuides from "./ColumnGuides";
 
 /**
  * The experience history, full width, in ordinary document flow.
@@ -51,6 +52,7 @@ export default function ExperienceList({ experiences }: { experiences: Experienc
     // near it by coincidence. `gap-x` is deliberately zero: a gap would
     // shrink the columns and push that boundary off the stop.
     <ol className="relative -mx-6 sm:-mx-8 lg:-mx-12">
+      <ColumnGuides />
       <DrawnRule className="absolute inset-x-0 top-0" />
       {experiences.map((experience) => (
         <motion.li

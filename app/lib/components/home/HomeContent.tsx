@@ -20,7 +20,10 @@ export default function HomeContent({ heroProgress }: { heroProgress: MotionValu
   const headingActive = useInView(headingRef, { once: true });
 
   return (
-    <div className="px-6 pt-4 pb-20 sm:px-8 lg:px-12 lg:pb-12">
+    // No top padding: the index band's dividers are Hero's grid lines
+    // continuing past its bottom border, so any gap between the two
+    // breaks the one thing the band is for.
+    <div className="px-6 pb-20 sm:px-8 lg:px-12 lg:pb-12">
       <GridIndex progress={heroProgress} />
 
       <motion.section

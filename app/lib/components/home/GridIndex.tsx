@@ -97,7 +97,9 @@ function Cell({
   const flare = useTransform(
     progress,
     [landing - FALL, landing, landing + 0.1],
-    reduceMotion ? [0, 0, 0] : [0, 1, 0],
+    // Half strength, matching the dividers: the flare should read as a
+    // line settling, not as the page flashing.
+    reduceMotion ? [0, 0, 0] : [0, 0.5, 0],
   );
 
   // The label is *latched* rather than derived from scroll. A value that
@@ -121,10 +123,14 @@ function Cell({
 
   return (
     <>
-      {/* The cell's own right-hand divider, at the matching grid stop. */}
+      {/* The cell's own right-hand divider, at the matching grid stop.
+        * Carried at half strength: below the border these are a
+        * continuation of Hero's grid rather than the grid itself, and at
+        * full weight they competed with the labels sitting between
+        * them. */}
       <motion.span
         aria-hidden="true"
-        className="pointer-events-none absolute bottom-0 top-0 w-px origin-bottom bg-border"
+        className="pointer-events-none absolute bottom-0 top-0 w-px origin-bottom bg-border/50"
         style={{ left: `${stop}%`, marginLeft: stop === 100 ? "-1px" : undefined, scaleY: divider }}
       />
       <motion.span
