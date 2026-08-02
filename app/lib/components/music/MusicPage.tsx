@@ -1,12 +1,14 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { Pause, Play, SkipBack, SkipForward } from "lucide-react";
 import { beats, categories, type Beat } from "@/app/lib/data/beats";
 import { EASE_OUT, fadeUp } from "@/app/lib/motion";
+import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import BeatBars from "./BeatBars";
 import HeaderWaveform from "./HeaderWaveform";
+import { useAudioAnalyser } from "./useAudioAnalyser";
 
 type BeatFilter = "all" | Beat["category"];
 
@@ -31,7 +33,7 @@ function formatTime(seconds: number): string {
 }
 
 export default function MusicPage() {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useMotionPreference();
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const activeIndexRef = useRef<number | null>(null);
   const playbackRequestRef = useRef(0);
@@ -44,11 +46,16 @@ export default function MusicPage() {
   const [error, setError] = useState<string | null>(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const { bars, ensureAnalyser } = useAudioAnalyser(audioRef, playbackState === "playing", prefersReducedMotion);
 
   const attemptPlay = useCallback((audio: HTMLAudioElement, index: number) => {
     const request = ++playbackRequestRef.current;
     setError(null);
     setPlaybackState("loading");
+    // Synchronous, still inside the click's call stack — creating (or
+    // resuming) the AudioContext here, not in an effect reacting to
+    // state, keeps it inside the actual user gesture.
+    ensureAnalyser();
 
     void audio.play().catch(() => {
       if (
@@ -61,7 +68,7 @@ export default function MusicPage() {
       setError("Couldn't play this track.");
       setPlaybackState("error");
     });
-  }, []);
+  }, [ensureAnalyser]);
 
   const playTrack = useCallback(
     (index: number) => {
@@ -233,7 +240,7 @@ export default function MusicPage() {
           .filter(({ beat }) => beat.category === filter);
 
   return (
-    <div className="px-6 pb-44 pt-24 sm:px-10 lg:px-14">
+    <div className="px-6 pb-44 pt-16 sm:px-8 lg:px-12 lg:pt-[4.5rem]">
       <audio ref={audioRef} preload="none" />
 
       <div className="flex items-end justify-between gap-6">
@@ -261,10 +268,8 @@ export default function MusicPage() {
               type="button"
               aria-pressed={isActive}
               onClick={() => setFilter(category)}
-              className={`relative rounded px-3 py-1.5 font-sans text-sm capitalize transition-colors duration-150 ${
-                isActive
-                  ? "bg-white/[0.06] text-fg"
-                  : "text-dim hover:text-fg"
+              className={`relative px-3 py-1.5 font-sans text-sm capitalize transition-colors duration-150 ${
+                isActive ? "text-fg" : "text-dim hover:text-fg"
               }`}
             >
               {category}
@@ -303,7 +308,7 @@ export default function MusicPage() {
                 aria-pressed={isActive}
                 aria-label={`${isPlaybackRow ? "Pause" : "Play"} ${beat.name}, ${beat.category}, ${beat.tempo} BPM`}
                 className={`flex w-full items-center gap-4 border-b border-border px-2 py-3 text-left transition-colors duration-150 ${
-                  isActive ? "bg-accent/[0.08]" : "hover:bg-white/[0.02]"
+                  isActive ? "" : "hover:bg-white/[0.02]"
                 }`}
                 style={{
                   borderLeft: isActive
@@ -313,7 +318,7 @@ export default function MusicPage() {
               >
                 <span className="flex w-5 shrink-0 items-center justify-center">
                   {isPlayingRow ? (
-                    <BeatBars tempo={beat.tempo} />
+                    <BeatBars bars={bars} />
                   ) : (
                     <Play
                       size={12}
@@ -375,7 +380,7 @@ export default function MusicPage() {
               <div className="min-w-0 flex-1">
                 <div className="mb-0.5 flex items-center gap-1.5">
                   <span className="h-2.5 w-[2px] bg-accent" aria-hidden="true" />
-                  <span className="font-sans text-sm font-semibold uppercase tracking-widest text-accent">
+                  <span className="font-sans text-sm font-semibold uppercase tracking-widest text-dim2">
                     Now Playing
                   </span>
                 </div>
