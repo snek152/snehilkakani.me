@@ -7,6 +7,8 @@ import type { Project } from "@/app/lib/data/projects";
 import { EASE_OUT } from "@/app/lib/motion";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import { useProximity } from "@/app/lib/components/shared/CursorField";
+import DrawnRule from "@/app/lib/components/shared/DrawnRule";
+import { beats } from "@/app/lib/tempo";
 import { ProjectLinks, ProjectSkills } from "./ProjectMeta";
 import { projectYear, shortTitle } from "./utils";
 
@@ -21,7 +23,7 @@ import { projectYear, shortTitle } from "./utils";
  * screenshot roughly twice the width it had in the rail, and leaves the
  * page scrolling at the reader's own pace.
  */
-export default function ProjectCard({ project, index }: { project: Project; index: number }) {
+export default function ProjectCard({ project }: { project: Project }) {
   const reduceMotion = useMotionPreference();
   const articleRef = useRef<HTMLElement>(null);
   const proximity = useProximity(articleRef, 320);
@@ -35,15 +37,20 @@ export default function ProjectCard({ project, index }: { project: Project; inde
       initial={reduceMotion ? false : { opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: reduceMotion ? 0 : 0.55, ease: EASE_OUT }}
+      transition={{ duration: reduceMotion ? 0 : beats(0.85), ease: EASE_OUT }}
       onMouseEnter={() => setActive(true)}
       onMouseLeave={() => setActive(false)}
       onFocusCapture={() => setActive(true)}
       onBlurCapture={(event) => {
         if (!event.currentTarget.contains(event.relatedTarget)) setActive(false);
       }}
-      className="group relative isolate grid gap-x-10 gap-y-5 border-t border-border py-10 first:border-t-0 first:pt-0 last:pb-0 lg:grid-cols-[minmax(0,57fr)_minmax(0,43fr)] lg:py-14 lg:last:pb-0"
+      className="group relative isolate grid gap-x-10 gap-y-5 py-10 first:pt-0 last:pb-0 lg:grid-cols-[minmax(0,57fr)_minmax(0,43fr)] lg:py-14 lg:last:pb-0"
     >
+      {/* Struck across as the row arrives — the same rule-draw the
+        * Experience list uses, so the two pages read as one system. The
+        * first row sits under the section header's own rule, so it skips
+        * its own rather than showing two lines a gap apart. */}
+      <DrawnRule className="absolute inset-x-0 top-0 [article:first-child_&]:hidden" />
       <motion.div
         aria-hidden="true"
         className="pointer-events-none absolute -inset-x-6 -inset-y-2 -z-10 bg-accent blur-3xl"
@@ -73,15 +80,7 @@ export default function ProjectCard({ project, index }: { project: Project; inde
       </div>
 
       <div className="flex flex-col lg:justify-center">
-        <div className="mb-3 flex items-center gap-3">
-          {/* The index is the rail's one genuinely useful leftover: it
-            * gives the list a sense of extent without a progress bar. */}
-          <span aria-hidden="true" className="text-sm tabular-nums text-dim2">
-            {String(index + 2).padStart(2, "0")}
-          </span>
-          <span aria-hidden="true" className="h-px w-8 bg-border" />
-          {year && <span className="text-sm tabular-nums text-dim2">{year}</span>}
-        </div>
+        {year && <p className="mb-3 text-sm tabular-nums text-dim2">{year}</p>}
         <h3 className="font-display text-[1.5rem] font-bold leading-tight tracking-[-0.02em] text-fg lg:text-[1.75rem]">
           {shortTitle(project.title)}
         </h3>

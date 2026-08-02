@@ -5,6 +5,7 @@ import type { Experience } from "@/app/lib/data/experience";
 import { EASE_OUT } from "@/app/lib/motion";
 import { beats } from "@/app/lib/tempo";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
+import DrawnRule from "@/app/lib/components/shared/DrawnRule";
 
 /**
  * The experience history, full width, in ordinary document flow.
@@ -27,27 +28,27 @@ export default function ExperienceList({ experiences }: { experiences: Experienc
   const reduceMotion = useMotionPreference();
 
   return (
-    <ol className="border-t border-border">
-      {experiences.map((experience, index) => (
+    <ol className="relative">
+      <DrawnRule className="absolute inset-x-0 top-0" />
+      {experiences.map((experience) => (
         <motion.li
           key={experience.company + experience.title}
           initial={reduceMotion ? false : { opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: reduceMotion ? 0 : beats(0.5), ease: EASE_OUT }}
-          className="group grid gap-x-10 gap-y-4 border-b border-border py-8 lg:grid-cols-[minmax(0,20fr)_minmax(0,80fr)] lg:py-10"
+          className="group relative grid gap-x-10 gap-y-4 py-8 lg:grid-cols-[minmax(0,20fr)_minmax(0,80fr)] lg:py-10"
         >
+          {/* The rule is struck across as the row arrives, rather than
+            * being there waiting for it — the same idea as Hero's grid
+            * lines: the layout itself is what moves. */}
+          <DrawnRule className="absolute inset-x-0 bottom-0" />
           {/* Dates in their own column: the point of a history is the
             * sequence, and a reader scanning for "when" shouldn't have to
             * find it inside each card's prose. */}
-          <div className="flex items-baseline gap-4 lg:flex-col lg:gap-2">
-            <span aria-hidden="true" className="text-sm tabular-nums text-dim2/70">
-              {String(index + 1).padStart(2, "0")}
-            </span>
-            <div>
-              <p className="text-sm tabular-nums text-dim">{experience.period}</p>
-              <p className="mt-1 text-sm text-dim2">{experience.location}</p>
-            </div>
+          <div>
+            <p className="text-sm tabular-nums text-dim">{experience.period}</p>
+            <p className="mt-1 text-sm text-dim2">{experience.location}</p>
           </div>
 
           <div>

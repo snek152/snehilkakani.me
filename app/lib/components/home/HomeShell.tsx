@@ -22,7 +22,7 @@ export default function HomeShell() {
   return (
     <>
       <Hero ref={heroRef} progress={heroProgress} />
-      <HomeContent />
+      <HomeContent heroProgress={heroProgress} />
     </>
   );
 }

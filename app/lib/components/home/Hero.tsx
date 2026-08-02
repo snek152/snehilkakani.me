@@ -11,6 +11,7 @@ import { useIntroReady } from "@/app/lib/components/AppShell";
 import { EASE_OUT } from "@/app/lib/motion";
 import ViewfinderFrame from "@/app/lib/components/shared/ViewfinderFrame";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
+import { GRID_STOPS } from "@/app/lib/grid";
 import RoleCycle from "@/app/lib/components/home/RoleCycle";
 import { experiences } from "@/app/lib/data/experience";
 
@@ -143,19 +144,20 @@ export default function Hero({
           section scrolls out, brightening as it converges into the
           bottom border as the section hands off to IndexStrip below. */}
       <div aria-hidden className="pointer-events-none z-0 absolute inset-0">
-        {[1, 2, 3, 4].map((i) => (
+        {GRID_STOPS.map((stop) => (
           <div
-            key={i}
+            key={stop}
             className="absolute inset-y-0 w-px bg-dim2/15"
-            style={{ left: `${25 * i}%` }}
+            style={{ left: `${stop}%`, marginLeft: stop === 100 ? "-1px" : undefined }}
           />
         ))}
-        {[1, 2, 3, 4].map((i, index) => (
+        {GRID_STOPS.map((stop, index) => (
           <motion.div
-            key={`accent-${i}`}
+            key={`accent-${stop}`}
             className="absolute inset-y-0 w-px bg-accent"
             style={{
-              left: `${25 * i}%`,
+              left: `${stop}%`,
+              marginLeft: stop === 100 ? "-1px" : undefined,
               scaleY: lineScaleY[index],
               transformOrigin: "bottom",
               opacity: lineOpacity[index],

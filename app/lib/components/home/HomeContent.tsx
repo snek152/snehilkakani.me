@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useInView } from "motion/react";
+import { motion, type MotionValue, useInView } from "motion/react";
 import { experiences } from "@/app/lib/data/experience";
 import { EASE_OUT } from "@/app/lib/motion";
 import { beats } from "@/app/lib/tempo";
@@ -11,9 +11,9 @@ import ExperienceList from "./ExperienceList";
 
 import IndexStrip from "./IndexStrip";
 import ManifestoHeading from "./ManifestoHeading";
-import StatusBand from "./StatusBand";
+import GridDatum from "./GridDatum";
 
-export default function HomeContent() {
+export default function HomeContent({ heroProgress }: { heroProgress: MotionValue<number> }) {
   const reduceMotion = useMotionPreference();
   const headingRef = useRef<HTMLDivElement>(null);
   // The heading scramble-decodes the instant it comes into view, echoing
@@ -22,7 +22,7 @@ export default function HomeContent() {
 
   return (
     <div className="px-6 pt-4 pb-20 sm:px-8 lg:px-12 lg:pb-12">
-      <StatusBand />
+      <GridDatum progress={heroProgress} />
 
       <motion.section
         aria-labelledby="experience-heading"
@@ -32,16 +32,13 @@ export default function HomeContent() {
         viewport={{ once: true, amount: 0.08 }}
         transition={{ duration: beats(0.75), ease: EASE_OUT }}
       >
-        <div ref={headingRef} className="mb-6 flex items-end justify-between gap-4">
+        <div ref={headingRef} className="mb-6">
           <ManifestoHeading
             id="experience-heading"
             text="Experience"
             active={headingActive}
             className="font-display text-[1.6rem] font-bold tracking-[-0.02em] text-fg"
           />
-          <p className="pb-1 text-sm tabular-nums text-dim2">
-            {String(experiences.length).padStart(2, "0")} roles
-          </p>
         </div>
         <ExperienceList experiences={experiences} />
       </motion.section>
