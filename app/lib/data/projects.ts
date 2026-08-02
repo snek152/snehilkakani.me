@@ -8,6 +8,8 @@ import euclidlearn from "@/public/projects/euclidlearn.jpg";
 import swordselection from "@/public/projects/swordselection.png";
 import impasse from "@/public/projects/impasse.png";
 import orbis from "@/public/projects/orbis.png";
+import fere from "@/public/projects/fere.jpg";
+import fere2 from "@/public/projects/fere-win.jpeg";
 import { StaticImageData } from "next/image";
 
 export type Project = {
@@ -15,6 +17,9 @@ export type Project = {
   subtitle?: string;
   description: string;
   image: StaticImageData | string;
+  /** Optional second shot for the featured slot, laid in over the
+   * primary as an inset plate. Ignored everywhere else. */
+  secondaryImage?: StaticImageData | string;
   skills: string[];
   link?: string;
   github?: string;
@@ -22,6 +27,17 @@ export type Project = {
 };
 
 export const projects: Project[] = [
+  {
+    title: "Fere: AI-Powered Desktop Dev Tooling Platform",
+    subtitle: "Jan 2026 - May 2026",
+    description:
+      "Co-founded a desktop dev tooling platform that visualizes local environments for indie developers. Built AI-powered querying, debugging, and proactive background monitoring with service-scoped context and adaptive suggestions. Won 2nd place ($10K) at Cal Poly's Innovation Quest",
+    skills: ["electron", "typescript", "agentic ai", "desktop development"],
+    image: fere,
+    github: "https://github.com/fere-oss/fere",
+    link: "https://getfere.com",
+    secondaryImage: fere2,
+  },
   {
     title: "Impasse: AI-Powered Negotiation Training Platform",
     subtitle: "January 2026 - 24hr Hackathon",
