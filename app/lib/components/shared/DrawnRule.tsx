@@ -52,45 +52,51 @@ export default function DrawnRule({
   );
 }
 
+/** The rule's resting colour — the same value as the `border` token. */
+const RULE_DIM = "rgba(255, 255, 255, 0.07)";
+/** What it's struck at, before settling back. */
+const RULE_BRIGHT = "rgba(255, 255, 255, 0.30)";
+
 /**
- * A `DrawnRule` struck with a bright leading edge.
+ * A rule that is struck rather than merely drawn.
  *
- * The plain rule draws, which reads as structure appearing. This adds the
- * thing that draws it: a short accent segment running the length of the
- * rule once and leaving, so the line looks *struck* rather than grown.
- * It's the same accent-on-arrival the index dividers flare with, which is
- * the point — the Experience list is the one part of the page with no
- * grid line of its own, so it borrows the gesture instead.
+ * Same expansion as `DrawnRule`, but the line itself carries the
+ * brightness: it comes in at several times its resting strength and dims
+ * back down once it has reached full width. So it expands out, then goes
+ * bright to dim — one line doing both, rather than a separate coloured
+ * segment travelling along a line that was already there.
+ *
+ * An earlier version used an accent-coloured leading edge. It read as a
+ * blue thing sliding across rather than as the rule arriving, which is a
+ * different — and busier — idea than the one the rest of the page is
+ * built on.
  *
  * Kept to the Experience list deliberately. On the projects page the
  * rules sit directly above photographs that are already doing the
- * arriving; a travelling accent there would be two things competing.
+ * arriving, and two arrivals at once is one too many.
  */
 export function StruckRule({ className = "" }: { className?: string }) {
   const reduceMotion = useMotionPreference();
 
   return (
-    // Two elements on purpose. The outer one carries whatever positioning
-    // the caller passed (`absolute inset-x-0 bottom-0`, typically); the
-    // inner one owns `relative` so the rule and the spark have something
-    // to sit against. Putting both on one element meant `relative` and
-    // the caller's `absolute` landed in the same class list, where the
-    // stylesheet's order decides the winner rather than the caller — and
-    // when `relative` won, the rule stopped being out of flow and became
-    // a grid item, shunting the row's columns sideways.
-    <span aria-hidden="true" className={`block h-px w-full ${className}`}>
-      <span className="relative block h-px w-full overflow-hidden">
-        <DrawnRule className="absolute inset-x-0 top-0" />
-        {!reduceMotion && (
-          <motion.span
-            className="absolute top-0 left-0 h-px w-[12%] bg-accent"
-            initial={{ x: "-100%", opacity: 0 }}
-            whileInView={{ x: ["-100%", "833%"], opacity: [0, 0.55, 0.55, 0] }}
-            viewport={{ once: true, margin: "0px 0px -10% 0px" }}
-            transition={{ duration: beats(1.3), ease: EASE_OUT, times: [0, 0.15, 0.7, 1] }}
-          />
-        )}
-      </span>
-    </span>
+    <motion.span
+      aria-hidden="true"
+      className={`block h-px w-full ${className}`}
+      style={{ transformOrigin: "left", backgroundColor: RULE_DIM }}
+      initial={reduceMotion ? false : { scaleX: 0, backgroundColor: RULE_BRIGHT }}
+      whileInView={
+        reduceMotion ? undefined : { scaleX: 1, backgroundColor: [RULE_BRIGHT, RULE_BRIGHT, RULE_DIM] }
+      }
+      // Same skipped-rule guard as `DrawnRule`, with the lower edge
+      // pushed *past* the fold rather than short of it: these fire a
+      // little before the row reaches the viewport, not after.
+      viewport={{ once: true, margin: "100000px 0px 14% 0px" }}
+      transition={{
+        scaleX: { duration: beats(1.1), ease: EASE_OUT },
+        // Holds full brightness for the width of the expansion, then
+        // settles over the same curve.
+        backgroundColor: { duration: beats(2), ease: EASE_OUT, times: [0, 0.55, 1] },
+      }}
+    />
   );
 }

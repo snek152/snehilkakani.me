@@ -57,14 +57,20 @@ export default function ExperienceList({ experiences }: { experiences: Experienc
           key={experience.company + experience.title}
           initial={reduceMotion ? false : "hidden"}
           whileInView="shown"
-          viewport={{ once: true, amount: 0.2 }}
+          // Fires a little before the row reaches the fold. Only the
+          // trigger point moves — every duration, delay and curve below
+          // is unchanged.
+          viewport={{ once: true, amount: 0, margin: "0px 0px 14% 0px" }}
           variants={row}
           className="group relative grid gap-y-4 px-6 py-8 sm:px-8 lg:grid-cols-4 lg:gap-x-0 lg:px-0 lg:py-10"
         >
-          {/* Struck across as the row arrives, with a bright leading edge
-            * running its length — the layout itself is what moves, and
-            * the accent is the thing drawing it. */}
-          <StruckRule className="absolute inset-x-0 bottom-0" />
+          {/* Struck across as the row arrives: the line itself comes in
+            * bright and settles back, so the layout is what moves.
+            *
+            * The final row skips its rule — the footer's own top border
+            * closes the list a few dozen pixels below, and the two
+            * together read as a doubled border. */}
+          <StruckRule className="absolute inset-x-0 bottom-0 [li:last-child_&]:hidden" />
           {/* Dates in their own column: the point of a history is the
             * sequence, and a reader scanning for "when" shouldn't have to
             * find it inside each card's prose. */}
