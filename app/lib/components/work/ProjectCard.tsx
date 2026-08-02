@@ -42,14 +42,15 @@ export default function ProjectCard({ project }: { project: Project }) {
       onMouseLeave={() => setActive(false)}
       onFocusCapture={() => setActive(true)}
       onBlurCapture={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget)) setActive(false);
+        if (!event.currentTarget.contains(event.relatedTarget))
+          setActive(false);
       }}
       className="group relative isolate grid gap-x-10 gap-y-5 py-10 first:pt-0 last:pb-0 lg:grid-cols-[minmax(0,57fr)_minmax(0,43fr)] lg:py-14 lg:last:pb-0"
     >
       {/* Struck across as the row arrives — the same rule-draw the
-        * Experience list uses, so the two pages read as one system. The
-        * first row sits under the section header's own rule, so it skips
-        * its own rather than showing two lines a gap apart. */}
+       * Experience list uses, so the two pages read as one system. The
+       * first row sits under the section header's own rule, so it skips
+       * its own rather than showing two lines a gap apart. */}
       <DrawnRule className="absolute inset-x-0 top-0 [article:first-child_&]:hidden" />
       <motion.div
         aria-hidden="true"
@@ -58,10 +59,10 @@ export default function ProjectCard({ project }: { project: Project }) {
       />
 
       {/* The image is uncovered left-to-right by a shutter travelling the
-        * same direction as the rule above it, so the row reads as one
-        * gesture crossing the page rather than a rule and a photo each
-        * doing their own thing. A wipe, not a fade: it matches how the
-        * rules are drawn. */}
+       * same direction as the rule above it, so the row reads as one
+       * gesture crossing the page rather than a rule and a photo each
+       * doing their own thing. A wipe, not a fade: it matches how the
+       * rules are drawn. */}
       <motion.div
         className="relative aspect-[16/10] overflow-hidden bg-card"
         initial={reduceMotion ? false : "hidden"}
@@ -69,8 +70,8 @@ export default function ProjectCard({ project }: { project: Project }) {
         viewport={{ once: true, margin: "100000px 0px -10% 0px" }}
       >
         {/* No hover scale. The accent rule below already says "this is
-          * live"; zooming the photograph as well moved the composition
-          * the reader was looking at to say the same thing twice. */}
+         * live"; zooming the photograph as well moved the composition
+         * the reader was looking at to say the same thing twice. */}
         <div className="absolute inset-0">
           <Image
             src={project.image}
@@ -87,19 +88,22 @@ export default function ProjectCard({ project }: { project: Project }) {
           transition={{ duration: reduceMotion ? 0 : 0.28, ease: EASE_OUT }}
         />
         {/* The shutter itself: page-coloured, covering the frame, and
-          * retracting to the right.
-          *
-          * Not rendered at all under reduced motion. Its resting state is
-          * "covering" — an opaque block is what an un-animated shutter
-          * *is* — so leaving it in place for those readers would hide the
-          * photograph behind it rather than merely skipping an effect. */}
+         * retracting to the right.
+         *
+         * Not rendered at all under reduced motion. Its resting state is
+         * "covering" — an opaque block is what an un-animated shutter
+         * *is* — so leaving it in place for those readers would hide the
+         * photograph behind it rather than merely skipping an effect. */}
         {!reduceMotion && (
           <motion.span
             aria-hidden="true"
             className="absolute inset-0 origin-right bg-card"
             variants={{
               hidden: { scaleX: 1 },
-              shown: { scaleX: 0, transition: { duration: beats(1.4), ease: EASE_OUT } },
+              shown: {
+                scaleX: 0,
+                transition: { duration: beats(1.4), ease: EASE_OUT },
+              },
             }}
           />
         )}
@@ -110,7 +114,9 @@ export default function ProjectCard({ project }: { project: Project }) {
         <h3 className="font-display text-[1.5rem] font-bold leading-tight tracking-[-0.02em] text-fg lg:text-[1.75rem]">
           {shortTitle(project.title)}
         </h3>
-        <p className="mt-3 max-w-xl text-[0.9rem] leading-[1.7] text-dim">{project.description}</p>
+        <p className="mt-3 max-w-xl text-[0.9rem] leading-[1.7] text-dim">
+          {project.description}
+        </p>
         <div className="mt-5">
           <ProjectSkills skills={project.skills} />
         </div>
