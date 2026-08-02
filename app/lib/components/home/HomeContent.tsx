@@ -4,44 +4,57 @@ import { useRef } from "react";
 import { motion, useInView } from "motion/react";
 import { experiences } from "@/app/lib/data/experience";
 import { EASE_OUT } from "@/app/lib/motion";
+import { beats } from "@/app/lib/tempo";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 
-import ExperienceAccordion from "./ExperienceAccordion";
+import ExperienceList from "./ExperienceList";
+
 import IndexStrip from "./IndexStrip";
 import ManifestoHeading from "./ManifestoHeading";
-import Marquee from "./Marquee";
+import StatusBand from "./StatusBand";
 
 export default function HomeContent() {
   const reduceMotion = useMotionPreference();
-  const entrance = reduceMotion ? undefined : { opacity: 1, y: 0 };
   const headingRef = useRef<HTMLDivElement>(null);
-  // The heading scramble-decodes the instant the reader scrolls this far
-  // into view, echoing the loader's decode motif rather than a plain fade.
-  const manifestoActive = useInView(headingRef, { once: true, margin: "0px 0px -35% 0px" });
+  // The heading scramble-decodes the instant it comes into view, echoing
+  // the loader's decode motif rather than a plain fade.
+  const headingActive = useInView(headingRef, { once: true });
 
   return (
-    <div className="px-6 pb-20 sm:px-8 lg:px-12 lg:pb-24">
-      <Marquee />
-
-      <IndexStrip />
+    <div className="px-6 pt-4 pb-20 sm:px-8 lg:px-12 lg:pb-12">
+      <StatusBand />
 
       <motion.section
         aria-labelledby="experience-heading"
-        initial={reduceMotion ? false : { opacity: 0, y: 10 }}
-        whileInView={entrance}
+        className="mt-12"
+        initial={reduceMotion ? false : { opacity: 0, y: 20 }}
+        whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.08 }}
-        transition={{ duration: 0.4, ease: EASE_OUT }}
-        className="mt-10"
+        transition={{ duration: beats(0.75), ease: EASE_OUT }}
       >
-        <div ref={headingRef} className="mb-5">
+        <div ref={headingRef} className="mb-6 flex items-end justify-between gap-4">
           <ManifestoHeading
+            id="experience-heading"
             text="Experience"
-            active={manifestoActive}
+            active={headingActive}
             className="font-display text-[1.6rem] font-bold tracking-[-0.02em] text-fg"
           />
+          <p className="pb-1 text-sm tabular-nums text-dim2">
+            {String(experiences.length).padStart(2, "0")} roles
+          </p>
         </div>
-        <ExperienceAccordion experiences={experiences} />
+        <ExperienceList experiences={experiences} />
       </motion.section>
+
+      {/* The page's "where next" affordance. */}
+      <div className="mt-14">
+        <div className="hidden lg:block">
+          <IndexStrip layout="panel" />
+        </div>
+        <div className="lg:hidden">
+          <IndexStrip />
+        </div>
+      </div>
     </div>
   );
 }

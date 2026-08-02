@@ -17,6 +17,11 @@
   --color-dim: var(--dim);
   --color-dim2: var(--dim2);
   --color-accent: var(--accent);
+  /* `AGENTS.md` specifies `bg-primary/50` for list bullets. This design
+   * renamed the brand blue to `accent`, so `primary` is kept as an alias
+   * of it rather than a second colour — the documented class stays valid
+   * and the palette still has exactly one blue in it. */
+  --color-primary: var(--accent);
   --color-border: var(--border);
 
   --font-display: var(--font-epilogue);
@@ -34,12 +39,6 @@ body {
 ::selection {
   background: var(--accent);
   color: #fff;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    scroll-behavior: smooth;
-  }
 }
 
 /* Thin dark scrollbar */

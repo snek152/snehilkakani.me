@@ -8,16 +8,23 @@ export interface Experience {
 }
 export const experiences: Experience[] = [
   {
-    title: "Co-Founder & Lead Engineer",
-    company: "Fere",
-    location: "San Luis Obispo, CA",
-    period: "Jan 2026 - Present",
+    title: "Software Engineer Intern",
+    company: "Lindy",
+    location: "San Francisco, CA",
+    period: "Jun 2026 - Present",
     description: [
-      "Co-founded a desktop dev tooling platform that visualizes local environments for indie developers",
-      "Built AI-powered querying, debugging, and proactive background monitoring with service-scoped context and adaptive suggestions",
-      "Won 2nd place ($10K) at Cal Poly's Innovation Quest",
+      "Building production infrastructure for Lindy's high-volume AI agent platform",
+      "Lead engineer on a new system for autonomous agent behavior, letting agents act on schedules or real-world events like incoming messages and email",
+      "Building features end to end from the data model to the UI, with natural-language creation and smart filtering",
+      "Extending to workspace-wide team agents with admin-managed access, and migrating existing production behavior without disrupting live assistant flows",
     ],
-    skills: ["electron", "typescript", "agentic ai", "desktop development"],
+    skills: [
+      "typescript",
+      "graphql & relay",
+      "api & data modeling",
+      "distributed systems",
+      "agentic ai development",
+    ],
   },
   {
     title: "Software Engineer",
