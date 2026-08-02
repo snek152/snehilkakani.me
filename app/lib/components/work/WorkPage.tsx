@@ -1,10 +1,12 @@
 "use client";
 
-import { motion } from "motion/react";
+import { useRef } from "react";
+import { motion, useInView } from "motion/react";
 import { projects } from "@/app/lib/data/projects";
 import { fadeUp } from "@/app/lib/motion";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import GridArrival from "@/app/lib/components/shared/GridArrival";
+import ManifestoHeading from "@/app/lib/components/home/ManifestoHeading";
 import FeaturedProject from "./FeaturedProject";
 import ProjectCard from "./ProjectCard";
 
@@ -12,6 +14,11 @@ import SkillsMatrix from "./SkillsMatrix";
 
 export default function WorkPage() {
   const reduceMotion = useMotionPreference();
+  const studiesRef = useRef<HTMLDivElement>(null);
+  // Decodes once as the section is reached, the same one-shot scramble
+  // the Experience heading uses — the two section titles on the site now
+  // arrive the same way.
+  const studiesActive = useInView(studiesRef, { once: true, margin: "0px 0px -15% 0px" });
   const featured = projects[0];
   const remaining = projects.slice(1);
 
@@ -36,16 +43,17 @@ export default function WorkPage() {
 
       <FeaturedProject project={featured} />
 
-      <section aria-label="More projects">
-        <div className="mb-10 flex items-end justify-between border-b border-border pb-5">
-          <div>
-            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-dim2">
-              Selected studies
-            </p>
-            <h2 className="font-display text-4xl font-extrabold tracking-[-0.03em] text-fg">
-              More work, in sequence.
-            </h2>
-          </div>
+      <section aria-label="More projects" aria-labelledby="studies-heading">
+        <div ref={studiesRef} className="mb-10 border-b border-border pb-5">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-dim2">
+            Selected studies
+          </p>
+          <ManifestoHeading
+            id="studies-heading"
+            text="More work, in sequence."
+            active={studiesActive}
+            className="font-display text-4xl font-extrabold tracking-[-0.03em] text-fg"
+          />
         </div>
         <div className="flex flex-col">
           {remaining.map((project) => (

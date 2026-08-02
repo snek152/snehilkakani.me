@@ -5,8 +5,7 @@ import type { Experience } from "@/app/lib/data/experience";
 import { EASE_OUT } from "@/app/lib/motion";
 import { beats } from "@/app/lib/tempo";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
-import DrawnRule from "@/app/lib/components/shared/DrawnRule";
-import ColumnGuides from "./ColumnGuides";
+import { StruckRule } from "@/app/lib/components/shared/DrawnRule";
 
 /**
  * The experience history, full width, in ordinary document flow.
@@ -52,8 +51,7 @@ export default function ExperienceList({ experiences }: { experiences: Experienc
     // near it by coincidence. `gap-x` is deliberately zero: a gap would
     // shrink the columns and push that boundary off the stop.
     <ol className="relative -mx-6 sm:-mx-8 lg:-mx-12">
-      <ColumnGuides />
-      <DrawnRule className="absolute inset-x-0 top-0" />
+      <StruckRule className="absolute inset-x-0 top-0" />
       {experiences.map((experience) => (
         <motion.li
           key={experience.company + experience.title}
@@ -63,10 +61,10 @@ export default function ExperienceList({ experiences }: { experiences: Experienc
           variants={row}
           className="group relative grid gap-y-4 px-6 py-8 sm:px-8 lg:grid-cols-4 lg:gap-x-0 lg:px-0 lg:py-10"
         >
-          {/* The rule is struck across as the row arrives, rather than
-            * being there waiting for it — the same idea as Hero's grid
-            * lines: the layout itself is what moves. */}
-          <DrawnRule className="absolute inset-x-0 bottom-0" />
+          {/* Struck across as the row arrives, with a bright leading edge
+            * running its length — the layout itself is what moves, and
+            * the accent is the thing drawing it. */}
+          <StruckRule className="absolute inset-x-0 bottom-0" />
           {/* Dates in their own column: the point of a history is the
             * sequence, and a reader scanning for "when" shouldn't have to
             * find it inside each card's prose. */}
@@ -91,11 +89,29 @@ export default function ExperienceList({ experiences }: { experiences: Experienc
               ))}
             </motion.ul>
             {experience.skills && (
-              <motion.ul variants={part} className="mt-5 flex flex-wrap gap-2">
+              /* The chips land one after another along the row, on the
+                * same left-to-right axis the rule above was struck on —
+                * so the last thing in the entry arrives travelling the
+                * same direction as the first. */
+              <motion.ul
+                variants={{ hidden: {}, shown: { transition: { staggerChildren: beats(0.07) } } }}
+                className="mt-5 flex flex-wrap gap-2"
+              >
                 {experience.skills.map((skill) => (
-                  <li key={skill} className="border border-border px-2.5 py-1 text-sm text-dim">
+                  <motion.li
+                    key={skill}
+                    variants={{
+                      hidden: reduceMotion ? {} : { opacity: 0, x: -10 },
+                      shown: {
+                        opacity: 1,
+                        x: 0,
+                        transition: { duration: reduceMotion ? 0 : beats(0.55), ease: EASE_OUT },
+                      },
+                    }}
+                    className="border border-border px-2.5 py-1 text-sm text-dim"
+                  >
                     {skill}
-                  </li>
+                  </motion.li>
                 ))}
               </motion.ul>
             )}

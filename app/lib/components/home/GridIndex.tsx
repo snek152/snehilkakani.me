@@ -1,11 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { motion, type MotionValue, useMotionValueEvent, useTransform } from "motion/react";
-import { EASE_OUT } from "@/app/lib/motion";
-import { beats } from "@/app/lib/tempo";
+import { motion, type MotionValue, useTransform } from "motion/react";
 import { GRID_LANDINGS, GRID_STOPS } from "@/app/lib/grid";
 import { navItems, type NavItem } from "@/app/lib/nav";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
@@ -102,24 +99,12 @@ function Cell({
     reduceMotion ? [0, 0, 0] : [0, 0.5, 0],
   );
 
-  // The label is *latched* rather than derived from scroll. A value that
-  // has to come on and stay on is the wrong job for an interpolation:
-  // driving opacity straight off `progress` had the labels arriving and
-  // then quietly draining away again as the reader kept scrolling. Once
-  // its line has landed, the label is simply on.
-  const [landed, setLanded] = useState(reduceMotion);
-  // Focus is tracked apart from the scroll latch so it can bypass the
-  // choreography entirely: a keyboard user tabbing here should not spend
-  // half a beat looking at an invisible focus ring while the label eases
-  // in on the site's timing grid.
-  const [focused, setFocused] = useState(false);
-  useEffect(() => {
-    if (progress.get() >= landing) setLanded(true);
-  }, [progress, landing]);
-  useMotionValueEvent(progress, "change", (value) => {
-    if (value >= landing) setLanded(true);
-  });
-  const shown = landed || focused;
+  // The labels do not animate in. Only the lines do: they are what Hero
+  // hands down, and the eye candy belongs to them. Tying the labels to
+  // the same value meant the reader arrived at the band to find four
+  // blank cells, since Hero's grid does not finish landing until roughly
+  // two-thirds of the way through it. Wayfinding that is invisible when
+  // you reach it is not choreography, it is a missing menu.
 
   return (
     <>
@@ -143,17 +128,9 @@ function Cell({
           opacity: flare,
         }}
       />
-      <motion.div
-        initial={false}
-        animate={shown ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-        transition={{ duration: reduceMotion || focused ? 0 : beats(0.7), ease: EASE_OUT }}
-      >
+      <div>
         <Link
           href={item.href}
-          // A keyboard user reaching the band before scrolling would
-          // otherwise be tabbing through four invisible destinations.
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
           className={`group flex h-full items-start justify-between gap-2 py-4 no-underline sm:py-5 ${
             first ? "pl-4 sm:pl-8 lg:pl-12" : "pl-2 sm:pl-4 lg:pl-6"
           } ${last ? "pr-4 sm:pr-8 lg:pr-12" : "pr-2 sm:pr-4 lg:pr-6"}`}
@@ -173,7 +150,7 @@ function Cell({
             className="mt-0.5 hidden shrink-0 text-dim2/50 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-dim sm:block"
           />
         </Link>
-      </motion.div>
+      </div>
     </>
   );
 }

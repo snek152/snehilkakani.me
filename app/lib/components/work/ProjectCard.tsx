@@ -68,11 +68,10 @@ export default function ProjectCard({ project }: { project: Project }) {
         whileInView="shown"
         viewport={{ once: true, margin: "100000px 0px -10% 0px" }}
       >
-        <motion.div
-          className="absolute inset-0"
-          animate={{ scale: !reduceMotion && active ? 1.03 : 1 }}
-          transition={{ duration: reduceMotion ? 0 : 0.65, ease: EASE_OUT }}
-        >
+        {/* No hover scale. The accent rule below already says "this is
+          * live"; zooming the photograph as well moved the composition
+          * the reader was looking at to say the same thing twice. */}
+        <div className="absolute inset-0">
           <Image
             src={project.image}
             alt={shortTitle(project.title)}
@@ -80,7 +79,7 @@ export default function ProjectCard({ project }: { project: Project }) {
             sizes="(min-width: 1024px) 57vw, 100vw"
             className="object-cover"
           />
-        </motion.div>
+        </div>
         <motion.span
           aria-hidden="true"
           className="absolute inset-x-0 bottom-0 h-0.5 origin-left bg-accent"
