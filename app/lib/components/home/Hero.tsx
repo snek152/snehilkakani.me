@@ -3,11 +3,10 @@
 import Image from "next/image";
 import {
   motion,
-  useScroll,
   useTransform,
+  type MotionValue,
   type Variants,
 } from "motion/react";
-import { useRef } from "react";
 import { useIntroReady } from "@/app/lib/components/AppShell";
 import { EASE_OUT } from "@/app/lib/motion";
 import ViewfinderFrame from "@/app/lib/components/shared/ViewfinderFrame";
@@ -43,40 +42,85 @@ const photoVariants: Variants = {
  * shares a layout id with it, so there is no duplicate name at any point
  * in the handoff.
  *
- * Hero itself does nothing clever on exit — its faint vertical grid lines
- * (at 25/50/75/100%) simply dim as the section scrolls away, leaving a
- * clean handoff to `IndexStrip`'s own reveal below. */
-export default function Hero() {
+ * `progress` (0 at this section's top hitting the viewport top, 1 at its
+ * bottom hitting it) is computed once by `HomeShell` and shared with
+ * `HomeContent`/`IndexStrip` — see `HomeShell.tsx`.
+ *
+ * The four vertical grid lines' own scale collapses 1 → 0 over the same
+ * *width* as the site's original behavior (0.65 of scroll progress per
+ * line, matching remote's [0, 0.65]/[0.05, 0.7]/[0.1, 0.75]/[0.15, 0.8])
+ * — same "speed", not compressed. The stagger between lines is tightened
+ * from remote's 0.05 to 0.02 ([0, 0.65]/[0.02, 0.67]/[0.04, 0.69]/
+ * [0.06, 0.71]), a genuine translation (same span width, earlier start)
+ * rather than a rescale — line 0 itself can't start any earlier, since
+ * progress 0 is already scroll position zero. Opacity is new on top of
+ * this: it peaks *before* scale finishes collapsing (e.g. line 0 hits
+ * full accent brightness by progress 0.45, inside its [0, 0.65] scale
+ * range) rather than sharing scale's own endpoint, so there's a real
+ * window where a line is both bright and still has visible height,
+ * instead of "full opacity" landing exactly on "zero height". */
+export default function Hero({
+  ref,
+  progress,
+}: {
+  ref?: React.Ref<HTMLElement>;
+  progress: MotionValue<number>;
+}) {
   const introReady = useIntroReady();
   const reduceMotion = useMotionPreference();
   const state = introReady ? "visible" : "hidden";
-  const sectionRef = useRef<HTMLElement>(null);
 
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end start"],
-  });
+  // Linear, two-keyframe, matching remote's rate exactly (no curvature,
+  // no acceleration change). Stagger widened from 0.02 to 0.04 — still
+  // ending before remote's own values (0.69/0.73/0.77 vs remote's
+  // 0.7/0.75/0.8) so the "earlier than remote" fix holds, while roughly
+  // doubling the visible spread between lines at any given scroll
+  // position, for a more pronounced height difference across the four.
   const lineScaleY0 = useTransform(
-    scrollYProgress,
+    progress,
     [0, 0.65],
-    [1, reduceMotion ? 1 : 0],
+    reduceMotion ? [1, 1] : [1, 0],
   );
   const lineScaleY1 = useTransform(
-    scrollYProgress,
-    [0.05, 0.7],
-    [1, reduceMotion ? 1 : 0],
+    progress,
+    [0.04, 0.69],
+    reduceMotion ? [1, 1] : [1, 0],
   );
   const lineScaleY2 = useTransform(
-    scrollYProgress,
-    [0.1, 0.75],
-    [1, reduceMotion ? 1 : 0],
+    progress,
+    [0.08, 0.73],
+    reduceMotion ? [1, 1] : [1, 0],
   );
   const lineScaleY3 = useTransform(
-    scrollYProgress,
-    [0.15, 0.8],
-    [1, reduceMotion ? 1 : 0],
+    progress,
+    [0.12, 0.77],
+    reduceMotion ? [1, 1] : [1, 0],
   );
   const lineScaleY = [lineScaleY0, lineScaleY1, lineScaleY2, lineScaleY3];
+  // Opacity ramps over the first ~70% of each line's own scale range,
+  // reaching full brightness while scale still has real height left,
+  // then holds at 1 through the rest (where scale continues to 0).
+  const lineOpacity0 = useTransform(
+    progress,
+    [0, 0.3],
+    reduceMotion ? [0.25, 0.25] : [0.1, 1],
+  );
+  const lineOpacity1 = useTransform(
+    progress,
+    [0.04, 0.34],
+    reduceMotion ? [0.25, 0.25] : [0.1, 1],
+  );
+  const lineOpacity2 = useTransform(
+    progress,
+    [0.08, 0.38],
+    reduceMotion ? [0.25, 0.25] : [0.1, 1],
+  );
+  const lineOpacity3 = useTransform(
+    progress,
+    [0.12, 0.42],
+    reduceMotion ? [0.25, 0.25] : [0.1, 1],
+  );
+  const lineOpacity = [lineOpacity0, lineOpacity1, lineOpacity2, lineOpacity3];
 
   const entrance = reduceMotion ? undefined : { opacity: 1, y: 0 };
   const STATUS = [
@@ -91,14 +135,13 @@ export default function Hero() {
 
   return (
     <section
-      ref={sectionRef}
+      ref={ref}
       className="relative flex min-h-[95vh] flex-col justify-end overflow-hidden border-b border-border px-6 pb-10 sm:px-8 sm:pb-12 lg:px-12 lg:pb-14"
     >
       {/* structural grid — a faint ambient line always sits at each
-          position; a dimmer accent line retracts from the top down as
-          the section scrolls out, converging into the bottom border right
-          where IndexStrip's column dividers pick up the same four
-          positions directly below. */}
+          position; an accent line retracts from the top down as the
+          section scrolls out, brightening as it converges into the
+          bottom border as the section hands off to IndexStrip below. */}
       <div aria-hidden className="pointer-events-none z-0 absolute inset-0">
         {[1, 2, 3, 4].map((i) => (
           <div
@@ -115,7 +158,7 @@ export default function Hero() {
               left: `${25 * i}%`,
               scaleY: lineScaleY[index],
               transformOrigin: "bottom",
-              opacity: 0.25,
+              opacity: lineOpacity[index],
             }}
           />
         ))}
@@ -202,25 +245,6 @@ export default function Hero() {
           </ViewfinderFrame>
         </motion.div>
       </div>
-
-      {/* scroll cue */}
-      <motion.div
-        initial={reduceMotion ? false : "hidden"}
-        animate={reduceMotion ? undefined : state}
-        variants={{
-          hidden: { opacity: 0 },
-          visible: { opacity: 1, transition: { duration: 0.6, delay: 0.5 } },
-        }}
-        className="pointer-events-none absolute bottom-10 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 lg:flex"
-      >
-        <motion.span
-          aria-hidden
-          className="h-8 w-px bg-border"
-          animate={reduceMotion ? undefined : { scaleY: [0.4, 1, 0.4] }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: EASE_OUT }}
-          style={{ transformOrigin: "top" }}
-        />
-      </motion.div>
     </section>
   );
 }

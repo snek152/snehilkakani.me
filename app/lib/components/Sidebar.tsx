@@ -35,7 +35,7 @@ function SidebarItem({ item, expanded, active }: { item: NavItem; expanded: bool
           <Icon
             size={15}
             strokeWidth={1.75}
-            className={`shrink-0 transition-colors duration-150 ${active ? "text-accent" : "text-dim"}`}
+            className={`shrink-0 transition-colors duration-150 ${active ? "text-fg" : "text-dim"}`}
           />
         </span>
         <motion.span

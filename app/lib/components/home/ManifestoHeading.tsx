@@ -15,16 +15,18 @@ export default function ManifestoHeading({
   text,
   active,
   className,
+  id = "experience-heading",
 }: {
   text: string;
   active: boolean;
   className?: string;
+  id?: string;
 }) {
   const reduceMotion = useMotionPreference();
   const display = useScrambleText(text, active, { skip: reduceMotion });
 
   return (
-    <h2 id="experience-heading" aria-label={text} className={className}>
+    <h2 id={id} aria-label={text} className={className}>
       {display || "\u00A0"}
     </h2>
   );

@@ -1,11 +1,9 @@
-import Hero from "@/app/lib/components/home/Hero";
-import HomeContent from "@/app/lib/components/home/HomeContent";
+import HomeShell from "@/app/lib/components/home/HomeShell";
 
 export default function HomePage() {
   return (
     <main>
-      <Hero />
-      <HomeContent />
+      <HomeShell />
     </main>
   );
 }
