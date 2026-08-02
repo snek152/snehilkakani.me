@@ -7,6 +7,7 @@ import { CONTACT_EMAIL } from "@/app/lib/components/contact/mailto";
 import ViewfinderFrame from "@/app/lib/components/shared/ViewfinderFrame";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import { EASE_OUT } from "@/app/lib/motion";
+import { beats } from "@/app/lib/tempo";
 import musicProd from "@/public/music_prod.jpg";
 import photography from "@/public/photography.jpeg";
 import webdev from "@/public/webdev.jpg";
@@ -35,20 +36,20 @@ export default function ContactPage() {
   const reduceMotion = useMotionPreference();
 
   return (
-    <main className="px-6 pb-20 pt-16 sm:px-8 lg:px-12 lg:pb-20 lg:pt-[4.5rem]">
+    <main className="px-6 pb-20 pt-16 sm:px-8 lg:px-12 lg:pt-[4.5rem]">
       <motion.h1
-        initial={reduceMotion ? false : { opacity: 0, y: 12 }}
+        initial={reduceMotion ? false : { opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.38, ease: EASE_OUT }}
+        transition={{ duration: beats(0.75), ease: EASE_OUT }}
         className="mb-11 font-display text-[clamp(2.5rem,5vw,4rem)] font-extrabold leading-none tracking-[-0.03em] text-fg"
       >
         Let&apos;s talk.
       </motion.h1>
 
       <motion.div
-        initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+        initial={reduceMotion ? false : { opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.38, delay: reduceMotion ? 0 : 0.1, ease: EASE_OUT }}
+        transition={{ duration: beats(0.75), delay: reduceMotion ? 0 : beats(0.15), ease: EASE_OUT }}
         className="grid grid-cols-1 items-start gap-12 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:gap-[4.5rem]"
       >
         <section aria-labelledby="contact-intro">
@@ -87,8 +88,8 @@ export default function ContactPage() {
                 initial={reduceMotion ? false : { opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{
-                  duration: 0.45,
-                  delay: reduceMotion ? 0 : 0.2 + index * 0.065,
+                  duration: beats(0.6),
+                  delay: reduceMotion ? 0 : Math.min(index, 3) * beats(0.15),
                   ease: EASE_OUT,
                 }}
                 className="group relative aspect-[4/5] overflow-hidden bg-card"

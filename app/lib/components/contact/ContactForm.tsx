@@ -4,12 +4,13 @@ import { useId, useState } from "react";
 import { motion, type Variants } from "motion/react";
 import { ArrowRight, Check } from "lucide-react";
 import { EASE_OUT, staggerContainer } from "@/app/lib/motion";
+import { beats } from "@/app/lib/tempo";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import { buildMailtoUrl, CONTACT_EMAIL } from "./mailto";
 
 const fieldMotion: Variants = {
   hidden: { opacity: 0, y: 10 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: EASE_OUT } },
+  visible: { opacity: 1, y: 0, transition: { duration: beats(0.6), ease: EASE_OUT } },
 };
 
 function Field({
