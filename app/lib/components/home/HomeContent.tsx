@@ -9,9 +9,8 @@ import { useMotionPreference } from "@/app/lib/components/shared/MotionPreferenc
 
 import ExperienceList from "./ExperienceList";
 
-import IndexStrip from "./IndexStrip";
 import ManifestoHeading from "./ManifestoHeading";
-import GridDatum from "./GridDatum";
+import GridIndex from "./GridIndex";
 
 export default function HomeContent({ heroProgress }: { heroProgress: MotionValue<number> }) {
   const reduceMotion = useMotionPreference();
@@ -22,7 +21,7 @@ export default function HomeContent({ heroProgress }: { heroProgress: MotionValu
 
   return (
     <div className="px-6 pt-4 pb-20 sm:px-8 lg:px-12 lg:pb-12">
-      <GridDatum progress={heroProgress} />
+      <GridIndex progress={heroProgress} />
 
       <motion.section
         aria-labelledby="experience-heading"
@@ -43,15 +42,6 @@ export default function HomeContent({ heroProgress }: { heroProgress: MotionValu
         <ExperienceList experiences={experiences} />
       </motion.section>
 
-      {/* The page's "where next" affordance. */}
-      <div className="mt-14">
-        <div className="hidden lg:block">
-          <IndexStrip layout="panel" />
-        </div>
-        <div className="lg:hidden">
-          <IndexStrip />
-        </div>
-      </div>
     </div>
   );
 }

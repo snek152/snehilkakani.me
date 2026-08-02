@@ -57,7 +57,17 @@ export default function ProjectCard({ project }: { project: Project }) {
         style={{ opacity: glowOpacity }}
       />
 
-      <div className="relative aspect-[16/10] overflow-hidden bg-card">
+      {/* The image is uncovered left-to-right by a shutter travelling the
+        * same direction as the rule above it, so the row reads as one
+        * gesture crossing the page rather than a rule and a photo each
+        * doing their own thing. A wipe, not a fade: it matches how the
+        * rules are drawn. */}
+      <motion.div
+        className="relative aspect-[16/10] overflow-hidden bg-card"
+        initial={reduceMotion ? false : "hidden"}
+        whileInView="shown"
+        viewport={{ once: true, margin: "100000px 0px -10% 0px" }}
+      >
         <motion.div
           className="absolute inset-0"
           animate={{ scale: !reduceMotion && active ? 1.03 : 1 }}
@@ -77,7 +87,24 @@ export default function ProjectCard({ project }: { project: Project }) {
           animate={{ scaleX: active ? 1 : 0 }}
           transition={{ duration: reduceMotion ? 0 : 0.28, ease: EASE_OUT }}
         />
-      </div>
+        {/* The shutter itself: page-coloured, covering the frame, and
+          * retracting to the right.
+          *
+          * Not rendered at all under reduced motion. Its resting state is
+          * "covering" — an opaque block is what an un-animated shutter
+          * *is* — so leaving it in place for those readers would hide the
+          * photograph behind it rather than merely skipping an effect. */}
+        {!reduceMotion && (
+          <motion.span
+            aria-hidden="true"
+            className="absolute inset-0 origin-right bg-bg"
+            variants={{
+              hidden: { scaleX: 1 },
+              shown: { scaleX: 0, transition: { duration: beats(1.4), ease: EASE_OUT } },
+            }}
+          />
+        )}
+      </motion.div>
 
       <div className="flex flex-col lg:justify-center">
         {year && <p className="mb-3 text-sm tabular-nums text-dim2">{year}</p>}

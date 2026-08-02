@@ -45,7 +45,7 @@ const photoVariants: Variants = {
  *
  * `progress` (0 at this section's top hitting the viewport top, 1 at its
  * bottom hitting it) is computed once by `HomeShell` and shared with
- * `HomeContent`/`IndexStrip` — see `HomeShell.tsx`.
+ * `HomeContent`/`GridIndex` — see `HomeShell.tsx`.
  *
  * The four vertical grid lines' own scale collapses 1 → 0 over the same
  * *width* as the site's original behavior (0.65 of scroll progress per
@@ -142,7 +142,8 @@ export default function Hero({
       {/* structural grid — a faint ambient line always sits at each
           position; an accent line retracts from the top down as the
           section scrolls out, brightening as it converges into the
-          bottom border as the section hands off to IndexStrip below. */}
+          bottom border, where each line lands as a divider of the
+          index in `GridIndex` below. */}
       <div aria-hidden className="pointer-events-none z-0 absolute inset-0">
         {GRID_STOPS.map((stop) => (
           <div

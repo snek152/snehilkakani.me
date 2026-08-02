@@ -27,17 +27,39 @@ import DrawnRule from "@/app/lib/components/shared/DrawnRule";
 export default function ExperienceList({ experiences }: { experiences: Experience[] }) {
   const reduceMotion = useMotionPreference();
 
+  // Parts of a row arrive in reading order rather than as one block: the
+  // dates first, then who and what, then the detail. Small enough that
+  // it registers as the row settling rather than as a sequence.
+  const row = {
+    hidden: {},
+    shown: { transition: { staggerChildren: beats(0.12), delayChildren: beats(0.05) } },
+  };
+  const part = {
+    hidden: reduceMotion ? {} : { opacity: 0, y: 12 },
+    shown: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: reduceMotion ? 0 : beats(0.7), ease: EASE_OUT },
+    },
+  };
+
   return (
-    <ol className="relative">
+    // Full bleed so the four columns are true page quarters — the same
+    // 25% stops Hero draws its grid on and the index above divides at.
+    // The boundary between the date column and the entry therefore falls
+    // exactly on Hero's first line, at every width, instead of landing
+    // near it by coincidence. `gap-x` is deliberately zero: a gap would
+    // shrink the columns and push that boundary off the stop.
+    <ol className="relative -mx-6 sm:-mx-8 lg:-mx-12">
       <DrawnRule className="absolute inset-x-0 top-0" />
       {experiences.map((experience) => (
         <motion.li
           key={experience.company + experience.title}
-          initial={reduceMotion ? false : { opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={reduceMotion ? false : "hidden"}
+          whileInView="shown"
           viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: reduceMotion ? 0 : beats(0.5), ease: EASE_OUT }}
-          className="group relative grid gap-x-10 gap-y-4 py-8 lg:grid-cols-[minmax(0,20fr)_minmax(0,80fr)] lg:py-10"
+          variants={row}
+          className="group relative grid gap-y-4 px-6 py-8 sm:px-8 lg:grid-cols-4 lg:gap-x-0 lg:px-0 lg:py-10"
         >
           {/* The rule is struck across as the row arrives, rather than
             * being there waiting for it — the same idea as Hero's grid
@@ -46,34 +68,34 @@ export default function ExperienceList({ experiences }: { experiences: Experienc
           {/* Dates in their own column: the point of a history is the
             * sequence, and a reader scanning for "when" shouldn't have to
             * find it inside each card's prose. */}
-          <div>
+          <motion.div variants={part} className="lg:pl-12 lg:pr-6">
             <p className="text-sm tabular-nums text-dim">{experience.period}</p>
             <p className="mt-1 text-sm text-dim2">{experience.location}</p>
-          </div>
+          </motion.div>
 
-          <div>
-            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+          <div className="lg:col-span-3 lg:pl-10 lg:pr-12">
+            <motion.div variants={part} className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
               <h3 className="font-display text-[1.35rem] font-bold tracking-[-0.02em] text-fg lg:text-[1.6rem]">
                 {experience.company}
               </h3>
               <span className="text-base text-dim">{experience.title}</span>
-            </div>
-            <ul className="mt-4 space-y-2">
+            </motion.div>
+            <motion.ul variants={part} className="mt-4 space-y-2">
               {experience.description.map((line) => (
                 <li key={line} className="flex items-start gap-2.5 text-[0.95rem] leading-[1.7] text-dim">
                   <span aria-hidden="true" className="mt-[0.65rem] h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary/50" />
                   <span>{line}</span>
                 </li>
               ))}
-            </ul>
+            </motion.ul>
             {experience.skills && (
-              <ul className="mt-5 flex flex-wrap gap-2">
+              <motion.ul variants={part} className="mt-5 flex flex-wrap gap-2">
                 {experience.skills.map((skill) => (
                   <li key={skill} className="border border-border px-2.5 py-1 text-sm text-dim">
                     {skill}
                   </li>
                 ))}
-              </ul>
+              </motion.ul>
             )}
           </div>
         </motion.li>

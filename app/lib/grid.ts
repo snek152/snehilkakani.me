@@ -6,7 +6,8 @@
  * three places it appears stay in register:
  *
  *   Hero        — the lines retract upward as the section scrolls away.
- *   GridDatum   — each one lands as a tick in the rule below Hero.
+ *   GridIndex   — each one lands as a divider of the site index below
+ *                 Hero, and the label in the cell it closes rises in.
  *   Work header — they arrive, drawing downward, as the page opens.
  *
  * Depart, land, arrive: one gesture, read three ways. Positions are
