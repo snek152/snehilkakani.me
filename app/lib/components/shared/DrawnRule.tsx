@@ -87,10 +87,10 @@ export function StruckRule({ className = "" }: { className?: string }) {
       whileInView={
         reduceMotion ? undefined : { scaleX: 1, backgroundColor: [RULE_BRIGHT, RULE_BRIGHT, RULE_DIM] }
       }
-      // Same skipped-rule guard as `DrawnRule`, with the lower edge
-      // pushed *past* the fold rather than short of it: these fire a
-      // little before the row reaches the viewport, not after.
-      viewport={{ once: true, margin: "100000px 0px 14% 0px" }}
+      // Same skipped-rule guard as `DrawnRule` (see there), with the
+      // lower edge held short of the fold so the strike plays where the
+      // reader can actually watch it rather than just below the screen.
+      viewport={{ once: true, margin: "100000px 0px -18% 0px" }}
       transition={{
         scaleX: { duration: beats(1.1), ease: EASE_OUT },
         // Holds full brightness for the width of the expansion, then

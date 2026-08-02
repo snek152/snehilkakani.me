@@ -57,10 +57,13 @@ export default function ExperienceList({ experiences }: { experiences: Experienc
           key={experience.company + experience.title}
           initial={reduceMotion ? false : "hidden"}
           whileInView="shown"
-          // Fires a little before the row reaches the fold. Only the
-          // trigger point moves — every duration, delay and curve below
-          // is unchanged.
-          viewport={{ once: true, amount: 0, margin: "0px 0px 14% 0px" }}
+          // Fires once the row is genuinely on screen rather than as it
+          // clears the fold. Triggering sooner sounds like it shows more
+          // of the animation and does the opposite: the row is still
+          // below the viewport while it plays, so it is finished by the
+          // time it can be seen. Only the trigger point moves — every
+          // duration, delay and curve below is unchanged.
+          viewport={{ once: true, amount: 0, margin: "0px 0px -18% 0px" }}
           variants={row}
           className="group relative grid gap-y-4 px-6 py-8 sm:px-8 lg:grid-cols-4 lg:gap-x-0 lg:px-0 lg:py-10"
         >

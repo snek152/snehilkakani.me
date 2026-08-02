@@ -19,21 +19,21 @@ export default function FeaturedProject({ project }: { project: Project }) {
 
   const secondary = project.secondaryImage;
 
+  // No hover scale on either photo. The accent rule already marks the
+  // card as live; moving the photograph to say the same thing shifted the
+  // very composition the reader was looking at. `active` stays — it still
+  // drives that rule.
   const primaryImage = (
-    <motion.div
-      className="absolute inset-0"
-      animate={{ scale: !reduceMotion && active ? 1.025 : 1 }}
-      transition={cropTransition}
-    >
+    <div className="absolute inset-0">
       <Image
         src={project.image}
         alt={shortTitle(project.title)}
         fill
         priority
-        sizes={secondary ? "(min-width: 1024px) 55vw, 100vw" : "(min-width: 1024px) 55vw, 100vw"}
+        sizes="(min-width: 1024px) 55vw, 100vw"
         className="object-cover"
       />
-    </motion.div>
+    </div>
   );
 
   const accentRule = (
@@ -69,11 +69,7 @@ export default function FeaturedProject({ project }: { project: Project }) {
           <div className="grid grid-cols-2" style={{ aspectRatio: "3" }}>
             <div className="relative overflow-hidden">{primaryImage}</div>
             <div className="relative overflow-hidden border-l border-border">
-              <motion.div
-                className="absolute inset-0"
-                animate={{ scale: !reduceMotion && active ? 1.025 : 1 }}
-                transition={cropTransition}
-              >
+              <div className="absolute inset-0">
                 <Image
                   src={secondary}
                   alt=""
@@ -81,7 +77,7 @@ export default function FeaturedProject({ project }: { project: Project }) {
                   sizes="(min-width: 1024px) 50vw, 50vw"
                   className="object-cover"
                 />
-              </motion.div>
+              </div>
             </div>
           </div>
           {accentRule}
