@@ -1,12 +1,24 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, type RefObject } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type RefObject,
+} from "react";
 import { useMotionValue, type MotionValue } from "motion/react";
 import { useMotionPreference } from "./MotionPreference";
 
 type CursorFieldValue = {
   x: MotionValue<number>;
   y: MotionValue<number>;
+  /** Bumped once per rAF-throttled scroll/resize, page-wide — a single
+   * shared invalidation signal every `useProximity` subscriber reacts to,
+   * instead of each one installing its own scroll/resize listener. Cheap
+   * with a handful of subscribers; matters once a page (e.g. a photo
+   * grid) has dozens. */
+  layoutTick: MotionValue<number>;
   /** False under reduced motion, coarse/touch pointers, or before the
    * pointer has moved at all — cheap for consumers to bail out on before
    * they subscribe to movement. */
@@ -23,10 +35,15 @@ const CursorFieldContext = createContext<CursorFieldValue | null>(null);
  * update outside React's render cycle, so a page full of proximity
  * subscribers never re-renders on every mouse move.
  */
-export function CursorFieldProvider({ children }: { children: React.ReactNode }) {
+export function CursorFieldProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const reduceMotion = useMotionPreference();
   const x = useMotionValue(-1000);
   const y = useMotionValue(-1000);
+  const layoutTick = useMotionValue(0);
   const [isCoarsePointer, setIsCoarsePointer] = useState(false);
   const [hasMoved, setHasMoved] = useState(false);
 
@@ -45,9 +62,36 @@ export function CursorFieldProvider({ children }: { children: React.ReactNode })
     return () => window.removeEventListener("mousemove", onMove);
   }, [reduceMotion, isCoarsePointer, x, y]);
 
+  // One rAF-throttled scroll/resize listener for the whole page, not one
+  // per useProximity subscriber.
+  useEffect(() => {
+    if (reduceMotion || isCoarsePointer) return;
+    let scheduled = false;
+    let frameId = 0;
+    const bump = () => {
+      if (scheduled) return;
+      scheduled = true;
+      frameId = requestAnimationFrame(() => {
+        scheduled = false;
+        layoutTick.set(layoutTick.get() + 1);
+      });
+    };
+    window.addEventListener("scroll", bump, { passive: true });
+    window.addEventListener("resize", bump);
+    return () => {
+      window.removeEventListener("scroll", bump);
+      window.removeEventListener("resize", bump);
+      cancelAnimationFrame(frameId);
+    };
+  }, [reduceMotion, isCoarsePointer, layoutTick]);
+
   const active = hasMoved && !reduceMotion && !isCoarsePointer;
 
-  return <CursorFieldContext.Provider value={{ x, y, active }}>{children}</CursorFieldContext.Provider>;
+  return (
+    <CursorFieldContext.Provider value={{ x, y, layoutTick, active }}>
+      {children}
+    </CursorFieldContext.Provider>
+  );
 }
 
 export function useCursorField(): CursorFieldValue {
@@ -60,19 +104,21 @@ export function useCursorField(): CursorFieldValue {
 
 /**
  * 0 (far) to 1 (cursor centered on the element) closeness between the
- * cursor and `ref`. Recomputed on actual pointer movement — subscribed
- * via the cursor motion values' `on("change", ...)`, not a perpetual
- * `requestAnimationFrame` loop — so it does real work only while the
- * mouse is actually moving and goes idle the instant it stops, however
- * many elements are subscribed. A stationary cursor over a scrolling
- * page would otherwise go stale (the element's rect moves, the pointer
- * doesn't), so `scroll`/`resize` also trigger one rAF-throttled
- * recompute. Returned as a `MotionValue` so callers bind it straight to
- * `style` — no React re-renders for the whole page's worth of
- * subscribers.
+ * cursor and `ref`. Recomputed on pointer movement or the shared
+ * `layoutTick` (scroll/resize) — subscribed via `on("change", ...)`, not
+ * a perpetual `requestAnimationFrame` loop or a per-instance scroll
+ * listener. `x` and `y` both change per mousemove event, and every
+ * subscriber (potentially dozens, e.g. a photo grid) hears both, so all
+ * three signals are rAF-batched into a single rect-read per frame rather
+ * than firing `update()` twice per mouse move per element. Returned as a
+ * `MotionValue` so callers bind it straight to `style` — no React
+ * re-renders for the whole page's worth of subscribers.
  */
-export function useProximity(ref: RefObject<HTMLElement | null>, radius = 200): MotionValue<number> {
-  const { x, y, active } = useCursorField();
+export function useProximity(
+  ref: RefObject<HTMLElement | null>,
+  radius = 200,
+): MotionValue<number> {
+  const { x, y, layoutTick, active } = useCursorField();
   const proximity = useMotionValue(0);
 
   useEffect(() => {
@@ -89,9 +135,7 @@ export function useProximity(ref: RefObject<HTMLElement | null>, radius = 200): 
       const distance = Math.hypot(dx, dy);
       proximity.set(Math.max(0, 1 - distance / radius));
     };
-    // rAF-throttled so a burst of triggers (x AND y both changing on the
-    // same pointer event, or a scroll) collapses to one rect read per
-    // frame rather than one per event.
+
     let scheduled = false;
     let frameId = 0;
     const scheduleUpdate = () => {
@@ -106,16 +150,14 @@ export function useProximity(ref: RefObject<HTMLElement | null>, radius = 200): 
     update();
     const unsubX = x.on("change", scheduleUpdate);
     const unsubY = y.on("change", scheduleUpdate);
-    window.addEventListener("scroll", scheduleUpdate, { passive: true });
-    window.addEventListener("resize", scheduleUpdate);
+    const unsubTick = layoutTick.on("change", scheduleUpdate);
     return () => {
       unsubX();
       unsubY();
-      window.removeEventListener("scroll", scheduleUpdate);
-      window.removeEventListener("resize", scheduleUpdate);
+      unsubTick();
       cancelAnimationFrame(frameId);
     };
-  }, [active, ref, x, y, radius, proximity]);
+  }, [active, ref, x, y, layoutTick, radius, proximity]);
 
   return proximity;
 }

@@ -43,8 +43,8 @@ type RevealProps = ForwardedDivProps & {
   amount?: number;
   className?: string;
   /** React 19 lets function components accept `ref` as a plain prop —
-   * no `forwardRef` wrapper needed. Used e.g. by `ExperienceAccordion`
-   * to hand this element's node to `useProximity`. */
+   * no `forwardRef` wrapper needed, so a caller can hand this element's
+   * node straight to something like `useProximity`. */
   ref?: React.Ref<HTMLDivElement>;
 };
 
@@ -52,7 +52,7 @@ type RevealProps = ForwardedDivProps & {
  * The site's single reveal-on-scroll primitive. Reduced motion is read
  * once from `useMotionPreference()` instead of every caller re-deriving
  * its own `reduceMotion ? {...} : {...}` branch — this replaced that
- * duplicated boilerplate in Marquee and ExperienceAccordion. Renders a
+ * duplicated entrance boilerplate. Renders a
  * plain `div` (via `motion.div` with no animation props), so it's only
  * used where a `div` root is appropriate — components needing a semantic
  * root (`nav`, `section`, `article`) keep their own markup and just read

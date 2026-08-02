@@ -11,7 +11,7 @@ const MotionPreferenceContext = createContext<boolean | null>(null);
  * 25+ components that each still call `useReducedMotion()` independently
  * and re-implement their own `reduceMotion ? x : y` branching inline —
  * this provider doesn't retroactively change those; it's what `Reveal`
- * and newly-migrated components (`Marquee`, `ExperienceAccordion`) read
+ * and newly-migrated components read
  * from `useMotionPreference()` instead of adding another direct call.
  * Migrating a remaining call site to this hook is a safe, incremental,
  * behavior-preserving change whenever it's touched next.

@@ -8,6 +8,13 @@ type ViewfinderFrameProps = {
   /** Optional mono readout in the bottom-right corner, e.g. a coordinate or index. */
   captionRight?: ReactNode;
   className?: string;
+  /** Corner ticks + captions fade in/out on this instead of always
+   * showing — for hover-gated use (e.g. a grid cell) rather than the
+   * lightbox's always-visible frame. Defaults to always active. */
+  active?: boolean;
+  /** Set false to skip the CSS opacity transition entirely (respect
+   * `prefers-reduced-motion` at the call site). Defaults to animated. */
+  animate?: boolean;
 };
 
 const TICK = 14;
@@ -24,6 +31,8 @@ export default function ViewfinderFrame({
   captionLeft,
   captionRight,
   className = "",
+  active = true,
+  animate = true,
 }: ViewfinderFrameProps) {
   return (
     <div className={`relative ${className}`}>
@@ -45,7 +54,7 @@ export default function ViewfinderFrame({
           height={TICK}
           viewBox="0 0 14 14"
           fill="none"
-          className="pointer-events-none absolute text-accent"
+          className={`pointer-events-none absolute text-accent ${animate ? "transition-opacity duration-150" : ""} ${active ? "opacity-100" : "opacity-0"}`}
           style={{
             top: "top" in pos ? pos.top : undefined,
             bottom: "bottom" in pos ? pos.bottom : undefined,
@@ -60,7 +69,9 @@ export default function ViewfinderFrame({
       ))}
 
       {(captionLeft || captionRight) && (
-        <div className="pointer-events-none absolute right-2.5 bottom-2.5 left-2.5 flex items-end justify-between gap-3 text-sm tracking-[0.01em] text-fg/80 tabular-nums">
+        <div
+          className={`pointer-events-none absolute right-2.5 bottom-2.5 left-2.5 flex items-end justify-between gap-3 text-sm tracking-[0.01em] text-fg/80 tabular-nums ${animate ? "transition-opacity duration-150" : ""} ${active ? "opacity-100" : "opacity-0"}`}
+        >
           {captionLeft && <span className="bg-bg/70 px-1 py-0.5">{captionLeft}</span>}
           {captionRight && <span className="bg-bg/70 px-1 py-0.5">{captionRight}</span>}
         </div>
