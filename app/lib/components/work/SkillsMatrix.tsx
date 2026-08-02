@@ -23,7 +23,7 @@ export default function SkillsMatrix() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "0px 0px -60px 0px" }}
       transition={reduceMotion ? { duration: 0 } : { type: "spring", stiffness: 260, damping: 22 }}
-      className="mt-20 border-t border-border pt-14 lg:mt-24 lg:pt-16"
+      className="mt-14 border-t border-border pt-10 lg:mt-16 lg:pt-12"
     >
       <div className="mb-8 flex flex-wrap items-end justify-between gap-3">
         <h2
