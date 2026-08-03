@@ -1,42 +1,28 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
-import { Pause, Play, SkipBack, SkipForward } from "lucide-react";
+import { motion, useInView } from "motion/react";
 import { beats, categories, type Beat } from "@/app/lib/data/beats";
-import { EASE_OUT, fadeUp } from "@/app/lib/motion";
+import { EASE_OUT } from "@/app/lib/motion";
+import { beats as beatTime } from "@/app/lib/tempo";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
-import BeatBars from "./BeatBars";
-import HeaderWaveform from "./HeaderWaveform";
+import ManifestoHeading from "@/app/lib/components/home/ManifestoHeading";
+import DrawnRule from "@/app/lib/components/shared/DrawnRule";
+import TrackRow from "./TrackRow";
+import PlayerBar from "./PlayerBar";
 import { useAudioAnalyser } from "./useAudioAnalyser";
 
 type BeatFilter = "all" | Beat["category"];
 
 const FILTERS: BeatFilter[] = ["all", ...categories];
 
-/** Fixed palette for category markers — data, not chrome; the one accent stays reserved for state. */
-const CATEGORY_COLOR: Record<Beat["category"], string> = {
-  mellow: "#60a5fa",
-  trap: "#f87171",
-  acoustic: "#4ade80",
-  spacey: "#a78bfa",
-  synth: "#fbbf24",
-};
-
-function formatTime(seconds: number): string {
-  if (!Number.isFinite(seconds) || seconds < 0) return "0:00";
-  const m = Math.floor(seconds / 60);
-  const s = Math.floor(seconds % 60)
-    .toString()
-    .padStart(2, "0");
-  return `${m}:${s}`;
-}
-
 export default function MusicPage() {
   const prefersReducedMotion = useMotionPreference();
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const activeIndexRef = useRef<number | null>(null);
   const playbackRequestRef = useRef(0);
+  const headingRef = useRef<HTMLDivElement>(null);
+  const headingActive = useInView(headingRef, { once: true });
 
   const [filter, setFilter] = useState<BeatFilter>("all");
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -229,9 +215,6 @@ export default function MusicPage() {
   );
 
   const active = activeIndex !== null ? beats[activeIndex] : null;
-  const isPlayingActive = active !== null && playbackState === "playing";
-  const isPlaybackActive =
-    playbackState === "playing" || playbackState === "loading";
   const filtered =
     filter === "all"
       ? beats.map((beat, index) => ({ beat, index }))
@@ -240,25 +223,22 @@ export default function MusicPage() {
           .filter(({ beat }) => beat.category === filter);
 
   return (
-    <div className="px-6 pb-44 pt-16 sm:px-8 lg:px-12 lg:pt-[4.5rem]">
+    <div className="px-6 pb-28 pt-16 sm:px-8 lg:px-12 lg:pt-[4.5rem]">
       <audio ref={audioRef} preload="none" />
 
-      <div className="flex items-end justify-between gap-6">
-        <motion.h1
-          initial={prefersReducedMotion ? false : "hidden"}
-          animate="visible"
-          variants={fadeUp}
+      <div ref={headingRef}>
+        <ManifestoHeading
+          id="music-heading"
+          text="Music"
+          active={headingActive}
           className="font-display text-5xl font-extrabold tracking-tight text-fg sm:text-6xl"
-        >
-          Music
-        </motion.h1>
-        <HeaderWaveform tempo={active?.tempo} playing={isPlayingActive} />
+        />
       </div>
 
       <div
         role="group"
         aria-label="Filter beats by category"
-        className="mt-9 flex flex-wrap gap-1"
+        className="mt-9 flex flex-wrap gap-x-5 gap-y-2"
       >
         {FILTERS.map((category) => {
           const isActive = filter === category;
@@ -268,203 +248,54 @@ export default function MusicPage() {
               type="button"
               aria-pressed={isActive}
               onClick={() => setFilter(category)}
-              className={`relative px-3 py-1.5 font-sans text-sm capitalize transition-colors duration-150 ${
+              className={`relative pb-1.5 font-sans text-sm capitalize transition-colors duration-150 ${
                 isActive ? "text-fg" : "text-dim hover:text-fg"
               }`}
             >
               {category}
-              {isActive && !prefersReducedMotion && (
-                <motion.span
-                  layoutId="music-filter-indicator"
-                  className="absolute inset-x-3 bottom-0 h-px bg-accent"
-                  transition={{ duration: 0.2, ease: EASE_OUT }}
-                />
-              )}
+              <motion.span
+                aria-hidden="true"
+                className="absolute inset-x-0 -bottom-px h-px origin-left bg-accent"
+                initial={false}
+                animate={{ scaleX: isActive ? 1 : 0 }}
+                transition={{
+                  duration: prefersReducedMotion ? 0 : beatTime(0.35),
+                  ease: EASE_OUT,
+                }}
+              />
             </button>
           );
         })}
       </div>
 
-      <div className="mt-7 border-t border-border">
-        <AnimatePresence mode="popLayout" initial={false}>
-          {filtered.map(({ beat, index }) => {
-            const isActive = activeIndex === index;
-            const isPlaybackRow = isActive && isPlaybackActive;
-            const isPlayingRow = isActive && isPlayingActive;
-            return (
-              <motion.button
-                key={beat.name}
-                type="button"
-                layout={!prefersReducedMotion}
-                initial={prefersReducedMotion ? false : { opacity: 0, y: 8 }}
-                animate={{ opacity: 1, x: isActive ? 8 : 0, y: 0, scale: isActive ? 1.008 : 1 }}
-                exit={{ opacity: 0, x: -8, y: -6 }}
-                transition={
-                  prefersReducedMotion
-                    ? { duration: 0 }
-                    : { type: "spring", stiffness: 360, damping: 30, mass: 0.55 }
-                }
-                onClick={() => toggleTrack(index)}
-                aria-pressed={isActive}
-                aria-label={`${isPlaybackRow ? "Pause" : "Play"} ${beat.name}, ${beat.category}, ${beat.tempo} BPM`}
-                className={`flex w-full items-center gap-4 border-b border-border px-2 py-3 text-left transition-colors duration-150 ${
-                  isActive ? "" : "hover:bg-white/[0.02]"
-                }`}
-                style={{
-                  borderLeft: isActive
-                    ? "2px solid var(--accent)"
-                    : "2px solid transparent",
-                }}
-              >
-                <span className="flex w-5 shrink-0 items-center justify-center">
-                  {isPlayingRow ? (
-                    <BeatBars bars={bars} />
-                  ) : (
-                    <Play
-                      size={12}
-                      strokeWidth={1.75}
-                      className={isActive ? "text-accent" : "text-dim2"}
-                    />
-                  )}
-                </span>
-
-                <span className="min-w-0 flex-1">
-                  <span
-                    className={`block truncate font-sans transition-[font-size,color] duration-150 ${
-                      isActive
-                        ? "text-[1.02rem] font-semibold text-fg"
-                        : "text-[0.9rem] font-medium text-dim"
-                    }`}
-                  >
-                    {beat.name}
-                  </span>
-                  {beat.description && (
-                    <span className="block truncate font-sans text-sm text-dim">
-                      {beat.description}
-                    </span>
-                  )}
-                </span>
-
-                <span className="hidden shrink-0 items-center gap-3 sm:flex">
-                  <span
-                    className="flex items-center gap-1.5 font-sans text-sm capitalize"
-                    style={{ color: CATEGORY_COLOR[beat.category] }}
-                  >
-                    <span
-                      className="h-1.5 w-1.5 rounded-full"
-                      style={{ background: CATEGORY_COLOR[beat.category] }}
-                      aria-hidden="true"
-                    />
-                    {beat.category}
-                  </span>
-                  <span className="text-sm tabular-nums text-dim2">
-                    {beat.tempo}
-                  </span>
-                </span>
-              </motion.button>
-            );
-          })}
-        </AnimatePresence>
+      <div className="mt-7">
+        <DrawnRule />
+        {filtered.map(({ beat, index }, position) => (
+          <TrackRow
+            key={beat.name}
+            beat={beat}
+            isActive={activeIndex === index}
+            isPlayingRow={activeIndex === index && playbackState === "playing"}
+            duration={duration}
+            bars={bars}
+            onToggle={() => toggleTrack(index)}
+            delay={Math.min(position, 10) * beatTime(0.05)}
+          />
+        ))}
       </div>
 
-      <AnimatePresence>
-        {active && (
-          <motion.div
-            initial={prefersReducedMotion ? false : { y: 80, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={prefersReducedMotion ? undefined : { y: 80, opacity: 0 }}
-            transition={{ duration: prefersReducedMotion ? 0 : 0.24, ease: EASE_OUT }}
-            className="fixed bottom-0 left-0 right-0 z-40 border-t border-border bg-bg/95 px-5 py-3.5 backdrop-blur-xl sm:px-8 lg:left-[52px]"
-          >
-            <div className="flex items-center gap-5 sm:gap-8">
-              <div className="min-w-0 flex-1">
-                <div className="mb-0.5 flex items-center gap-1.5">
-                  <span className="h-2.5 w-[2px] bg-accent" aria-hidden="true" />
-                  <span className="font-sans text-sm font-semibold uppercase tracking-widest text-dim2">
-                    Now Playing
-                  </span>
-                </div>
-                <div className="truncate font-sans text-sm font-medium text-fg">
-                  {active.name}
-                </div>
-                <div
-                  className="truncate font-sans text-sm capitalize"
-                  style={{
-                    color: error ? undefined : CATEGORY_COLOR[active.category],
-                  }}
-                  role={error ? "alert" : "status"}
-                  aria-live="polite"
-                >
-                  {error ? (
-                    <span className="text-dim">{error}</span>
-                  ) : (
-                    `${active.category} · ${active.tempo} BPM`
-                  )}
-                </div>
-              </div>
-
-              <div className="flex shrink-0 items-center gap-3.5">
-                <button
-                  type="button"
-                  onClick={() => skip(-1)}
-                  disabled={activeIndex === 0}
-                  aria-label="Previous track"
-                  className="text-dim transition-colors duration-150 hover:text-fg disabled:pointer-events-none disabled:opacity-30"
-                >
-                  <SkipBack size={14} strokeWidth={1.75} />
-                </button>
-                <motion.button
-                  type="button"
-                  onClick={() => activeIndex !== null && toggleTrack(activeIndex)}
-                  aria-label={isPlaybackActive ? "Pause" : "Play"}
-                  whileTap={prefersReducedMotion ? undefined : { scale: 0.9 }}
-                  className="flex h-[30px] w-[30px] items-center justify-center rounded bg-accent text-white"
-                >
-                  {isPlaybackActive ? (
-                    <Pause size={12} strokeWidth={1.75} />
-                  ) : (
-                    <Play size={12} strokeWidth={1.75} />
-                  )}
-                </motion.button>
-                <button
-                  type="button"
-                  onClick={() => skip(1)}
-                  disabled={activeIndex === beats.length - 1}
-                  aria-label="Next track"
-                  className="text-dim transition-colors duration-150 hover:text-fg disabled:pointer-events-none disabled:opacity-30"
-                >
-                  <SkipForward size={14} strokeWidth={1.75} />
-                </button>
-              </div>
-            </div>
-
-            <div className="mt-3 flex items-center gap-2">
-              <span className="w-11 shrink-0 text-right text-sm tabular-nums text-dim2">
-                {duration > 0 ? formatTime(currentTime) : "--:--"}
-              </span>
-              <input
-                type="range"
-                aria-label={`Seek through ${active.name}`}
-                aria-valuetext={
-                  duration > 0
-                    ? `${formatTime(currentTime)} of ${formatTime(duration)}`
-                    : "Duration unavailable"
-                }
-                min={0}
-                max={duration || 0}
-                step={0.01}
-                value={Math.min(currentTime, duration || 0)}
-                onChange={handleScrub}
-                disabled={!duration}
-                className="h-1 w-full flex-1 cursor-pointer appearance-none rounded-full bg-border accent-accent disabled:cursor-default disabled:opacity-40"
-              />
-              <span className="w-11 shrink-0 text-sm tabular-nums text-dim2">
-                {duration > 0 ? formatTime(duration) : "--:--"}
-              </span>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <PlayerBar
+        active={active}
+        error={error}
+        playbackState={playbackState}
+        currentTime={currentTime}
+        duration={duration}
+        activeIndex={activeIndex}
+        totalTracks={beats.length}
+        onToggle={() => activeIndex !== null && toggleTrack(activeIndex)}
+        onSkip={skip}
+        onScrub={handleScrub}
+      />
     </div>
   );
 }

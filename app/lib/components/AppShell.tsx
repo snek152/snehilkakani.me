@@ -19,6 +19,7 @@ import { AnimatePresence } from "motion/react";
 import CursorGlow from "./CursorGlow";
 import { CursorFieldProvider } from "./shared/CursorField";
 import FilmGrain from "./shared/FilmGrain";
+import WaveField from "./shared/WaveField";
 import LoadingScreen from "./LoadingScreen";
 import { MotionPreferenceProvider } from "./shared/MotionPreference";
 import ScrollProgressRail from "./shared/ScrollProgressRail";
@@ -83,6 +84,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     <MotionPreferenceProvider>
       <CursorFieldProvider>
         <div className="relative">
+          <WaveField />
           <FilmGrain />
           <CursorGlow />
           <ScrollProgressRail />
@@ -92,7 +94,12 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           <Sidebar />
           <IntroReadyContext.Provider value={introReady}>
             <NavDirectionContext.Provider value={direction}>
-              <div className="flex min-h-[100dvh] flex-col lg:pl-[52px]">
+              {/* `relative z-[1]` sits on the whole column, not just the
+                * content div: `WaveField` and `FilmGrain` are fixed at
+                * `z-0`, and a positioned element paints above unpositioned
+                * content, so with only the inner div lifted the Footer
+                * below it was being painted over by both. */}
+              <div className="relative z-[1] flex min-h-[100dvh] flex-col lg:pl-[52px]">
                 <div className="relative z-[1] flex-1">{children}</div>
                 <Footer />
               </div>

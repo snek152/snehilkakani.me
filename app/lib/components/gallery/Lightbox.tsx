@@ -1,14 +1,20 @@
 "use client";
 
-import { useEffect, useId, useRef } from "react";
+import { useEffect, useId, useRef, useState } from "react";
+import type { TouchEvent as ReactTouchEvent } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
-import { EASE_OUT, EASE_INOUT } from "@/app/lib/motion";
+import { EASE_OUT } from "@/app/lib/motion";
+import { beats } from "@/app/lib/tempo";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import { getPhotoDims } from "./photo-dims";
 import ViewfinderFrame from "@/app/lib/components/shared/ViewfinderFrame";
 import type { Photo } from "./GalleryCell";
+
+/** Minimum horizontal drag, in px, before a touch gesture counts as a
+ * swipe-to-navigate rather than a tap or a scroll wobble. */
+const SWIPE_THRESHOLD = 50;
 
 export default function Lightbox({
   photos,
@@ -25,10 +31,40 @@ export default function Lightbox({
 }) {
   const reduceMotion = useMotionPreference();
   const closeRef = useRef<HTMLButtonElement | null>(null);
+  const touchStartX = useRef<number | null>(null);
   const titleId = useId();
   const descId = useId();
   const open = index !== null;
   const photo = open ? photos[index] : null;
+
+  // Manual dual-layer crossfade instead of a nested `AnimatePresence`:
+  // the previous frame stays fully opaque underneath (no exit
+  // animation to track) while the next frame mounts fresh and fades
+  // in over it, then the old layer is dropped. A nested
+  // `AnimatePresence` here previously stalled the *outer* dialog's own
+  // exit — its `onExitComplete` never fired — so this sidesteps that
+  // entirely rather than fighting it.
+  const [layers, setLayers] = useState<{ key: string; photo: Photo }[]>([]);
+
+  useEffect(() => {
+    if (!photo) {
+      setLayers([]);
+      return;
+    }
+    setLayers((prev) => {
+      if (prev.length && prev[prev.length - 1].photo.image === photo.image) return prev;
+      const next = [...prev, { key: `${photo.image}-${Date.now()}`, photo }];
+      return next.length > 2 ? next.slice(next.length - 2) : next;
+    });
+  }, [photo]);
+
+  useEffect(() => {
+    if (layers.length < 2) return;
+    const timer = setTimeout(() => {
+      setLayers((prev) => (prev.length > 1 ? prev.slice(prev.length - 1) : prev));
+    }, beats(0.35) * 1000 + 50);
+    return () => clearTimeout(timer);
+  }, [layers]);
 
   // Lock body scroll while open; restore on close/unmount.
   useEffect(() => {
@@ -67,6 +103,31 @@ export default function Lightbox({
     return () => window.removeEventListener("keydown", handleKey);
   }, [open, index, photos.length, onClose, onNavigate]);
 
+  // Preload both neighbours so ArrowLeft/ArrowRight (and a swipe) never
+  // wait on a network fetch — only the crossfade transition is visible.
+  useEffect(() => {
+    if (!open || index === null) return;
+    [index - 1, index + 1].forEach((i) => {
+      const neighbour = photos[(i + photos.length) % photos.length];
+      if (!neighbour) return;
+      const img = new window.Image();
+      img.src = neighbour.image;
+    });
+  }, [open, index, photos]);
+
+  const handleTouchStart = (e: ReactTouchEvent) => {
+    touchStartX.current = e.touches[0]?.clientX ?? null;
+  };
+  const handleTouchEnd = (e: ReactTouchEvent) => {
+    if (touchStartX.current === null || index === null) return;
+    const endX = e.changedTouches[0]?.clientX ?? touchStartX.current;
+    const dx = endX - touchStartX.current;
+    touchStartX.current = null;
+    if (Math.abs(dx) < SWIPE_THRESHOLD) return;
+    if (dx < 0) onNavigate((index + 1) % photos.length);
+    else onNavigate((index - 1 + photos.length) % photos.length);
+  };
+
   return (
     <AnimatePresence>
       {open && photo && (
@@ -74,8 +135,10 @@ export default function Lightbox({
           initial={reduceMotion ? undefined : { opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={reduceMotion ? undefined : { opacity: 0 }}
-          transition={{ duration: 0.16 }}
+          transition={{ duration: beats(0.4) }}
           onClick={onClose}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
           className="fixed inset-0 z-100 flex flex-col items-center justify-center p-8"
           style={{ background: "rgba(4,4,4,0.97)" }}
           role="dialog"
@@ -83,76 +146,65 @@ export default function Lightbox({
           aria-labelledby={titleId}
           aria-describedby={descId}
         >
-          <motion.div
-            initial={reduceMotion ? { opacity: 0 } : undefined}
-            animate={{ opacity: 1 }}
-            exit={reduceMotion ? { opacity: 0 } : undefined}
-            transition={reduceMotion ? { duration: 0.16 } : undefined}
-            onClick={(e) => e.stopPropagation()}
-            className="relative flex max-w-[88vw] flex-col"
-          >
-            <motion.div
-              layoutId={reduceMotion ? undefined : photo.image}
-              transition={{ duration: 0.5, ease: EASE_INOUT }}
+          <div onClick={(e) => e.stopPropagation()} className="relative flex flex-col items-center">
+            {/* Fixed shell: a constant box, sized from the viewport and
+              * never from the photo. Navigating between a portrait and a
+              * landscape frame crossfades the image inside this box
+              * instead of resizing the box around the image. */}
+            <div
+              data-testid="lightbox-frame"
+              className="relative flex items-center justify-center"
+              style={{ width: "min(88vw, 1100px)", height: "min(76vh, 780px)" }}
             >
-              <motion.div
-                initial={reduceMotion ? undefined : { opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={reduceMotion ? undefined : { opacity: 0 }}
-                transition={{ duration: 0.18, ease: EASE_OUT, delay: reduceMotion ? 0 : 0.15 }}
-              >
-                <ViewfinderFrame
-                  captionLeft={`f/${photo.aperture} · ${photo.shutter}s · ISO ${photo.iso}`}
-                  captionRight={`${String(index! + 1).padStart(2, "0")}/${photos.length}`}
+              {layers.map((layer, i) => (
+                <motion.div
+                  key={layer.key}
+                  initial={reduceMotion ? undefined : { opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: beats(0.35), ease: EASE_OUT }}
+                  className="absolute inset-0 flex items-center justify-center"
+                  style={{ zIndex: i }}
                 >
-                  <Image
-                    src={photo.image}
-                    alt={photo.alt}
-                    width={getPhotoDims(photo.image).w}
-                    height={getPhotoDims(photo.image).h}
-                    sizes="88vw"
-                    priority
-                    className="block max-h-[80vh] w-auto max-w-[88vw] object-contain"
-                  />
-                </ViewfinderFrame>
-              </motion.div>
-            </motion.div>
-            <motion.div
-              initial={reduceMotion ? undefined : { opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={reduceMotion ? undefined : { opacity: 0 }}
-              transition={{ duration: 0.18, ease: EASE_OUT, delay: reduceMotion ? 0 : 0.15 }}
-              className="mt-3"
-            >
+                  <ViewfinderFrame
+                    captionLeft={`f/${layer.photo.aperture} · ${layer.photo.shutter}s · ISO ${layer.photo.iso}`}
+                    captionRight={`${String(photos.indexOf(layer.photo) + 1).padStart(2, "0")}/${photos.length}`}
+                    className="max-h-[76vh] max-w-[88vw]"
+                  >
+                    <Image
+                      src={layer.photo.image}
+                      alt={layer.photo.alt}
+                      width={getPhotoDims(layer.photo.image).w}
+                      height={getPhotoDims(layer.photo.image).h}
+                      sizes="88vw"
+                      priority
+                      className="block max-h-[76vh] w-auto max-w-[88vw] object-contain"
+                    />
+                  </ViewfinderFrame>
+                </motion.div>
+              ))}
+            </div>
+
+            <div className="mt-3">
               <span id={titleId} className="text-sm text-dim">
                 {photo.alt}
               </span>
               <span id={descId} className="sr-only">
                 f/{photo.aperture} · {photo.shutter}s · ISO {photo.iso}
               </span>
-            </motion.div>
+            </div>
 
-            <motion.button
+            <button
               ref={closeRef}
               type="button"
               onClick={onClose}
               aria-label="Close lightbox"
-              initial={reduceMotion ? undefined : { opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={reduceMotion ? undefined : { opacity: 0 }}
-              transition={{ duration: 0.18, ease: EASE_OUT, delay: reduceMotion ? 0 : 0.15 }}
               className="absolute -top-9 right-0 border-0 bg-transparent p-0 text-dim transition-colors duration-150 hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             >
               <X size={16} strokeWidth={1.75} />
-            </motion.button>
+            </button>
 
             {photos.length > 1 && (
-              <motion.div
-                initial={reduceMotion ? undefined : { opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={reduceMotion ? undefined : { opacity: 0 }}
-                transition={{ duration: 0.18, ease: EASE_OUT, delay: reduceMotion ? 0 : 0.15 }}
-              >
+              <>
                 <button
                   type="button"
                   onClick={() => onNavigate((index! - 1 + photos.length) % photos.length)}
@@ -169,9 +221,9 @@ export default function Lightbox({
                 >
                   <ChevronRight size={22} strokeWidth={1.5} />
                 </button>
-              </motion.div>
+              </>
             )}
-          </motion.div>
+          </div>
         </motion.div>
       )}
     </AnimatePresence>
