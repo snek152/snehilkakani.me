@@ -167,7 +167,6 @@ export default function Lightbox({
                 >
                   <ViewfinderFrame
                     captionLeft={`f/${layer.photo.aperture} · ${layer.photo.shutter}s · ISO ${layer.photo.iso}`}
-                    captionRight={`${String(photos.indexOf(layer.photo) + 1).padStart(2, "0")}/${photos.length}`}
                     className="max-h-[76vh] max-w-[88vw]"
                   >
                     <Image

@@ -21,11 +21,11 @@ const CURVE_COUNT = 7;
 /** Peak amplitude of a curve, as a fraction of viewport height. */
 const AMPLITUDE_RATIO = 0.09;
 
-/** Drift speed — radians of phase advanced per millisecond. Deliberately
- * glacial: tidal, not ambient-screensaver. A full perceptible change in
- * the figure takes on the order of tens of seconds, and no strand ever
- * visibly "travels" across the screen — only the crossing nodes creep. */
-const DRIFT_SPEED = 0.000006;
+/** Drift speed — radians of phase advanced per millisecond. Slow enough
+ * that nothing ever appears to scroll past, fast enough that the figure
+ * is visibly alive if you rest your eyes on it: the strands should read
+ * as drifting, not as a still image. */
+const DRIFT_SPEED = 0.00005;
 /** Base stroke alpha for the (mostly white) filaments. */
 const BASE_ALPHA_MIN = 0.04;
 const BASE_ALPHA_MAX = 0.1;
@@ -102,13 +102,21 @@ export default function WaveField() {
     let dpr = 1;
 
     const resize = () => {
-      width = window.innerWidth;
-      height = window.innerHeight;
+      // A bare `<canvas>` with no explicit size is a replaced element
+      // with an intrinsic 300x150 box — setting `fixed inset-0` alone
+      // doesn't stretch it. Force it to fill its fixed box via CSS
+      // percentages first, then measure that box (never
+      // `window.innerWidth`, which includes the scrollbar gutter and
+      // would make the canvas wider than the page on any machine
+      // showing a scrollbar).
+      canvas.style.width = "100%";
+      canvas.style.height = "100%";
+      const rect = canvas.getBoundingClientRect();
+      width = rect.width || document.documentElement.clientWidth;
+      height = rect.height || document.documentElement.clientHeight;
       dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR);
       canvas.width = Math.round(width * dpr);
       canvas.height = Math.round(height * dpr);
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
 

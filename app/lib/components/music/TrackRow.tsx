@@ -34,7 +34,7 @@ export default function TrackRow({
   beat: Beat;
   isActive: boolean;
   isPlayingRow: boolean;
-  /** Known duration of the currently loaded track — only meaningful when `isActive`. */
+  /** Track length in seconds, baked from the audio file at authoring time. */
   duration: number;
   bars: MotionValue<number>[];
   onToggle: () => void;
@@ -74,10 +74,14 @@ export default function TrackRow({
           </span>
           <span className="min-w-0 flex-1">
             <span
-              className={`block truncate font-sans transition-[font-size,color] duration-150 ${
+              // Constant type size. Growing the title on activation
+              // reflowed the row and drew the eye to a size change rather
+              // than to what is playing; weight and colour say it without
+              // moving anything.
+              className={`block truncate font-sans text-[0.95rem] transition-colors duration-150 ${
                 isActive
-                  ? "text-[1.02rem] font-semibold text-fg"
-                  : "text-[0.9rem] font-medium text-dim"
+                  ? "font-semibold text-fg"
+                  : "font-medium text-dim"
               }`}
             >
               {beat.name}
@@ -96,7 +100,7 @@ export default function TrackRow({
 
         <span className="hidden items-center justify-between font-sans text-sm text-dim2 lg:flex">
           <span className="tabular-nums">{beat.tempo} BPM</span>
-          <span className="tabular-nums">{isActive ? formatTime(duration) : "--:--"}</span>
+          <span className="tabular-nums">{formatTime(duration)}</span>
         </span>
       </button>
 

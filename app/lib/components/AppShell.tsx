@@ -47,6 +47,22 @@ export function useNavDirection() {
   return useContext(NavDirectionContext);
 }
 
+/**
+ * useSetMusicPlayerActive()
+ * -------------------------
+ * Lets a page (currently only /music) tell the shell that a fixed,
+ * 92px-tall transport bar is now docked to the viewport bottom. The shell
+ * reserves that much space below Footer while a track is active, so the
+ * fixed bar never ends up painted over Footer's links at max scroll —
+ * solved once here instead of every page that might grow a fixed footer
+ * bar needing its own magic padding.
+ */
+const SetMusicPlayerActiveContext = createContext<(active: boolean) => void>(() => {});
+
+export function useSetMusicPlayerActive() {
+  return useContext(SetMusicPlayerActiveContext);
+}
+
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const prevIndexRef = useRef<number | null>(null);
@@ -80,6 +96,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     setIntroReady(true);
   }, []);
 
+  const [musicPlayerActive, setMusicPlayerActive] = useState(false);
+
   return (
     <MotionPreferenceProvider>
       <CursorFieldProvider>
@@ -94,15 +112,21 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           <Sidebar />
           <IntroReadyContext.Provider value={introReady}>
             <NavDirectionContext.Provider value={direction}>
-              {/* `relative z-[1]` sits on the whole column, not just the
-                * content div: `WaveField` and `FilmGrain` are fixed at
-                * `z-0`, and a positioned element paints above unpositioned
-                * content, so with only the inner div lifted the Footer
-                * below it was being painted over by both. */}
-              <div className="relative z-[1] flex min-h-[100dvh] flex-col lg:pl-[52px]">
-                <div className="relative z-[1] flex-1">{children}</div>
-                <Footer />
-              </div>
+              <SetMusicPlayerActiveContext.Provider value={setMusicPlayerActive}>
+                {/* `relative z-[1]` sits on the whole column, not just the
+                  * content div: `WaveField` and `FilmGrain` are fixed at
+                  * `z-0`, and a positioned element paints above unpositioned
+                  * content, so with only the inner div lifted the Footer
+                  * below it was being painted over by both. */}
+                <div className="relative z-[1] flex min-h-[100dvh] flex-col lg:pl-[52px]">
+                  <div className="relative z-[1] flex-1">{children}</div>
+                  <Footer />
+                  {/* Reserves the fixed 92px music transport's footprint
+                    * below Footer so its links can scroll clear of the
+                    * bar instead of ending up permanently under it. */}
+                  {musicPlayerActive && <div aria-hidden="true" style={{ height: 92 }} />}
+                </div>
+              </SetMusicPlayerActiveContext.Provider>
             </NavDirectionContext.Provider>
           </IntroReadyContext.Provider>
         </div>

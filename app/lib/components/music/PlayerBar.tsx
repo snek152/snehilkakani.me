@@ -27,6 +27,7 @@ export default function PlayerBar({
   playbackState,
   currentTime,
   duration,
+  displayDuration,
   activeIndex,
   totalTracks,
   onToggle,
@@ -38,6 +39,11 @@ export default function PlayerBar({
   playbackState: PlaybackState;
   currentTime: number;
   duration: number;
+  /** Baked fallback length (from BEAT_DURATIONS) shown in the time labels
+   * before the audio element's real `duration` is known — the seek range
+   * below still uses the real `duration` for its bounds, since that's the
+   * only value the browser can actually scrub against. */
+  displayDuration: number;
   activeIndex: number | null;
   totalTracks: number;
   onToggle: () => void;
@@ -50,6 +56,7 @@ export default function PlayerBar({
   const pct = duration > 0 ? Math.min(100, (currentTime / duration) * 100) : 0;
   const beatSeconds = active ? 60 / active.tempo : 0;
   const pulseActive = isPlaying && !reduceMotion && beatSeconds > 0;
+  const knownDuration = displayDuration > 0;
 
   if (!active) return null;
 
@@ -64,7 +71,7 @@ export default function PlayerBar({
 
       <div className="flex items-center gap-3">
         <span className="w-9 shrink-0 text-right font-sans text-xs tabular-nums text-dim2">
-          {duration > 0 ? formatTime(currentTime) : "--:--"}
+          {knownDuration ? formatTime(currentTime) : "--:--"}
         </span>
 
         <div className="relative h-4 flex-1">
@@ -87,8 +94,8 @@ export default function PlayerBar({
             type="range"
             aria-label={`Seek through ${active.name}`}
             aria-valuetext={
-              duration > 0
-                ? `${formatTime(currentTime)} of ${formatTime(duration)}`
+              knownDuration
+                ? `${formatTime(currentTime)} of ${formatTime(displayDuration)}`
                 : "Duration unavailable"
             }
             min={0}
@@ -102,7 +109,7 @@ export default function PlayerBar({
         </div>
 
         <span className="w-9 shrink-0 font-sans text-xs tabular-nums text-dim2">
-          {duration > 0 ? formatTime(duration) : "--:--"}
+          {knownDuration ? formatTime(displayDuration) : "--:--"}
         </span>
       </div>
 

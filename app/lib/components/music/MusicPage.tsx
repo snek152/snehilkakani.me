@@ -3,9 +3,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, useInView } from "motion/react";
 import { beats, categories, type Beat } from "@/app/lib/data/beats";
+import { BEAT_DURATIONS } from "@/app/lib/data/beat-durations";
 import { EASE_OUT } from "@/app/lib/motion";
 import { beats as beatTime } from "@/app/lib/tempo";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
+import { useSetMusicPlayerActive } from "@/app/lib/components/AppShell";
 import ManifestoHeading from "@/app/lib/components/home/ManifestoHeading";
 import DrawnRule from "@/app/lib/components/shared/DrawnRule";
 import TrackRow from "./TrackRow";
@@ -18,6 +20,7 @@ const FILTERS: BeatFilter[] = ["all", ...categories];
 
 export default function MusicPage() {
   const prefersReducedMotion = useMotionPreference();
+  const setMusicPlayerActive = useSetMusicPlayerActive();
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const activeIndexRef = useRef<number | null>(null);
   const playbackRequestRef = useRef(0);
@@ -215,6 +218,12 @@ export default function MusicPage() {
   );
 
   const active = activeIndex !== null ? beats[activeIndex] : null;
+
+  useEffect(() => {
+    setMusicPlayerActive(active !== null);
+    return () => setMusicPlayerActive(false);
+  }, [active, setMusicPlayerActive]);
+
   const filtered =
     filter === "all"
       ? beats.map((beat, index) => ({ beat, index }))
@@ -276,7 +285,7 @@ export default function MusicPage() {
             beat={beat}
             isActive={activeIndex === index}
             isPlayingRow={activeIndex === index && playbackState === "playing"}
-            duration={duration}
+            duration={BEAT_DURATIONS[beat.file] ?? 0}
             bars={bars}
             onToggle={() => toggleTrack(index)}
             delay={Math.min(position, 10) * beatTime(0.05)}
@@ -290,6 +299,7 @@ export default function MusicPage() {
         playbackState={playbackState}
         currentTime={currentTime}
         duration={duration}
+        displayDuration={active ? BEAT_DURATIONS[active.file] ?? 0 : 0}
         activeIndex={activeIndex}
         totalTracks={beats.length}
         onToggle={() => activeIndex !== null && toggleTrack(activeIndex)}
