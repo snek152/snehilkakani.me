@@ -36,7 +36,7 @@ export default function WorkPage() {
           className="relative z-10 border-b border-border pb-6"
         >
           <h1 className="font-display text-5xl font-extrabold tracking-[-0.03em] text-fg sm:text-6xl">
-            Work
+            Builds
           </h1>
         </motion.header>
       </div>
