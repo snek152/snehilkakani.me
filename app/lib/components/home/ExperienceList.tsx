@@ -76,7 +76,19 @@ export default function ExperienceList({ experiences }: { experiences: Experienc
           <DrawnRule className="absolute inset-x-0 bottom-0 [li:last-child_&]:hidden" />
           {/* Dates in their own column: the point of a history is the
             * sequence, and a reader scanning for "when" shouldn't have to
-            * find it inside each card's prose. */}
+            * find it inside each card's prose.
+            *
+            * Tried pinning this while its entry is read, so the list
+            * would be something you can feel your place in. It doesn't
+            * work here and the measurements say why: these rows are
+            * ~280px in a ~900px viewport, so the whole entry is on screen
+            * at once and there is no place to lose. Pinned near the top
+            * edge it engages only as the entry leaves, after it has been
+            * read; pinned at a reading line it holds the date up to 136px
+            * below its own heading, which reads as a misalignment next to
+            * the neighbouring rows whose dates are still level with
+            * theirs. Worth revisiting if an entry ever runs longer than a
+            * screen. */}
           <motion.div variants={part} className="lg:pl-12 lg:pr-6">
             <p className="text-sm tabular-nums text-dim">{experience.period}</p>
             <p className="mt-1 text-sm text-dim2">{experience.location}</p>

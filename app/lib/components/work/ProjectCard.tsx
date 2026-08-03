@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import Image from "next/image";
-import { motion, useTransform } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import type { Project } from "@/app/lib/data/projects";
 import { EASE_OUT } from "@/app/lib/motion";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
@@ -28,6 +28,17 @@ export default function ProjectCard({ project }: { project: Project }) {
   const articleRef = useRef<HTMLElement>(null);
   const proximity = useProximity(articleRef, 320);
   const glowOpacity = useTransform(proximity, [0, 1], [0, 0.06]);
+  // Drift of the photograph inside its frame as the row travels the
+  // viewport. Kept well inside the 9% overhang above and below.
+  const { scrollYProgress } = useScroll({
+    target: articleRef,
+    offset: ["start end", "end start"],
+  });
+  const parallax = useTransform(
+    scrollYProgress,
+    [0, 1],
+    reduceMotion ? ["0%", "0%"] : ["-5%", "5%"],
+  );
   const [active, setActive] = useState(false);
   const year = projectYear(project.subtitle);
 
@@ -58,11 +69,20 @@ export default function ProjectCard({ project }: { project: Project }) {
         style={{ opacity: glowOpacity }}
       />
 
-      {/* The image is uncovered left-to-right by a shutter travelling the
-       * same direction as the rule above it, so the row reads as one
-       * gesture crossing the page rather than a rule and a photo each
-       * doing their own thing. A wipe, not a fade: it matches how the
-       * rules are drawn. */}
+      {/* The frame is *clipped* open left-to-right, travelling the same
+       * direction as the rule above it, so the row reads as one gesture
+       * crossing the page. A wipe, not a fade: it matches how the rules
+       * are drawn.
+       *
+       * This used to be a page-coloured panel sliding off the frame,
+       * which had two tells. It was opaque, so it masked the cursor
+       * field's glow and sat there as a flat black rectangle on a page
+       * that was subtly lit everywhere else. And being a separate
+       * composited layer over a transformed row, its edges could drift a
+       * pixel out of register during a fast scroll and show a sliver of
+       * the photograph above and below it. Clipping the frame itself
+       * removes the layer, so there is nothing to mask the glow with and
+       * nothing to misalign. */}
       <motion.div
         className="relative aspect-[16/10] overflow-hidden"
         initial={reduceMotion ? false : "hidden"}
@@ -70,11 +90,22 @@ export default function ProjectCard({ project }: { project: Project }) {
         // Same trigger point as the rules (see `DrawnRule`), so a row's line
         // and its photograph arrive together rather than a beat apart.
         viewport={{ once: true, margin: "100000px 0px -18% 0px" }}
+        variants={{
+          hidden: { clipPath: "inset(0 100% 0 0)" },
+          shown: {
+            clipPath: "inset(0 0% 0 0)",
+            transition: { duration: reduceMotion ? 0 : beats(1.4), ease: EASE_OUT },
+          },
+        }}
       >
-        {/* No hover scale. The accent rule below already says "this is
-         * live"; zooming the photograph as well moved the composition
-         * the reader was looking at to say the same thing twice. */}
-        <div className="absolute inset-0">
+        {/* Taller than the frame so it has somewhere to travel. The drift
+          * is small and scroll-linked — the photograph sits *into* the
+          * page rather than being pasted onto it — and the overhang is
+          * comfortably larger than the travel, so no edge can enter the
+          * frame. No hover scale: the accent rule already says the card
+          * is live, and moving the composition to repeat that was the
+          * noisier half. */}
+        <motion.div className="absolute -inset-y-[9%] inset-x-0" style={{ y: parallax }}>
           <Image
             src={project.image}
             alt={shortTitle(project.title)}
@@ -82,33 +113,13 @@ export default function ProjectCard({ project }: { project: Project }) {
             sizes="(min-width: 1024px) 57vw, 100vw"
             className="object-cover"
           />
-        </div>
+        </motion.div>
         <motion.span
           aria-hidden="true"
           className="absolute inset-x-0 bottom-0 h-0.5 origin-left bg-accent"
           animate={{ scaleX: active ? 1 : 0 }}
           transition={{ duration: reduceMotion ? 0 : 0.28, ease: EASE_OUT }}
         />
-        {/* The shutter itself: page-coloured, covering the frame, and
-         * retracting to the right.
-         *
-         * Not rendered at all under reduced motion. Its resting state is
-         * "covering" — an opaque block is what an un-animated shutter
-         * *is* — so leaving it in place for those readers would hide the
-         * photograph behind it rather than merely skipping an effect. */}
-        {!reduceMotion && (
-          <motion.span
-            aria-hidden="true"
-            className="absolute inset-0 origin-right bg-bg"
-            variants={{
-              hidden: { scaleX: 1 },
-              shown: {
-                scaleX: 0,
-                transition: { duration: beats(1.4), ease: EASE_OUT },
-              },
-            }}
-          />
-        )}
       </motion.div>
 
       <div className="flex flex-col lg:justify-center">
