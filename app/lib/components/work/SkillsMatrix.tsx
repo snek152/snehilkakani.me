@@ -1,6 +1,8 @@
 "use client";
 
 import { motion } from "motion/react";
+import { EASE_OUT } from "@/app/lib/motion";
+import { beats } from "@/app/lib/tempo";
 import { skillsList, skillTypes } from "@/app/lib/data/skills";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 
@@ -22,7 +24,9 @@ export default function SkillsMatrix() {
       initial={reduceMotion ? false : { opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "0px 0px -60px 0px" }}
-      transition={reduceMotion ? { duration: 0 } : { type: "spring", stiffness: 260, damping: 22 }}
+      // Same curve and grid as everything else on the page. This block
+      // used to spring, and was the last thing here that wobbled.
+      transition={{ duration: reduceMotion ? 0 : beats(0.75), ease: EASE_OUT }}
       className="mt-14 border-t border-border pt-10 lg:mt-16 lg:pt-12"
     >
       <div className="mb-8 flex flex-wrap items-end justify-between gap-3">
@@ -41,23 +45,18 @@ export default function SkillsMatrix() {
           return (
             <motion.div
               key={type}
-              initial={
-                reduceMotion
-                  ? false
-                  : { opacity: 0, y: 12, rotate: categoryIndex % 2 === 0 ? -0.7 : 0.7 }
-              }
-              whileInView={{ opacity: 1, y: 0, rotate: 0 }}
-              viewport={{ once: true }}
-              transition={
-                reduceMotion
-                  ? { duration: 0 }
-                  : {
-                      type: "spring",
-                      stiffness: 260,
-                      damping: 20,
-                      delay: categoryIndex * 0.08,
-                    }
-              }
+              // No alternating tilt: nothing else on either page rotates,
+              // and four cards each leaning a different way read as a
+              // stack of cards rather than as part of the same grid the
+              // rest of the layout is built on.
+              initial={reduceMotion ? false : { opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "0px 0px -18% 0px" }}
+              transition={{
+                duration: reduceMotion ? 0 : beats(0.7),
+                ease: EASE_OUT,
+                delay: reduceMotion ? 0 : categoryIndex * beats(0.14),
+              }}
               className="border-b border-r border-border p-5 sm:p-6"
             >
               <div className="mb-4 flex items-center gap-2">

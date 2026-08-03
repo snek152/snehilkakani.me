@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion } from "motion/react";
 import type { Project } from "@/app/lib/data/projects";
 import { EASE_OUT } from "@/app/lib/motion";
+import { beats } from "@/app/lib/tempo";
 import ViewfinderFrame from "@/app/lib/components/shared/ViewfinderFrame";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import { ProjectLinks, ProjectSkills } from "./ProjectMeta";
@@ -64,8 +65,13 @@ export default function FeaturedProject({ project }: { project: Project }) {
         /* Two photos, evenly split, inside a single frame: the corner
          * ticks and the accent rule belong to the pair, not to the left
          * half. The band carries one aspect ratio so both halves share a
-         * height, and `object-cover` takes the small crop that costs. */
-        <ViewfinderFrame className="overflow-hidden bg-card">
+         * height, and `object-cover` takes the small crop that costs.
+         *
+         * The corners strike in after the header grid above has finished
+         * arriving (its last line lands at ~2 beats), so the page's
+         * opening gesture resolves into this card rather than the two
+         * happening independently. */
+        <ViewfinderFrame className="overflow-hidden bg-card" enterDelay={beats(2)}>
           <div className="grid grid-cols-2" style={{ aspectRatio: "3" }}>
             <div className="relative overflow-hidden">{primaryImage}</div>
             <div className="relative overflow-hidden border-l border-border">
@@ -83,7 +89,10 @@ export default function FeaturedProject({ project }: { project: Project }) {
           {accentRule}
         </ViewfinderFrame>
       ) : (
-        <ViewfinderFrame className="min-h-[220px] overflow-hidden bg-card sm:min-h-[290px] lg:min-h-[360px]">
+        <ViewfinderFrame
+          className="min-h-[220px] overflow-hidden bg-card sm:min-h-[290px] lg:min-h-[360px]"
+          enterDelay={beats(2)}
+        >
           {primaryImage}
           {accentRule}
         </ViewfinderFrame>

@@ -56,7 +56,14 @@ export default function ProjectCard({ project }: { project: Project }) {
         if (!event.currentTarget.contains(event.relatedTarget))
           setActive(false);
       }}
-      className="group relative isolate grid gap-x-10 gap-y-5 py-10 first:pt-0 last:pb-0 lg:grid-cols-[minmax(0,57fr)_minmax(0,43fr)] lg:py-14 lg:last:pb-0"
+      // An even split with no column gap, so the photograph's right edge
+      // lands exactly on the page's centre grid stop - the same line Hero
+      // draws, the index divides at, and the featured band above splits
+      // on. At 57/43 that edge sat 77px past the line; with a gap it sat
+      // 20px short of it, because a gap centres the *gutter* on the line
+      // rather than the edge you can actually see. The gutter is inside
+      // the text column instead.
+      className="group relative isolate grid gap-y-5 py-10 first:pt-0 last:pb-0 lg:grid-cols-2 lg:gap-x-0 lg:py-14 lg:last:pb-0"
     >
       {/* Struck across as the row arrives — the same rule-draw the
        * Experience list uses, so the two pages read as one system. The
@@ -110,7 +117,7 @@ export default function ProjectCard({ project }: { project: Project }) {
             src={project.image}
             alt={shortTitle(project.title)}
             fill
-            sizes="(min-width: 1024px) 57vw, 100vw"
+            sizes="(min-width: 1024px) 50vw, 100vw"
             className="object-cover"
           />
         </motion.div>
@@ -122,7 +129,7 @@ export default function ProjectCard({ project }: { project: Project }) {
         />
       </motion.div>
 
-      <div className="flex flex-col lg:justify-center">
+      <div className="flex flex-col lg:justify-center lg:pl-10">
         {year && <p className="mb-3 text-sm tabular-nums text-dim2">{year}</p>}
         <h3 className="font-display text-[1.5rem] font-bold leading-tight tracking-[-0.02em] text-fg lg:text-[1.75rem]">
           {shortTitle(project.title)}

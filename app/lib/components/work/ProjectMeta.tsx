@@ -24,13 +24,13 @@ export function ProjectLinks({ project }: { project: Project }) {
   if (!project.link && !hasPublicRepository && !project.privateRepo) return null;
 
   return (
-    <div className="flex shrink-0 items-center gap-3">
+    <div className="flex shrink-0 items-center gap-3.5">
       {project.privateRepo && (
         <span
           className="inline-flex items-center gap-1.5 text-sm font-medium uppercase tracking-[0.04em] text-dim2"
           title="Source repository is private"
         >
-          <LockKeyhole size={12} strokeWidth={1.75} aria-hidden="true" />
+          <LockKeyhole size={14} strokeWidth={1.75} aria-hidden="true" />
           Private
         </span>
       )}
@@ -40,9 +40,9 @@ export function ProjectLinks({ project }: { project: Project }) {
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`View ${name} source code on GitHub`}
-          className="rounded-sm text-dim2 transition-colors duration-150 hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-bg"
+          className="rounded-sm text-dim2 transition-all duration-200 hover:translate-x-0.5 hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-bg"
         >
-          <Github size={15} strokeWidth={1.75} aria-hidden="true" />
+          <Github size={19} strokeWidth={1.6} aria-hidden="true" />
         </a>
       )}
       {project.link && (
@@ -51,9 +51,9 @@ export function ProjectLinks({ project }: { project: Project }) {
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`Open the ${name} project link`}
-          className="rounded-sm text-dim2 transition-colors duration-150 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-bg"
+          className="rounded-sm text-dim2 transition-all duration-200 hover:-translate-y-0.5 hover:translate-x-0.5 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-bg"
         >
-          <ArrowUpRight size={15} strokeWidth={1.75} aria-hidden="true" />
+          <ArrowUpRight size={19} strokeWidth={1.6} aria-hidden="true" />
         </a>
       )}
     </div>
