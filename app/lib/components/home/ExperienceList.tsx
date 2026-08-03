@@ -5,7 +5,7 @@ import type { Experience } from "@/app/lib/data/experience";
 import { EASE_OUT } from "@/app/lib/motion";
 import { beats } from "@/app/lib/tempo";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
-import { StruckRule } from "@/app/lib/components/shared/DrawnRule";
+import DrawnRule from "@/app/lib/components/shared/DrawnRule";
 
 /**
  * The experience history, full width, in ordinary document flow.
@@ -51,7 +51,7 @@ export default function ExperienceList({ experiences }: { experiences: Experienc
     // near it by coincidence. `gap-x` is deliberately zero: a gap would
     // shrink the columns and push that boundary off the stop.
     <ol className="relative -mx-6 sm:-mx-8 lg:-mx-12">
-      <StruckRule className="absolute inset-x-0 top-0" />
+      <DrawnRule className="absolute inset-x-0 top-0" />
       {experiences.map((experience) => (
         <motion.li
           key={experience.company + experience.title}
@@ -67,13 +67,13 @@ export default function ExperienceList({ experiences }: { experiences: Experienc
           variants={row}
           className="group relative grid gap-y-4 px-6 py-8 sm:px-8 lg:grid-cols-4 lg:gap-x-0 lg:px-0 lg:py-10"
         >
-          {/* Struck across as the row arrives: the line itself comes in
-            * bright and settles back, so the layout is what moves.
+          {/* Drawn across as the row arrives, so the layout itself is
+            * what moves.
             *
             * The final row skips its rule — the footer's own top border
             * closes the list a few dozen pixels below, and the two
             * together read as a doubled border. */}
-          <StruckRule className="absolute inset-x-0 bottom-0 [li:last-child_&]:hidden" />
+          <DrawnRule className="absolute inset-x-0 bottom-0 [li:last-child_&]:hidden" />
           {/* Dates in their own column: the point of a history is the
             * sequence, and a reader scanning for "when" shouldn't have to
             * find it inside each card's prose. */}

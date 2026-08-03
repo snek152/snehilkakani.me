@@ -45,12 +45,9 @@ export default function WorkPage() {
 
       <section aria-label="More projects" aria-labelledby="studies-heading">
         <div ref={studiesRef} className="mb-10 border-b border-border pb-5">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-dim2">
-            Selected studies
-          </p>
           <ManifestoHeading
             id="studies-heading"
-            text="More work, in sequence."
+            text="B-sides"
             active={studiesActive}
             className="font-display text-4xl font-extrabold tracking-[-0.03em] text-fg"
           />

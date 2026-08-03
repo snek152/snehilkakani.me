@@ -65,9 +65,7 @@ export default function SkillsMatrix() {
                 <h3 className="text-sm font-semibold uppercase tracking-[0.04em] text-fg">
                   {CATEGORY_LABELS[type]}
                 </h3>
-                <span className="ml-auto text-sm tabular-nums text-dim2">
-                  {String(skills.length).padStart(2, "0")}
-                </span>
+
               </div>
 
               <ul>

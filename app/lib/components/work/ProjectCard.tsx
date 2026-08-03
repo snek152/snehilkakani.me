@@ -64,10 +64,12 @@ export default function ProjectCard({ project }: { project: Project }) {
        * doing their own thing. A wipe, not a fade: it matches how the
        * rules are drawn. */}
       <motion.div
-        className="relative aspect-[16/10] overflow-hidden bg-card"
+        className="relative aspect-[16/10] overflow-hidden"
         initial={reduceMotion ? false : "hidden"}
         whileInView="shown"
-        viewport={{ once: true, margin: "100000px 0px -10% 0px" }}
+        // Same trigger point as the rules (see `DrawnRule`), so a row's line
+        // and its photograph arrive together rather than a beat apart.
+        viewport={{ once: true, margin: "100000px 0px -18% 0px" }}
       >
         {/* No hover scale. The accent rule below already says "this is
          * live"; zooming the photograph as well moved the composition
@@ -97,7 +99,7 @@ export default function ProjectCard({ project }: { project: Project }) {
         {!reduceMotion && (
           <motion.span
             aria-hidden="true"
-            className="absolute inset-0 origin-right bg-card"
+            className="absolute inset-0 origin-right bg-bg"
             variants={{
               hidden: { scaleX: 1 },
               shown: {

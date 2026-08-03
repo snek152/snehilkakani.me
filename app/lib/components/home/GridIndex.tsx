@@ -8,10 +8,10 @@ import { navItems, type NavItem } from "@/app/lib/nav";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 
 const BLURBS: Record<string, string> = {
-  "/projects": "Selected builds and products",
+  "/builds": "Selected projects and tools",
   "/music": "Beats and production",
-  "/gallery": "Photography portfolio",
-  "/contact": "Get in touch",
+  "/lens": "Photography portfolio",
+  "/reach": "Get in touch",
 };
 
 const items = navItems.filter((item) => item.href in BLURBS);
@@ -39,9 +39,17 @@ const FALL = 0.14;
  * monospace, doing no work) and the separate index panel that used to sit
  * at the bottom of the page.
  */
-export default function GridIndex({ progress }: { progress: MotionValue<number> }) {
+export default function GridIndex({
+  progress,
+}: {
+  progress: MotionValue<number>;
+}) {
   const reduceMotion = useMotionPreference();
-  const ruleScale = useTransform(progress, [0.12, 0.6], reduceMotion ? [1, 1] : [0, 1]);
+  const ruleScale = useTransform(
+    progress,
+    [0.12, 0.6],
+    reduceMotion ? [1, 1] : [0, 1],
+  );
 
   return (
     <nav
@@ -89,7 +97,11 @@ function Cell({
   // The divider is Hero's line arriving: it grows from the rule upward as
   // that line finishes retracting above. Scroll-linked is right here —
   // it only ever travels one way and ends where it stays.
-  const divider = useTransform(progress, [landing - FALL, landing], reduceMotion ? [1, 1] : [0, 1]);
+  const divider = useTransform(
+    progress,
+    [landing - FALL, landing],
+    reduceMotion ? [1, 1] : [0, 1],
+  );
   // Accent on impact, settling back to a hairline.
   const flare = useTransform(
     progress,
@@ -109,14 +121,18 @@ function Cell({
   return (
     <>
       {/* The cell's own right-hand divider, at the matching grid stop.
-        * Carried at half strength: below the border these are a
-        * continuation of Hero's grid rather than the grid itself, and at
-        * full weight they competed with the labels sitting between
-        * them. */}
+       * Carried at half strength: below the border these are a
+       * continuation of Hero's grid rather than the grid itself, and at
+       * full weight they competed with the labels sitting between
+       * them. */}
       <motion.span
         aria-hidden="true"
         className="pointer-events-none absolute bottom-0 top-0 w-px origin-bottom bg-border/50"
-        style={{ left: `${stop}%`, marginLeft: stop === 100 ? "-1px" : undefined, scaleY: divider }}
+        style={{
+          left: `${stop}%`,
+          marginLeft: stop === 100 ? "-1px" : undefined,
+          scaleY: divider,
+        }}
       />
       <motion.span
         aria-hidden="true"
@@ -139,11 +155,13 @@ function Cell({
             <span className="block font-display text-xs font-semibold tracking-[-0.01em] text-dim transition-colors duration-200 group-hover:text-fg sm:text-[0.95rem]">
               {item.label}
             </span>
-            <span className="mt-0.5 hidden text-xs text-dim2 sm:block">{BLURBS[item.href]}</span>
+            <span className="mt-0.5 hidden text-xs text-dim2 sm:block">
+              {BLURBS[item.href]}
+            </span>
           </span>
           {/* Four cells across a phone leaves ~60px of usable width each;
-            * the arrow is the first thing to go rather than letting a
-            * label wrap. */}
+           * the arrow is the first thing to go rather than letting a
+           * label wrap. */}
           <ArrowUpRight
             size={13}
             strokeWidth={2}
