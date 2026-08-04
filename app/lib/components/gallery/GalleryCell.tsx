@@ -19,7 +19,7 @@ export type Photo = (typeof featPhotos)[number];
  * ruled to exactly the frame's width, so the exposure it describes is
  * unambiguous without a legend, an overlay, or a hover.
  *
- * No hover zoom. Hover/focus only fades in the ViewfinderFrame's corner
+ * No hover zoom. Hover/focus only snaps in the ViewfinderFrame's corner
  * ticks and lifts the caption title from dim to full weight.
  */
 export default function GalleryCell({
@@ -27,7 +27,6 @@ export default function GalleryCell({
   index,
   width,
   height,
-  shared,
   onOpen,
   cellRef,
 }: {
@@ -35,9 +34,6 @@ export default function GalleryCell({
   index: number;
   width: number;
   height: number;
-  /** True when this plate shares its row with others, so its title box
-   * has to hold a fixed two lines to stay level with theirs. */
-  shared: boolean;
   onOpen: () => void;
   cellRef: (el: HTMLButtonElement | null) => void;
 }) {
@@ -79,20 +75,28 @@ export default function GalleryCell({
         </ViewfinderFrame>
       </button>
 
-      {/* A plate sharing a row reserves two title lines, wrapped or not:
-        * a narrow portrait beside a wide landscape would otherwise
-        * either shed half its title to an ellipsis or push its own
-        * exposure line out of step with the rest of the row. A plate
-        * that owns its row is wide enough to need neither. */}
+      {/* Title and exposure are one caption block, not two scraps: the
+        * title carries it, and the exposure sits tight beneath in the
+        * site's smallest metadata tier — sans, like every other figure
+        * on the site, and tabular so the f-stops, shutter speeds and ISOs
+        * line up as a column down the grid. It was the only mono on the
+        * site, which made an exposure look like a build artifact rather
+        * than part of the caption.
+        *
+        * Caption heights are free to differ across a row. Padding every
+        * title out to a fixed two lines did keep the exposure baselines
+        * level, but at the price of a 22px hole under every one-line
+        * title — and a short caption beside a wrapped one is ordinary
+        * editorial behaviour, not a defect worth that. */}
       <figcaption className="mt-3 border-t border-border pt-2">
         <span
-          className={`block text-[0.8125rem] leading-snug ${
-            shared ? "line-clamp-2 h-[2.25rem]" : "truncate"
-          } ${reduceMotion ? "" : "transition-colors duration-150"} ${active ? "text-fg" : "text-dim"}`}
+          className={`block text-sm font-medium leading-snug ${
+            reduceMotion ? "" : "transition-colors duration-150"
+          } ${active ? "text-fg" : "text-dim"}`}
         >
           {photo.alt}
         </span>
-        <span className="mt-0.5 block truncate font-mono text-[0.6875rem] tracking-[0.02em] tabular-nums text-dim2">
+        <span className="mt-1 block truncate text-xs tabular-nums text-dim2">
           f/{photo.aperture} · {photo.shutter}s · ISO {photo.iso}
         </span>
       </figcaption>

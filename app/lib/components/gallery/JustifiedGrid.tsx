@@ -151,7 +151,6 @@ export default function JustifiedGrid({
               index={index}
               width={itemWidth}
               height={row.height}
-              shared={row.items.length > 1}
               onOpen={() => onOpen(index)}
               cellRef={(el) => {
                 cellRefs.current[index] = el;

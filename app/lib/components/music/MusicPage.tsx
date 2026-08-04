@@ -232,7 +232,7 @@ export default function MusicPage() {
           .filter(({ beat }) => beat.category === filter);
 
   return (
-    <div className="px-6 pb-28 pt-16 sm:px-8 lg:px-12 lg:pt-[4.5rem]">
+    <div className="px-6 pb-16 pt-16 sm:px-8 lg:px-12 lg:pt-[4.5rem]">
       <audio ref={audioRef} preload="none" />
 
       <div ref={headingRef}>
@@ -288,7 +288,13 @@ export default function MusicPage() {
             duration={BEAT_DURATIONS[beat.file] ?? 0}
             bars={bars}
             onToggle={() => toggleTrack(index)}
-            delay={Math.min(position, 10) * beatTime(0.05)}
+            // A list of twenty-two rows should read as arriving, not
+            // loading. The old grid — 0.6-beat rows stepped 0.05 of a
+            // beat apart, capped at ten — put 0.33s between the first
+            // and last row landing, long enough to watch rows queue up.
+            // A smaller step and a cap of six keep the sweep legible
+            // while halving the span to 0.16s.
+            delay={Math.min(position, 6) * beatTime(0.04)}
           />
         ))}
       </div>

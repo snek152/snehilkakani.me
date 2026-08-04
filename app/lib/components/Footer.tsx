@@ -7,9 +7,27 @@ const LINKS = [
   { href: "/resume.pdf", label: "Résumé", Icon: FileText },
 ] as const;
 
-export default function Footer() {
+export default function Footer({
+  bottomReserve = 0,
+}: {
+  /** Extra space, in pixels, held below the footer's content and inside
+   * its own background. `AppShell` passes the fixed music transport's
+   * height here when a track is loaded, so the transport's footprint
+   * belongs to the footer's surface instead of a spacer element after
+   * it — a sibling spacer made the document taller than the footer, and
+   * the page's maximum scroll ended in a band of empty background below
+   * it. */
+  bottomReserve?: number;
+}) {
   return (
-    <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-border px-6 py-5 sm:px-10">
+    <footer
+      className="flex flex-wrap items-center justify-between gap-3 border-t border-border px-6 py-5 sm:px-10"
+      style={
+        bottomReserve
+          ? { paddingBottom: `calc(1.25rem + ${bottomReserve}px)` }
+          : undefined
+      }
+    >
       <span className="font-sans text-sm text-dim2">
         © {new Date().getFullYear()} Snehil Kakani
       </span>

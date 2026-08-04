@@ -11,11 +11,24 @@ import BeatBars from "./BeatBars";
 import { formatTime } from "./format";
 
 /**
- * One release, on the page's four-column grid — title in the first two
- * quarters, category in the third, tempo and (once known) duration
- * sharing the last. Category was previously a colour swatch keyed off a
- * five-hex palette; the site is greyscale-plus-one-accent, so category is
- * just a word now, same as everything else that isn't state.
+ * One release, on the page's four-column grid — title in the first
+ * quarter, the line about the track across the middle two, tempo and
+ * (once known) duration sharing the last.
+ *
+ * The middle used to be the category word (and before that a colour
+ * swatch keyed off a five-hex palette). Category is what the filter bar
+ * above is for; repeating it on all twenty-two rows only restated the
+ * filter you were already looking at. The description is the one thing
+ * that actually distinguishes one row from the next, so it takes that
+ * space instead of being a mobile-only afterthought. Category still
+ * rides along in the row's `aria-label`, where the filter's effect
+ * isn't visible.
+ *
+ * The split follows the text rather than the grid's convenience: the
+ * longest title measures 159px and the longest description 517px, so
+ * the title takes one column and the description two. Under the old
+ * two-and-one split the titles sat in 594px of mostly empty space while
+ * every description was cut off 200px short.
  *
  * The active/playing state is carried entirely by the row's rule turning
  * accent and the level bars replacing the play glyph — nothing about the
@@ -45,10 +58,10 @@ export default function TrackRow({
 
   return (
     <motion.div
-      initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+      initial={reduceMotion ? false : { opacity: 0, y: 6 }}
       whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "100000px 0px -18% 0px" }}
-      transition={{ duration: reduceMotion ? 0 : beatTime(0.6), ease: EASE_OUT, delay }}
+      transition={{ duration: reduceMotion ? 0 : beatTime(0.4), ease: EASE_OUT, delay }}
       className="relative"
     >
       <button
@@ -60,7 +73,7 @@ export default function TrackRow({
           isActive ? "" : "hover:bg-white/[0.02]"
         }`}
       >
-        <span className="flex min-w-0 items-center gap-4 lg:col-span-2">
+        <span className="flex min-w-0 items-center gap-4">
           <span className="flex w-5 shrink-0 items-center justify-center">
             {isPlayingRow ? (
               <BeatBars bars={bars} />
@@ -72,30 +85,25 @@ export default function TrackRow({
               />
             )}
           </span>
-          <span className="min-w-0 flex-1">
-            <span
-              // Constant type size. Growing the title on activation
-              // reflowed the row and drew the eye to a size change rather
-              // than to what is playing; weight and colour say it without
-              // moving anything.
-              className={`block truncate font-sans text-[0.95rem] transition-colors duration-150 ${
-                isActive
-                  ? "font-semibold text-fg"
-                  : "font-medium text-dim"
-              }`}
-            >
-              {beat.name}
-            </span>
-            {beat.description && (
-              <span className="block truncate font-sans text-sm text-dim2 lg:hidden">
-                {beat.description}
-              </span>
-            )}
+          <span
+            // Constant type size. Growing the title on activation
+            // reflowed the row and drew the eye to a size change rather
+            // than to what is playing; weight and colour say it without
+            // moving anything.
+            className={`block min-w-0 flex-1 truncate font-sans text-[0.95rem] transition-colors duration-150 ${
+              isActive ? "font-semibold text-fg" : "font-medium text-dim"
+            }`}
+          >
+            {beat.name}
           </span>
         </span>
 
-        <span className="hidden font-sans text-sm capitalize text-dim lg:block">
-          {beat.category}
+        {/* One cell, two placements: at `lg` it spans the middle two
+          * columns; below, it stacks under the title, indented past the
+          * glyph gutter (w-5 + gap-4) so it still hangs off the title's
+          * left edge. */}
+        <span className="block truncate pl-9 font-sans text-sm text-dim2 lg:col-span-2 lg:pl-0">
+          {beat.description}
         </span>
 
         <span className="hidden items-center justify-between font-sans text-sm text-dim2 lg:flex">

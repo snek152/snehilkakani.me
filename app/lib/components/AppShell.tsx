@@ -48,14 +48,23 @@ export function useNavDirection() {
 }
 
 /**
+ * Height, in pixels, of the fixed music transport (`PlayerBar` pins
+ * itself to exactly this). The shell hands it to `Footer` as bottom
+ * padding while a track is loaded, so the bar's footprint is part of the
+ * footer's own surface: maximum scroll then ends on the footer's
+ * background instead of in a band of empty space below it, and the
+ * footer's links still scroll clear of the bar.
+ */
+export const TRANSPORT_CLEARANCE = 64;
+
+/**
  * useSetMusicPlayerActive()
  * -------------------------
- * Lets a page (currently only /music) tell the shell that a fixed,
- * 92px-tall transport bar is now docked to the viewport bottom. The shell
- * reserves that much space below Footer while a track is active, so the
- * fixed bar never ends up painted over Footer's links at max scroll —
- * solved once here instead of every page that might grow a fixed footer
- * bar needing its own magic padding.
+ * Lets a page (currently only /music) tell the shell that the fixed
+ * transport is now docked to the viewport bottom, so the shell can
+ * reserve `TRANSPORT_CLEARANCE` inside Footer — solved once here instead
+ * of every page that might grow a fixed bottom bar needing its own magic
+ * padding.
  */
 const SetMusicPlayerActiveContext = createContext<(active: boolean) => void>(() => {});
 
@@ -120,11 +129,11 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                   * below it was being painted over by both. */}
                 <div className="relative z-[1] flex min-h-[100dvh] flex-col lg:pl-[52px]">
                   <div className="relative z-[1] flex-1">{children}</div>
-                  <Footer />
-                  {/* Reserves the fixed 92px music transport's footprint
-                    * below Footer so its links can scroll clear of the
-                    * bar instead of ending up permanently under it. */}
-                  {musicPlayerActive && <div aria-hidden="true" style={{ height: 92 }} />}
+                  {/* The transport's footprint is reserved INSIDE the
+                    * footer (see `TRANSPORT_CLEARANCE`), not by a spacer
+                    * after it — a sibling spacer left the document taller
+                    * than the footer, so max scroll ended below it. */}
+                  <Footer bottomReserve={musicPlayerActive ? TRANSPORT_CLEARANCE : 0} />
                 </div>
               </SetMusicPlayerActiveContext.Provider>
             </NavDirectionContext.Provider>
