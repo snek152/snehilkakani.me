@@ -378,6 +378,7 @@ export default function WaveField() {
 
     let rafId: number | null = null;
     let startTime: number | null = null;
+    let hiddenAt: number | null = null;
 
     const tick = (now: number) => {
       if (startTime === null) startTime = now;
@@ -407,8 +408,22 @@ export default function WaveField() {
 
     const handleVisibility = () => {
       if (reduceMotion) return;
-      if (document.hidden) stop();
-      else start();
+      if (document.hidden) {
+        hiddenAt = performance.now();
+        stop();
+      } else {
+        // Roll `startTime` forward by however long the tab was hidden.
+        // Elapsed time is wall-clock, so without this the first frame back
+        // is drawn at `t + hiddenDuration` and the bundle cuts to a whole
+        // new configuration the instant you return to the tab. rAF
+        // timestamps share `performance.now()`'s time origin, so the two
+        // are directly comparable.
+        if (hiddenAt !== null && startTime !== null) {
+          startTime += performance.now() - hiddenAt;
+        }
+        hiddenAt = null;
+        start();
+      }
     };
     document.addEventListener("visibilitychange", handleVisibility);
 
