@@ -6,176 +6,221 @@ import { useMotionPreference } from "./MotionPreference";
 /**
  * WaveField
  * ---------
- * Site-wide, ultra-subtle animated background: a bundle of thin drifting
- * filaments crossing at a few nodes, reading as something cosmic/interstellar
- * rather than a voice-meter. Single `<canvas>` driven by rAF, fixed behind
- * all page content.
+ * Site-wide ambient background: a bundle of filaments defined in 3D and
+ * tumbling slowly behind all page content. Single `<canvas>` driven by rAF,
+ * fixed at `z-0`.
  *
- * Contrast hierarchy — the point of the whole tuning. The structural
+ * The geometry is genuinely three-dimensional, not a stack of 2D sines. Each
+ * filament is a curve in (x, y, z); the whole bundle is rotated about Y and X
+ * by two slowly beating angles and then perspective-projected. Depth is what
+ * drives stroke width, brightness and how quickly a strand dissolves, so
+ * strands visibly sweep toward and away from the viewer and pass through one
+ * another instead of sliding across a flat band.
+ *
+ * Two earlier problems this shape fixes:
+ *
+ * - The old field was a flat horizontal band across the middle of the frame,
+ *   which read as a sound-wave graphic — the one thing an ambient background
+ *   on a music-adjacent site must not look like.
+ * - Its fade was a screen-space linear gradient masking a fixed fraction of
+ *   each edge. Because the mask was rectangular and axis-aligned while the
+ *   content was not, it read as a vertical band of "weird transparency"
+ *   rather than as lines ending. Fading is now purely a function of DEPTH:
+ *   far parts of a strand dissolve the way distant things do. Filaments also
+ *   extend well past the frame (`SPAN` > 1), so their ends are off-screen and
+ *   nothing needs masking at the edges at all.
+ *
+ * Contrast hierarchy — the constraint the whole tuning serves. The structural
  * hairline (`--color-border`, white at 0.07) composites to 25/255 over the
  * #080808 page. The rule is per-percentile, not per-pixel: the BODY of the
- * field must stay clearly under that, while isolated "lighter"-blended
- * crossings are allowed to reach and pass it, because a small soft node is
- * read as light, whereas a continuous strand at rule brightness is read as
- * another edge in the layout. That distinction is what fixed the wave
- * colliding with the text.
+ * field stays clearly under that, while isolated additive crossings may reach
+ * or pass it. A small soft node reads as light; a continuous strand at rule
+ * brightness reads as another edge in the layout, which is what made an
+ * earlier version collide with the text. Constraining the PEAK instead drove
+ * the typical strand to alpha 2/255 and the field vanished entirely — so tune
+ * against percentiles, never the maximum.
  *
- * Measured at 1440x900 (composited, over the page background): p50 11,
- * p75 15, p90 18, p99 24, p99.9 29, max ~39-53 at the brightest crossing.
- * So ~99% of the field sits at or below the hairline and only the nodes
- * exceed it. Constraining the PEAK below 25 instead is what the first
- * attempt did, and it drove the typical strand to alpha 2/255 — the whole
- * field became invisible. Tune against the percentiles, not the maximum.
- *
- * Softening: strokes are rendered to a half-resolution offscreen canvas
- * (1/4 the pixels of the visible backing store) and upscaled with bilinear
- * smoothing onto the visible canvas. That upscale is what turns 1px lines
- * into soft ~2px filaments — cheaper per frame than an animated CSS
- * `filter: blur()` on a full-viewport canvas, and it composites the
- * "lighter" crossings at the same reduced resolution, which is exactly
- * where that blend is most expensive.
- *
- * Tuning knobs — all intentionally exported as consts so this can be
- * adjusted or ripped out without hunting through the draw loop.
+ * Softness comes from stroking each strand twice (a wide dim halo under a
+ * narrow core) rather than from blurring. An earlier version rendered to a
+ * half-resolution offscreen canvas and upscaled; that is cheap, but bilinear
+ * upscaling of hairlines is exactly what made the transparency look uneven.
+ * Two passes at full resolution are clean at every DPR.
  */
 
-/** Number of filaments in the bundle. */
-const CURVE_COUNT = 8;
+/** Number of filaments in the bundle. Dense on purpose: the interference
+ * between many faint strands is what makes the field read as a woven,
+ * shifting volume rather than a few swooshes. Per-strand alpha is scaled
+ * down to compensate, so density buys structure, not brightness. */
+const CURVE_COUNT = 16;
 
-/** Peak amplitude of a curve, as a fraction of viewport height. */
-const AMPLITUDE_RATIO = 0.09;
-
-/** Drift speed — radians of phase advanced per millisecond. Slow enough
- * that nothing ever appears to scroll past, fast enough that the figure
- * is visibly alive if you rest your eyes on it: the strands should read
- * as drifting, not as a still image. This remains the ceiling for
- * apparent speed — breathing and wander below are slower still. */
-const DRIFT_SPEED = 0.00005;
-
-/** Amplitude "breathing" — each filament's amplitude slowly swells and
- * recedes at an incommensurate rate relative to phase drift, so the
- * figure's shape (not just its position) changes over time. */
-const BREATHE_SPEED = DRIFT_SPEED * 0.211;
-const BREATHE_DEPTH = 0.35;
-
-/** Baseline "wander" — each filament's resting height drifts slowly up
- * and down, independent of the others, at yet another incommensurate
- * rate. Combined with breathing and phase drift, no two filaments are
- * ever in the same relative configuration twice. */
-const WANDER_SPEED = DRIFT_SPEED * 0.347;
-const WANDER_RATIO = 0.025;
-
-/** Base stroke alpha for the far (background) layer of filaments, and
- * the multiplier applied to promote a filament into the near layer.
+/** Samples along each filament, and the number of contiguous alpha bands
+ * those samples are grouped into.
  *
- * These are tuned against the composited result, not the raw value. The
- * structural hairline (`--color-border`, white at 0.07) composites to 25
- * over the #080808 page, and a decorative curve must stay under that or
- * it competes with real rules — that is what made the earlier, brighter
- * field collide with the text. But the ceiling has to be hit by the
- * TYPICAL strand, not only by a rare "lighter" crossing: tuned purely to
- * the peak, the mean strand fell to alpha 2/255 and the whole field
- * disappeared. Aim: an ordinary filament reads clearly, the brightest
- * crossing still sits below the hairline. */
-const BASE_ALPHA_MIN = 0.05;
-const BASE_ALPHA_MAX = 0.085;
-const NEAR_ALPHA_SCALE = 1.35;
+ * `SAMPLES` has to clear the fastest strand comfortably: the busiest curve
+ * carries `max(FREQ_RATIOS) * FREQ_SCALE` ≈ 6.7 cycles, and at only ~9
+ * samples per cycle the polyline is visibly faceted — the peaks come out as
+ * hard corners rather than curves. This gives ~19 samples per cycle at the
+ * top frequency, which is smooth, and the draw cost is measured rather than
+ * assumed: see the note on MAX_DPR.
+ *
+ * Depth alpha varies continuously along a strand, but stroking every segment
+ * separately would double-blend at every antialiased seam and bead the line
+ * under additive compositing. Banding strokes one path per group, so only the
+ * band boundaries touch — and they share a single vertex, so the overlap is
+ * zero-width. */
+const SAMPLES = 130;
+const BANDS = 12;
 
-/** Stroke widths in device-independent px, pre-blur. Near filaments read
- * as closer: thicker and a touch brighter. Far filaments are thin
- * background texture. */
-const LINE_WIDTH_FAR = 0.9;
-const LINE_WIDTH_NEAR = 1.5;
+/** Half-extent of a filament along its own axis, in units of half the
+ * viewport. Greater than 1 so both ends sit outside the frame: strands enter
+ * and leave like light trails instead of needing an edge mask. */
+const SPAN = 1.6;
 
-/** Fraction of the canvas width, at each edge, over which a filament's
- * alpha eases to zero — this is what keeps lines from running hard into
- * the surrounding text and borders. */
-const EDGE_FALLOFF = 0.16;
+/** Peak lateral excursion of a filament, as a fraction of viewport height. */
+const AMPLITUDE_RATIO = 0.15;
 
-/** Backing-store resolution divisor for the offscreen render target.
- * 2 == quarter the pixel count of the visible canvas. */
-const RENDER_SCALE = 2;
+/** Depth excursion, in projection units. This is what gives the bundle its
+ * volume — without it the rotation below would just shear a flat sheet. */
+const DEPTH_RATIO = 1.05;
 
-/** Cap on devicePixelRatio to bound canvas backing-store cost. */
-const MAX_DPR = 2;
+/** Hard bound on rotated depth, and the camera distance for the perspective
+ * divide.
+ *
+ * `FOCAL` MUST exceed `Z_LIMIT`, with margin. Rotated depth is not bounded by
+ * `DEPTH_RATIO`: rotating about Y folds the filament's own axis into z, so
+ * `rz2` picks up `SPAN * sin(rotY)` plus `ly * sin(rotX)` on top of `lz`, and
+ * reaches about ±3 at these amplitudes. With a focal length shorter than
+ * that, `FOCAL + rz2` crosses zero, the divide flips sign, and single
+ * segments fire across the whole frame. z is clamped to the limit as well, so
+ * the guarantee does not depend on re-deriving that bound every time an
+ * amplitude is tuned. */
+const Z_LIMIT = 3.1;
+const FOCAL = 5.2;
 
-/** Accent-blue tint applied to a couple of strands, at very low alpha. */
-const ACCENT_COLOR = "37, 99, 235"; // #2563eb as an rgb triple
-const ACCENT_ALPHA_MIN = 0.01;
-const ACCENT_ALPHA_MAX = 0.02;
+/** Master clock — radians of phase per millisecond. Everything else is
+ * expressed as a ratio of this, so the whole field speeds up or slows down
+ * from one number. */
+const TIME_SCALE = 0.00016;
 
-/** Non-integer frequency ratios per curve — irrational-ish spread so the
- * bundle never settles into a mirrored or periodic-looking shape. Index
- * `i` picks `FREQ_RATIOS[i % FREQ_RATIOS.length]`. */
-const FREQ_RATIOS = [1, 1.37, 1.71, 2.13, 0.79, 1.53, 2.31, 0.61];
+/** Bundle tumble. Two incommensurate rates on two axes, so the figure never
+ * returns to the same orientation. Amplitudes are small: this is a bundle
+ * breathing in depth, not an object spinning. */
+const ROT_Y_SPEED = 0.42;
+const ROT_Y_AMP = 0.55;
+const ROT_X_SPEED = 0.27;
+const ROT_X_AMP = 0.22;
 
-/** Secondary, slower modulation ratios layered on top of the primary wave
- * to break up any residual symmetry / periodicity. */
-const SECOND_FREQ_RATIOS = [0.31, 0.47, 0.19, 0.53, 0.37, 0.29, 0.43, 0.23];
+/** Helical twist: phase advances along a strand's own length, so it winds
+ * around its axis instead of undulating in a plane. With the tumble above,
+ * this is most of what makes the crossings read as three-dimensional. */
+const TWIST_SPEED = 0.31;
+const TWIST_AMP = 1.35;
+
+/** Amplitude breathing and baseline wander, each at its own incommensurate
+ * rate, so a strand's form keeps changing rather than only its position. */
+const BREATHE_SPEED = 0.23;
+const BREATHE_DEPTH = 0.4;
+const WANDER_SPEED = 0.17;
+const WANDER_RATIO = 0.07;
+
+/** Stroke alpha range for filaments at mid-depth, before the depth term.
+ * Low because there are many strands: density is meant to buy structure and
+ * interference, not brightness. Tuned against the composited percentiles in
+ * the header note. */
+const BASE_ALPHA_MIN = 0.066;
+const BASE_ALPHA_MAX = 0.118;
+
+/** How much depth darkens a strand: the far extreme keeps this fraction of
+ * its brightness, the near extreme keeps all of it. This replaces the old
+ * screen-space edge mask entirely. */
+const DEPTH_ALPHA_FLOOR = 0.1;
+
+/** Core stroke width in CSS px at unit depth, and the halo multiplier /
+ * alpha share that sits under it to soften the edge. */
+const CORE_WIDTH = 1.05;
+const HALO_WIDTH_SCALE = 3.6;
+const HALO_ALPHA_SHARE = 0.26;
+
+/** Cap on devicePixelRatio.
+ *
+ * Deliberately below 2. This is a soft, low-contrast, out-of-focus layer with
+ * no hard edges to alias, so the extra backing store a retina display would
+ * ask for buys nothing visible while costing fill on every one of the ~380
+ * strokes per frame. Measured at 1440x900: the draw body runs ~1.6ms median
+ * at the previous settings, and this is the single biggest lever on that
+ * number for high-DPR screens. */
+const MAX_DPR = 1.5;
+
+/** Accent tint carried by a couple of strands, at very low alpha.
+ *
+ * This is `--accent` from `globals.css` as an rgb triple, since canvas needs
+ * the components rather than a hex. Note that this design renamed the brand
+ * blue: `--color-primary` is an alias of `--accent`, not a second colour, so
+ * there is exactly one blue on the site and this is it. (`AGENTS.md` still
+ * documents the previous site's `#0d6efd`.) Keep in step with the token. */
+const ACCENT_COLOR = "37, 99, 235"; // #2563eb
+const ACCENT_ALPHA_SCALE = 0.45;
+
+/** Non-integer frequency ratios — an irrational-ish spread so the bundle
+ * never settles into a mirrored or periodic-looking shape.
+ *
+ * `FREQ_SCALE` sets how many times a strand crosses its own axis across the
+ * frame. Low values give a handful of lazy swooshes; this many strands only
+ * start to weave — to cross each other often enough that the crossings form
+ * a moving interference pattern — once each one carries a few cycles. That
+ * interference is the whole effect. */
+const FREQ_SCALE = 2.7;
+const FREQ_RATIOS = [1, 1.37, 1.71, 2.13, 0.79, 1.53, 2.31, 0.61, 1.19, 1.83, 0.93, 2.47, 1.11, 0.67, 1.97, 1.29];
+const SECOND_FREQ_RATIOS = [0.31, 0.47, 0.19, 0.53, 0.37, 0.29, 0.43, 0.23, 0.41, 0.59, 0.17, 0.51, 0.33, 0.27, 0.61, 0.21];
+const DEPTH_FREQ_RATIOS = [0.63, 0.91, 1.24, 0.48, 1.07, 0.72, 1.41, 0.86, 0.57, 1.13, 0.79, 1.32, 0.69, 0.97, 1.19, 0.83];
 
 interface CurveConfig {
   freq: number;
   freq2: number;
+  depthFreq: number;
   phase: number;
   phase2: number;
+  depthPhase: number;
   breathePhase: number;
   wanderPhase: number;
+  twistPhase: number;
   ampScale: number;
-  yOffsetRatio: number;
-  isAccent: boolean;
-  isNear: boolean;
+  depthScale: number;
+  yOffset: number;
   alpha: number;
-  lineWidth: number;
+  isAccent: boolean;
 }
 
 function buildCurves(): CurveConfig[] {
   const curves: CurveConfig[] = [];
   for (let i = 0; i < CURVE_COUNT; i++) {
-    // Deterministic but non-uniform per-curve pseudo-randomness derived
-    // from the index, so the layout is stable across renders/reloads
-    // without needing a seeded RNG dependency.
+    // Deterministic per-curve pseudo-randomness derived from the index, so
+    // the bundle is stable across reloads without a seeded RNG dependency.
     const seed = Math.sin(i * 12.9898) * 43758.5453;
     const frac = seed - Math.floor(seed);
-    const isNear = i % 2 === 0;
+    const seed2 = Math.sin(i * 78.233) * 24634.6345;
+    const frac2 = seed2 - Math.floor(seed2);
 
     curves.push({
-      freq: FREQ_RATIOS[i % FREQ_RATIOS.length],
-      freq2: SECOND_FREQ_RATIOS[i % SECOND_FREQ_RATIOS.length],
+      freq: FREQ_RATIOS[i % FREQ_RATIOS.length] * FREQ_SCALE,
+      freq2: SECOND_FREQ_RATIOS[i % SECOND_FREQ_RATIOS.length] * FREQ_SCALE,
+      depthFreq: DEPTH_FREQ_RATIOS[i % DEPTH_FREQ_RATIOS.length],
       phase: frac * Math.PI * 2,
       phase2: (1 - frac) * Math.PI * 2,
+      depthPhase: frac2 * Math.PI * 2,
       breathePhase: ((frac * 7) % 1) * Math.PI * 2,
       wanderPhase: ((frac * 5) % 1) * Math.PI * 2,
+      twistPhase: ((frac2 * 3) % 1) * Math.PI * 2,
       ampScale: 0.55 + frac * 0.9,
-      // Spread the bundle's resting lines across the middle band of the
-      // viewport, not perfectly evenly — nudged off-grid per curve.
-      yOffsetRatio: 0.5 + (i - (CURVE_COUNT - 1) / 2) * 0.045 + (frac - 0.5) * 0.02,
-      isAccent: i === 1 || i === CURVE_COUNT - 2,
-      isNear,
-      alpha:
-        (BASE_ALPHA_MIN + frac * (BASE_ALPHA_MAX - BASE_ALPHA_MIN)) *
-        (isNear ? NEAR_ALPHA_SCALE : 1),
-      lineWidth: isNear ? LINE_WIDTH_NEAR : LINE_WIDTH_FAR,
+      depthScale: 0.45 + frac2 * 0.95,
+      // Spread the resting lines across the frame, nudged off-grid per curve
+      // so the bundle never looks like evenly ruled staff lines.
+      yOffset: (i - (CURVE_COUNT - 1) / 2) * 0.105 + (frac - 0.5) * 0.09,
+      alpha: BASE_ALPHA_MIN + frac2 * (BASE_ALPHA_MAX - BASE_ALPHA_MIN),
+      isAccent: i === 2 || i === CURVE_COUNT - 3,
     });
   }
   return curves;
-}
-
-/** A horizontal alpha-falloff gradient: transparent at both edges, full
- * strength across the middle. Stroking a curve with this as its style
- * instead of a flat rgba lets filaments emerge and dissolve at the
- * viewport edges instead of running hard into the surrounding layout. */
-function falloffGradient(
-  ctx: CanvasRenderingContext2D,
-  width: number,
-  colorRgb: string,
-  alpha: number,
-): CanvasGradient {
-  const gradient = ctx.createLinearGradient(0, 0, width, 0);
-  gradient.addColorStop(0, `rgba(${colorRgb}, 0)`);
-  gradient.addColorStop(EDGE_FALLOFF, `rgba(${colorRgb}, ${alpha})`);
-  gradient.addColorStop(1 - EDGE_FALLOFF, `rgba(${colorRgb}, ${alpha})`);
-  gradient.addColorStop(1, `rgba(${colorRgb}, 0)`);
-  return gradient;
 }
 
 export default function WaveField() {
@@ -188,100 +233,147 @@ export default function WaveField() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Offscreen render target at reduced resolution: strokes are drawn
-    // here (including the additive "lighter" crossings), then the whole
-    // thing is upscaled with smoothing onto the visible canvas. That
-    // upscale is the "blur".
-    const offscreen = document.createElement("canvas");
-    const offCtx = offscreen.getContext("2d");
-    if (!offCtx) return;
-
     const curves = buildCurves();
     let width = 0;
     let height = 0;
-    let offWidth = 0;
-    let offHeight = 0;
-    let dpr = 1;
+
+    // Projected sample buffers, reused every frame so a 60fps draw loop
+    // allocates nothing.
+    const px = new Float32Array(SAMPLES + 1);
+    const py = new Float32Array(SAMPLES + 1);
+    const pAlpha = new Float32Array(SAMPLES + 1);
+    const pWidth = new Float32Array(SAMPLES + 1);
 
     const resize = () => {
-      // A bare `<canvas>` with no explicit size is a replaced element
-      // with an intrinsic 300x150 box — setting `fixed inset-0` alone
-      // doesn't stretch it. Force it to fill its fixed box via CSS
-      // percentages first, then measure that box (never
-      // `window.innerWidth`, which includes the scrollbar gutter and
-      // would make the canvas wider than the page on any machine
-      // showing a scrollbar).
+      // A bare `<canvas>` with no explicit size is a replaced element with an
+      // intrinsic 300x150 box — `fixed inset-0` alone does not stretch it.
+      // Force it to fill its fixed box via CSS percentages first, then
+      // measure that box. Never `window.innerWidth`: that includes the
+      // scrollbar gutter, which made the canvas wider than the page and put a
+      // horizontal scrollbar on every route.
       canvas.style.width = "100%";
       canvas.style.height = "100%";
       const rect = canvas.getBoundingClientRect();
       width = rect.width || document.documentElement.clientWidth;
       height = rect.height || document.documentElement.clientHeight;
-      dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR);
+      const dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR);
       canvas.width = Math.round(width * dpr);
       canvas.height = Math.round(height * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.imageSmoothingEnabled = true;
-      ctx.imageSmoothingQuality = "medium";
-
-      offWidth = Math.max(1, Math.round(canvas.width / RENDER_SCALE));
-      offHeight = Math.max(1, Math.round(canvas.height / RENDER_SCALE));
-      offscreen.width = offWidth;
-      offscreen.height = offHeight;
-      // The offscreen target draws in the same logical (CSS px) space as
-      // the visible canvas, just at 1/RENDER_SCALE device pixels, so all
-      // the curve math below is resolution-independent.
-      offCtx.setTransform(dpr / RENDER_SCALE, 0, 0, dpr / RENDER_SCALE, 0, 0);
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
     };
 
     resize();
 
     const draw = (timeMs: number) => {
-      offCtx.clearRect(0, 0, width, height);
-      offCtx.globalCompositeOperation = "lighter";
+      ctx.clearRect(0, 0, width, height);
+      // Additive: where filaments cross they sum, so the nodes bloom on their
+      // own. It is also order-independent, which is why the bundle needs no
+      // depth sorting despite being genuinely 3D.
+      ctx.globalCompositeOperation = "lighter";
 
-      const samples = Math.max(2, Math.round(width / 4));
-      const t = timeMs * DRIFT_SPEED;
-      const tBreathe = timeMs * BREATHE_SPEED;
-      const tWander = timeMs * WANDER_SPEED;
+      const t = timeMs * TIME_SCALE;
+      const rotY = ROT_Y_AMP * Math.sin(t * ROT_Y_SPEED);
+      const rotX = ROT_X_AMP * Math.sin(t * ROT_X_SPEED + 1.7);
+      const cosY = Math.cos(rotY);
+      const sinY = Math.sin(rotY);
+      const cosX = Math.cos(rotX);
+      const sinX = Math.sin(rotX);
+
+      const cx = width / 2;
+      const cy = height / 2;
+      const halfW = width / 2;
+      const ampPx = height * AMPLITUDE_RATIO;
+
+      // Perspective bounds derived from the clamped depth range, so the
+      // depth term normalises into 0..1 no matter how the bundle is oriented.
+      const perspNear = FOCAL / (FOCAL - Z_LIMIT);
+      const perspFar = FOCAL / (FOCAL + Z_LIMIT);
+      const perspSpan = perspNear - perspFar || 1;
 
       for (const curve of curves) {
-        const breathe = 1 + BREATHE_DEPTH * Math.sin(tBreathe + curve.breathePhase);
-        const wander = WANDER_RATIO * Math.sin(tWander + curve.wanderPhase);
-        const baseY = height * (curve.yOffsetRatio + wander);
-        const amp = height * AMPLITUDE_RATIO * curve.ampScale * breathe;
+        const breathe = 1 + BREATHE_DEPTH * Math.sin(t * BREATHE_SPEED + curve.breathePhase);
+        const wander = WANDER_RATIO * Math.sin(t * WANDER_SPEED + curve.wanderPhase);
+        const twist = t * TWIST_SPEED + curve.twistPhase;
+        const amp = ampPx * curve.ampScale * breathe;
 
-        offCtx.beginPath();
-        for (let s = 0; s <= samples; s++) {
-          const xRatio = s / samples;
-          const x = xRatio * width;
-          // Two overlaid sinusoids at incommensurate frequency ratios,
-          // each with its own slow phase drift, produce a shape that
-          // never repeats and never mirrors left-to-right. Amplitude
-          // breathing and baseline wander (above) further ensure the
-          // figure's form, not just its position, keeps changing.
-          const primary = Math.sin(xRatio * Math.PI * 2 * curve.freq + t + curve.phase);
-          const secondary =
-            0.4 * Math.sin(xRatio * Math.PI * 2 * curve.freq2 + t * 1.31 + curve.phase2);
-          const y = baseY + amp * (primary + secondary);
+        for (let s = 0; s <= SAMPLES; s++) {
+          // u runs -1..1 along the filament's own axis.
+          const u = (s / SAMPLES) * 2 - 1;
 
-          if (s === 0) offCtx.moveTo(x, y);
-          else offCtx.lineTo(x, y);
+          // Lateral displacement: two incommensurate sinusoids, plus a phase
+          // that advances along the strand's own length (the twist), so the
+          // curve winds rather than undulating in a single plane.
+          const wave =
+            Math.sin(u * Math.PI * curve.freq + curve.phase + t) +
+            0.45 * Math.sin(u * Math.PI * 2 * curve.freq2 + curve.phase2 - t * 0.73);
+          const twistAngle = u * TWIST_AMP + twist;
+
+          // Local 3D point. The twist rotates the lateral displacement about
+          // the strand's own axis, which is what turns a ribbon into a helix.
+          const lx = u * SPAN;
+          const ly = (curve.yOffset + wander) * 2 + (wave * Math.cos(twistAngle) * amp) / (height / 2);
+          const lz =
+            DEPTH_RATIO *
+            curve.depthScale *
+            (Math.sin(u * Math.PI * curve.depthFreq + curve.depthPhase + t * 0.61) * 0.65 +
+              wave * Math.sin(twistAngle) * 0.35);
+
+          // Rotate about Y, then about X.
+          const rx1 = lx * cosY + lz * sinY;
+          const rz1 = -lx * sinY + lz * cosY;
+          const ry2 = ly * cosX - rz1 * sinX;
+          // Clamped so the divide can never approach zero — see Z_LIMIT.
+          const rz2 = Math.min(
+            Z_LIMIT,
+            Math.max(-Z_LIMIT, ly * sinX + rz1 * cosX),
+          );
+
+          // Perspective divide.
+          const persp = FOCAL / (FOCAL + rz2);
+          const depthT = Math.min(1, Math.max(0, (persp - perspFar) / perspSpan));
+
+          px[s] = cx + rx1 * halfW * persp;
+          py[s] = cy + ry2 * (height / 2) * persp;
+          pAlpha[s] = DEPTH_ALPHA_FLOOR + (1 - DEPTH_ALPHA_FLOOR) * depthT;
+          pWidth[s] = CORE_WIDTH * (0.45 + 0.95 * depthT);
         }
 
-        offCtx.lineWidth = curve.lineWidth;
-        if (curve.isAccent) {
-          const accentAlpha =
-            ACCENT_ALPHA_MIN +
-            (curve.alpha - BASE_ALPHA_MIN) * (ACCENT_ALPHA_MAX - ACCENT_ALPHA_MIN);
-          offCtx.strokeStyle = falloffGradient(offCtx, width, ACCENT_COLOR, accentAlpha);
-        } else {
-          offCtx.strokeStyle = falloffGradient(offCtx, width, "255, 255, 255", curve.alpha);
+        const rgb = curve.isAccent ? ACCENT_COLOR : "255, 255, 255";
+        const baseAlpha = curve.alpha * (curve.isAccent ? ACCENT_ALPHA_SCALE : 1);
+        const perBand = SAMPLES / BANDS;
+
+        // Two passes: a wide dim halo, then the narrow core over it. Softness
+        // without a blur, and resolution-independent.
+        for (let pass = 0; pass < 2; pass++) {
+          const isHalo = pass === 0;
+          for (let b = 0; b < BANDS; b++) {
+            const start = Math.round(b * perBand);
+            const end = Math.round((b + 1) * perBand);
+
+            let aSum = 0;
+            let wSum = 0;
+            for (let s = start; s <= end; s++) {
+              aSum += pAlpha[s];
+              wSum += pWidth[s];
+            }
+            const count = end - start + 1;
+            const bandAlpha = (aSum / count) * baseAlpha;
+            const bandWidth = wSum / count;
+
+            ctx.beginPath();
+            ctx.moveTo(px[start], py[start]);
+            for (let s = start + 1; s <= end; s++) ctx.lineTo(px[s], py[s]);
+
+            ctx.lineWidth = isHalo ? bandWidth * HALO_WIDTH_SCALE : bandWidth;
+            ctx.strokeStyle = `rgba(${rgb}, ${
+              isHalo ? bandAlpha * HALO_ALPHA_SHARE : bandAlpha
+            })`;
+            ctx.stroke();
+          }
         }
-        offCtx.stroke();
       }
-
-      ctx.clearRect(0, 0, width, height);
-      ctx.drawImage(offscreen, 0, 0, width, height);
     };
 
     let rafId: number | null = null;
