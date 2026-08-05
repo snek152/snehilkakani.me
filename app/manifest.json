@@ -1,11 +1,11 @@
 {
-    "name": "Snehil Kakani - Software Engineer & Creative Developer",
+    "name": "Snehil Kakani - Software Engineer Intern at Lindy",
     "short_name": "Snehil Kakani",
-    "description": "Full-stack developer and creative technologist crafting innovative web solutions, producing music, and building meaningful digital experiences.",
+    "description": "Software engineer interning at Lindy, San Francisco, on infrastructure for a high-volume AI agent platform. CS at Cal Poly SLO. Projects, music, photography.",
     "start_url": "/",
     "display": "standalone",
-    "background_color": "#1a1a1a",
-    "theme_color": "#1a1a1a",
+    "background_color": "#080808",
+    "theme_color": "#080808",
     "icons": [
         {
             "src": "/favicon.ico",

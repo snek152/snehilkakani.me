@@ -21,9 +21,16 @@ const geistMono = Geist_Mono({
   weight: ["400", "500"],
 });
 
-const title = "Snehil Kakani - Software Engineer & Creative Developer";
+// Site-wide default, used verbatim on `/` and as the fallback anywhere a
+// route forgets its own. Every route under `app/` that needs a distinct
+// one has a server `layout.tsx` next to its page — the pages themselves
+// are `"use client"` and so cannot export `metadata`.
+//
+// Grounded in `app/lib/data/experience.ts`: role, employer and location
+// are the first entry there. If that entry changes, change this too.
+const title = "Snehil Kakani - Software Engineer Intern at Lindy";
 const description =
-  "Full-stack developer and creative technologist crafting innovative web solutions, producing music, and building meaningful digital experiences.";
+  "Software engineer interning at Lindy, San Francisco, on infrastructure for a high-volume AI agent platform. CS at Cal Poly SLO. Projects, music, photography.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://snehilkakani.me"),
@@ -46,13 +53,15 @@ export const metadata: Metadata = {
   keywords: [
     "Snehil Kakani",
     "Software Engineer",
-    "Full-stack Developer",
-    "Creative Developer",
-    "Web Development",
-    "Music Production",
-    "Portfolio",
+    "Lindy",
+    "AI agents",
+    "TypeScript",
+    "Next.js",
+    "PyTorch",
     "Cal Poly SLO",
     "Computer Science",
+    "Music Production",
+    "Photography",
   ],
   authors: [{ name: "Snehil Kakani", url: "https://snehilkakani.me" }],
   creator: "Snehil Kakani",
