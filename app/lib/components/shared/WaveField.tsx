@@ -9,7 +9,7 @@ import { useMotionPreference } from "./MotionPreference";
  * Site-wide ambient background: filaments defined in 3D, drifting behind all
  * page content. Single `<canvas>` driven by rAF, fixed at `z-0`.
  *
- * Three ideas carry the whole effect.
+ * Four ideas carry the whole effect.
  *
  * 1. It is genuinely three-dimensional. Every curve is a point set in
  *    (x, y, z), rotated and perspective-projected, so depth drives stroke
@@ -24,12 +24,18 @@ import { useMotionPreference } from "./MotionPreference";
  *    reads as psychedelic, and it comes from structure rather than from
  *    colour or speed, which is what keeps it calm enough to sit behind text.
  *
- * 3. The curves are not all the same animal. Three species (`arc`,
- *    `filament`, `loop`) have genuinely different silhouettes, so the field
- *    has long structural sweeps, woven mid-ground threads, and closed 3D
- *    knots that foreshorten into ellipses as they turn. Sixteen variations
- *    on one formula reads as a texture; a few distinct kinds reads as a
- *    space with things in it.
+ * 3. The strands are a family, not a crowd. Two species (`arc`, `filament`)
+ *    give long structural sweeps and a woven mid-ground, and within a layer
+ *    both frequency and phase are pulled partway toward shared values
+ *    (`COHERENCE`), so neighbours read as the same wave arriving slightly
+ *    later. Fully independent curves looked like a pile that happened to
+ *    share a frame. Only partway, though: identical strands would be
+ *    periodic and mirror-symmetric.
+ *
+ * 4. It answers the page. Scroll position slides the strata at different
+ *    rates, and scroll velocity briefly tips them and settles, so the field
+ *    has depth you move through and inertia you can feel rather than being a
+ *    backdrop bolted behind the content. See `PARALLAX_RANGE` / `LEAN_GAIN`.
  *
  * Two earlier problems worth not reintroducing:
  *
@@ -91,8 +97,38 @@ const BANDS = 12;
  * pure cost. */
 const SAMPLES_ARC = 44;
 const SAMPLES_FILAMENT = 130;
-const SAMPLES_LOOP = 104;
-const SAMPLES_MAX = Math.max(SAMPLES_ARC, SAMPLES_FILAMENT, SAMPLES_LOOP);
+const SAMPLES_MAX = Math.max(SAMPLES_ARC, SAMPLES_FILAMENT);
+
+/** How far each strand is pulled toward the family, 0..1.
+ *
+ * Frequencies converge on `FAMILY_FREQ` and phases onto a steady per-index
+ * progression, so neighbours become near-copies of each other offset in time
+ * and the bundle reads as one travelling system instead of unrelated lines.
+ *
+ * Deliberately partway. At 1 the strands are identical but shifted, which is
+ * periodic and mirror-symmetric — the exact thing the irrational frequency
+ * spread exists to prevent. At 0 nothing relates to anything. */
+const COHERENCE = 0.45;
+const FAMILY_FREQ = 1.25;
+const PHASE_STEP = 0.62;
+
+/** Scroll coupling.
+ *
+ * `PARALLAX_RANGE` is how far the field travels, in half-viewport units,
+ * between the top and bottom of the document — scaled per stratum by
+ * `LAYERS[].parallax`, so the near layer moves furthest and the far one
+ * barely at all. It is driven by scroll PROGRESS rather than raw pixels so
+ * the travel is bounded on any page length: a long page moves the field the
+ * same total distance as a short one, and it can never slide off.
+ *
+ * `LEAN_*` is the transient. Scroll velocity tips the strata briefly and
+ * then settles, so a flick reads as the field having inertia rather than as
+ * a rigid backdrop. The damping is per-frame exponential smoothing, and the
+ * response is capped, so a trackpad fling cannot throw it. */
+const PARALLAX_RANGE = 0.55;
+const LEAN_GAIN = 0.0019;
+const LEAN_MAX = 0.21;
+const LEAN_DAMPING = 0.15;
 
 /** Half-extent of a filament along its own axis, in units of half the
  * viewport. Greater than 1 so both ends sit outside the frame: strands enter
@@ -210,29 +246,7 @@ const FREQ_RATIOS = [1, 1.37, 1.71, 2.13, 0.79, 1.53, 2.31, 0.61, 1.19, 1.83, 0.
 const SECOND_FREQ_RATIOS = [0.31, 0.47, 0.19, 0.53, 0.37, 0.29, 0.43, 0.23, 0.41, 0.59, 0.17, 0.51];
 const DEPTH_FREQ_RATIOS = [0.63, 0.91, 1.24, 0.48, 1.07, 0.72, 1.41, 0.86, 0.57, 1.13, 0.79, 1.32];
 
-/** Frequency triples for the `loop` species, as (x, y, z).
- *
- * All three are 1, which is the whole point: three sinusoids of the SAME
- * frequency trace a planar ellipse in 3D, tilted by their relative phases.
- * A planar ring foreshortens to a thinner ellipse and finally to a clean
- * straight segment as it turns edge-on, and because the eye knows what a
- * circle should do, that is the clearest depth cue in the field.
- *
- * Two earlier versions were worse. Genuine Lissajous ratios (1:2:3 and
- * friends) put a hard cusp wherever the parametric velocity passes through
- * zero. Same-frequency x/y with a FASTER z turned the ring into a saddle,
- * which is non-planar, so projecting it edge-on folds it and produces the
- * same arrowhead cusps by a different route. Either way a scatter of sharp
- * spikes in a soft ambient field reads as a rendering glitch. Keep these
- * equal. */
-const LOOP_RATIOS: [number, number, number][] = [
-  [1, 1, 1],
-  [1, 1, 1],
-  [1, 1, 1],
-  [1, 1, 1],
-];
-
-type Species = "arc" | "filament" | "loop";
+type Species = "arc" | "filament";
 
 /** The three strata.
  *
@@ -263,6 +277,7 @@ const LAYERS = [
     widthScale: 0.7,
     haloScale: 5.4,
     tint: 0.55,
+    parallax: 0.28,
   },
   {
     depth: 0,
@@ -275,6 +290,7 @@ const LAYERS = [
     widthScale: 1,
     haloScale: 3.6,
     tint: 0.22,
+    parallax: 0.62,
   },
   {
     depth: -0.54,
@@ -287,6 +303,7 @@ const LAYERS = [
     widthScale: 1.3,
     haloScale: 2.5,
     tint: 0,
+    parallax: 1,
   },
 ];
 
@@ -300,17 +317,22 @@ function tintedRgb(t: number): string {
 
 const LAYER_RGB = LAYERS.map((l) => tintedRgb(l.tint));
 
-/** Species population per layer: [arcs, filaments, loops].
+/** Species population per layer: [arcs, filaments].
  *
- * Weighted toward filaments on purpose. Arcs and loops are the strongest
- * shapes in the field — a long sweep crosses the whole frame, and a knot is
- * the only closed form — so a handful reads as structure and variety, while
- * a crowd of them reads as tangled string. The far stratum carries the
- * sweeps, the mid is the woven body, and the near holds the knots. */
-const LAYER_POPULATION: [number, number, number][] = [
-  [4, 3, 0],
-  [1, 7, 1],
-  [0, 3, 1],
+ * Weighted toward filaments on purpose. An arc is the strongest shape in the
+ * field — a long sweep crossing the whole frame — so a handful reads as
+ * structure, while a crowd of them reads as tangled string. The far stratum
+ * carries the sweeps and the mid is the woven body.
+ *
+ * There used to be a third species: a closed ring. It was the clearest depth
+ * cue available, but it was the only closed form in a field of open curves
+ * and it read as an ellipse someone had left lying there rather than as part
+ * of the same system. Coherence beat the depth cue; the tumbling, the bloom
+ * and the atmospheric tint carry depth on their own. */
+const LAYER_POPULATION: [number, number][] = [
+  [4, 3],
+  [1, 8],
+  [0, 4],
 ];
 
 interface CurveConfig {
@@ -332,20 +354,16 @@ interface CurveConfig {
   xOffset: number;
   alpha: number;
   isAccent: boolean;
-  loopRatio: [number, number, number];
-  loopRadius: number;
-  loopSpin: number;
 }
 
 function buildCurves(): CurveConfig[] {
   const curves: CurveConfig[] = [];
   let i = 0;
 
-  LAYER_POPULATION.forEach(([arcs, filaments, loops], layer) => {
+  LAYER_POPULATION.forEach(([arcs, filaments], layer) => {
     const species: Species[] = [
       ...Array<Species>(arcs).fill("arc"),
       ...Array<Species>(filaments).fill("filament"),
-      ...Array<Species>(loops).fill("loop"),
     ];
 
     species.forEach((kind, indexInLayer) => {
@@ -358,8 +376,26 @@ function buildCurves(): CurveConfig[] {
 
       // Arcs are the structural sweeps: well under a cycle across the frame,
       // wide and slow. Filaments carry the weave.
-      const freqBase = FREQ_RATIOS[i % FREQ_RATIOS.length];
+      //
+      // Frequency is pulled partway toward a shared family value. Fully
+      // independent ratios gave every strand its own unrelated rhythm, so the
+      // field read as a pile of curves that happened to share a frame;
+      // pulling them together makes neighbours beat slowly against each other
+      // instead, which is what makes them look like one system. Only
+      // partway — identical frequencies would make the bundle periodic and
+      // mirror-symmetric, which is what the irrational spread existed to
+      // prevent in the first place.
+      const rawFreq = FREQ_RATIOS[i % FREQ_RATIOS.length];
+      const freqBase = rawFreq + (FAMILY_FREQ - rawFreq) * COHERENCE;
       const freq = kind === "arc" ? freqBase * 0.28 : freqBase * FREQ_SCALE;
+
+      // Phase advances steadily with position in the layer, blended against
+      // the curve's own random phase. Neighbouring strands then read as the
+      // same wave arriving slightly later — the cue that groups them into a
+      // travelling family rather than unrelated lines.
+      const rawPhase = frac * Math.PI * 2;
+      const familyPhase = indexInLayer * PHASE_STEP + layer * 0.9;
+      const phase = rawPhase + (familyPhase - rawPhase) * COHERENCE;
 
       // Amplitude rolls off with frequency, the way a real spectrum does.
       // Flat amplitude across all frequencies is what made the fastest
@@ -380,14 +416,13 @@ function buildCurves(): CurveConfig[] {
       curves.push({
         species: kind,
         layer,
-        samples:
-          kind === "arc" ? SAMPLES_ARC : kind === "loop" ? SAMPLES_LOOP : SAMPLES_FILAMENT,
+        samples: kind === "arc" ? SAMPLES_ARC : SAMPLES_FILAMENT,
         freq,
         freq2:
           SECOND_FREQ_RATIOS[i % SECOND_FREQ_RATIOS.length] *
           (kind === "arc" ? 0.4 : FREQ_SCALE),
         depthFreq: DEPTH_FREQ_RATIOS[i % DEPTH_FREQ_RATIOS.length],
-        phase: frac * Math.PI * 2,
+        phase,
         phase2: (1 - frac) * Math.PI * 2,
         depthPhase: frac2 * Math.PI * 2,
         breathePhase: ((frac * 7) % 1) * Math.PI * 2,
@@ -401,10 +436,7 @@ function buildCurves(): CurveConfig[] {
         xOffset: (frac2 - 0.5) * 0.7,
         alpha: BASE_ALPHA_MIN + frac2 * (BASE_ALPHA_MAX - BASE_ALPHA_MIN),
         isAccent: i % 7 === 2,
-        loopRatio: LOOP_RATIOS[i % LOOP_RATIOS.length],
-        loopRadius: 0.26 + frac * 0.2,
-        loopSpin: 0.6 + frac2 * 0.7,
-        });
+      });
 
       i++;
     });
@@ -435,6 +467,17 @@ export default function WaveField() {
     const pWidth = new Float32Array(SAMPLES_MAX + 1);
     const pDefocus = new Float32Array(SAMPLES_MAX + 1);
 
+    // Document scroll extent, cached. `scrollHeight`/`clientHeight` are
+    // layout-dependent reads and can force a synchronous layout, which is not
+    // something a full-viewport loop should do 60 times a second. Only
+    // `scrollY` is genuinely per-frame; this is refreshed whenever the
+    // document actually changes size.
+    let scrollable = 1;
+    const measureScrollExtent = () => {
+      const doc = document.documentElement;
+      scrollable = Math.max(1, doc.scrollHeight - doc.clientHeight);
+    };
+
     const resize = () => {
       // A bare `<canvas>` with no explicit size is a replaced element with an
       // intrinsic 300x150 box — `fixed inset-0` alone does not stretch it.
@@ -455,7 +498,12 @@ export default function WaveField() {
       // self-add under `lighter`, beading every curve at the band spacing.
       ctx.lineCap = "butt";
       ctx.lineJoin = "round";
+      measureScrollExtent();
     };
+
+    // Scroll state, persisted across frames.
+    let lastScrollY = typeof window === "undefined" ? 0 : window.scrollY;
+    let lean = 0;
 
     resize();
 
@@ -477,22 +525,43 @@ export default function WaveField() {
       const perspFar = FOCAL / (FOCAL + Z_FAR_LIMIT);
       const perspSpan = perspNear - perspFar || 1;
 
+      // Scroll coupling. `scrollY` is read once per frame here rather than
+      // from a scroll listener: the loop is already running, one read cannot
+      // fire more often than a paint, and it keeps the two in lockstep so the
+      // field never lags the page by a frame. The document extent it is
+      // divided by is cached — see `measureScrollExtent`.
+      const progress = Math.min(1, Math.max(0, window.scrollY / scrollable));
+      const delta = window.scrollY - lastScrollY;
+      lastScrollY = window.scrollY;
+      // Exponential smoothing toward the current velocity, then clamped, so
+      // the lean builds and settles instead of snapping — and a fling cannot
+      // throw the field.
+      lean += (Math.max(-LEAN_MAX, Math.min(LEAN_MAX, delta * LEAN_GAIN)) - lean) * LEAN_DAMPING;
+
       // Each stratum's orientation for this frame, computed once rather than
-      // per curve.
+      // per curve. Scroll velocity tips them all in the same direction, which
+      // is what makes the strata read as one connected body reacting together
+      // rather than three independent sheets.
       const layerTrig = LAYERS.map((layer) => {
         const rotY = layer.rotYAmp * Math.sin(t * layer.rotYSpeed + layer.rotPhase);
-        const rotX = layer.rotXAmp * Math.sin(t * layer.rotXSpeed + layer.rotPhase + 1.1);
+        const rotX =
+          layer.rotXAmp * Math.sin(t * layer.rotXSpeed + layer.rotPhase + 1.1) +
+          lean * layer.parallax;
         return {
           cosY: Math.cos(rotY),
           sinY: Math.sin(rotY),
           cosX: Math.cos(rotX),
           sinX: Math.sin(rotX),
+          // Where in the field this stratum sits for the current scroll
+          // position. Applied before projection, so perspective scales it and
+          // the near layer genuinely travels further than the far one.
+          parallax: (progress - 0.5) * PARALLAX_RANGE * layer.parallax,
         };
       });
 
       for (const curve of curves) {
         const layer = LAYERS[curve.layer];
-        const { cosY, sinY, cosX, sinX } = layerTrig[curve.layer];
+        const { cosY, sinY, cosX, sinX, parallax } = layerTrig[curve.layer];
 
         const breathe = 1 + BREATHE_DEPTH * Math.sin(t * BREATHE_SPEED + curve.breathePhase);
         const wander = WANDER_RATIO * Math.sin(t * WANDER_SPEED + curve.wanderPhase);
@@ -502,41 +571,21 @@ export default function WaveField() {
         const samples = curve.samples;
 
         for (let s = 0; s <= samples; s++) {
-          let lx: number;
-          let ly: number;
-          let lz: number;
+          // u runs -1..1 along the curve's own axis.
+          const u = (s / samples) * 2 - 1;
+          const wave =
+            Math.sin(u * Math.PI * curve.freq + curve.phase + t) +
+            0.45 * Math.sin(u * Math.PI * 2 * curve.freq2 + curve.phase2 - t * 0.73);
+          const twistAngle = u * TWIST_AMP + twist;
 
-          if (curve.species === "loop") {
-            // A closed Lissajous knot: three integer-ratio sinusoids of the
-            // same angle. As its layer turns, it foreshortens from a ring to
-            // an ellipse to an edge-on line — the clearest read of depth in
-            // the field, because the eye knows what a circle should do.
-            const theta = (s / samples) * Math.PI * 2;
-            const [a, b, c] = curve.loopRatio;
-            const r = curve.loopRadius * breathe;
-            lx = curve.xOffset + r * Math.cos(a * theta + curve.phase + t * curve.loopSpin);
-            ly = (curve.yOffset + wander) * 2 + r * Math.sin(b * theta + curve.phase2);
-            lz =
-              DEPTH_RATIO *
-              curve.depthScale *
-              0.8 *
-              Math.sin(c * theta + curve.depthPhase + t * 0.41);
-          } else {
-            // u runs -1..1 along the curve's own axis.
-            const u = (s / samples) * 2 - 1;
-            const wave =
-              Math.sin(u * Math.PI * curve.freq + curve.phase + t) +
-              0.45 * Math.sin(u * Math.PI * 2 * curve.freq2 + curve.phase2 - t * 0.73);
-            const twistAngle = u * TWIST_AMP + twist;
-
-            lx = u * SPAN + curve.xOffset * 0.3;
-            ly = (curve.yOffset + wander) * 2 + wave * Math.cos(twistAngle) * ampNorm;
-            lz =
-              DEPTH_RATIO *
-              curve.depthScale *
-              (Math.sin(u * Math.PI * curve.depthFreq + curve.depthPhase + t * 0.61) * 0.65 +
-                wave * Math.sin(twistAngle) * 0.35);
-          }
+          const lx = u * SPAN + curve.xOffset * 0.3;
+          const ly =
+            (curve.yOffset + wander) * 2 + wave * Math.cos(twistAngle) * ampNorm + parallax;
+          let lz =
+            DEPTH_RATIO *
+            curve.depthScale *
+            (Math.sin(u * Math.PI * curve.depthFreq + curve.depthPhase + t * 0.61) * 0.65 +
+              wave * Math.sin(twistAngle) * 0.35);
 
           // Push the whole curve into its stratum's depth slot.
           lz += layer.depth;
@@ -695,7 +744,12 @@ export default function WaveField() {
     let resizeObserver: ResizeObserver | null = null;
     if (typeof ResizeObserver !== "undefined") {
       resizeObserver = new ResizeObserver(handleResize);
-      resizeObserver.observe(document.documentElement);
+      // `body`, not `documentElement`: the root's observed content box is
+      // effectively the layout viewport, so it need not change when the
+      // document grows taller (late-loading images, expanding content). The
+      // cached scroll extent would then go stale and the parallax would map
+      // scroll position against the wrong document height.
+      resizeObserver.observe(document.body);
     }
 
     return () => {
