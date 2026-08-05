@@ -7,6 +7,11 @@
   --dim: #a8a8a8;
   --dim2: #7d7d7d;
   --accent: #2563eb;
+  /* The same blue, lightened just enough to be legible as TEXT. #2563eb on
+   * #080808 is 3.87:1 — under the 4.5:1 floor — so it is fine for rules,
+   * fills and icons but fails for words. This is 4.93:1. Use `--accent`
+   * for anything shaped, `--accent-text` for anything read. */
+  --accent-text: #4478ee;
   --border: rgba(255, 255, 255, 0.07);
 }
 
@@ -17,6 +22,7 @@
   --color-dim: var(--dim);
   --color-dim2: var(--dim2);
   --color-accent: var(--accent);
+  --color-accent-text: var(--accent-text);
   /* `AGENTS.md` specifies `bg-primary/50` for list bullets. This design
    * renamed the brand blue to `accent`, so `primary` is kept as an alias
    * of it rather than a second colour — the documented class stays valid
