@@ -87,7 +87,22 @@ export default function Sidebar() {
         <Link href="/" className="no-underline">
           <span className="font-display text-[0.9rem] font-extrabold text-fg">SK</span>
         </Link>
-        <nav className="flex gap-6">
+        {/* The five labels measure 192.5px together; with a fixed 24px
+          * gap the row is 288.5px, which together with the "SK" wordmark
+          * cannot clear the bar's 20px side padding at a 320px viewport
+          * — the nav overflowed the document by 8px there. The gap ramps
+          * from 12px at 320px to the full 24px at 420px instead of
+          * snapping at a breakpoint, so the spacing always tracks the
+          * room actually available, and at >=420px the bar is identical
+          * to what it was. Inline because the expression is far more
+          * legible here than as an underscore-escaped arbitrary value,
+          * and the middle term is wrapped in `calc()` so no engine can
+          * treat the bare math as an unparseable value and drop the whole
+          * declaration back to `gap: normal`. */}
+        <nav
+          className="flex"
+          style={{ gap: "clamp(0.75rem, calc(0.75rem + (100vw - 320px) * 0.12), 1.5rem)" }}
+        >
           {navItems.map((item) => {
             const active = item.end ? pathname === item.href : pathname.startsWith(item.href);
             return (
