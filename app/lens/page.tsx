@@ -32,16 +32,19 @@ export default function GalleryPage() {
 
   return (
     <div className="px-6 pt-16 pb-24 sm:px-8 lg:px-12 lg:pt-[4.5rem]">
-      <motion.div initial={reduceMotion ? false : "hidden"} animate="visible" variants={fadeUp} className="mb-9">
-        <div ref={headingRef}>
-          <ManifestoHeading
-            id="lens-heading"
-            text="Lens"
-            active={headingActive}
-            className="font-display text-[clamp(2.5rem,5vw,4rem)] font-extrabold tracking-[-0.03em] text-fg"
-          />
-        </div>
-        <p className="mt-1.5 text-sm text-dim2">Sony α6000 · {String(featPhotos.length).padStart(2, "0")} frames</p>
+      <motion.div
+        initial={reduceMotion ? false : "hidden"}
+        animate="visible"
+        variants={fadeUp}
+        ref={headingRef}
+        className="mb-7"
+      >
+        <ManifestoHeading
+          id="lens-heading"
+          text="Lens"
+          active={headingActive}
+          className="font-display text-[clamp(2.5rem,5vw,4rem)] font-extrabold tracking-[-0.03em] text-fg"
+        />
       </motion.div>
 
       <DrawnRule className="mb-8" />

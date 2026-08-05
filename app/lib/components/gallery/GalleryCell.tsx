@@ -1,13 +1,11 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 import { motion } from "motion/react";
 import type featPhotos from "@/app/lib/data/photos";
 import { EASE_OUT } from "@/app/lib/motion";
 import { beats } from "@/app/lib/tempo";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
-import ViewfinderFrame from "@/app/lib/components/shared/ViewfinderFrame";
 
 export type Photo = (typeof featPhotos)[number];
 
@@ -19,8 +17,10 @@ export type Photo = (typeof featPhotos)[number];
  * ruled to exactly the frame's width, so the exposure it describes is
  * unambiguous without a legend, an overlay, or a hover.
  *
- * No hover zoom. Hover/focus only snaps in the ViewfinderFrame's corner
- * ticks and lifts the caption title from dim to full weight.
+ * No hover zoom and no corner ticks — the photograph is the subject, and
+ * chrome laid over it read as clutter. Hover or keyboard focus only lifts
+ * the caption title from dim to full weight, and that is done in CSS so
+ * there is no interaction state that can be left stuck on.
  */
 export default function GalleryCell({
   photo,
@@ -37,7 +37,6 @@ export default function GalleryCell({
   onOpen: () => void;
   cellRef: (el: HTMLButtonElement | null) => void;
 }) {
-  const [active, setActive] = useState(false);
   const reduceMotion = useMotionPreference();
 
   return (
@@ -47,32 +46,33 @@ export default function GalleryCell({
       whileInView={reduceMotion ? undefined : { opacity: 1 }}
       viewport={{ once: true, margin: "100000px 0px -18% 0px" }}
       transition={{ duration: beats(0.6), delay: (index % 6) * beats(0.05), ease: EASE_OUT }}
-      className="m-0 shrink-0"
+      className="group m-0 shrink-0"
     >
+      {/* No viewfinder ticks on the thumbnails. The corner marks read as
+        * chrome bolted onto a photograph rather than as part of it, and
+        * driving them from React state meant the browser restoring focus
+        * to this button when the lightbox closed fired `onFocus` and left
+        * the frame stuck on with the pointer nowhere near it. There is no
+        * hover state to get stuck now: the caption lift is pure CSS, and
+        * keyboard users get the focus ring. */}
       <button
         ref={cellRef}
         type="button"
         onClick={onOpen}
-        onMouseEnter={() => setActive(true)}
-        onMouseLeave={() => setActive(false)}
-        onFocus={() => setActive(true)}
-        onBlur={() => setActive(false)}
         style={{ height: `${height}px` }}
         className="block w-full cursor-pointer overflow-hidden border-0 bg-transparent p-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
         aria-label={`Open ${photo.alt}`}
       >
-        <ViewfinderFrame active={active} animate={!reduceMotion} className="h-full w-full">
-          <Image
-            src={photo.image}
-            alt=""
-            width={Math.round(width)}
-            height={Math.round(height)}
-            priority={index < 4}
-            loading={index < 4 ? undefined : "lazy"}
-            sizes={`${Math.ceil(width)}px`}
-            className="block h-full w-full object-cover"
-          />
-        </ViewfinderFrame>
+        <Image
+          src={photo.image}
+          alt=""
+          width={Math.round(width)}
+          height={Math.round(height)}
+          priority={index < 4}
+          loading={index < 4 ? undefined : "lazy"}
+          sizes={`${Math.ceil(width)}px`}
+          className="block h-full w-full object-cover"
+        />
       </button>
 
       {/* Title and exposure are one caption block, not two scraps: the
@@ -90,9 +90,9 @@ export default function GalleryCell({
         * editorial behaviour, not a defect worth that. */}
       <figcaption className="mt-3 border-t border-border pt-2">
         <span
-          className={`block text-sm font-medium leading-snug ${
+          className={`block text-sm font-medium leading-snug text-dim group-hover:text-fg group-has-[button:focus-visible]:text-fg ${
             reduceMotion ? "" : "transition-colors duration-150"
-          } ${active ? "text-fg" : "text-dim"}`}
+          }`}
         >
           {photo.alt}
         </span>

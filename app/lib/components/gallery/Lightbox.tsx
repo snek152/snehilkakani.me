@@ -9,12 +9,17 @@ import { EASE_OUT } from "@/app/lib/motion";
 import { beats } from "@/app/lib/tempo";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import { getPhotoDims } from "./photo-dims";
-import ViewfinderFrame from "@/app/lib/components/shared/ViewfinderFrame";
 import type { Photo } from "./GalleryCell";
 
 /** Minimum horizontal drag, in px, before a touch gesture counts as a
  * swipe-to-navigate rather than a tap or a scroll wobble. */
 const SWIPE_THRESHOLD = 50;
+
+/** The displayed width the browser should pick a source for. The shell is
+ * capped at 1100px, so a bare `88vw` over-fetches on wide screens: it asks
+ * for a source sized to the viewport rather than to the box the photo is
+ * actually drawn in. */
+const LIGHTBOX_SIZES = "(min-width: 1250px) 1100px, 88vw";
 
 export default function Lightbox({
   photos,
@@ -103,17 +108,30 @@ export default function Lightbox({
     return () => window.removeEventListener("keydown", handleKey);
   }, [open, index, photos.length, onClose, onNavigate]);
 
-  // Preload both neighbours so ArrowLeft/ArrowRight (and a swipe) never
-  // wait on a network fetch — only the crossfade transition is visible.
-  useEffect(() => {
-    if (!open || index === null) return;
-    [index - 1, index + 1].forEach((i) => {
-      const neighbour = photos[(i + photos.length) % photos.length];
-      if (!neighbour) return;
-      const img = new window.Image();
-      img.src = neighbour.image;
-    });
-  }, [open, index, photos]);
+  // Neighbour preloading is done by RENDERING the neighbours, hidden, with
+  // exactly the props the visible image uses — see the hidden block in the
+  // markup below.
+  //
+  // The obvious approach does not work and is actively harmful. `new
+  // Image().src = photo.image` warms `/photos/foo.jpg`, but `next/image`
+  // requests `/_next/image?url=%2Fphotos%2Ffoo.jpg&w=...&q=75`. Those are
+  // different URLs, so the preload warmed nothing the lightbox would ever
+  // ask for — while downloading the untouched original, which in this
+  // gallery runs to 4.6MB. Two of those per navigation, competing for
+  // bandwidth with the optimized image actually being displayed, is what
+  // made the lightbox feel like it took forever to load.
+  //
+  // Letting `next/image` generate the neighbour URLs keeps them identical
+  // to the displayed one by construction, rather than by reimplementing
+  // Next's URL format here and hoping it does not drift.
+
+  const neighbours =
+    open && index !== null
+      ? [
+          photos[(index - 1 + photos.length) % photos.length],
+          photos[(index + 1) % photos.length],
+        ].filter((p): p is Photo => Boolean(p) && p.image !== photos[index].image)
+      : [];
 
   const handleTouchStart = (e: ReactTouchEvent) => {
     touchStartX.current = e.touches[0]?.clientX ?? null;
@@ -165,31 +183,51 @@ export default function Lightbox({
                   className="absolute inset-0 flex items-center justify-center"
                   style={{ zIndex: i }}
                 >
-                  <ViewfinderFrame
-                    captionLeft={`f/${layer.photo.aperture} · ${layer.photo.shutter}s · ISO ${layer.photo.iso}`}
-                    className="max-h-[76vh] max-w-[88vw]"
-                  >
-                    <Image
-                      src={layer.photo.image}
-                      alt={layer.photo.alt}
-                      width={getPhotoDims(layer.photo.image).w}
-                      height={getPhotoDims(layer.photo.image).h}
-                      sizes="88vw"
-                      priority
-                      className="block max-h-[76vh] w-auto max-w-[88vw] object-contain"
-                    />
-                  </ViewfinderFrame>
+                  <Image
+                    src={layer.photo.image}
+                    alt={layer.photo.alt}
+                    width={getPhotoDims(layer.photo.image).w}
+                    height={getPhotoDims(layer.photo.image).h}
+                    sizes={LIGHTBOX_SIZES}
+                    priority
+                    className="block max-h-[76vh] w-auto max-w-[88vw] object-contain"
+                  />
                 </motion.div>
               ))}
             </div>
 
-            <div className="mt-3">
-              <span id={titleId} className="text-sm text-dim">
+            {/* Same caption shape as the grid: title, then the exposure line
+              * in tabular figures under it. */}
+            <div className="mt-4 max-w-[min(88vw,1100px)] text-center">
+              <span id={titleId} className="block text-sm text-fg">
                 {photo.alt}
               </span>
-              <span id={descId} className="sr-only">
+              <span
+                id={descId}
+                className="mt-1 block font-sans text-xs tabular-nums text-dim2"
+              >
                 f/{photo.aperture} · {photo.shutter}s · ISO {photo.iso}
               </span>
+            </div>
+
+            {/* Neighbours, rendered rather than hand-preloaded, so their URLs
+              * are generated by the same component that will request them.
+              * `loading="eager"` is required: the default is lazy, and a
+              * zero-opacity offscreen image would never be fetched, which
+              * would silently make this do nothing. Not `display:none` for
+              * the same reason. */}
+            <div aria-hidden className="pointer-events-none absolute h-px w-px overflow-hidden opacity-0">
+              {neighbours.map((n) => (
+                <Image
+                  key={n.image}
+                  src={n.image}
+                  alt=""
+                  width={getPhotoDims(n.image).w}
+                  height={getPhotoDims(n.image).h}
+                  sizes={LIGHTBOX_SIZES}
+                  loading="eager"
+                />
+              ))}
             </div>
 
             <button
