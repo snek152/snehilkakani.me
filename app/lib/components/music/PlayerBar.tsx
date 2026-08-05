@@ -127,7 +127,7 @@ export default function PlayerBar({
             value={Math.min(currentTime, duration || 0)}
             onChange={onScrub}
             disabled={!duration}
-            className="peer absolute inset-x-0 top-0 h-3 w-full cursor-pointer appearance-none bg-transparent opacity-0 disabled:cursor-default"
+            className="peer absolute inset-x-0 -top-5 h-11 w-full cursor-pointer appearance-none bg-transparent opacity-0 disabled:cursor-default"
           />
 
           {/* The bar's top edge, the list's row separator and the scrubber
@@ -200,7 +200,11 @@ export default function PlayerBar({
                     onClick={() => onSkip(-1)}
                     disabled={activeIndex === 0}
                     aria-label="Previous track"
-                    className="text-dim2 transition-colors duration-150 hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent disabled:pointer-events-none disabled:opacity-30"
+                    // `-inset-3.5` (14px) pads the 16px icon out to a 44px
+                    // tap target via an invisible `::before`, without
+                    // resizing the button itself — resizing would have
+                    // shoved the play button and the clock over.
+                    className="relative text-dim2 transition-colors duration-150 before:absolute before:-inset-3.5 before:content-[''] hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent disabled:pointer-events-none disabled:opacity-30"
                   >
                     <SkipBack size={16} strokeWidth={1.5} aria-hidden="true" />
                   </button>
@@ -215,7 +219,10 @@ export default function PlayerBar({
                     type="button"
                     onClick={onToggle}
                     aria-label={isPlaybackActive ? "Pause" : "Play"}
-                    className="flex h-7 w-7 items-center justify-center border border-border text-fg transition-colors duration-150 hover:border-dim focus:outline-none focus-visible:border-accent focus-visible:text-accent"
+                    // Same invisible `::before` padding technique: the
+                    // visible 28px square is unchanged, `-inset-2` (8px)
+                    // brings the tap target to 44px.
+                    className="relative flex h-7 w-7 items-center justify-center border border-border text-fg transition-colors duration-150 before:absolute before:-inset-2 before:content-[''] hover:border-dim focus:outline-none focus-visible:border-accent focus-visible:text-accent"
                   >
                     {isPlaybackActive ? (
                       <Pause size={13} strokeWidth={1} className="fill-current" aria-hidden="true" />
@@ -228,7 +235,7 @@ export default function PlayerBar({
                     onClick={() => onSkip(1)}
                     disabled={activeIndex === totalTracks - 1}
                     aria-label="Next track"
-                    className="text-dim2 transition-colors duration-150 hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent disabled:pointer-events-none disabled:opacity-30"
+                    className="relative text-dim2 transition-colors duration-150 before:absolute before:-inset-3.5 before:content-[''] hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent disabled:pointer-events-none disabled:opacity-30"
                   >
                     <SkipForward size={16} strokeWidth={1.5} aria-hidden="true" />
                   </button>

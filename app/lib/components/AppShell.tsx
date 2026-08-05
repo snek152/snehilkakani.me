@@ -25,6 +25,7 @@ import { MotionPreferenceProvider } from "./shared/MotionPreference";
 import ScrollProgressRail from "./shared/ScrollProgressRail";
 import Sidebar from "./Sidebar";
 import Footer from "./Footer";
+import { MusicPlayerProvider, useMusicPlayer } from "./music/MusicPlayerProvider";
 import { navItems } from "@/app/lib/nav";
 
 
@@ -58,19 +59,17 @@ export function useNavDirection() {
 export const TRANSPORT_CLEARANCE = 64;
 
 /**
- * useSetMusicPlayerActive()
- * -------------------------
- * Lets a page (currently only /music) tell the shell that the fixed
- * transport is now docked to the viewport bottom, so the shell can
- * reserve `TRANSPORT_CLEARANCE` inside Footer — solved once here instead
- * of every page that might grow a fixed bottom bar needing its own magic
- * padding.
+ * Renders `Footer`, reserving `TRANSPORT_CLEARANCE` inside its own
+ * surface whenever the shared transport has a track loaded — derived
+ * straight from `useMusicPlayer()` rather than a page telling the shell
+ * about it, since the transport is now shell-owned and can be active on
+ * any route, not just /music.
  */
-const SetMusicPlayerActiveContext = createContext<(active: boolean) => void>(() => {});
-
-export function useSetMusicPlayerActive() {
-  return useContext(SetMusicPlayerActiveContext);
+function FooterWithClearance() {
+  const { activeIndex } = useMusicPlayer();
+  return <Footer bottomReserve={activeIndex !== null ? TRANSPORT_CLEARANCE : 0} />;
 }
+
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -105,7 +104,6 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     setIntroReady(true);
   }, []);
 
-  const [musicPlayerActive, setMusicPlayerActive] = useState(false);
 
   return (
     <MotionPreferenceProvider>
@@ -121,21 +119,21 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           <Sidebar />
           <IntroReadyContext.Provider value={introReady}>
             <NavDirectionContext.Provider value={direction}>
-              <SetMusicPlayerActiveContext.Provider value={setMusicPlayerActive}>
-                {/* `relative z-[1]` sits on the whole column, not just the
-                  * content div: `WaveField` and `FilmGrain` are fixed at
-                  * `z-0`, and a positioned element paints above unpositioned
-                  * content, so with only the inner div lifted the Footer
-                  * below it was being painted over by both. */}
-                <div className="relative z-[1] flex min-h-[100dvh] flex-col lg:pl-[52px]">
-                  <div className="relative z-[1] flex-1">{children}</div>
-                  {/* The transport's footprint is reserved INSIDE the
-                    * footer (see `TRANSPORT_CLEARANCE`), not by a spacer
-                    * after it — a sibling spacer left the document taller
-                    * than the footer, so max scroll ended below it. */}
-                  <Footer bottomReserve={musicPlayerActive ? TRANSPORT_CLEARANCE : 0} />
-                </div>
-              </SetMusicPlayerActiveContext.Provider>
+            <MusicPlayerProvider>
+              {/* `relative z-[1]` sits on the whole column, not just the
+                * content div: `WaveField` and `FilmGrain` are fixed at
+                * `z-0`, and a positioned element paints above unpositioned
+                * content, so with only the inner div lifted the Footer
+                * below it was being painted over by both. */}
+              <div className="relative z-[1] flex min-h-[100dvh] flex-col lg:pl-[52px]">
+                <div className="relative z-[1] flex-1">{children}</div>
+                {/* The transport's footprint is reserved INSIDE the
+                  * footer (see `TRANSPORT_CLEARANCE`), not by a spacer
+                  * after it — a sibling spacer left the document taller
+                  * than the footer, so max scroll ended below it. */}
+                <FooterWithClearance />
+              </div>
+            </MusicPlayerProvider>
             </NavDirectionContext.Provider>
           </IntroReadyContext.Provider>
         </div>
