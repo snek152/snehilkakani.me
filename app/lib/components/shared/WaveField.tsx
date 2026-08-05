@@ -32,10 +32,13 @@ import { useMotionPreference } from "./MotionPreference";
  *    share a frame. Only partway, though: identical strands would be
  *    periodic and mirror-symmetric.
  *
- * 4. It answers the page. Scroll position slides the strata at different
- *    rates, and scroll velocity briefly tips them and settles, so the field
- *    has depth you move through and inertia you can feel rather than being a
- *    backdrop bolted behind the content. See `PARALLAX_RANGE` / `LEAN_GAIN`.
+ * 4. It answers the page, through its ANIMATION rather than its position.
+ *    Scroll is a second time axis: each stratum scrubs its own evolution at
+ *    its own rate, so scrolling slides them through each other's
+ *    configurations and scrolling back rewinds it. Scroll speed also swells
+ *    the field briefly. Nothing translates — an earlier version slid the
+ *    strata down the screen and that read as the background coming loose.
+ *    See `SCROLL_TIME_GAIN` / `ENERGY_GAIN`.
  *
  * Two earlier problems worth not reintroducing:
  *
@@ -114,21 +117,34 @@ const PHASE_STEP = 0.62;
 
 /** Scroll coupling.
  *
- * `PARALLAX_RANGE` is how far the field travels, in half-viewport units,
- * between the top and bottom of the document — scaled per stratum by
- * `LAYERS[].parallax`, so the near layer moves furthest and the far one
- * barely at all. It is driven by scroll PROGRESS rather than raw pixels so
- * the travel is bounded on any page length: a long page moves the field the
- * same total distance as a short one, and it can never slide off.
+ * Scroll drives the field's ANIMATION, not its position. An earlier version
+ * translated the strata down the screen as you scrolled; even at a bounded
+ * 134px that reads as the background sliding out from under the page, which
+ * is jarring rather than atmospheric.
  *
- * `LEAN_*` is the transient. Scroll velocity tips the strata briefly and
- * then settles, so a flick reads as the field having inertia rather than as
- * a rigid backdrop. The damping is per-frame exponential smoothing, and the
- * response is capped, so a trackpad fling cannot throw it. */
-const PARALLAX_RANGE = 0.55;
-const LEAN_GAIN = 0.0019;
-const LEAN_MAX = 0.21;
-const LEAN_DAMPING = 0.15;
+ * Instead scroll is a second time axis. `SCROLL_TIME_GAIN` is how many extra
+ * radians of evolution a full document's worth of scrolling adds, scaled per
+ * stratum by `LAYERS[].scrollResponse`. Because each layer scrubs at its own
+ * rate, scrolling slides them through each other's configurations — the
+ * field reorganises rather than moves, and scrolling back rewinds it. The
+ * ambient drift keeps running underneath, so the field never freezes when
+ * the page is still.
+ *
+ * `ENERGY_*` is the transient: scroll velocity briefly swells amplitude and
+ * twist, so a flick makes the field surge and settle instead of tilting.
+ * Damped per frame and capped, so a trackpad fling cannot throw it. */
+const SCROLL_TIME_GAIN = 5.5;
+/** How fast the scrubbed phase chases the scroll position. Damped rather
+ * than applied outright: `progress` moves smoothly under a continuous
+ * scroll, but a PageDown, an anchor jump or a scrollbar drag moves it in
+ * one step, and feeding that straight into the phase snaps the whole field
+ * to a new configuration in a single frame. Chasing it ramps that over a
+ * few hundred milliseconds instead, and the slight lag under continuous
+ * scrolling reads as the field having weight. */
+const SCROLL_PHASE_DAMPING = 0.07;
+const ENERGY_GAIN = 0.0042;
+const ENERGY_MAX = 0.5;
+const ENERGY_DAMPING = 0.11;
 
 /** Half-extent of a filament along its own axis, in units of half the
  * viewport. Greater than 1 so both ends sit outside the frame: strands enter
@@ -184,8 +200,8 @@ const WANDER_RATIO = 0.07;
  * because there are many curves: density is meant to buy structure and
  * interference, not brightness. Tuned against the composited percentiles in
  * the header note. */
-const BASE_ALPHA_MIN = 0.082;
-const BASE_ALPHA_MAX = 0.145;
+const BASE_ALPHA_MIN = 0.096;
+const BASE_ALPHA_MAX = 0.168;
 
 /** How much depth darkens a curve: the far extreme keeps this fraction of its
  * brightness, the near extreme keeps all of it. This replaces the old
@@ -210,7 +226,7 @@ const HALO_ALPHA_SHARE = 0.26;
  * text contrast drops everywhere. That is the number to watch when tuning —
  * not how the bloom looks on its own. */
 const BLOOM_WIDTH_SCALE = 3.2;
-const BLOOM_ALPHA_SHARE = 0.27;
+const BLOOM_ALPHA_SHARE = 0.30;
 const BLOOM_BANDS = 4;
 
 /** Extra halo spread applied to the far end of a curve's own depth range, on
@@ -277,7 +293,7 @@ const LAYERS = [
     widthScale: 0.7,
     haloScale: 5.4,
     tint: 0.55,
-    parallax: 0.28,
+    scrollResponse: 0.35,
   },
   {
     depth: 0,
@@ -290,7 +306,7 @@ const LAYERS = [
     widthScale: 1,
     haloScale: 3.6,
     tint: 0.22,
-    parallax: 0.62,
+    scrollResponse: 0.7,
   },
   {
     depth: -0.54,
@@ -303,7 +319,7 @@ const LAYERS = [
     widthScale: 1.3,
     haloScale: 2.5,
     tint: 0,
-    parallax: 1,
+    scrollResponse: 1.25,
   },
 ];
 
@@ -503,7 +519,8 @@ export default function WaveField() {
 
     // Scroll state, persisted across frames.
     let lastScrollY = typeof window === "undefined" ? 0 : window.scrollY;
-    let lean = 0;
+    let energy = 0;
+    let scrollPhase = 0;
 
     resize();
 
@@ -533,40 +550,40 @@ export default function WaveField() {
       const progress = Math.min(1, Math.max(0, window.scrollY / scrollable));
       const delta = window.scrollY - lastScrollY;
       lastScrollY = window.scrollY;
-      // Exponential smoothing toward the current velocity, then clamped, so
-      // the lean builds and settles instead of snapping — and a fling cannot
-      // throw the field.
-      lean += (Math.max(-LEAN_MAX, Math.min(LEAN_MAX, delta * LEAN_GAIN)) - lean) * LEAN_DAMPING;
+      // Speed, not direction: scrolling either way is agitation. Smoothed and
+      // capped so the surge builds and settles instead of snapping.
+      energy +=
+        (Math.min(ENERGY_MAX, Math.abs(delta) * ENERGY_GAIN) - energy) * ENERGY_DAMPING;
 
       // Each stratum's orientation for this frame, computed once rather than
-      // per curve. Scroll velocity tips them all in the same direction, which
-      // is what makes the strata read as one connected body reacting together
-      // rather than three independent sheets.
-      const layerTrig = LAYERS.map((layer) => {
-        const rotY = layer.rotYAmp * Math.sin(t * layer.rotYSpeed + layer.rotPhase);
-        const rotX =
-          layer.rotXAmp * Math.sin(t * layer.rotXSpeed + layer.rotPhase + 1.1) +
-          lean * layer.parallax;
+      // per curve. `layerTime` is the stratum's own clock: ambient drift plus
+      // the scroll offset scaled by how strongly this layer answers scroll.
+      // Because the three rates differ, scrolling slides the strata through
+      // each other's configurations instead of moving any of them.
+      scrollPhase += (progress * SCROLL_TIME_GAIN - scrollPhase) * SCROLL_PHASE_DAMPING;
+      const layerState = LAYERS.map((layer) => {
+        const lt = t + scrollPhase * layer.scrollResponse;
+        const rotY = layer.rotYAmp * Math.sin(lt * layer.rotYSpeed + layer.rotPhase);
+        const rotX = layer.rotXAmp * Math.sin(lt * layer.rotXSpeed + layer.rotPhase + 1.1);
         return {
+          lt,
           cosY: Math.cos(rotY),
           sinY: Math.sin(rotY),
           cosX: Math.cos(rotX),
           sinX: Math.sin(rotX),
-          // Where in the field this stratum sits for the current scroll
-          // position. Applied before projection, so perspective scales it and
-          // the near layer genuinely travels further than the far one.
-          parallax: (progress - 0.5) * PARALLAX_RANGE * layer.parallax,
         };
       });
 
       for (const curve of curves) {
         const layer = LAYERS[curve.layer];
-        const { cosY, sinY, cosX, sinX, parallax } = layerTrig[curve.layer];
+        const { lt, cosY, sinY, cosX, sinX } = layerState[curve.layer];
 
-        const breathe = 1 + BREATHE_DEPTH * Math.sin(t * BREATHE_SPEED + curve.breathePhase);
-        const wander = WANDER_RATIO * Math.sin(t * WANDER_SPEED + curve.wanderPhase);
-        const twist = t * TWIST_SPEED + curve.twistPhase;
-        const amp = ampPx * curve.ampScale * breathe;
+        const breathe = 1 + BREATHE_DEPTH * Math.sin(lt * BREATHE_SPEED + curve.breathePhase);
+        const wander = WANDER_RATIO * Math.sin(lt * WANDER_SPEED + curve.wanderPhase);
+        // Scroll energy swells the twist and the excursion together, so a
+        // flick makes the whole family surge rather than shift.
+        const twist = lt * TWIST_SPEED + curve.twistPhase + energy * 0.9;
+        const amp = ampPx * curve.ampScale * breathe * (1 + energy * 0.35);
         const ampNorm = amp / halfH;
         const samples = curve.samples;
 
@@ -574,17 +591,16 @@ export default function WaveField() {
           // u runs -1..1 along the curve's own axis.
           const u = (s / samples) * 2 - 1;
           const wave =
-            Math.sin(u * Math.PI * curve.freq + curve.phase + t) +
-            0.45 * Math.sin(u * Math.PI * 2 * curve.freq2 + curve.phase2 - t * 0.73);
+            Math.sin(u * Math.PI * curve.freq + curve.phase + lt) +
+            0.45 * Math.sin(u * Math.PI * 2 * curve.freq2 + curve.phase2 - lt * 0.73);
           const twistAngle = u * TWIST_AMP + twist;
 
           const lx = u * SPAN + curve.xOffset * 0.3;
-          const ly =
-            (curve.yOffset + wander) * 2 + wave * Math.cos(twistAngle) * ampNorm + parallax;
+          const ly = (curve.yOffset + wander) * 2 + wave * Math.cos(twistAngle) * ampNorm;
           let lz =
             DEPTH_RATIO *
             curve.depthScale *
-            (Math.sin(u * Math.PI * curve.depthFreq + curve.depthPhase + t * 0.61) * 0.65 +
+            (Math.sin(u * Math.PI * curve.depthFreq + curve.depthPhase + lt * 0.61) * 0.65 +
               wave * Math.sin(twistAngle) * 0.35);
 
           // Push the whole curve into its stratum's depth slot.
