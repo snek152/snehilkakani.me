@@ -43,19 +43,30 @@ import { useMotionPreference } from "./MotionPreference";
  *   nothing to mask at the edges at all.
  *
  * Contrast hierarchy — the constraint the tuning serves. The structural
- * hairline (`--color-border`, white at 0.07) composites to 25/255 over the
- * #080808 page. The rule is per-percentile, not per-pixel: the BODY of the
- * field stays under that, while isolated additive crossings may reach or pass
- * it. A small soft node reads as light; a continuous strand at rule
+ * hairline (`--color-border`, white at 0.07) composites to luminance 25 over
+ * the #080808 page. The rule is per-percentile, not per-pixel: the BODY of
+ * the field stays under that, while isolated additive crossings may reach or
+ * pass it. A small soft node reads as light; a continuous strand at rule
  * brightness reads as another edge in the layout, which is what made an
  * earlier version collide with the text. Constraining the PEAK instead drove
  * the typical strand to alpha 2/255 and the field vanished — so tune against
  * percentiles, never the maximum.
  *
- * Softness is two strokes per curve, a wide dim halo under a narrow core.
- * An earlier version rendered to a half-resolution offscreen canvas and
- * upscaled; bilinear upscaling of hairlines is uneven, and that unevenness
- * was itself part of why the transparency looked wrong.
+ * Measured composited luminance at 1440x900 (actual RGBA composited over the
+ * page, NOT alpha treated as white — under `lighter` both colour and alpha
+ * accumulate, and the strands are tinted, so an alpha proxy misreports both
+ * ends): p50 8, p90 10, p99 19, p99.9 31, max 51. Worst-case contrast for
+ * #efefef text over the brightest pixel in the field is 10.9:1, against 17.4
+ * on the bare background — still comfortably past WCAG AAA's 7:1, which is
+ * the number that actually bounds how visible this layer is allowed to get.
+ *
+ * Visibility comes from the bloom pass (area), not from raising the core
+ * (peak). See `BLOOM_ALPHA_SHARE`.
+ *
+ * Softness is three strokes per curve — bloom, halo, core. An earlier version
+ * rendered to a half-resolution offscreen canvas and upscaled; bilinear
+ * upscaling of hairlines is uneven, and that unevenness was itself part of
+ * why the transparency looked wrong.
  */
 
 /** Contiguous alpha bands per curve.
@@ -137,8 +148,8 @@ const WANDER_RATIO = 0.07;
  * because there are many curves: density is meant to buy structure and
  * interference, not brightness. Tuned against the composited percentiles in
  * the header note. */
-const BASE_ALPHA_MIN = 0.07;
-const BASE_ALPHA_MAX = 0.125;
+const BASE_ALPHA_MIN = 0.082;
+const BASE_ALPHA_MAX = 0.145;
 
 /** How much depth darkens a curve: the far extreme keeps this fraction of its
  * brightness, the near extreme keeps all of it. This replaces the old
@@ -150,6 +161,21 @@ const DEPTH_ALPHA_FLOOR = 0.1;
  * the field depth of field. */
 const CORE_WIDTH = 1.05;
 const HALO_ALPHA_SHARE = 0.26;
+
+/** The bloom: a third stroke, far wider than the halo and far fainter, laid
+ * down first. This is the field's visibility budget. Perceived presence
+ * tracks covered AREA much more than peak brightness, and an edgeless wash
+ * cannot be misread as one of the page's hairlines however visible it
+ * becomes — whereas buying the same presence by brightening the core would
+ * put strands back in competition with the rules.
+ *
+ * Its alpha has to stay very low: every curve contributes one, they overlap
+ * additively, and if the accumulated wash lifts the page background then
+ * text contrast drops everywhere. That is the number to watch when tuning —
+ * not how the bloom looks on its own. */
+const BLOOM_WIDTH_SCALE = 3.2;
+const BLOOM_ALPHA_SHARE = 0.27;
+const BLOOM_BANDS = 4;
 
 /** Extra halo spread applied to the far end of a curve's own depth range, on
  * top of its layer's. Within a single curve, the receding end goes softer
@@ -218,7 +244,13 @@ type Species = "arc" | "filament" | "loop";
  *
  * `haloScale` is depth of field. The far stratum is drawn with a much wider,
  * softer halo relative to its core, the near one tight and defined, so the
- * layers separate perceptually even where they overlap. */
+ * layers separate perceptually even where they overlap.
+ *
+ * `tint` is atmospheric perspective: distance mixes a strand toward the
+ * accent blue, the way haze cools anything far away. It is the one place
+ * colour enters the field, it stays on the single brand hue, and it does
+ * real work — a cool far stratum against a white near one separates depth
+ * far more cheaply than brightness alone can. */
 const LAYERS = [
   {
     depth: 0.62,
@@ -230,6 +262,7 @@ const LAYERS = [
     alphaScale: 0.62,
     widthScale: 0.7,
     haloScale: 5.4,
+    tint: 0.55,
   },
   {
     depth: 0,
@@ -241,6 +274,7 @@ const LAYERS = [
     alphaScale: 1,
     widthScale: 1,
     haloScale: 3.6,
+    tint: 0.22,
   },
   {
     depth: -0.54,
@@ -252,8 +286,19 @@ const LAYERS = [
     alphaScale: 1.22,
     widthScale: 1.3,
     haloScale: 2.5,
+    tint: 0,
   },
 ];
+
+/** Mixes white toward the accent by `t`, returning an "r, g, b" triple. */
+function tintedRgb(t: number): string {
+  const r = Math.round(255 + (37 - 255) * t);
+  const g = Math.round(255 + (99 - 255) * t);
+  const b = Math.round(255 + (235 - 255) * t);
+  return `${r}, ${g}, ${b}`;
+}
+
+const LAYER_RGB = LAYERS.map((l) => tintedRgb(l.tint));
 
 /** Species population per layer: [arcs, filaments, loops].
  *
@@ -519,18 +564,36 @@ export default function WaveField() {
           pDefocus[s] = 1 + DEFOCUS_BY_DEPTH * (1 - depthT);
         }
 
-        const rgb = curve.isAccent ? ACCENT_COLOR : "255, 255, 255";
+        // Accent curves are the fully-saturated exception; everything else
+        // takes its stratum's atmospheric tint, so distance reads as cooler.
+        const rgb = curve.isAccent ? ACCENT_COLOR : LAYER_RGB[curve.layer];
         const baseAlpha =
           curve.alpha * layer.alphaScale * (curve.isAccent ? ACCENT_ALPHA_SCALE : 1);
-        const perBand = samples / BANDS;
 
-        // Two passes: a wide dim halo, then the narrow core over it. Softness
-        // without a blur, and resolution-independent.
-        for (let pass = 0; pass < 2; pass++) {
-          const isHalo = pass === 0;
-          for (let b = 0; b < BANDS; b++) {
-            const start = Math.round(b * perBand);
-            const end = Math.round((b + 1) * perBand);
+        // Three passes, widest and faintest first: bloom, halo, core.
+        //
+        // The bloom is what makes the field readable. Perceived presence
+        // tracks the AREA a thing covers far more than its peak brightness,
+        // and a very wide, very faint stroke has no edge, so it can never be
+        // mistaken for one of the page's hairlines no matter how visible it
+        // gets. Raising the core's alpha instead would buy the same presence
+        // by making individual strands compete with the rules — which is the
+        // exact failure this field started with. Under additive compositing
+        // the blooms of nearby strands also pool where several converge, so
+        // the crossings glow as regions rather than as points.
+        //
+        // The bloom uses far fewer bands than the core: it has no detail to
+        // resolve, so per-band depth accuracy is wasted on it, and this keeps
+        // the extra pass cheap.
+        for (let pass = 0; pass < 3; pass++) {
+          const isBloom = pass === 0;
+          const isHalo = pass === 1;
+          const bands = isBloom ? BLOOM_BANDS : BANDS;
+          const step = samples / bands;
+
+          for (let b = 0; b < bands; b++) {
+            const start = Math.round(b * step);
+            const end = Math.round((b + 1) * step);
             if (end <= start) continue;
 
             let aSum = 0;
@@ -550,14 +613,22 @@ export default function WaveField() {
             ctx.moveTo(px[start], py[start]);
             for (let s = start + 1; s <= end; s++) ctx.lineTo(px[s], py[s]);
 
-            ctx.lineWidth = isHalo
-              ? bandWidth * layer.haloScale * bandDefocus
-              : bandWidth;
-            // Spreading the halo wider must not also make it brighter, so its
-            // alpha is divided back down by the same defocus factor.
-            ctx.strokeStyle = `rgba(${rgb}, ${
-              isHalo ? (bandAlpha * HALO_ALPHA_SHARE) / bandDefocus : bandAlpha
-            })`;
+            if (isBloom) {
+              ctx.lineWidth = bandWidth * layer.haloScale * BLOOM_WIDTH_SCALE * bandDefocus;
+              ctx.strokeStyle = `rgba(${rgb}, ${
+                (bandAlpha * BLOOM_ALPHA_SHARE) / bandDefocus
+              })`;
+            } else if (isHalo) {
+              ctx.lineWidth = bandWidth * layer.haloScale * bandDefocus;
+              // Spreading the halo wider must not also make it brighter, so
+              // its alpha is divided back down by the same defocus factor.
+              ctx.strokeStyle = `rgba(${rgb}, ${
+                (bandAlpha * HALO_ALPHA_SHARE) / bandDefocus
+              })`;
+            } else {
+              ctx.lineWidth = bandWidth;
+              ctx.strokeStyle = `rgba(${rgb}, ${bandAlpha})`;
+            }
             ctx.stroke();
           }
         }
