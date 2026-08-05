@@ -60,6 +60,8 @@ export default function ContactForm() {
   const [message, setMessage] = useState("");
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [copyFailed, setCopyFailed] = useState(false);
   const messageId = useId();
 
   const submit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -67,6 +69,9 @@ export default function ContactForm() {
     setSending(true);
     const url = buildMailtoUrl(name, email, message);
     window.setTimeout(() => {
+      // We can't detect whether the OS actually launched a mail client, so
+      // the confirmation copy below never claims delivery — only that the
+      // handoff was attempted, with a fallback that works either way.
       window.location.href = url;
       setSending(false);
       setSent(true);
@@ -78,6 +83,27 @@ export default function ContactForm() {
     setEmail("");
     setMessage("");
     setSent(false);
+    setCopied(false);
+    setCopyFailed(false);
+  };
+
+  const copyMessage = () => {
+    const draft = `${name} <${email}>\n\n${message}`;
+    // Clipboard access can be unavailable (insecure origin, no navigator.clipboard)
+    // or rejected (denied permission). Either way, fall back to selectable text
+    // instead of silently doing nothing.
+    if (typeof navigator === "undefined" || !navigator.clipboard) {
+      setCopyFailed(true);
+      return;
+    }
+    navigator.clipboard.writeText(draft).then(
+      () => {
+        setCopied(true);
+        setCopyFailed(false);
+        window.setTimeout(() => setCopied(false), 1800);
+      },
+      () => setCopyFailed(true),
+    );
   };
 
   if (sent) {
@@ -93,7 +119,39 @@ export default function ContactForm() {
         <div className="flex size-9 items-center justify-center border border-border">
           <Check size={15} strokeWidth={2} className="text-accent" />
         </div>
-        <p className="text-[0.875rem] text-dim">Opened in your email client.</p>
+        <p className="text-[0.875rem] text-dim">
+          Your email app should have opened a draft to {CONTACT_EMAIL} with your message filled
+          in. Nothing happened, or you sent it already — either way, here&apos;s a fallback:
+        </p>
+        <div className="flex flex-wrap items-center gap-[0.6rem]">
+          <a
+            href={buildMailtoUrl(name, email, message)}
+            className="border border-border px-[0.875rem] py-[0.45rem] text-sm text-dim transition-colors duration-150 hover:text-fg focus-visible:text-fg focus-visible:outline-none focus-visible:border-accent"
+          >
+            Email {CONTACT_EMAIL} directly
+          </a>
+          <button
+            type="button"
+            onClick={copyMessage}
+            className="border border-border px-[0.875rem] py-[0.45rem] text-sm text-dim transition-colors duration-150 hover:text-fg focus-visible:text-fg focus-visible:outline-none focus-visible:border-accent"
+          >
+            {copied ? "Copied" : "Copy message"}
+          </button>
+        </div>
+        {copyFailed && (
+          <div>
+            <p className="mb-[0.3rem] text-[0.8rem] text-dim2">
+              Copy didn&apos;t work here — select the text below instead:
+            </p>
+            <textarea
+              readOnly
+              rows={4}
+              value={`${name} <${email}>\n\n${message}`}
+              onFocus={(e) => e.currentTarget.select()}
+              className="w-full resize-none border border-border bg-transparent p-[0.6rem] text-[0.85rem] text-fg outline-none focus:border-accent"
+            />
+          </div>
+        )}
         <button
           type="button"
           onClick={reset}
