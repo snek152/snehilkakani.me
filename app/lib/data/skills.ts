@@ -1,5 +1,11 @@
 import {
   SiC,
+  SiClaude,
+  SiCursor,
+  SiGithubcopilot,
+  SiGraphql,
+  SiLanggraph,
+  SiOllama,
   // SiCanva,
   SiCss,
   SiDeepgram,
@@ -37,27 +43,9 @@ export const skillsList: {
   type: (typeof skillTypes)[number];
 }[] = [
   {
-    icon: SiJavascript,
-    label: "JavaScript",
-    colorClass: "SiJavascript",
-    type: "frontend",
-  },
-  {
     icon: SiTypescript,
     label: "TypeScript",
     colorClass: "SiTypescript",
-    type: "frontend",
-  },
-  {
-    icon: SiHtml5,
-    label: "HTML5",
-    colorClass: "SiHtml5",
-    type: "frontend",
-  },
-  {
-    icon: SiCss,
-    label: "CSS3",
-    colorClass: "SiCss",
     type: "frontend",
   },
   {
@@ -79,9 +67,33 @@ export const skillsList: {
     type: "frontend",
   },
   {
+    icon: SiJavascript,
+    label: "JavaScript",
+    colorClass: "SiJavascript",
+    type: "frontend",
+  },
+  {
     icon: SiSvelte,
     label: "Svelte",
     colorClass: "SiSvelte",
+    type: "frontend",
+  },
+  {
+    icon: SiVuedotjs,
+    label: "Vue.js",
+    colorClass: "SiVuedotjs",
+    type: "frontend",
+  },
+  {
+    icon: SiHtml5,
+    label: "HTML5",
+    colorClass: "SiHtml5",
+    type: "frontend",
+  },
+  {
+    icon: SiCss,
+    label: "CSS3",
+    colorClass: "SiCss",
     type: "frontend",
   },
   {
@@ -91,9 +103,15 @@ export const skillsList: {
     type: "backend",
   },
   {
-    icon: SiFirebase,
-    label: "Firebase",
-    colorClass: "SiFirebase",
+    icon: SiGraphql,
+    label: "GraphQL",
+    colorClass: "SiGraphql",
+    type: "backend",
+  },
+  {
+    icon: SiPostgresql,
+    label: "PostgreSQL",
+    colorClass: "SiPostgresql",
     type: "backend",
   },
   {
@@ -115,22 +133,16 @@ export const skillsList: {
     type: "backend",
   },
   {
+    icon: SiFirebase,
+    label: "Firebase",
+    colorClass: "SiFirebase",
+    type: "backend",
+  },
+  {
     icon: SiSupabase,
     label: "Supabase",
     colorClass: "SiSupabase",
     type: "backend",
-  },
-  {
-    icon: SiPostgresql,
-    label: "PostgreSQL",
-    colorClass: "SiPostgresql",
-    type: "backend",
-  },
-  {
-    icon: SiGit,
-    label: "Git",
-    colorClass: "SiGit",
-    type: "other",
   },
   {
     icon: SiPytorch,
@@ -139,45 +151,21 @@ export const skillsList: {
     type: "AI",
   },
   {
-    icon: SiJupyter,
-    label: "Jupyter",
-    colorClass: "SiJupyter",
-    type: "AI",
-  },
-  // {
-  //   icon: SiCanva,
-  //   label: "Canva",
-  //   colorClass: "SiCanva",
-  //   type: "other",
-  // },
-  {
-    icon: SiFigma,
-    label: "Figma",
-    colorClass: "SiFigma",
-    type: "other",
-  },
-  {
-    icon: SiOpenjdk,
-    label: "Java",
-    colorClass: "SiJava",
-    type: "other",
-  },
-  {
-    icon: SiVuedotjs,
-    label: "Vue.js",
-    colorClass: "SiVuedotjs",
-    type: "frontend",
-  },
-  {
-    icon: SiC,
-    label: "C",
-    colorClass: "SiC",
-    type: "other",
-  },
-  {
     icon: SiLangchain,
     label: "LangChain",
     colorClass: "SiLangchain",
+    type: "AI",
+  },
+  {
+    icon: SiLanggraph,
+    label: "LangGraph",
+    colorClass: "SiLanggraph",
+    type: "AI",
+  },
+  {
+    icon: SiClaude,
+    label: "Claude",
+    colorClass: "SiClaude",
     type: "AI",
   },
   {
@@ -187,15 +175,63 @@ export const skillsList: {
     type: "AI",
   },
   {
+    icon: SiCursor,
+    label: "Cursor",
+    colorClass: "SiCursor",
+    type: "AI",
+  },
+  {
+    icon: SiGithubcopilot,
+    label: "Copilot",
+    colorClass: "SiGithubcopilot",
+    type: "AI",
+  },
+  {
+    icon: SiOllama,
+    label: "Ollama",
+    colorClass: "SiOllama",
+    type: "AI",
+  },
+  {
     icon: SiDeepgram,
     label: "Deepgram",
     colorClass: "SiDeepgram",
     type: "AI",
   },
   {
+    icon: SiJupyter,
+    label: "Jupyter",
+    colorClass: "SiJupyter",
+    type: "AI",
+  },
+  {
     icon: SiElectron,
     label: "Electron",
     colorClass: "SiElectron",
+    type: "other",
+  },
+  {
+    icon: SiOpenjdk,
+    label: "Java",
+    colorClass: "SiJava",
+    type: "other",
+  },
+  {
+    icon: SiGit,
+    label: "Git",
+    colorClass: "SiGit",
+    type: "other",
+  },
+  {
+    icon: SiC,
+    label: "C",
+    colorClass: "SiC",
+    type: "other",
+  },
+  {
+    icon: SiFigma,
+    label: "Figma",
+    colorClass: "SiFigma",
     type: "other",
   },
 ];
