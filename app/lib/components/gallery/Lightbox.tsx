@@ -15,11 +15,18 @@ import type { Photo } from "./GalleryCell";
  * swipe-to-navigate rather than a tap or a scroll wobble. */
 const SWIPE_THRESHOLD = 50;
 
-/** The displayed width the browser should pick a source for. The shell is
- * capped at 1100px, so a bare `88vw` over-fetches on wide screens: it asks
- * for a source sized to the viewport rather than to the box the photo is
- * actually drawn in. */
-const LIGHTBOX_SIZES = "(min-width: 1250px) 1100px, 88vw";
+/** The displayed width the browser should pick a source for. Derived per
+ * photo rather than using the shell's flat width: the shell is
+ * height-capped (`min(76vh, 780px)`), and `object-contain` scales each
+ * photo to fit that box by its own aspect ratio. A portrait renders far
+ * narrower than the shell's width, so hinting the shell width for every
+ * photo made the browser fetch sources ~2-3x wider (which is ~7-9x the
+ * pixels) than what a portrait actually displays at. */
+function lightboxSizesFor(image: string): string {
+  const { w, h } = getPhotoDims(image);
+  const aspect = w / h;
+  return `min(88vw, 1100px, calc(min(76vh, 780px) * ${aspect}))`;
+}
 
 export default function Lightbox({
   photos,
@@ -36,6 +43,7 @@ export default function Lightbox({
 }) {
   const reduceMotion = useMotionPreference();
   const closeRef = useRef<HTMLButtonElement | null>(null);
+  const dialogRef = useRef<HTMLDivElement | null>(null);
   const touchStartX = useRef<number | null>(null);
   const titleId = useId();
   const descId = useId();
@@ -102,6 +110,31 @@ export default function Lightbox({
       } else if (e.key === "ArrowRight") {
         e.preventDefault();
         onNavigate((index! + 1) % photos.length);
+      } else if (e.key === "Tab") {
+        // Focus trap: the dialog is a portal-less overlay stacked on top of
+        // the page, so without this Tab walks straight into the page
+        // content sitting behind it. Cycle within the dialog's own buttons
+        // (Close, and Prev/Next when there's more than one photo) instead.
+        const container = dialogRef.current;
+        if (!container) return;
+        const focusables = Array.from(
+          container.querySelectorAll<HTMLButtonElement>("button:not([disabled])"),
+        );
+        if (focusables.length === 0) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        const active = document.activeElement;
+        if (e.shiftKey) {
+          if (active === first || !container.contains(active)) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (active === last || !container.contains(active)) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
       }
     };
     window.addEventListener("keydown", handleKey);
@@ -150,6 +183,7 @@ export default function Lightbox({
     <AnimatePresence>
       {open && photo && (
         <motion.div
+          ref={dialogRef}
           initial={reduceMotion ? undefined : { opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={reduceMotion ? undefined : { opacity: 0 }}
@@ -188,7 +222,7 @@ export default function Lightbox({
                     alt={layer.photo.alt}
                     width={getPhotoDims(layer.photo.image).w}
                     height={getPhotoDims(layer.photo.image).h}
-                    sizes={LIGHTBOX_SIZES}
+                    sizes={lightboxSizesFor(layer.photo.image)}
                     priority
                     className="block max-h-[76vh] w-auto max-w-[88vw] object-contain"
                   />
@@ -224,7 +258,7 @@ export default function Lightbox({
                   alt=""
                   width={getPhotoDims(n.image).w}
                   height={getPhotoDims(n.image).h}
-                  sizes={LIGHTBOX_SIZES}
+                  sizes={lightboxSizesFor(n.image)}
                   loading="eager"
                 />
               ))}
