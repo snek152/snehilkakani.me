@@ -21,23 +21,28 @@ No test suite is configured.
 
 | Route | Page file | Purpose |
 |---|---|---|
-| `/` | `app/page.tsx` | Home — about card + experience |
-| `/projects` | `app/projects/page.tsx` | Project grid + skills sidebar |
-| `/music` | `app/music/page.tsx` | Beat player (wavesurfer.js) |
-| `/gallery` | `app/gallery/page.tsx` | Photography portfolio |
-| `/contact` | `app/contact/page.tsx` | Contact form |
-| `/meta` | `app/meta/page.tsx` | Metadata/about page |
+| `/` | `app/page.tsx` | Home — hero, index strip, experience |
+| `/builds` | `app/builds/page.tsx` | Featured project, project rows, stack |
+| `/music` | `app/music/page.tsx` | Beat release list + persistent transport |
+| `/lens` | `app/lens/page.tsx` | Photography contact sheet + lightbox |
+| `/reach` | `app/reach/page.tsx` | Contact |
+
+Each route except `/` has a server `layout.tsx` beside it carrying that
+route's `metadata`; the page components are `"use client"` and so cannot
+export it themselves. Shared metadata values live in `app/lib/metadata.ts`.
 
 ### Data Layer
 
 All content lives in TypeScript files under `app/lib/data/`. To add or edit portfolio content, edit these files — **no CMS, no API, no markdown**:
 
-- `projects.ts` — `Project[]` with title, description, image, skills, links
-- `experience.ts` — `Experience[]` with company, role, period, bullets
-- `beats.ts` — `Beat[]` with audio file path, BPM, key, streaming links
-- `skills.ts` — skill objects with icon (from `@icons-pack/react-simple-icons`), label, colorClass, type
+- `projects.ts` — `Project[]` with title, subtitle (date range), description, image, skills, and optional `link` / `github` / `privateRepo`
+- `experience.ts` — `Experience[]` with title, company, location, period, description bullets, skills
+- `beats.ts` — `Beat[]` with audio file path, category, tempo, description
+- `beat-durations.ts` — track lengths in seconds, generated from the MP3s with `ffprobe`; regenerate when the beats change
+- `skills.ts` — skill objects with icon (from `@icons-pack/react-simple-icons`), label, colorClass, and `type` (`"frontend"` | `"backend"` | `"AI"` | `"other"`), rendered as a grouped icon grid. It is an inventory of tools used, not a ranking — deliberately no proficiency levels, tiers or ratings, which are unfalsifiable and read as padding
 - `photos.ts` — photo metadata with EXIF-style fields (aperture, ISO, etc.)
-- `navlinks.ts` — navigation items with icon pairs (outline/solid)
+- `photo-dims.generated.ts` — intrinsic image dimensions, generated; do not hand-edit
+- `app/lib/nav.ts` — navigation items (note: at `app/lib/`, not `app/lib/data/`)
 
 ### Component Patterns
 
