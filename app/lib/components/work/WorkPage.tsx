@@ -47,7 +47,7 @@ export default function WorkPage() {
         <div ref={studiesRef} className="mb-10 border-b border-border pb-5">
           <ManifestoHeading
             id="studies-heading"
-            text="B-sides"
+            text="More work, in sequence."
             active={studiesActive}
             className="font-display text-4xl font-extrabold tracking-[-0.03em] text-fg"
           />

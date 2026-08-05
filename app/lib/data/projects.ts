@@ -5,7 +5,7 @@ import floodsafe from "@/public/projects/floodsafe.jpg";
 import steamforce from "@/public/projects/steamforce.jpg";
 import proco from "@/public/projects/proco.jpg";
 import euclidlearn from "@/public/projects/euclidlearn.jpg";
-import swordselection from "@/public/projects/swordselection.png";
+// import swordselection from "@/public/projects/swordselection.png";
 import impasse from "@/public/projects/impasse.png";
 import orbis from "@/public/projects/orbis.png";
 import fere from "@/public/projects/fere.jpg";
@@ -29,9 +29,9 @@ export type Project = {
 export const projects: Project[] = [
   {
     title: "Fere: AI-Powered Desktop Dev Tooling Platform",
-    subtitle: "Jan 2026 - May 2026",
+    subtitle: "January 2026 - May 2026",
     description:
-      "Co-founded a desktop dev tooling platform that visualizes local environments for indie developers. Built AI-powered querying, debugging, and proactive background monitoring with service-scoped context and adaptive suggestions. Won 2nd place ($10K) at Cal Poly's Innovation Quest",
+      "Built a desktop dev tooling platform that visualizes local environments intuitively. Won 2nd place ($10K) at Cal Poly's Innovation Quest. Built AI-powered querying, debugging, and proactive background monitoring with service-scoped context and adaptive suggestions.",
     skills: ["electron", "typescript", "agentic ai", "desktop development"],
     image: fere,
     github: "https://github.com/fere-oss/fere",
@@ -40,7 +40,7 @@ export const projects: Project[] = [
   },
   {
     title: "Impasse: AI-Powered Negotiation Training Platform",
-    subtitle: "January 2026 - 24hr Hackathon",
+    subtitle: "January 2026",
     description:
       "Engineered a full-stack AI negotiation simulator with agentic opponent, coaching, and analysis agents running concurrently at a 24-hour hackathon. Designed a multi-agent orchestration layer with real-time voice interaction via WebSockets, session analytics, and persistent storage.",
     image: impasse,
@@ -57,7 +57,7 @@ export const projects: Project[] = [
     subtitle: "June 2023 - July 2023",
     description:
       "Developed a novel U-Net-based architecture for segmenting diffuse gliomas in medical images under data and processing constraints, achieving 71.58% accuracy. Applied advanced data augmentation to compensate for limited training data. Presented at UCSB and published in the Journal of Student Research.",
-    link: "https://www.jsr.org/hs/index.php/path/article/view/6376",
+    link: "/projects/gu_net_diffuse_glioma_segmentation.pdf",
     github: "https://github.com/snek152/GU_Net_Glioma_Segmentation_SRA",
     image: sra,
     skills: [
@@ -116,7 +116,7 @@ export const projects: Project[] = [
     github: "https://github.com/lynbrookstudio74/studio74website",
     subtitle: "April 2024 - October 2024",
     description:
-      "Architected a custom design and responsive website for Lynbrook Drama to showcase productions, events, and crew info. Implemented a custom GitHub-based CMS for seamless updates.",
+      "Architected a custom design and responsive website for Lynbrook Drama to showcase productions, events, and crew info. Implemented a custom GitHub-based CMS for seamless updates, enabling non-technical officers to maintain it themselves for 1.5+ years.",
     image: drama,
     skills: [
       "next.js & tailwindcss",
@@ -159,17 +159,17 @@ export const projects: Project[] = [
       "accessibility & ux design",
       "constraint optimization",
     ],
-    github: "https://github.com/snek152/steamforce",
+    github: "https://github.com/snek152/steam-force",
     // link: "https://steamforce.snehilkakani.me",
   },
-  {
-    title: "SwordSelection: Medieval-Inspired Minecraft Mod",
-    subtitle: "June 2021 - October 2021",
-    description:
-      "Developed a Minecraft mod introducing medieval-themed swords with unique abilities, enhancing gameplay with custom animations and mechanics. Promoted extensively on relevant forums and websites, resulting in 2.2k+ downloads.",
-    image: swordselection,
-    skills: ["java & gradle", "documentation & promotion", "minecraft modding"],
-    github: "https://github.com/snek152/SwordSelection",
-    link: "https://swordselection.snehilkakani.me",
-  },
+  // {
+  //   title: "SwordSelection: Medieval-Inspired Minecraft Mod",
+  //   subtitle: "June 2021 - October 2021",
+  //   description:
+  //     "Developed a Minecraft mod introducing medieval-themed swords with unique abilities, enhancing gameplay with custom animations and mechanics. Promoted extensively on relevant forums and websites, resulting in 2.2k+ downloads.",
+  //   image: swordselection,
+  //   skills: ["java & gradle", "documentation & promotion", "minecraft modding"],
+  //   github: "https://github.com/snek152/SwordSelection",
+  //   link: "https://swordselection.snehilkakani.me",
+  // },
 ];

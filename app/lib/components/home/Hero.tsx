@@ -149,7 +149,10 @@ export default function Hero({
           <div
             key={stop}
             className="absolute inset-y-0 w-px bg-dim2/15"
-            style={{ left: `${stop}%`, marginLeft: stop === 100 ? "-1px" : undefined }}
+            style={{
+              left: `${stop}%`,
+              marginLeft: stop === 100 ? "-1px" : undefined,
+            }}
           />
         ))}
         {GRID_STOPS.map((stop, index) => (
@@ -206,9 +209,11 @@ export default function Hero({
             className="mb-14 mt-4 text-[0.975rem] leading-[1.82] text-dim"
             id="home-introduction"
           >
-            Computer science student at Cal Poly SLO. I build software, produce
-            music, and shoot photos. Open to internships and interesting
-            problems.
+            Building intelligent systems with a focus on frontend development,
+            distributed systems, and agentic AI. Passionate about creating
+            accessible user experiences. Exploring music production,
+            photography, and video games in my free time. Published researcher,
+            NMSC finalist, and entrepreneurial award winner.
           </motion.p>
         </div>
 

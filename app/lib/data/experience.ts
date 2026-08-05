@@ -13,10 +13,10 @@ export const experiences: Experience[] = [
     location: "San Francisco, CA",
     period: "Jun 2026 - Present",
     description: [
-      "Building production infrastructure for Lindy's high-volume AI agent platform",
-      "Lead engineer on a new system for autonomous agent behavior, letting agents act on schedules or real-world events like incoming messages and email",
-      "Building features end to end from the data model to the UI, with natural-language creation and smart filtering",
-      "Extending to workspace-wide team agents with admin-managed access, and migrating existing production behavior without disrupting live assistant flows",
+      "Shipping production infrastructure for Lindy's high-volume AI agent platform",
+      "Lead engineer of a new system for autonomous agent behavior, enabling agents to act on schedules or real-world events like incoming messages and email",
+      "Building features end to end, from data model to UI, including natural-language creation and smart filtering",
+      "Extending the system to workspace-wide team agents with admin-managed access, migrating existing production behavior without disrupting live assistant flows",
     ],
     skills: [
       "typescript",
@@ -50,9 +50,9 @@ export const experiences: Experience[] = [
     location: "San Luis Obispo, CA",
     period: "Sep 2025 - Present",
     description: [
-      "Contributed to Mustang Maps, a React Native campus navigation app for Cal Poly students",
+      "Built navigation features for Mustang Maps, a React Native campus navigation app for Cal Poly students",
       "Implemented A* pathfinding and integrated it into the routing UI",
-      "Built map layer filtering and building category matching, and fixed core search and directions UX across bottom sheets and input handling",
+      "Built map layer filtering and building category matching; fixed core search and directions UX across bottom sheets and input handling",
     ],
     skills: [
       "react native",
@@ -95,37 +95,37 @@ export const experiences: Experience[] = [
       "project management",
     ],
   },
-  {
-    title: "Director of Technology & CS Instructor",
-    company: "STEMist Education",
-    location: "San Jose, CA",
-    period: "Jan 2022 - Jan 2023",
-    description: [
-      "Built the organization's website from scratch and led a developer team to ship new features and improvements",
-      "Designed and taught a structured CS curriculum covering programming fundamentals and web development",
-      "Guided students through end-to-end coding projects, from concept to working software, with hands-on mentorship",
-    ],
-    skills: [
-      "web development",
-      "leadership",
-      "curriculum development",
-      "mentorship",
-    ],
-  },
-  {
-    title: "Music Producer & Audio Engineer",
-    company: "Freelance/Independent",
-    location: "Remote",
-    period: "Nov 2022 - Present",
-    description: [
-      "Produced and released hip-hop albums across streaming platforms, collaborating with multiple artists",
-      "Served as Head of Sound for multiple theatre productions, managing live audio systems",
-    ],
-    skills: [
-      "audio engineering",
-      "sound design",
-      "collaboration",
-      "creative direction",
-    ],
-  },
+  // {
+  //   title: "Director of Technology & CS Instructor",
+  //   company: "STEMist Education",
+  //   location: "San Jose, CA",
+  //   period: "Jan 2022 - Jan 2023",
+  //   description: [
+  //     "Built the organization's website from scratch and led a developer team to ship new features and improvements",
+  //     "Designed and taught a structured CS curriculum covering programming fundamentals and web development",
+  //     "Guided students through end-to-end coding projects, from concept to working software, with hands-on mentorship",
+  //   ],
+  //   skills: [
+  //     "web development",
+  //     "leadership",
+  //     "curriculum development",
+  //     "mentorship",
+  //   ],
+  // },
+  // {
+  //   title: "Music Producer & Audio Engineer",
+  //   company: "Freelance/Independent",
+  //   location: "Remote",
+  //   period: "Nov 2022 - Present",
+  //   description: [
+  //     "Produced and released hip-hop albums across streaming platforms, collaborating with multiple artists",
+  //     "Served as Head of Sound for multiple theatre productions, managing live audio systems",
+  //   ],
+  //   skills: [
+  //     "audio engineering",
+  //     "sound design",
+  //     "collaboration",
+  //     "creative direction",
+  //   ],
+  // },
 ];
