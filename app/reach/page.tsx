@@ -4,7 +4,6 @@ import Image from "next/image";
 import { motion } from "motion/react";
 import ContactForm from "@/app/lib/components/contact/ContactForm";
 import { CONTACT_EMAIL } from "@/app/lib/components/contact/mailto";
-import ViewfinderFrame from "@/app/lib/components/shared/ViewfinderFrame";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import { EASE_OUT } from "@/app/lib/motion";
 import { beats } from "@/app/lib/tempo";
@@ -72,42 +71,29 @@ export default function ContactPage() {
           className="hidden grid-cols-2 gap-1.5 lg:grid"
           aria-label="Selected photography"
         >
-          {contactPhotos.map((photo, index) => {
-            const image = (
+          {contactPhotos.map((photo, index) => (
+            <motion.div
+              key={photo.caption}
+              initial={reduceMotion ? false : { opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: beats(0.6),
+                delay: reduceMotion ? 0 : Math.min(index, 3) * beats(0.15),
+                ease: EASE_OUT,
+              }}
+              className="group relative aspect-[4/5] overflow-hidden bg-card"
+            >
               <Image
                 src={photo.src}
                 alt={photo.alt}
                 sizes="(min-width: 1280px) 18vw, (min-width: 1024px) 17vw, 0px"
                 className="h-full w-full object-cover"
               />
-            );
-
-            return (
-              <motion.div
-                key={photo.caption}
-                initial={reduceMotion ? false : { opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  duration: beats(0.6),
-                  delay: reduceMotion ? 0 : Math.min(index, 3) * beats(0.15),
-                  ease: EASE_OUT,
-                }}
-                className="group relative aspect-[4/5] overflow-hidden bg-card"
-              >
-                {index === 1 ? (
-                  <ViewfinderFrame className="h-full w-full">
-                    {image}
-                  </ViewfinderFrame>
-                ) : (
-                  image
-                )}
-
-                <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end bg-gradient-to-t from-bg/85 via-bg/0 to-bg/0 p-2.5 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100">
-                  <p className="text-sm leading-snug text-fg">{photo.caption}</p>
-                </div>
-              </motion.div>
-            );
-          })}
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end bg-gradient-to-t from-bg/85 via-bg/0 to-bg/0 p-2.5 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100">
+                <p className="text-sm leading-snug text-fg">{photo.caption}</p>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </motion.div>
     </main>
