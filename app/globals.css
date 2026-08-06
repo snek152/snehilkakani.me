@@ -38,7 +38,16 @@
 body {
   background: var(--bg);
   color: var(--fg);
-  font-family: var(--font-sans);
+  /* The font-face variable, not the theme token. `--font-sans` is declared
+   * inside `@theme inline`, and `inline` means Tailwind substitutes it into
+   * the utilities it generates rather than emitting it as a custom property
+   * — so `var(--font-sans)` resolves to nothing here and the declaration is
+   * dropped, silently falling the whole document back to the browser's UI
+   * font. Measured before this line was corrected: 190 rendered elements on
+   * /lens in `ui-sans-serif` against 10 in Plus Jakarta Sans. Only nodes
+   * carrying an explicit `font-sans`/`font-display` class were ever getting
+   * the real typeface. */
+  font-family: var(--font-plus-jakarta-sans);
   -webkit-font-smoothing: antialiased;
 }
 
