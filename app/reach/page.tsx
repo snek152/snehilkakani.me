@@ -1,7 +1,9 @@
 "use client";
 
+import { useRef } from "react";
 import Image from "next/image";
-import { motion } from "motion/react";
+import { motion, useInView } from "motion/react";
+import ManifestoHeading from "@/app/lib/components/home/ManifestoHeading";
 import ContactForm from "@/app/lib/components/contact/ContactForm";
 import { CONTACT_EMAIL } from "@/app/lib/components/contact/mailto";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
@@ -33,17 +35,27 @@ const contactPhotos = [
 
 export default function ContactPage() {
   const reduceMotion = useMotionPreference();
+  const headingRef = useRef<HTMLDivElement>(null);
+  // Same trigger the other page headings use.
+  const headingActive = useInView(headingRef, { once: true, margin: "0px 0px -15% 0px" });
 
   return (
     <main className="px-6 pb-20 pt-16 sm:px-8 lg:px-12 lg:pt-[4.5rem]">
-      <motion.h1
+      <motion.div
+        ref={headingRef}
         initial={reduceMotion ? false : { opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: beats(0.75), ease: EASE_OUT }}
-        className="mb-11 font-display text-[clamp(2.5rem,5vw,4rem)] font-extrabold leading-none tracking-[-0.03em] text-fg"
+        className="mb-11"
       >
-        Let&apos;s talk.
-      </motion.h1>
+        <ManifestoHeading
+          as="h1"
+          id="reach-heading"
+          text="Let's talk."
+          active={headingActive}
+          className="font-display text-[clamp(2.5rem,5vw,4rem)] font-extrabold leading-none tracking-[-0.03em] text-fg"
+        />
+      </motion.div>
 
       <motion.div
         initial={reduceMotion ? false : { opacity: 0, y: 20 }}
