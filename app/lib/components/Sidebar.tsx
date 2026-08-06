@@ -3,7 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion } from "motion/react";
+import { motion, type Transition } from "motion/react";
+import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import { navItems, type NavItem } from "@/app/lib/nav";
 
 const SIDE_THIN = 52;
@@ -11,10 +12,22 @@ const SIDE_FULL = 176;
 
 const RAIL_SPRING = { type: "spring", stiffness: 300, damping: 30, mass: 0.7 } as const;
 
-function SidebarItem({ item, expanded, active }: { item: NavItem; expanded: boolean; active: boolean }) {
+function SidebarItem({
+  item,
+  expanded,
+  active,
+  onNavigate,
+  transition,
+}: {
+  item: NavItem;
+  expanded: boolean;
+  active: boolean;
+  onNavigate: () => void;
+  transition: Transition;
+}) {
   const { href, label, Icon } = item;
   return (
-    <Link href={href} className="block no-underline">
+    <Link href={href} onClick={onNavigate} className="block no-underline">
       <span
         className={`relative flex h-[42px] items-center transition-colors duration-150 ${
           active
@@ -38,10 +51,23 @@ function SidebarItem({ item, expanded, active }: { item: NavItem; expanded: bool
             className={`shrink-0 transition-colors duration-150 ${active ? "text-fg" : "text-dim"}`}
           />
         </span>
+        {/* Only the rail animates width. The label keeps its natural width
+          * and is revealed by the rail's own `overflow-hidden`, so there is
+          * one animated horizontal dimension rather than two springs racing
+          * over the same axis. Toggling the rail quickly used to interrupt
+          * both mid-flight and they would not settle together: measured, the
+          * rail sat fully open for ~50ms while the labels were still clipped
+          * to a quarter of their width, then snapped out. Animating `width`
+          * to `auto` also forces a re-measure on every interruption, which
+          * is what made the correction a jump rather than a slide.
+          *
+          * `shrink-0` because the flex row is only as wide as the rail, so
+          * the label would otherwise be squeezed back to nothing by flex
+          * itself once its width stopped being animated. */}
         <motion.span
-          animate={{ opacity: expanded ? 1 : 0, width: expanded ? "auto" : 0 }}
-          transition={RAIL_SPRING}
-          className={`pointer-events-none overflow-hidden whitespace-nowrap font-sans text-sm ${
+          animate={{ opacity: expanded ? 1 : 0 }}
+          transition={transition}
+          className={`pointer-events-none shrink-0 whitespace-nowrap font-sans text-sm ${
             active ? "font-medium text-fg" : "font-normal text-dim"
           }`}
         >
@@ -56,6 +82,14 @@ function SidebarItem({ item, expanded, active }: { item: NavItem; expanded: bool
 export default function Sidebar() {
   const pathname = usePathname();
   const [expanded, setExpanded] = useState(false);
+  const reduceMotion = useMotionPreference();
+  /* AGENTS.md: always respect the motion preference. `Reveal` drops its
+   * animation outright rather than substituting a gentler one, so the rail
+   * matches that and snaps between widths — 124px of panel sliding out
+   * under the pointer is exactly the movement the preference is asking us
+   * not to make. Every other property, and the hover behaviour itself, is
+   * unchanged. */
+  const transition: Transition = reduceMotion ? { duration: 0 } : RAIL_SPRING;
 
   return (
     <>
@@ -65,7 +99,7 @@ export default function Sidebar() {
         onHoverStart={() => setExpanded(true)}
         onHoverEnd={() => setExpanded(false)}
         animate={{ width: expanded ? SIDE_FULL : SIDE_THIN }}
-        transition={RAIL_SPRING}
+        transition={transition}
       >
         <nav className="flex flex-col">
           {navItems.map((item) => (
@@ -74,6 +108,15 @@ export default function Sidebar() {
               item={item}
               expanded={expanded}
               active={item.end ? pathname === item.href : pathname.startsWith(item.href)}
+              /* Collapse on navigate so the rail is not left covering the
+               * page it just moved you to. Safe to do while the pointer is
+               * still inside: the rail only expands on hover *start*, and no
+               * new one fires until the pointer leaves and re-enters. If the
+               * pointer was out over the label column the shrinking rail
+               * slides out from under it, which fires hover end — already
+               * the state we are in. Either way it cannot re-open in place. */
+              onNavigate={() => setExpanded(false)}
+              transition={transition}
             />
           ))}
         </nav>
