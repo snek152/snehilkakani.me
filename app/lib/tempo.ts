@@ -9,10 +9,10 @@
  * grid, not a soundtrack — a quiet nod to the music-production identity
  * rather than a literal audio cue.
  */
-export const TEMPO_BPM = 92;
+const TEMPO_BPM = 92;
 
 /** Duration, in seconds, of one beat at `TEMPO_BPM`. */
-export const BEAT = 60 / TEMPO_BPM;
+const BEAT = 60 / TEMPO_BPM;
 
 /** `beats(0.75)` = three-quarters of a beat, in seconds. Every reveal or
  * stagger duration on the site should be expressed as a fraction of a

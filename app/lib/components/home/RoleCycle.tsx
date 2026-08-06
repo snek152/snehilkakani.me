@@ -3,7 +3,7 @@
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import { useEffect, useRef, useState } from "react";
 
-export const ROLES = [
+const ROLES = [
   "AI Engineer",
   "Photographer",
   "Software Engineer",

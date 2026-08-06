@@ -97,13 +97,11 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     prevIndexRef.current = currentIndex;
   }, [pathname, currentIndex]);
 
-  const isLoaderPreview = pathname.startsWith("/loader-");
-  const [introReady, setIntroReady] = useState(isLoaderPreview);
+  const [introReady, setIntroReady] = useState(false);
 
   const handleLoaderDone = useCallback(() => {
     setIntroReady(true);
   }, []);
-
 
   return (
     <MotionPreferenceProvider>

@@ -47,8 +47,7 @@ All content lives in TypeScript files under `app/lib/data/`. To add or edit port
 ### Component Patterns
 
 - **`"use client"`** on all interactive components
-- **`dynamic()`** imports with `Suspense` + `<LoadingSpinner>` fallback for heavy components (e.g., `AboutCard`, `AllProjects`)
-- **`react-intersection-observer`** for scroll-triggered entrance animations via Framer Motion (`motion` package)
+- **`useInView`** from `motion/react` for scroll-triggered entrance animations, paired with `viewport={{ once: true }}` on `whileInView`. (Not `react-intersection-observer` — that dependency is gone.)
 - Navbar expands on hover (desktop: vertical sidebar `lg:w-18` → `lg:w-36`; mobile: top bar)
 
 ### Styling
@@ -104,12 +103,10 @@ bg-gradient-to-r from-primary/60 via-primary/40 to-primary/60 text-surface z-20 
 ```
 Parent `<li>` should use `flex items-start gap-2.5` — never `items-center` or `self-center` on the dot, which causes misalignment on wrapped lines.
 
-**Animations** — standard entrance pattern, via the shared `Reveal` component
-(`app/lib/components/shared/Reveal.tsx`):
+**Animations** — standard entrance pattern, applied directly on a
+`motion.*` element:
 ```tsx
-<Reveal>{children}</Reveal>
-// equivalent to:
-initial={{ opacity: 0, y: 20 }}
+initial={reduceMotion ? false : { opacity: 0, y: 20 }}
 whileInView={{ opacity: 1, y: 0 }}
 viewport={{ once: true, amount: 0.3 }}
 transition={{ duration: beats(0.75), ease: EASE_OUT }}
@@ -117,11 +114,19 @@ transition={{ duration: beats(0.75), ease: EASE_OUT }}
 `EASE_OUT` and `beats()` come from `app/lib/motion.ts` and `app/lib/tempo.ts` — a
 single BPM-92 timing grid (`app/lib/tempo.ts`) every entrance duration derives
 from, instead of components picking their own numbers in isolation. The shared
-`fadeUp`/`staggerContainer` variants in `app/lib/motion.ts` follow the same
-values for cases that need raw `variants` (e.g. a `motion.button` inside a
-`.map()`) rather than `Reveal`'s wrapper-div shape. Always respect
-`useMotionPreference()` (from `app/lib/components/shared/MotionPreference.tsx`)
-for reduced-motion users — `Reveal` and the shared hooks already do this
-internally.
+`fadeUp`/`staggerContainer` variants in `app/lib/motion.ts` carry the same
+values for anything driven by named `variants` (page headers, staggered lists)
+rather than inline targets. Always respect `useMotionPreference()` (from
+`app/lib/components/shared/MotionPreference.tsx`) for reduced-motion users.
+Note that some components delegate this upstream rather than branching
+themselves — `CursorGlow` renders nothing because `CursorField` clears
+`active`, `BeatBars` sits still because `useAudioAnalyser` never starts its
+frame loop, and `OrbitStage` is never mounted because `LoadingScreen`
+substitutes a plain backdrop. Check the provider before adding a branch.
+
+A `Reveal` wrapper component used to be documented here as the standard. It
+was deleted — nothing ever imported it, and every component had gone on
+writing the pattern above inline. Reintroducing a wrapper is fine, but it
+would have to actually be adopted.
 
 **Experience data ordering** — most recent first in `experience.ts`.

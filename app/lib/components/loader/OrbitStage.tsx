@@ -23,7 +23,7 @@ import { EASE_OUT } from "@/app/lib/motion";
 const RADIUS = 140;
 export const RELEASE_MS = 900;
 
-export const ORBIT_MARKS = [
+const ORBIT_MARKS = [
   { Icon: Braces, label: "engineering", x: -RADIUS * Math.SQRT1_2, y: -RADIUS * Math.SQRT1_2, angle: -135, release: { x: -160, y: 220 } },
   { Icon: Waves, label: "music", x: RADIUS * Math.SQRT1_2, y: -RADIUS * Math.SQRT1_2, angle: -45, release: { x: 40, y: -260 } },
   { Icon: Aperture, label: "photography", x: RADIUS * Math.SQRT1_2, y: RADIUS * Math.SQRT1_2, angle: 45, release: { x: 260, y: 200 } },
