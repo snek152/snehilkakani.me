@@ -13,6 +13,7 @@ import ViewfinderFrame from "@/app/lib/components/shared/ViewfinderFrame";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import { GRID_STOPS } from "@/app/lib/grid";
 import RoleCycle from "@/app/lib/components/home/RoleCycle";
+import portrait from "@/public/about.jpg";
 
 const NAME_LINES = ["Snehil", "Kakani"];
 
@@ -223,10 +224,11 @@ export default function Hero({
             <div className="p-3">
               <div className="relative aspect-4/5 h-55 overflow-hidden sm:h-65 lg:h-70 w-full">
                 <Image
-                  src="/about.jpg"
+                  src={portrait}
                   alt="Snehil Kakani"
                   fill
                   priority
+                  placeholder="blur"
                   sizes="(min-width: 1024px) 280px, 260px"
                   className="object-cover object-top grayscale-15"
                 />
