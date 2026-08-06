@@ -4,11 +4,14 @@ import { shortTitle } from "./utils";
 
 export function ProjectSkills({ skills }: Pick<Project, "skills">) {
   return (
+    // The slash is a divider, so it is set as one. In `--accent` it was a
+    // 3.87:1 blue tick repeated down every row, reading as decoration on the
+    // row's least legible line.
     <ul className="flex flex-wrap gap-x-3 gap-y-1.5" aria-label="Technologies and disciplines">
       {skills.map((skill) => (
         <li
           key={skill}
-          className="text-sm font-medium text-dim2 before:mr-1.5 before:text-accent before:content-['/']"
+          className="text-sm text-dim before:mr-1.5 before:text-dim2 before:content-['/']"
         >
           {skill}
         </li>

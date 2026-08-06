@@ -130,7 +130,7 @@ export default function ProjectCard({ project }: { project: Project }) {
       </motion.div>
 
       <div className="flex flex-col lg:justify-center lg:pl-10">
-        {year && <p className="mb-3 text-sm tabular-nums text-dim2">{year}</p>}
+        {year && <p className="mb-3 text-sm tabular-nums text-dim">{year}</p>}
         <h3 className="font-display text-[1.5rem] font-bold leading-tight tracking-[-0.02em] text-fg lg:text-[1.75rem]">
           {shortTitle(project.title)}
         </h3>

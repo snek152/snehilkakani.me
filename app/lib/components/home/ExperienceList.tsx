@@ -4,6 +4,7 @@ import { motion } from "motion/react";
 import type { Experience } from "@/app/lib/data/experience";
 import { EASE_OUT } from "@/app/lib/motion";
 import { beats } from "@/app/lib/tempo";
+import { dateRange } from "@/app/lib/format";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import DrawnRule from "@/app/lib/components/shared/DrawnRule";
 
@@ -89,9 +90,14 @@ export default function ExperienceList({ experiences }: { experiences: Experienc
             * the neighbouring rows whose dates are still level with
             * theirs. Worth revisiting if an entry ever runs longer than a
             * screen. */}
+          {/* Hierarchy by size, not by fading: both lines used to be 14px a
+            * grey apart, putting the page's least legible text (`dim2`, at
+            * 4.87:1) under the column a reader scans first. */}
           <motion.div variants={part} className="lg:pl-12 lg:pr-6">
-            <p className="text-sm tabular-nums text-dim">{experience.period}</p>
-            <p className="mt-1 text-sm text-dim2">{experience.location}</p>
+            <p className="text-[0.9rem] font-medium leading-snug tracking-[-0.01em] tabular-nums text-fg">
+              {dateRange(experience.period)}
+            </p>
+            <p className="mt-1.5 text-[0.8rem] leading-snug text-dim">{experience.location}</p>
           </motion.div>
 
           <div className="lg:col-span-3 lg:pl-10 lg:pr-12">

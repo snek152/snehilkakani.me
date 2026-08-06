@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion } from "motion/react";
 import type { Project } from "@/app/lib/data/projects";
 import { EASE_OUT } from "@/app/lib/motion";
+import { dateRange } from "@/app/lib/format";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import { ProjectLinks, ProjectSkills } from "./ProjectMeta";
 import { shortTitle } from "./utils";
@@ -96,7 +97,7 @@ export default function FeaturedProject({ project }: { project: Project }) {
           Featured
         </span>
         {project.subtitle && (
-          <p className="mb-2 text-sm font-medium text-dim2">{project.subtitle}</p>
+          <p className="mb-2 text-sm tabular-nums text-dim">{dateRange(project.subtitle)}</p>
         )}
         <h2 className="font-display text-[1.85rem] font-extrabold leading-tight tracking-[-0.03em] text-fg">
           {shortTitle(project.title)}

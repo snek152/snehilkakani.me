@@ -155,7 +155,9 @@ function Cell({
             <span className="block font-display text-xs font-semibold tracking-[-0.01em] text-dim transition-colors duration-200 group-hover:text-fg sm:text-[0.95rem]">
               {item.label}
             </span>
-            <span className="mt-0.5 hidden text-xs text-dim2 sm:block">
+            {/* Was `dim2` at 4.87:1 — the faintest text on the home page,
+              * sat under the labels a reader is choosing between. */}
+            <span className="mt-1 hidden text-[0.78rem] leading-snug text-dim sm:block">
               {BLURBS[item.href]}
             </span>
           </span>
@@ -165,7 +167,7 @@ function Cell({
           <ArrowUpRight
             size={13}
             strokeWidth={2}
-            className="mt-0.5 hidden shrink-0 text-dim2/50 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-dim sm:block"
+            className="mt-0.5 hidden shrink-0 text-dim2 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-fg sm:block"
           />
         </Link>
       </div>

@@ -10,6 +10,7 @@ import { beats } from "@/app/lib/tempo";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import { getPhotoDims } from "./photo-dims";
 import type { Photo } from "./GalleryCell";
+import Exposure from "./Exposure";
 
 /** Minimum horizontal drag, in px, before a touch gesture counts as a
  * swipe-to-navigate rather than a tap or a scroll wobble. */
@@ -236,12 +237,11 @@ export default function Lightbox({
               <span id={titleId} className="block text-sm text-fg">
                 {photo.alt}
               </span>
-              <span
+              <Exposure
                 id={descId}
-                className="mt-1 block font-sans text-xs tabular-nums text-dim2"
-              >
-                f/{photo.aperture} · {photo.shutter}s · ISO {photo.iso}
-              </span>
+                photo={photo}
+                className="mt-1.5 justify-center"
+              />
             </div>
 
             {/* Neighbours, rendered rather than hand-preloaded, so their URLs

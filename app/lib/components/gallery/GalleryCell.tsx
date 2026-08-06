@@ -6,6 +6,7 @@ import type featPhotos from "@/app/lib/data/photos";
 import { EASE_OUT } from "@/app/lib/motion";
 import { beats } from "@/app/lib/tempo";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
+import Exposure from "./Exposure";
 
 export type Photo = (typeof featPhotos)[number];
 
@@ -96,9 +97,7 @@ export default function GalleryCell({
         >
           {photo.alt}
         </span>
-        <span className="mt-1 block truncate text-xs tabular-nums text-dim2">
-          f/{photo.aperture} · {photo.shutter}s · ISO {photo.iso}
-        </span>
+        <Exposure photo={photo} className="mt-1.5" />
       </figcaption>
     </motion.figure>
   );
