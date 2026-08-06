@@ -31,14 +31,19 @@ const ORBIT_MARKS = [
 ];
 
 export default function OrbitStage({ complete, scale = 1 }: { complete: boolean; scale?: number }) {
-  const markSize = 44 * scale;
+  /* 38, not the 44 it was. The box never changed, but the hub went 64 -> 42
+   * to stop the marks overlapping it, and against a hub a third smaller the
+   * same box reads noticeably heavier. Shrinking here rather than growing the
+   * hub back keeps the clearance (21px now, against 12px) and lifts the
+   * glyph's share of its frame from 41% to 47% without touching the glyph. */
+  const markSize = 38 * scale;
   const iconSize = 18 * scale;
   /* Bounded by the marks. Their x/y position from an unscaled RADIUS while
-   * `lineLength` scales, so a mark's nearest corner sits 75px from centre at
-   * scale 2.1 — that keeps the whole assembly ~290px wide and inside a phone
-   * viewport, and it caps the hub at ~44 before the two touch. At the 64 this
-   * started at, the marks overlapped the hub's corners by 20px. 42 leaves
-   * 12px, and a hub this size no longer needs anything in it but the node. */
+   * `lineLength` scales, so a mark's nearest corner is fixed relative to the
+   * centre — that keeps the whole assembly ~290px wide and inside a phone
+   * viewport. At the 64 this hub started at, the marks overlapped its corners
+   * by 20px; 42 against a 38 mark leaves 21px of air, and a hub this size
+   * needs nothing in it but the node. */
   const centerSize = 42 * scale;
   const lineLength = RADIUS * scale;
   /* Links begin at the hub's corner rather than at dead centre. Drawn from the
@@ -86,12 +91,13 @@ export default function OrbitStage({ complete, scale = 1 }: { complete: boolean;
           {/* The point the four links converge on, made visible. The hub was
             * an empty square at the focus of the whole composition; this is
             * the smallest thing that stops it reading as a void. */}
-          <motion.span
+          <span
             className="absolute left-1/2 top-1/2 block rotate-45 bg-accent"
-            style={{ width: centerSize * 0.17, height: centerSize * 0.17, translate: "-50% -50%" }}
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: [0, 1.5, 1] }}
-            transition={{ duration: 0.5, delay: 0.24, times: [0, 0.5, 1], ease: EASE_OUT }}
+            style={{
+              width: centerSize * 0.17,
+              height: centerSize * 0.17,
+              translate: "-50% -50%",
+            }}
           />
 
           {ORBIT_MARKS.map(({ angle }, index) => {
