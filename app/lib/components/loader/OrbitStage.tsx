@@ -31,35 +31,18 @@ const ORBIT_MARKS = [
 ];
 
 export default function OrbitStage({ complete, scale = 1 }: { complete: boolean; scale?: number }) {
-  /* 38, not the 44 it was. The box never changed, but the hub went 64 -> 42
-   * to stop the marks overlapping it, and against a hub a third smaller the
-   * same box reads noticeably heavier. Shrinking here rather than growing the
-   * hub back keeps the clearance (21px now, against 12px) and lifts the
-   * glyph's share of its frame from 41% to 47% without touching the glyph. */
-  const markSize = 38 * scale;
+  const markSize = 44 * scale;
   const iconSize = 18 * scale;
-  /* Bounded by the marks. Their x/y position from an unscaled RADIUS while
-   * `lineLength` scales, so a mark's nearest corner is fixed relative to the
-   * centre — that keeps the whole assembly ~290px wide and inside a phone
-   * viewport. At the 64 this hub started at, the marks overlapped its corners
-   * by 20px; 42 against a 38 mark leaves 21px of air, and a hub this size
-   * needs nothing in it but the node. */
-  const centerSize = 42 * scale;
+  const centerSize = 64 * scale;
   const lineLength = RADIUS * scale;
-  /* Links begin at the hub's corner rather than at dead centre. Drawn from the
-   * centre they crossed the hub as an X, which is the shape of a missing
-   * image. Masked rather than shortened so the release still stretches from
-   * the same origin. */
-  const linkGap = ((centerSize / 2) * Math.SQRT2 + 7 * scale) / lineLength;
 
   return (
     <motion.div
       className="absolute inset-0 flex items-center justify-center"
       animate={{ opacity: complete ? [1, 1, 0] : 1 }}
       transition={{
-        duration: complete ? RELEASE_MS / 1000 : 0.4,
-        times: complete ? [0, 0.65, 1] : undefined,
-        ease: EASE_OUT,
+        duration: complete ? RELEASE_MS / 1000 : 0.32,
+        times: complete ? [0, 0.3, 1] : undefined,
       }}
     >
       {/* Continuous idle sway — always running, independent of gather/release,
@@ -88,30 +71,14 @@ export default function OrbitStage({ complete, scale = 1 }: { complete: boolean;
             }}
           />
 
-          {/* The point the four links converge on, made visible. The hub was
-            * an empty square at the focus of the whole composition; this is
-            * the smallest thing that stops it reading as a void. */}
-          <span
-            className="absolute left-1/2 top-1/2 block rotate-45 bg-accent"
-            style={{
-              width: centerSize * 0.17,
-              height: centerSize * 0.17,
-              translate: "-50% -50%",
-            }}
-          />
-
           {ORBIT_MARKS.map(({ angle }, index) => {
             const delayMs = complete ? index * 30 : (0.22 + index * 0.1) * 1000;
             const durationMs = complete ? RELEASE_MS - delayMs : 550;
             return (
               <motion.div
                 key={`line-${angle}`}
-                className="absolute left-1/2 top-1/2 h-px origin-left"
-                style={{
-                  width: lineLength,
-                  rotate: `${angle}deg`,
-                  background: `linear-gradient(to right, transparent 0 ${linkGap * 100}%, rgba(255,255,255,0.22) ${linkGap * 100}% 100%)`,
-                }}
+                className="absolute left-1/2 top-1/2 h-px origin-left bg-white/[0.22]"
+                style={{ width: lineLength, rotate: `${angle}deg` }}
                 initial={{ scaleX: 0, opacity: 0 }}
                 animate={{
                   scaleX: complete ? 2.4 : 1,
@@ -148,10 +115,24 @@ export default function OrbitStage({ complete, scale = 1 }: { complete: boolean;
                   ease: EASE_OUT,
                 }}
               >
-                <Icon size={iconSize} strokeWidth={1.65} aria-hidden="true" />
+                <Icon size={iconSize} strokeWidth={1.65} aria-label={label} />
               </motion.div>
             );
           })}
+
+          {/* The point the four links converge on, made visible — the hub was
+            * an empty square at the focus of the whole composition. Rendered
+            * last so it sits over the links crossing behind it, and static:
+            * the assembly is already scaling up around it, so animating the
+            * node too just read as a blink. */}
+          <span
+            className="absolute left-1/2 top-1/2 block rotate-45 bg-accent"
+            style={{
+              width: centerSize * 0.16,
+              height: centerSize * 0.16,
+              translate: "-50% -50%",
+            }}
+          />
         </motion.div>
       </motion.div>
     </motion.div>
