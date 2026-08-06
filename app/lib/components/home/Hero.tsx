@@ -13,11 +13,8 @@ import ViewfinderFrame from "@/app/lib/components/shared/ViewfinderFrame";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import { GRID_STOPS } from "@/app/lib/grid";
 import RoleCycle from "@/app/lib/components/home/RoleCycle";
-import { experiences } from "@/app/lib/data/experience";
 
 const NAME_LINES = ["Snehil", "Kakani"];
-
-const featuredExperience = experiences[0];
 
 const riseVariants: Variants = {
   hidden: { opacity: 0, y: 14 },
@@ -126,11 +123,11 @@ export default function Hero({
   const entrance = reduceMotion ? undefined : { opacity: 1, y: 0 };
   const STATUS = [
     {
-      label: "Currently at",
-      value: `${featuredExperience.company} - ${featuredExperience.title}`,
+      label: "Currently building",
+      value: `Software and agentic infra @ Lindy`,
     },
     { label: "Studying", value: "Computer Science @ Cal Poly SLO" },
-    { label: "Based", value: "San Luis Obispo, CA" },
+    { label: "Based in", value: "Bay Area, CA" },
     { label: "Seeking", value: "Software engineering internships" },
   ];
 
@@ -209,11 +206,10 @@ export default function Hero({
             className="mb-14 mt-4 text-[0.975rem] leading-[1.82] text-dim"
             id="home-introduction"
           >
-            Building intelligent systems with a focus on frontend development,
-            distributed systems, and agentic AI. Passionate about creating
-            accessible user experiences. Exploring music production,
-            photography, and video games in my free time. Published researcher,
-            NMSC finalist, and entrepreneurial award winner.
+            Building intelligent systems with a focus on creating accessible
+            user experiences. Exploring music production, photography, and video
+            games in my free time. Published researcher, NMSC finalist, and
+            entrepreneurial award winner.
           </motion.p>
         </div>
 
@@ -232,7 +228,7 @@ export default function Hero({
                   fill
                   priority
                   sizes="(min-width: 1024px) 280px, 260px"
-                  className="object-cover grayscale-15"
+                  className="object-cover object-top grayscale-15"
                 />
               </div>
             </div>
