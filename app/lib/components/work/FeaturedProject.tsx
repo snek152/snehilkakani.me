@@ -5,7 +5,6 @@ import Image from "next/image";
 import { motion } from "motion/react";
 import type { Project } from "@/app/lib/data/projects";
 import { EASE_OUT } from "@/app/lib/motion";
-import ViewfinderFrame from "@/app/lib/components/shared/ViewfinderFrame";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import { ProjectLinks, ProjectSkills } from "./ProjectMeta";
 import { shortTitle } from "./utils";
@@ -61,12 +60,10 @@ export default function FeaturedProject({ project }: { project: Project }) {
       }`}
     >
       {secondary ? (
-        /* Two photos, evenly split, inside a single frame: the corner
-         * ticks and the accent rule belong to the pair, not to the left
-         * half. The band carries one aspect ratio so both halves share a
-         * height, and `object-cover` takes the small crop that costs.
-         */
-        <ViewfinderFrame className="overflow-hidden bg-card">
+        /* Two photos, evenly split. The band carries one aspect ratio so
+         * both halves share a height, and `object-cover` takes the small
+         * crop that costs. */
+        <div className="relative overflow-hidden bg-card">
           <div className="grid grid-cols-2" style={{ aspectRatio: "3" }}>
             <div className="relative overflow-hidden">{primaryImage}</div>
             <div className="relative overflow-hidden border-l border-border">
@@ -82,12 +79,12 @@ export default function FeaturedProject({ project }: { project: Project }) {
             </div>
           </div>
           {accentRule}
-        </ViewfinderFrame>
+        </div>
       ) : (
-        <ViewfinderFrame className="min-h-[220px] overflow-hidden bg-card sm:min-h-[290px] lg:min-h-[360px]">
+        <div className="relative min-h-[220px] overflow-hidden bg-card sm:min-h-[290px] lg:min-h-[360px]">
           {primaryImage}
           {accentRule}
-        </ViewfinderFrame>
+        </div>
       )}
 
       <div

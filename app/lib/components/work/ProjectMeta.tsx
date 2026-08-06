@@ -40,7 +40,7 @@ export function ProjectLinks({ project }: { project: Project }) {
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`View ${name} source code on GitHub`}
-          className="rounded-sm text-dim2 transition-all duration-200 hover:translate-x-0.5 hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-bg"
+          className="rounded-sm text-dim2 transition-colors duration-200 hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-bg"
         >
           <Github size={19} strokeWidth={1.6} aria-hidden="true" />
         </a>
@@ -51,7 +51,7 @@ export function ProjectLinks({ project }: { project: Project }) {
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`Open the ${name} project link`}
-          className="rounded-sm text-dim2 transition-all duration-200 hover:-translate-y-0.5 hover:translate-x-0.5 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-bg"
+          className="rounded-sm text-dim2 transition-colors duration-200 hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-bg"
         >
           <ArrowUpRight size={19} strokeWidth={1.6} aria-hidden="true" />
         </a>
