@@ -32,7 +32,6 @@
 
   --font-display: var(--font-epilogue);
   --font-sans: var(--font-plus-jakarta-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
 body {
@@ -54,6 +53,37 @@ body {
 ::selection {
   background: var(--accent);
   color: #fff;
+}
+
+/* Interaction curve for press/hover feedback only. Entrance motion keeps
+ * deriving from `beats()` + `EASE_OUT` in app/lib/motion.ts — this is for the
+ * sub-200ms CSS transitions on things you can touch, where the built-in
+ * `ease-out` is too weak to read as a response. */
+:root {
+  --ease-press: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Two preferences the site declared nothing for, while shipping two
+ * translucent surfaces (the music transport and the mobile nav bar).
+ *
+ * Reduced transparency is not a motion preference — people set it because
+ * blurred text is genuinely hard for them to read. Honouring it means the
+ * material becomes opaque, not merely dimmer. */
+@media (prefers-reduced-transparency: reduce) {
+  [data-material] {
+    background: var(--bg) !important;
+    backdrop-filter: none !important;
+  }
+}
+
+/* And at high contrast the same surfaces need a defined edge, since without
+ * the blur there is nothing separating them from the content behind. */
+@media (prefers-contrast: more) {
+  [data-material] {
+    background: #000 !important;
+    backdrop-filter: none !important;
+    border-color: rgba(255, 255, 255, 0.55) !important;
+  }
 }
 
 /* Thin dark scrollbar */

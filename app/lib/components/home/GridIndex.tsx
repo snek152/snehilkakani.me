@@ -145,29 +145,49 @@ function Cell({
         }}
       />
       <div>
+        {/* Press feedback lands on pointer-down, not on release. These four
+          * cells are the site's primary wayfinding, so they have to answer
+          * the finger before the navigation resolves. 0.98 rather than the
+          * house 0.97: a cell is a full page quarter, and at that width the
+          * extra percent reads as the panel lurching rather than as a
+          * button depressing. Scale only — the label's colour is the hover
+          * channel and has no business moving on press. */}
         <Link
           href={item.href}
-          className={`group flex h-full items-start justify-between gap-2 py-4 no-underline sm:py-5 ${
+          className={`group flex h-full items-start justify-between gap-2 py-4 no-underline transition-transform duration-[120ms] ease-[var(--ease-press)] active:scale-[0.98] sm:py-5 ${
             first ? "pl-4 sm:pl-8 lg:pl-12" : "pl-2 sm:pl-4 lg:pl-6"
           } ${last ? "pr-4 sm:pr-8 lg:pr-12" : "pr-2 sm:pr-4 lg:pr-6"}`}
         >
           <span className="min-w-0">
-            <span className="block font-display text-xs font-semibold tracking-[-0.01em] text-dim transition-colors duration-200 group-hover:text-fg sm:text-[0.95rem]">
+            <span className="block font-display text-xs font-semibold tracking-[-0.01em] text-dim transition-colors duration-200 ease-[var(--ease-press)] group-hover:text-fg sm:text-[0.95rem]">
               {item.label}
             </span>
             {/* Was `dim2` at 4.87:1 — the faintest text on the home page,
-              * sat under the labels a reader is choosing between. */}
-            <span className="mt-1 hidden text-[0.78rem] leading-snug text-dim sm:block">
+              * sat under the labels a reader is choosing between.
+              *
+              * 0.78rem in the sans face is small enough that the letterfit
+              * tightens optically; +0.01em opens it back to the density the
+              * body copy reads at. Tracking is size-specific, so this is the
+              * opposite end of the same rule the display sizes above follow
+              * with their negative values. */}
+            <span className="mt-1 hidden text-[0.78rem] leading-snug tracking-[0.01em] text-dim sm:block">
               {BLURBS[item.href]}
             </span>
           </span>
           {/* Four cells across a phone leaves ~60px of usable width each;
            * the arrow is the first thing to go rather than letting a
-           * label wrap. */}
+           * label wrap.
+           *
+           * `translate`, not `transform`: Tailwind v4 compiles
+           * `translate-x-*` to the standalone `translate` property, so a
+           * `transition-transform` here would animate nothing. (The
+           * parent's press uses `transition-transform`, which v4 expands
+           * to `transform, translate, scale, rotate` — that one does cover
+           * its `scale`.) */}
           <ArrowUpRight
             size={13}
             strokeWidth={2}
-            className="mt-0.5 hidden shrink-0 text-dim2 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-fg sm:block"
+            className="mt-0.5 hidden shrink-0 text-dim2 transition-[translate,color] duration-200 ease-[var(--ease-press)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-fg sm:block"
           />
         </Link>
       </div>

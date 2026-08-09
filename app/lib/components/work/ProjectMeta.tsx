@@ -20,6 +20,12 @@ export function ProjectSkills({ skills }: Pick<Project, "skills">) {
   );
 }
 
+// Both icon links are deliberately one treatment, so they cannot drift apart.
+// Tailwind v4 scale utilities use the independent `scale` property, not
+// `transform`; the transition list must therefore name `scale`.
+const ICON_LINK_CLASS =
+  "rounded-sm text-dim2 transition-[color,scale] duration-[120ms] ease-[var(--ease-press)] hover:text-fg active:text-fg active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-bg";
+
 export function ProjectLinks({ project }: { project: Project }) {
   const name = shortTitle(project.title);
   const hasPublicRepository = Boolean(project.github && !project.privateRepo);
@@ -30,7 +36,8 @@ export function ProjectLinks({ project }: { project: Project }) {
     <div className="flex shrink-0 items-center gap-3.5">
       {project.privateRepo && (
         <span
-          className="inline-flex items-center gap-1.5 text-sm font-medium uppercase tracking-[0.04em] text-dim2"
+          // This readable status label is body-copy contrast, not recessive icon contrast.
+          className="inline-flex items-center gap-1.5 text-sm font-medium uppercase tracking-[0.08em] text-dim"
           title="Source repository is private"
         >
           <LockKeyhole size={14} strokeWidth={1.75} aria-hidden="true" />
@@ -43,7 +50,7 @@ export function ProjectLinks({ project }: { project: Project }) {
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`View ${name} source code on GitHub`}
-          className="rounded-sm text-dim2 transition-colors duration-200 hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-bg"
+          className={ICON_LINK_CLASS}
         >
           <Github size={19} strokeWidth={1.6} aria-hidden="true" />
         </a>
@@ -54,7 +61,7 @@ export function ProjectLinks({ project }: { project: Project }) {
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`Open the ${name} project link`}
-          className="rounded-sm text-dim2 transition-colors duration-200 hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-bg"
+          className={ICON_LINK_CLASS}
         >
           <ArrowUpRight size={19} strokeWidth={1.6} aria-hidden="true" />
         </a>

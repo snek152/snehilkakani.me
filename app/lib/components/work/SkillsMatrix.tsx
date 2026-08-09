@@ -61,10 +61,9 @@ export default function SkillsMatrix() {
             >
               <div className="mb-4 flex items-center gap-2">
                 <span className="h-4 w-0.5 bg-accent" aria-hidden="true" />
-                <h3 className="text-sm font-semibold uppercase tracking-[0.04em] text-fg">
+                <h3 className="text-sm font-semibold uppercase tracking-[0.08em] text-fg">
                   {CATEGORY_LABELS[type]}
                 </h3>
-
               </div>
 
               <ul>

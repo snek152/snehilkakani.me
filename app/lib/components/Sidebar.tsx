@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, type Transition } from "motion/react";
@@ -27,14 +27,23 @@ function SidebarItem({
 }) {
   const { href, label, Icon } = item;
   return (
-    <Link href={href} onClick={onNavigate} className="block no-underline">
+    <Link
+      href={href}
+      onClick={onNavigate}
+      className="pointer-events-auto relative block w-[52px] no-underline"
+    >
+      {/* Keep the clickable rail strip at its collapsed 52px width even when
+        * labels are visible. The fixed rail can expand over page content;
+        * letting the visible label receive pointers would make it cover
+        * page links in that 124px overflow column. The icon target stays
+        * exactly as large, and labels are already pointer-transparent. */}
       <span
-        className={`relative flex h-[42px] items-center transition-colors duration-150 ${
+        className={`relative flex h-[42px] w-[52px] items-center transition-colors duration-[120ms] ease-[var(--ease-press)] ${
           active
             ? !expanded
-              ? "bg-accent/10"
-              : ""
-            : "hover:bg-white/[0.03]"
+              ? "bg-accent/10 active:bg-accent/20"
+              : "active:bg-white/[0.08]"
+            : "hover:bg-white/[0.03] active:bg-white/[0.08]"
         }`}
       >
         {active && expanded && (
@@ -51,23 +60,14 @@ function SidebarItem({
             className={`shrink-0 transition-colors duration-150 ${active ? "text-fg" : "text-dim"}`}
           />
         </span>
-        {/* Only the rail animates width. The label keeps its natural width
-          * and is revealed by the rail's own `overflow-hidden`, so there is
-          * one animated horizontal dimension rather than two springs racing
-          * over the same axis. Toggling the rail quickly used to interrupt
-          * both mid-flight and they would not settle together: measured, the
-          * rail sat fully open for ~50ms while the labels were still clipped
-          * to a quarter of their width, then snapped out. Animating `width`
-          * to `auto` also forces a re-measure on every interruption, which
-          * is what made the correction a jump rather than a slide.
-          *
-          * `shrink-0` because the flex row is only as wide as the rail, so
-          * the label would otherwise be squeezed back to nothing by flex
-          * itself once its width stopped being animated. */}
+        {/* The label is visual overflow from the fixed-width hit strip, not
+          * part of it. The rail's own `overflow-hidden` still reveals it as
+          * the width spring opens, without adding a second horizontal spring
+          * or allowing the rail to intercept page controls under the label. */}
         <motion.span
           animate={{ opacity: expanded ? 1 : 0 }}
           transition={transition}
-          className={`pointer-events-none shrink-0 whitespace-nowrap font-sans text-sm ${
+          className={`pointer-events-none absolute left-[52px] top-0 flex h-full items-center whitespace-nowrap font-sans text-sm ${
             active ? "font-medium text-fg" : "font-normal text-dim"
           }`}
         >
@@ -83,6 +83,28 @@ export default function Sidebar() {
   const pathname = usePathname();
   const [expanded, setExpanded] = useState(false);
   const reduceMotion = useMotionPreference();
+  const navRef = useRef<HTMLElement>(null);
+  /* The expanded label column is deliberately transparent so it cannot cover
+   * page controls beneath it. Once the pointer leaves an icon into that
+   * visual-only column, the rail itself no longer receives pointer events;
+   * Watch it against the nav’s stable, full-width target rectangle. */
+  useEffect(() => {
+    if (!expanded) return;
+    const collapseOutsideNav = (event: PointerEvent) => {
+      const rect = navRef.current?.getBoundingClientRect();
+      if (
+        !rect ||
+        event.clientX < rect.left ||
+        event.clientX > rect.left + SIDE_FULL ||
+        event.clientY < rect.top ||
+        event.clientY > rect.bottom
+      ) {
+        setExpanded(false);
+      }
+    };
+    window.addEventListener("pointermove", collapseOutsideNav);
+    return () => window.removeEventListener("pointermove", collapseOutsideNav);
+  }, [expanded]);
   /* AGENTS.md: always respect the motion preference. `Reveal` drops its
    * animation outright rather than substituting a gentler one, so the rail
    * matches that and snaps between widths — 124px of panel sliding out
@@ -95,13 +117,24 @@ export default function Sidebar() {
     <>
       {/* Desktop fixed sidebar */}
       <motion.aside
-        className="fixed inset-y-0 left-0 z-50 hidden flex-col justify-center overflow-hidden border-r border-border bg-bg lg:flex"
+        className="pointer-events-none fixed inset-y-0 left-0 z-50 hidden flex-col justify-center overflow-hidden border-r border-border bg-bg lg:flex"
         onHoverStart={() => setExpanded(true)}
-        onHoverEnd={() => setExpanded(false)}
+        onHoverEnd={(event) => {
+          const rect = navRef.current?.getBoundingClientRect();
+          if (
+            !rect ||
+            event.clientX < rect.left ||
+            event.clientX > rect.left + SIDE_FULL ||
+            event.clientY < rect.top ||
+            event.clientY > rect.bottom
+          ) {
+            setExpanded(false);
+          }
+        }}
         animate={{ width: expanded ? SIDE_FULL : SIDE_THIN }}
         transition={transition}
       >
-        <nav className="flex flex-col">
+        <nav ref={navRef} className="pointer-events-none flex flex-col">
           {navItems.map((item) => (
             <SidebarItem
               key={item.href}
@@ -124,10 +157,14 @@ export default function Sidebar() {
 
       {/* Mobile sticky top bar */}
       <header
+        data-material
         className="sticky top-0 z-40 flex h-[50px] items-center justify-between border-b border-border px-5 backdrop-blur-[14px] lg:hidden"
         style={{ background: "rgba(8,8,8,0.9)" }}
       >
-        <Link href="/" className="no-underline">
+        <Link
+          href="/"
+          className="no-underline transition-opacity duration-[120ms] ease-[var(--ease-press)] active:opacity-60"
+        >
           <span className="font-display text-[0.9rem] font-extrabold text-fg">SK</span>
         </Link>
         {/* The five labels measure 192.5px together; with a fixed 24px
@@ -149,7 +186,14 @@ export default function Sidebar() {
           {navItems.map((item) => {
             const active = item.end ? pathname === item.href : pathname.startsWith(item.href);
             return (
-              <Link key={item.href} href={item.href} className="no-underline">
+              <Link
+                key={item.href}
+                href={item.href}
+                /* Opacity, not scale: these are 14px text labels, where a 3%
+                 * transform is under two pixels and reads as nothing. Dimming
+                 * on touch-down is what a native bar button does. */
+                className="no-underline transition-opacity duration-[120ms] ease-[var(--ease-press)] active:opacity-60"
+              >
                 <span
                   className={`font-sans text-sm transition-colors duration-150 ${
                     active ? "text-fg" : "text-dim"

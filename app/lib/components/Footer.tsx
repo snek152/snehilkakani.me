@@ -54,7 +54,11 @@ export default function Footer({
             // 20px `gap-5` floor above is what keeps those extenders from
             // meeting: 8px a side leaves 4px of clearance between two
             // adjacent hit areas, so no point on the row is ambiguous.
-            className="relative flex items-center gap-1.5 font-sans text-sm text-dim transition-colors duration-150 before:absolute before:-inset-2 before:content-[''] hover:text-fg"
+            // Opacity is the press channel here because it is the one cue
+            // that cannot disturb the hit area above: a transform would
+            // scale the `::before` extender along with the link, shrinking
+            // the 36px target at the exact moment a thumb is on it.
+            className="relative flex items-center gap-1.5 font-sans text-sm text-dim transition-[color,opacity] duration-[120ms] ease-[var(--ease-press)] before:absolute before:-inset-2 before:content-[''] hover:text-fg active:opacity-70"
           >
             <Icon size={13} strokeWidth={1.75} className="hidden min-[420px]:block" />
             {label}

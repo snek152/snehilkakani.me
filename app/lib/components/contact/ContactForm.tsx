@@ -13,6 +13,12 @@ const fieldMotion: Variants = {
   visible: { opacity: 1, y: 0, transition: { duration: beats(0.6), ease: EASE_OUT } },
 };
 
+/** The `--ease-press` curve from globals.css, as a bezier motion can drive.
+ * The submit button is a `motion.button` with an animated entrance, so it
+ * carries an inline `transform` — an `active:scale-*` class cannot reach
+ * past that, and the press has to be a gesture rather than a CSS state. */
+const EASE_PRESS = [0.23, 1, 0.32, 1] as const;
+
 function Field({
   id,
   label,
@@ -126,14 +132,17 @@ export default function ContactForm() {
         <div className="flex flex-wrap items-center gap-[0.6rem]">
           <a
             href={buildMailtoUrl(name, email, message)}
-            className="border border-border px-[0.875rem] py-[0.45rem] text-sm text-dim transition-colors duration-150 hover:text-fg focus-visible:text-fg focus-visible:outline-none focus-visible:border-accent"
+            /* `scale`, not `transform`: Tailwind v4 compiles `scale-[0.97]`
+             * to the independent `scale` property, so a list naming
+             * `transform` transitions nothing and the press snaps. */
+            className="border border-border px-[0.875rem] py-[0.45rem] text-sm text-dim transition-[color,border-color,scale] duration-[120ms] ease-[var(--ease-press)] hover:text-fg active:scale-[0.97] focus-visible:text-fg focus-visible:outline-none focus-visible:border-accent"
           >
             Email {CONTACT_EMAIL} directly
           </a>
           <button
             type="button"
             onClick={copyMessage}
-            className="border border-border px-[0.875rem] py-[0.45rem] text-sm text-dim transition-colors duration-150 hover:text-fg focus-visible:text-fg focus-visible:outline-none focus-visible:border-accent"
+            className="border border-border px-[0.875rem] py-[0.45rem] text-sm text-dim transition-[color,border-color,scale] duration-[120ms] ease-[var(--ease-press)] hover:text-fg active:scale-[0.97] focus-visible:text-fg focus-visible:outline-none focus-visible:border-accent"
           >
             {copied ? "Copied" : "Copy message"}
           </button>
@@ -155,7 +164,7 @@ export default function ContactForm() {
         <button
           type="button"
           onClick={reset}
-          className="self-start border border-border px-[0.875rem] py-[0.45rem] text-sm text-dim transition-colors duration-150 hover:text-fg focus-visible:text-fg focus-visible:outline-none focus-visible:border-accent"
+          className="self-start border border-border px-[0.875rem] py-[0.45rem] text-sm text-dim transition-[color,border-color,scale] duration-[120ms] ease-[var(--ease-press)] hover:text-fg active:scale-[0.97] focus-visible:text-fg focus-visible:outline-none focus-visible:border-accent"
         >
           Send another
         </button>
@@ -223,8 +232,13 @@ export default function ContactForm() {
         variants={fieldMotion}
         type="submit"
         whileHover={reduceMotion ? undefined : { scale: 1.03 }}
-        whileTap={reduceMotion ? undefined : { scale: 0.97 }}
-        transition={{ type: "spring", stiffness: 400, damping: 25 }}
+        /* Reduced motion drops the scale, so the press moves to a channel
+         * that isn't movement rather than disappearing: feedback that the
+         * form was submitted is not decoration. The old spring here was
+         * underdamped (damping 25 against stiffness 400) and overshot on
+         * release; the press curve settles without the bounce. */
+        whileTap={reduceMotion ? { opacity: 0.7 } : { scale: 0.97 }}
+        transition={{ duration: 0.12, ease: EASE_PRESS }}
         className="inline-flex list-none items-center gap-[0.45rem] self-start bg-accent px-[1.375rem] py-[0.7rem] text-[0.875rem] font-medium text-white transition-opacity duration-150 hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent focus-visible:opacity-80"
       >
         {sending ? "Sending" : "Send"} <ArrowRight size={13} strokeWidth={1.75} />

@@ -102,6 +102,11 @@ export default function PlayerBar({
   // during SSR or the hydrating render — `document` is always there.
   return createPortal(
     <motion.div
+      // The bar is the site's one persistent translucent surface. The
+      // attribute is what `globals.css` keys its reduced-transparency and
+      // high-contrast overrides off; without it this stays blurred for
+      // people who asked for it not to be.
+      data-material=""
       initial={reduceMotion ? false : { y: 12, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: reduceMotion ? 0 : beatTime(0.4), ease: EASE_OUT }}
@@ -134,7 +139,7 @@ export default function PlayerBar({
             * track are all this one line. */}
           <span
             aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 top-0 h-px overflow-hidden bg-border transition-[height,background-color] duration-150 peer-focus-visible:h-[3px] peer-focus-visible:bg-dim2"
+            className="pointer-events-none absolute inset-x-0 top-0 h-px overflow-hidden bg-border transition-[height,background-color] duration-150 ease-[var(--ease-press)] peer-active:h-[3px] peer-active:bg-dim2 peer-focus-visible:h-[3px] peer-focus-visible:bg-dim2"
           >
             <motion.span
               className="block h-full bg-accent"
@@ -204,7 +209,16 @@ export default function PlayerBar({
                     // tap target via an invisible `::before`, without
                     // resizing the button itself — resizing would have
                     // shoved the play button and the clock over.
-                    className="relative text-dim2 transition-colors duration-150 before:absolute before:-inset-3.5 before:content-[''] hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent disabled:pointer-events-none disabled:opacity-30"
+                    //
+                    // The press scale is 0.90 rather than the site's 0.97:
+                    // on a 16px glyph a 3% shrink is half a pixel and reads
+                    // as nothing at all. The `::before` is a descendant, so
+                    // it scales too — the press therefore also widens it to
+                    // `-inset-4.5` (a 52px box), and 52 × 0.9 = 46.8px, so
+                    // the target stays over 44px for the whole time the
+                    // finger is down and a tap started at its edge can't
+                    // slip outside it before the release.
+                    className="relative text-dim2 transition-[color,scale] duration-[120ms] ease-[var(--ease-press)] before:absolute before:-inset-3.5 before:content-[''] hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent active:scale-90 active:text-fg active:before:-inset-4.5 disabled:pointer-events-none disabled:opacity-30"
                   >
                     <SkipBack size={16} strokeWidth={1.5} aria-hidden="true" />
                   </button>
@@ -221,8 +235,21 @@ export default function PlayerBar({
                     aria-label={isPlaybackActive ? "Pause" : "Play"}
                     // Same invisible `::before` padding technique: the
                     // visible 28px square is unchanged, `-inset-2` (8px)
-                    // brings the tap target to 44px.
-                    className="relative flex h-7 w-7 items-center justify-center border border-border text-fg transition-colors duration-150 before:absolute before:-inset-2 before:content-[''] hover:border-dim focus:outline-none focus-visible:border-accent focus-visible:text-accent"
+                    // brings the tap target to 44px — and `-inset-3` (52px,
+                    // 46.8px once scaled) while held, for the same reason
+                    // as the skip buttons.
+                    //
+                    // Two press channels, one of which isn't movement: the
+                    // box contracts *and* the hairline fills. Every other
+                    // control here has a non-motion signal already (the
+                    // skip glyphs brighten, the row and the filters dim),
+                    // and this was the only one that would have gone silent
+                    // on a display or a preference where a 2.8px contraction
+                    // doesn't read. The fill is neutral, not accent —
+                    // accent in this bar means elapsed progress. The border
+                    // is left to hover and focus so a keyboard activation
+                    // doesn't blink the accent focus border off mid-press.
+                    className="relative flex h-7 w-7 items-center justify-center border border-border text-fg transition-[color,background-color,border-color,scale] duration-[120ms] ease-[var(--ease-press)] before:absolute before:-inset-2 before:content-[''] hover:border-dim focus:outline-none focus-visible:border-accent focus-visible:text-accent active:scale-90 active:bg-white/[0.07] active:before:-inset-3"
                   >
                     {isPlaybackActive ? (
                       <Pause size={13} strokeWidth={1} className="fill-current" aria-hidden="true" />
@@ -235,7 +262,7 @@ export default function PlayerBar({
                     onClick={() => onSkip(1)}
                     disabled={activeIndex === totalTracks - 1}
                     aria-label="Next track"
-                    className="relative text-dim2 transition-colors duration-150 before:absolute before:-inset-3.5 before:content-[''] hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent disabled:pointer-events-none disabled:opacity-30"
+                    className="relative text-dim2 transition-[color,scale] duration-[120ms] ease-[var(--ease-press)] before:absolute before:-inset-3.5 before:content-[''] hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent active:scale-90 active:text-fg active:before:-inset-4.5 disabled:pointer-events-none disabled:opacity-30"
                   >
                     <SkipForward size={16} strokeWidth={1.5} aria-hidden="true" />
                   </button>

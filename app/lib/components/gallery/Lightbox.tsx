@@ -180,6 +180,18 @@ export default function Lightbox({
     else onNavigate((index - 1 + photos.length) % photos.length);
   };
 
+  // Press feedback for the three chrome buttons, on pointer-down rather
+  // than on release. These are 16-22px glyphs, so a scale alone is a
+  // fraction of a pixel and effectively invisible; the lift to full weight
+  // is what actually reads as a press — and on touch it is the only signal
+  // there is, since no hover precedes the tap. `transition-[color,scale]`
+  // names both properties: Tailwind v4 emits `scale-*` as the standalone
+  // `scale` property, so `transition-colors` alone would leave the press
+  // snapping. The small scale remains under reduced motion because it is
+  // direct-manipulation feedback; colour is the redundant non-motion cue.
+  const pressClass =
+    "transition-[color,scale] duration-[120ms] ease-[var(--ease-press)] active:scale-[0.95] active:text-fg";
+
   return (
     <AnimatePresence>
       {open && photo && (
@@ -269,7 +281,7 @@ export default function Lightbox({
               type="button"
               onClick={onClose}
               aria-label="Close lightbox"
-              className="absolute -top-9 right-0 border-0 bg-transparent p-0 text-dim transition-colors duration-150 hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              className={`absolute -top-9 right-0 border-0 bg-transparent p-0 text-dim hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent ${pressClass}`}
             >
               <X size={16} strokeWidth={1.75} />
             </button>
@@ -280,7 +292,7 @@ export default function Lightbox({
                   type="button"
                   onClick={() => onNavigate((index! - 1 + photos.length) % photos.length)}
                   aria-label="Previous photo"
-                  className="absolute top-1/2 -left-4 -translate-x-full -translate-y-1/2 border-0 bg-transparent p-2 text-dim transition-colors duration-150 hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent max-lg:hidden"
+                  className={`absolute top-1/2 -left-4 -translate-x-full -translate-y-1/2 border-0 bg-transparent p-2 text-dim hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent max-lg:hidden ${pressClass}`}
                 >
                   <ChevronLeft size={22} strokeWidth={1.5} />
                 </button>
@@ -288,7 +300,7 @@ export default function Lightbox({
                   type="button"
                   onClick={() => onNavigate((index! + 1) % photos.length)}
                   aria-label="Next photo"
-                  className="absolute top-1/2 -right-4 translate-x-full -translate-y-1/2 border-0 bg-transparent p-2 text-dim transition-colors duration-150 hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent max-lg:hidden"
+                  className={`absolute top-1/2 -right-4 translate-x-full -translate-y-1/2 border-0 bg-transparent p-2 text-dim hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent max-lg:hidden ${pressClass}`}
                 >
                   <ChevronRight size={22} strokeWidth={1.5} />
                 </button>

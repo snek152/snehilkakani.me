@@ -238,7 +238,13 @@ export default function Hero({
               <dl className="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2">
                 {STATUS.map(({ label, value }) => (
                   <div key={label}>
-                    <dt className="mb-1 text-sm font-medium text-dim2">
+                    {/* `dim2` is 4.87:1 — the floor. A definition list is a
+                      * two-step reading path: you find the label, then the
+                      * value under it. Setting the step you land on first as
+                      * the least legible text in the card inverts that.
+                      * `dim` is 8.42:1 and still recedes behind the `fg`
+                      * value, so the hierarchy survives the lift. */}
+                    <dt className="mb-1 text-sm font-medium text-dim">
                       {label}
                     </dt>
                     <dd className="text-[0.92rem] leading-5 font-medium text-fg">

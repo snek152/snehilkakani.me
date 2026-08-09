@@ -33,7 +33,12 @@ const ORBIT_MARKS = [
 export default function OrbitStage({ complete, scale = 1 }: { complete: boolean; scale?: number }) {
   const markSize = 44 * scale;
   const iconSize = 18 * scale;
-  const centerSize = 64 * scale;
+  /* 46, down from the 64 this has always been. A mark box is 92.4px centred
+   * 99px out, so its inner edge sits 52.8px from centre — at 64 the hub
+   * reached 67.2px and overlapped every mark by 14.4px. That was true of the
+   * original too; it only became visible once there was a node at the centre
+   * drawing the eye there. 46 clears the marks by 4.5px. */
+  const centerSize = 46 * scale;
   const lineLength = RADIUS * scale;
 
   return (
@@ -128,8 +133,8 @@ export default function OrbitStage({ complete, scale = 1 }: { complete: boolean;
           <span
             className="absolute left-1/2 top-1/2 block rotate-45 bg-accent"
             style={{
-              width: centerSize * 0.16,
-              height: centerSize * 0.16,
+              width: 7 * scale,
+              height: 7 * scale,
               translate: "-50% -50%",
             }}
           />

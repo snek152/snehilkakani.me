@@ -69,7 +69,12 @@ export default function TrackRow({
         onClick={onToggle}
         aria-pressed={isActive}
         aria-label={`${isPlayingRow ? "Pause" : "Play"} ${beat.name}, ${beat.category}, ${beat.tempo} BPM`}
-        className={`grid w-full grid-cols-1 items-center gap-x-4 gap-y-1 px-2 py-3.5 text-left transition-colors duration-150 lg:grid-cols-4 ${
+        // A row is the full width of the page, so the usual 0.97 press
+        // scale would swing its right edge ~18px and drag every column
+        // with it. Dimming the whole surface says "held" without moving
+        // anything — and it works on the active row too, which has no
+        // hover tint to darken.
+        className={`grid w-full grid-cols-1 items-center gap-x-4 gap-y-1 px-2 py-3.5 text-left transition-[background-color,opacity] duration-[120ms] ease-[var(--ease-press)] active:opacity-80 lg:grid-cols-4 ${
           isActive ? "" : "hover:bg-white/[0.02]"
         }`}
       >

@@ -97,7 +97,11 @@ export default function ExperienceList({ experiences }: { experiences: Experienc
             <p className="text-[0.9rem] font-medium leading-snug tracking-[-0.01em] tabular-nums text-fg">
               {dateRange(experience.period)}
             </p>
-            <p className="mt-1.5 text-[0.8rem] leading-snug text-dim">{experience.location}</p>
+            {/* 0.8rem sans: at this size the face's default fit reads
+              * cramped against the 0.9rem date above it. +0.01em is the
+              * counterpart to the negative tracking the display sizes
+              * carry — same rule, other end of the scale. */}
+            <p className="mt-1.5 text-[0.8rem] leading-snug tracking-[0.01em] text-dim">{experience.location}</p>
           </motion.div>
 
           <div className="lg:col-span-3 lg:pl-10 lg:pr-12">

@@ -61,7 +61,7 @@ export default function GalleryCell({
         type="button"
         onClick={onOpen}
         style={{ height: `${height}px` }}
-        className="block w-full cursor-pointer overflow-hidden border-0 bg-transparent p-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+        className="block w-full cursor-pointer overflow-hidden border-0 bg-transparent p-0 transition-transform duration-[120ms] ease-[var(--ease-press)] active:scale-[0.99] active:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
         aria-label={`Open ${photo.alt}`}
       >
         <Image

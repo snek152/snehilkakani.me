@@ -62,7 +62,14 @@ export default function MusicPage() {
               type="button"
               aria-pressed={isActive}
               onClick={() => setFilter(category)}
-              className={`relative pb-1.5 font-sans text-sm capitalize transition-colors duration-150 ${
+              // Scale *and* opacity. The filters are short words — "all"
+              // is 20px wide, where a scale press on its own amounts to
+              // about a pixel — and the one press signal that would be
+              // unmistakable on touch, brightening the text, is already
+              // spoken for: `text-fg` here means "this filter is on", so
+              // flashing it would announce a selection that hasn't
+              // happened yet. Dimming can't be misread that way.
+              className={`relative pb-1.5 font-sans text-sm capitalize transition-[color,scale,opacity] duration-[120ms] ease-[var(--ease-press)] active:scale-95 active:opacity-70 ${
                 isActive ? "text-fg" : "text-dim hover:text-fg"
               }`}
             >
@@ -89,7 +96,15 @@ export default function MusicPage() {
             key={beat.name}
             beat={beat}
             isActive={activeIndex === index}
-            isPlayingRow={activeIndex === index && playbackState === "playing"}
+            // A loading track's next action is also pause: `toggleTrack`
+            // cancels its pending request exactly as it pauses an already
+            // playing track. Keep the row's glyph and accessible name
+            // honest about that action, rather than reporting "Play" until
+            // audio frames arrive.
+            isPlayingRow={
+              activeIndex === index &&
+              (playbackState === "playing" || playbackState === "loading")
+            }
             duration={BEAT_DURATIONS[beat.file] ?? 0}
             bars={bars}
             onToggle={() => toggleTrack(index)}

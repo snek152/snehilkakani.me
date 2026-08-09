@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import Image from "next/image";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion, useTransform } from "motion/react";
 import type { Project } from "@/app/lib/data/projects";
 import { EASE_OUT } from "@/app/lib/motion";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
@@ -28,17 +28,6 @@ export default function ProjectCard({ project }: { project: Project }) {
   const articleRef = useRef<HTMLElement>(null);
   const proximity = useProximity(articleRef, 320);
   const glowOpacity = useTransform(proximity, [0, 1], [0, 0.06]);
-  // Drift of the photograph inside its frame as the row travels the
-  // viewport. Kept well inside the 9% overhang above and below.
-  const { scrollYProgress } = useScroll({
-    target: articleRef,
-    offset: ["start end", "end start"],
-  });
-  const parallax = useTransform(
-    scrollYProgress,
-    [0, 1],
-    reduceMotion ? ["0%", "0%"] : ["-5%", "5%"],
-  );
   const [active, setActive] = useState(false);
   const year = projectYear(project.subtitle);
 
@@ -105,22 +94,16 @@ export default function ProjectCard({ project }: { project: Project }) {
           },
         }}
       >
-        {/* Taller than the frame so it has somewhere to travel. The drift
-          * is small and scroll-linked — the photograph sits *into* the
-          * page rather than being pasted onto it — and the overhang is
-          * comfortably larger than the travel, so no edge can enter the
-          * frame. No hover scale: the accent rule already says the card
-          * is live, and moving the composition to repeat that was the
-          * noisier half. */}
-        <motion.div className="absolute -inset-y-[9%] inset-x-0" style={{ y: parallax }}>
-          <Image
-            src={project.image}
-            alt={shortTitle(project.title)}
-            fill
-            sizes="(min-width: 1024px) 50vw, 100vw"
-            className="object-cover"
-          />
-        </motion.div>
+        {/* No hover scale and no scroll drift: the accent rule already says
+          * the card is live, and moving the composition to repeat that was
+          * the noisier half. */}
+        <Image
+          src={project.image}
+          alt={shortTitle(project.title)}
+          fill
+          sizes="(min-width: 1024px) 50vw, 100vw"
+          className="object-cover"
+        />
         <motion.span
           aria-hidden="true"
           className="absolute inset-x-0 bottom-0 h-0.5 origin-left bg-accent"

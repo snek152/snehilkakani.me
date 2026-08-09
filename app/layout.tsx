@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Epilogue, Plus_Jakarta_Sans, Geist_Mono } from "next/font/google";
+import { Epilogue, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import AppShell from "./lib/components/AppShell";
 
@@ -15,11 +15,6 @@ const plusJakartaSans = Plus_Jakarta_Sans({
   weight: ["400", "500", "600"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-  weight: ["400", "500"],
-});
 
 // Site-wide default, used verbatim on `/` and as the fallback anywhere a
 // route forgets its own. Every route under `app/` that needs a distinct
@@ -97,7 +92,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${epilogue.variable} ${plusJakartaSans.variable} ${geistMono.variable} antialiased`}
+        className={`${epilogue.variable} ${plusJakartaSans.variable} antialiased`}
       >
         <AppShell>{children}</AppShell>
       </body>
