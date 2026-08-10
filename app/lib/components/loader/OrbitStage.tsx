@@ -33,12 +33,7 @@ const ORBIT_MARKS = [
 export default function OrbitStage({ complete, scale = 1 }: { complete: boolean; scale?: number }) {
   const markSize = 44 * scale;
   const iconSize = 18 * scale;
-  /* 46, down from the 64 this has always been. A mark box is 92.4px centred
-   * 99px out, so its inner edge sits 52.8px from centre — at 64 the hub
-   * reached 67.2px and overlapped every mark by 14.4px. That was true of the
-   * original too; it only became visible once there was a node at the centre
-   * drawing the eye there. 46 clears the marks by 4.5px. */
-  const centerSize = 46 * scale;
+  const centerSize = 64 * scale;
   const lineLength = RADIUS * scale;
 
   return (
@@ -58,11 +53,20 @@ export default function OrbitStage({ complete, scale = 1 }: { complete: boolean;
       >
         <motion.div
           className="relative"
-          initial={{ scale: 0.7, rotate: -30, x: 0, y: 0 }}
+          initial={{ scale: 0.7, rotate: -30 }}
           animate={
+            /* The spin is the whole character of this release and is kept as
+             * it was. What is gone is the `x: -110, y: 160` that rode along
+             * with it: the assembly used to travel to an offset with nothing
+             * at it, so a centred composition ended by sliding into open
+             * page. It now turns and closes in place, over the node it
+             * converges on. Bottoming out at 0.06 rather than 0 for the same
+             * reason a mark never starts at `scale(0)` — it collapses to a
+             * point, not out of existence, and at that size behind a
+             * finished fade it is a fraction of a pixel either way. */
             complete
-              ? { scale: 0, rotate: -150, x: -110, y: 160 }
-              : { scale: 1, rotate: 0, x: 0, y: 0 }
+              ? { scale: 0.06, rotate: -150 }
+              : { scale: 1, rotate: 0 }
           }
           transition={{ duration: complete ? RELEASE_MS / 1000 : 0.48, ease: EASE_OUT }}
         >
@@ -125,16 +129,16 @@ export default function OrbitStage({ complete, scale = 1 }: { complete: boolean;
             );
           })}
 
-          {/* The point the four links converge on, made visible — the hub was
-            * an empty square at the focus of the whole composition. Rendered
-            * last so it sits over the links crossing behind it, and static:
-            * the assembly is already scaling up around it, so animating the
-            * node too just read as a blink. */}
+          {/* The point the four links converge on, made visible — the hub is
+            * otherwise an empty square at the focus of the whole composition,
+            * with the links crossing through it as a bare X. Rendered last so
+            * it sits over them, and static: the assembly scales around it, so
+            * animating the node too just read as a blink. */}
           <span
             className="absolute left-1/2 top-1/2 block rotate-45 bg-accent"
             style={{
-              width: 7 * scale,
-              height: 7 * scale,
+              width: centerSize * 0.16,
+              height: centerSize * 0.16,
               translate: "-50% -50%",
             }}
           />
