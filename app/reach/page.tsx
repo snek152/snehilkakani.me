@@ -9,27 +9,24 @@ import { CONTACT_EMAIL } from "@/app/lib/components/contact/mailto";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import { EASE_OUT } from "@/app/lib/motion";
 import { beats } from "@/app/lib/tempo";
-import musicProd from "@/public/music_prod.jpg";
-import photography from "@/public/photography.jpeg";
-import webdev from "@/public/webdev.jpg";
-import lenaea from "@/public/lenaea.jpg";
+import dog from "@/public/dog.jpg";
+import photography from "@/public/photography2.jpg";
+import spiderman from "@/public/spiderman.jpg";
+import tahoe from "@/public/tahoe.jpg";
 
 const contactPhotos = [
-  { src: musicProd, alt: "Putting together a new beat", caption: "Putting together a new beat" },
+  { src: dog, caption: "My dog, Ollie" },
   {
     src: photography,
-    alt: "Prepping my camera for a shoot in NYC",
-    caption: "Prepping my camera for a shoot in NYC",
+    caption: "Using my camera at a sunset in SLO",
   },
   {
-    src: webdev,
-    alt: "Presenting about Git at Web Dev club",
-    caption: "Presenting about Git at Web Dev club",
+    src: spiderman,
+    caption: "My Spider-Man plushie",
   },
   {
-    src: lenaea,
-    alt: "Performing onstage at a theatre festival",
-    caption: "Performing onstage at a theatre festival",
+    src: tahoe,
+    caption: "Me and my friends on our trip to Tahoe",
   },
 ] as const;
 
@@ -102,7 +99,7 @@ export default function ContactPage() {
             >
               <Image
                 src={photo.src}
-                alt={photo.alt}
+                alt={photo.caption}
                 sizes="(min-width: 1280px) 18vw, (min-width: 1024px) 17vw, 0px"
                 className="h-full w-full object-cover"
               />
