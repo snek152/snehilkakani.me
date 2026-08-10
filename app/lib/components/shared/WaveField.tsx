@@ -117,34 +117,24 @@ const PHASE_STEP = 0.62;
 
 /** Scroll coupling.
  *
- * Scroll drives the field's ANIMATION, not its position. An earlier version
- * translated the strata down the screen as you scrolled; even at a bounded
- * 134px that reads as the background sliding out from under the page, which
- * is jarring rather than atmospheric.
+ * Scroll drives the field's ANIMATION, not its position. It is intentionally
+ * based on physical document distance rather than `scrollY / scrollHeight`:
+ * 150px should have the same visual consequence on Reach as it does on a
+ * longer route. The phase is capped after the opening 1,500px, so the field
+ * gently reorganises with the reader and then settles into its ambient drift
+ * instead of continually competing with the work being read.
  *
- * Instead scroll is a second time axis. `SCROLL_TIME_GAIN` is how many extra
- * radians of evolution a full document's worth of scrolling adds, scaled per
- * stratum by `LAYERS[].scrollResponse`. Because each layer scrubs at its own
- * rate, scrolling slides them through each other's configurations — the
- * field reorganises rather than moves, and scrolling back rewinds it. The
- * ambient drift keeps running underneath, so the field never freezes when
- * the page is still.
- *
- * `ENERGY_*` is the transient: scroll velocity briefly swells amplitude and
- * twist, so a flick makes the field surge and settle instead of tilting.
- * Damped per frame and capped, so a trackpad fling cannot throw it. */
-const SCROLL_TIME_GAIN = 5.5;
-/** How fast the scrubbed phase chases the scroll position. Damped rather
- * than applied outright: `progress` moves smoothly under a continuous
- * scroll, but a PageDown, an anchor jump or a scrollbar drag moves it in
- * one step, and feeding that straight into the phase snaps the whole field
- * to a new configuration in a single frame. Chasing it ramps that over a
- * few hundred milliseconds instead, and the slight lag under continuous
- * scrolling reads as the field having weight. */
-const SCROLL_PHASE_DAMPING = 0.07;
-const ENERGY_GAIN = 0.0042;
-const ENERGY_MAX = 0.5;
-const ENERGY_DAMPING = 0.11;
+ * `ENERGY_*` is the transient: scroll velocity briefly adds a little twist
+ * and excursion. Its smaller budget keeps trackpad movement tactile without
+ * making the entire background surge. */
+const SCROLL_TIME_PER_PX = 0.0016;
+const SCROLL_PHASE_MAX = 2.4;
+/** The phase eases toward its bounded distance target instead of snapping on
+ * PageDown, anchors, or scrollbar drags. */
+const SCROLL_PHASE_DAMPING = 0.055;
+const ENERGY_GAIN = 0.0024;
+const ENERGY_MAX = 0.32;
+const ENERGY_DAMPING = 0.09;
 
 /** Half-extent of a filament along its own axis, in units of half the
  * viewport. Greater than 1 so both ends sit outside the frame: strands enter
@@ -196,12 +186,10 @@ const BREATHE_DEPTH = 0.4;
 const WANDER_SPEED = 0.17;
 const WANDER_RATIO = 0.07;
 
-/** Stroke alpha range at mid-depth, before the depth and layer terms. Low
- * because there are many curves: density is meant to buy structure and
- * interference, not brightness. Tuned against the composited percentiles in
- * the header note. */
-const BASE_ALPHA_MIN = 0.096;
-const BASE_ALPHA_MAX = 0.168;
+/** Stroke alpha range at mid-depth, before the depth and layer terms. The
+ * field should add atmosphere behind content, not another layer of chrome. */
+const BASE_ALPHA_MIN = 0.08;
+const BASE_ALPHA_MAX = 0.145;
 
 /** How much depth darkens a curve: the far extreme keeps this fraction of its
  * brightness, the near extreme keeps all of it. This replaces the old
@@ -226,7 +214,7 @@ const HALO_ALPHA_SHARE = 0.26;
  * text contrast drops everywhere. That is the number to watch when tuning —
  * not how the bloom looks on its own. */
 const BLOOM_WIDTH_SCALE = 3.2;
-const BLOOM_ALPHA_SHARE = 0.30;
+const BLOOM_ALPHA_SHARE = 0.26;
 const BLOOM_BANDS = 4;
 
 /** Extra halo spread applied to the far end of a curve's own depth range, on
@@ -483,16 +471,10 @@ export default function WaveField() {
     const pWidth = new Float32Array(SAMPLES_MAX + 1);
     const pDefocus = new Float32Array(SAMPLES_MAX + 1);
 
-    // Document scroll extent, cached. `scrollHeight`/`clientHeight` are
-    // layout-dependent reads and can force a synchronous layout, which is not
-    // something a full-viewport loop should do 60 times a second. Only
-    // `scrollY` is genuinely per-frame; this is refreshed whenever the
-    // document actually changes size.
-    let scrollable = 1;
-    const measureScrollExtent = () => {
-      const doc = document.documentElement;
-      scrollable = Math.max(1, doc.scrollHeight - doc.clientHeight);
-    };
+    // Scroll is intentionally mapped from physical distance, not document
+    // extent. That gives the same response on a short page such as Reach and
+    // a long page such as Lens, while avoiding a layout-dependent read in the
+    // frame loop.
 
     const resize = () => {
       // A bare `<canvas>` with no explicit size is a replaced element with an
@@ -514,7 +496,6 @@ export default function WaveField() {
       // self-add under `lighter`, beading every curve at the band spacing.
       ctx.lineCap = "butt";
       ctx.lineJoin = "round";
-      measureScrollExtent();
     };
 
     // Scroll state, persisted across frames.
@@ -542,12 +523,13 @@ export default function WaveField() {
       const perspFar = FOCAL / (FOCAL + Z_FAR_LIMIT);
       const perspSpan = perspNear - perspFar || 1;
 
-      // Scroll coupling. `scrollY` is read once per frame here rather than
-      // from a scroll listener: the loop is already running, one read cannot
-      // fire more often than a paint, and it keeps the two in lockstep so the
-      // field never lags the page by a frame. The document extent it is
-      // divided by is cached — see `measureScrollExtent`.
-      const progress = Math.min(1, Math.max(0, window.scrollY / scrollable));
+      // Read scroll once per painted frame so the field stays in lockstep with
+      // the page. The capped absolute-distance target avoids amplifying small
+      // Reach-page scrolls merely because that route is short.
+      const scrollTarget = Math.min(
+        SCROLL_PHASE_MAX,
+        Math.max(0, window.scrollY * SCROLL_TIME_PER_PX),
+      );
       const delta = window.scrollY - lastScrollY;
       lastScrollY = window.scrollY;
       // Speed, not direction: scrolling either way is agitation. Smoothed and
@@ -557,10 +539,9 @@ export default function WaveField() {
 
       // Each stratum's orientation for this frame, computed once rather than
       // per curve. `layerTime` is the stratum's own clock: ambient drift plus
-      // the scroll offset scaled by how strongly this layer answers scroll.
-      // Because the three rates differ, scrolling slides the strata through
-      // each other's configurations instead of moving any of them.
-      scrollPhase += (progress * SCROLL_TIME_GAIN - scrollPhase) * SCROLL_PHASE_DAMPING;
+      // the bounded physical scroll offset scaled by how strongly this layer
+      // answers scroll.
+      scrollPhase += (scrollTarget - scrollPhase) * SCROLL_PHASE_DAMPING;
       const layerState = LAYERS.map((layer) => {
         const lt = t + scrollPhase * layer.scrollResponse;
         const rotY = layer.rotYAmp * Math.sin(lt * layer.rotYSpeed + layer.rotPhase);
@@ -757,22 +738,11 @@ export default function WaveField() {
     };
     window.addEventListener("resize", handleResize);
 
-    let resizeObserver: ResizeObserver | null = null;
-    if (typeof ResizeObserver !== "undefined") {
-      resizeObserver = new ResizeObserver(handleResize);
-      // `body`, not `documentElement`: the root's observed content box is
-      // effectively the layout viewport, so it need not change when the
-      // document grows taller (late-loading images, expanding content). The
-      // cached scroll extent would then go stale and the parallax would map
-      // scroll position against the wrong document height.
-      resizeObserver.observe(document.body);
-    }
 
     return () => {
       stop();
       document.removeEventListener("visibilitychange", handleVisibility);
       window.removeEventListener("resize", handleResize);
-      resizeObserver?.disconnect();
     };
   }, [reduceMotion]);
 

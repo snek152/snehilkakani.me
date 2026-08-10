@@ -103,24 +103,6 @@ export default function ContactPage() {
                 sizes="(min-width: 1280px) 18vw, (min-width: 1024px) 17vw, 0px"
                 className="h-full w-full object-cover"
               />
-              {/* `group-hover` is not gated on `(hover: hover)`, so on a
-                * touch device wide enough for this grid (an iPad in
-                * landscape) the caption stays up until the next tap
-                * elsewhere. Left as is: the tile is not a control, the
-                * overlay reveals a description rather than a state, and a
-                * caption that lingers on the photo you just touched is the
-                * only way a touch reader sees it at all. Gating it would
-                * cost those users the caption to fix nothing.
-                *
-                * `aria-hidden` because each caption is the exact string
-                * already carried by its image's `alt`; without it the four
-                * photos are announced twice each. */}
-              <div
-                aria-hidden
-                className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end bg-gradient-to-t from-bg/85 via-bg/0 to-bg/0 p-2.5 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100"
-              >
-                <p className="text-sm leading-snug text-fg">{photo.caption}</p>
-              </div>
             </motion.div>
           ))}
         </div>
