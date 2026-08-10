@@ -42,6 +42,7 @@ export default function MusicPage() {
     <div className="px-6 pb-16 pt-16 sm:px-8 lg:px-12 lg:pt-[4.5rem]">
       <div ref={headingRef}>
         <ManifestoHeading
+          as="h1"
           id="music-heading"
           text="Music"
           active={headingActive}
@@ -69,7 +70,7 @@ export default function MusicPage() {
               // spoken for: `text-fg` here means "this filter is on", so
               // flashing it would announce a selection that hasn't
               // happened yet. Dimming can't be misread that way.
-              className={`relative pb-1.5 font-sans text-sm capitalize transition-[color,scale,opacity] duration-[120ms] ease-[var(--ease-press)] active:scale-95 active:opacity-70 ${
+              className={`relative inline-flex min-h-11 items-center pb-1.5 font-sans text-sm capitalize transition-[color,scale,opacity] duration-[120ms] ease-[var(--ease-press)] active:scale-95 active:opacity-70 ${
                 isActive ? "text-fg" : "text-dim hover:text-fg"
               }`}
             >

@@ -40,6 +40,7 @@ export default function GalleryPage() {
         className="mb-7"
       >
         <ManifestoHeading
+          as="h1"
           id="lens-heading"
           text="Lens"
           active={headingActive}

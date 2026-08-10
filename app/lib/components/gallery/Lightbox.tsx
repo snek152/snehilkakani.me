@@ -120,7 +120,7 @@ export default function Lightbox({
         if (!container) return;
         const focusables = Array.from(
           container.querySelectorAll<HTMLButtonElement>("button:not([disabled])"),
-        );
+        ).filter((button) => button.getClientRects().length > 0);
         if (focusables.length === 0) return;
         const first = focusables[0];
         const last = focusables[focusables.length - 1];
