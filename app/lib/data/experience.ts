@@ -11,12 +11,12 @@ export const experiences: Experience[] = [
     title: "Software Engineer Intern",
     company: "Lindy",
     location: "San Francisco, CA",
-    period: "Jun 2026 - Present",
+    period: "Jun 2026 - Aug 2026",
     description: [
       "Shipping production infrastructure for Lindy's high-volume AI agent platform",
-      "Lead engineer of a new system for autonomous agent behavior, enabling agents to act on schedules or real-world events like incoming messages and email",
-      "Building features end to end, from data model to UI, including natural-language creation and smart filtering",
-      "Extending the system to workspace-wide team agents with admin-managed access, migrating existing production behavior without disrupting live assistant flows",
+      "Lead engineer of Routines, enabling agents to act on schedules or real-world events like incoming messages and email",
+      "Built natural-language CRUD, dry-run previews, and proactive triggers end to end, from data model to UI",
+      "Extended the system to power workspace-wide agents driven through Slack, migrating production behavior without disrupting live assistant workflows.",
     ],
     skills: [
       "typescript",

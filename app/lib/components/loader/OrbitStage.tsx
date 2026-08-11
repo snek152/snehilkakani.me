@@ -21,16 +21,50 @@ import { EASE_OUT } from "@/app/lib/motion";
  *    others (or the backdrop) keep going.
  */
 const RADIUS = 140;
-export const RELEASE_MS = 900;
+export const RELEASE_MS = 1000;
 
 const ORBIT_MARKS = [
-  { Icon: Terminal, label: "engineering", x: -RADIUS * Math.SQRT1_2, y: -RADIUS * Math.SQRT1_2, angle: -135, release: { x: -160, y: 220 } },
-  { Icon: SlidersVertical, label: "music", x: RADIUS * Math.SQRT1_2, y: -RADIUS * Math.SQRT1_2, angle: -45, release: { x: 40, y: -260 } },
-  { Icon: Aperture, label: "photography", x: RADIUS * Math.SQRT1_2, y: RADIUS * Math.SQRT1_2, angle: 45, release: { x: 260, y: 200 } },
-  { Icon: Binary, label: "research", x: -RADIUS * Math.SQRT1_2, y: RADIUS * Math.SQRT1_2, angle: 135, release: { x: -30, y: 280 } },
+  {
+    Icon: Terminal,
+    label: "engineering",
+    x: -RADIUS * Math.SQRT1_2,
+    y: -RADIUS * Math.SQRT1_2,
+    angle: -135,
+    release: { x: -160, y: 220 },
+  },
+  {
+    Icon: SlidersVertical,
+    label: "music",
+    x: RADIUS * Math.SQRT1_2,
+    y: -RADIUS * Math.SQRT1_2,
+    angle: -45,
+    release: { x: 40, y: -260 },
+  },
+  {
+    Icon: Aperture,
+    label: "photography",
+    x: RADIUS * Math.SQRT1_2,
+    y: RADIUS * Math.SQRT1_2,
+    angle: 45,
+    release: { x: 260, y: 200 },
+  },
+  {
+    Icon: Binary,
+    label: "research",
+    x: -RADIUS * Math.SQRT1_2,
+    y: RADIUS * Math.SQRT1_2,
+    angle: 135,
+    release: { x: -30, y: 280 },
+  },
 ];
 
-export default function OrbitStage({ complete, scale = 1 }: { complete: boolean; scale?: number }) {
+export default function OrbitStage({
+  complete,
+  scale = 1,
+}: {
+  complete: boolean;
+  scale?: number;
+}) {
   const markSize = 44 * scale;
   const iconSize = 18 * scale;
   const centerSize = 64 * scale;
@@ -64,11 +98,12 @@ export default function OrbitStage({ complete, scale = 1 }: { complete: boolean;
              * reason a mark never starts at `scale(0)` — it collapses to a
              * point, not out of existence, and at that size behind a
              * finished fade it is a fraction of a pixel either way. */
-            complete
-              ? { scale: 0.06, rotate: -150 }
-              : { scale: 1, rotate: 0 }
+            complete ? { scale: 0.06, rotate: -250 } : { scale: 1, rotate: 0 }
           }
-          transition={{ duration: complete ? RELEASE_MS / 1000 : 0.48, ease: EASE_OUT }}
+          transition={{
+            duration: complete ? RELEASE_MS / 1000 : 0.48,
+            ease: EASE_OUT,
+          }}
         >
           <div
             className="absolute left-1/2 top-1/2 border border-accent"
@@ -109,7 +144,11 @@ export default function OrbitStage({ complete, scale = 1 }: { complete: boolean;
               <motion.div
                 key={label}
                 className="absolute left-1/2 top-1/2 flex items-center justify-center border border-white/[0.22] bg-white/[0.03] text-fg"
-                style={{ width: markSize, height: markSize, translate: "-50% -50%" }}
+                style={{
+                  width: markSize,
+                  height: markSize,
+                  translate: "-50% -50%",
+                }}
                 initial={{ opacity: 0, x: 0, y: 0, scale: 0.7 }}
                 animate={{
                   opacity: complete ? [1, 1, 0] : 1,
@@ -130,10 +169,10 @@ export default function OrbitStage({ complete, scale = 1 }: { complete: boolean;
           })}
 
           {/* The point the four links converge on, made visible — the hub is
-            * otherwise an empty square at the focus of the whole composition,
-            * with the links crossing through it as a bare X. Rendered last so
-            * it sits over them, and static: the assembly scales around it, so
-            * animating the node too just read as a blink. */}
+           * otherwise an empty square at the focus of the whole composition,
+           * with the links crossing through it as a bare X. Rendered last so
+           * it sits over them, and static: the assembly scales around it, so
+           * animating the node too just read as a blink. */}
           <span
             className="absolute left-1/2 top-1/2 block rotate-45 bg-accent"
             style={{

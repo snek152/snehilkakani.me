@@ -80,32 +80,39 @@ export default function ContactPage() {
           <ContactForm />
         </section>
 
-        <div
-          role="group"
-          className="hidden grid-cols-2 gap-1.5 lg:grid"
-          aria-label="Selected photography"
+        <section
+          className="hidden lg:block"
+          aria-labelledby="contact-photos"
         >
-          {contactPhotos.map((photo, index) => (
-            <motion.div
-              key={photo.caption}
-              initial={reduceMotion ? false : { opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: beats(0.6),
-                delay: reduceMotion ? 0 : Math.min(index, 3) * beats(0.15),
-                ease: EASE_OUT,
-              }}
-              className="group relative aspect-[4/5] overflow-hidden bg-card"
-            >
-              <Image
-                src={photo.src}
-                alt={photo.caption}
-                sizes="(min-width: 1280px) 18vw, (min-width: 1024px) 17vw, 0px"
-                className="h-full w-full object-cover"
-              />
-            </motion.div>
-          ))}
-        </div>
+          <h2
+            id="contact-photos"
+            className="mb-3 text-sm font-medium tracking-[0.01em] text-dim"
+          >
+            A few things outside of work.
+          </h2>
+          <div className="grid grid-cols-2 gap-1.5">
+            {contactPhotos.map((photo, index) => (
+              <motion.div
+                key={photo.caption}
+                initial={reduceMotion ? false : { opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: beats(0.6),
+                  delay: reduceMotion ? 0 : Math.min(index, 3) * beats(0.15),
+                  ease: EASE_OUT,
+                }}
+                className="group relative aspect-[4/5] overflow-hidden bg-card"
+              >
+                <Image
+                  src={photo.src}
+                  alt={photo.caption}
+                  sizes="(min-width: 1280px) 18vw, (min-width: 1024px) 17vw, 0px"
+                  className="h-full w-full object-cover"
+                />
+              </motion.div>
+            ))}
+          </div>
+        </section>
       </motion.div>
     </main>
   );

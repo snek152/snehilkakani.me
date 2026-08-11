@@ -90,13 +90,16 @@ export default function ProjectCard({ project }: { project: Project }) {
           hidden: { clipPath: "inset(0 100% 0 0)" },
           shown: {
             clipPath: "inset(0 0% 0 0)",
-            transition: { duration: reduceMotion ? 0 : beats(1.4), ease: EASE_OUT },
+            transition: {
+              duration: reduceMotion ? 0 : beats(1.4),
+              ease: EASE_OUT,
+            },
           },
         }}
       >
         {/* No hover scale and no scroll drift: the accent rule already says
-          * the card is live, and moving the composition to repeat that was
-          * the noisier half. */}
+         * the card is live, and moving the composition to repeat that was
+         * the noisier half. */}
         <Image
           src={project.image}
           alt={shortTitle(project.title)}

@@ -18,7 +18,6 @@ import { usePathname } from "next/navigation";
 import { AnimatePresence } from "motion/react";
 import CursorGlow from "./CursorGlow";
 import { CursorFieldProvider } from "./shared/CursorField";
-import FilmGrain from "./shared/FilmGrain";
 import WaveField from "./shared/WaveField";
 import LoadingScreen from "./LoadingScreen";
 import { MotionPreferenceProvider } from "./shared/MotionPreference";
@@ -108,7 +107,6 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <CursorFieldProvider>
         <div className="relative">
           <WaveField />
-          <FilmGrain />
           <CursorGlow />
           <ScrollProgressRail />
           <AnimatePresence>
@@ -119,10 +117,10 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             <NavDirectionContext.Provider value={direction}>
             <MusicPlayerProvider>
               {/* `relative z-[1]` sits on the whole column, not just the
-                * content div: `WaveField` and `FilmGrain` are fixed at
-                * `z-0`, and a positioned element paints above unpositioned
-                * content, so with only the inner div lifted the Footer
-                * below it was being painted over by both. */}
+                * content div: `WaveField` is fixed at `z-0`, and a
+                * positioned element paints above unpositioned content, so
+                * with only the inner div lifted the Footer below it was
+                * being painted over. */}
               <div className="relative z-[1] flex min-h-[100dvh] flex-col lg:pl-[52px]">
                 <div className="relative z-[1] flex-1">{children}</div>
                 {/* The transport's footprint is reserved INSIDE the

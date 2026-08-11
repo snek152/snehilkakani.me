@@ -113,10 +113,12 @@ body {
 /* Page scrollbar hidden — ScrollProgressRail (fixed accent line, right
  * edge) replaces it as the scroll indicator. Internal scrollable elements
  * keep the thin styled scrollbar above. */
-html {
+html,
+body {
   scrollbar-width: none; /* Firefox */
 }
 
-html::-webkit-scrollbar {
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Edge */
 }

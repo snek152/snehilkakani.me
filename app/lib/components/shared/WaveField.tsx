@@ -117,19 +117,18 @@ const PHASE_STEP = 0.62;
 
 /** Scroll coupling.
  *
- * Scroll drives the field's ANIMATION, not its position. It is intentionally
- * based on physical document distance rather than `scrollY / scrollHeight`:
+ * Scroll drives the field's animation, not its position. It is based on
+ * physical document distance rather than `scrollY / scrollHeight`:
  * 150px should have the same visual consequence on Reach as it does on a
- * longer route. The phase is capped after the opening 1,500px, so the field
- * gently reorganises with the reader and then settles into its ambient drift
- * instead of continually competing with the work being read.
+ * longer route. The phase continues through the full document, so the field
+ * gently reorganises with the reader without dropping its scroll response on
+ * longer pages.
  *
  * `ENERGY_*` is the transient: scroll velocity briefly adds a little twist
  * and excursion. Its smaller budget keeps trackpad movement tactile without
  * making the entire background surge. */
 const SCROLL_TIME_PER_PX = 0.0016;
-const SCROLL_PHASE_MAX = 2.4;
-/** The phase eases toward its bounded distance target instead of snapping on
+/** The phase eases toward its physical-distance target instead of snapping on
  * PageDown, anchors, or scrollbar drags. */
 const SCROLL_PHASE_DAMPING = 0.055;
 const ENERGY_GAIN = 0.0024;
@@ -524,12 +523,9 @@ export default function WaveField() {
       const perspSpan = perspNear - perspFar || 1;
 
       // Read scroll once per painted frame so the field stays in lockstep with
-      // the page. The capped absolute-distance target avoids amplifying small
-      // Reach-page scrolls merely because that route is short.
-      const scrollTarget = Math.min(
-        SCROLL_PHASE_MAX,
-        Math.max(0, window.scrollY * SCROLL_TIME_PER_PX),
-      );
+      // the page. The physical-distance target preserves the same response
+      // across short and long routes.
+      const scrollTarget = Math.max(0, window.scrollY * SCROLL_TIME_PER_PX);
       const delta = window.scrollY - lastScrollY;
       lastScrollY = window.scrollY;
       // Speed, not direction: scrolling either way is agitation. Smoothed and

@@ -10,6 +10,7 @@ import impasse from "@/public/projects/impasse.png";
 import orbis from "@/public/projects/orbis.png";
 import fere from "@/public/projects/fere.jpg";
 import fere2 from "@/public/projects/fere-win.jpeg";
+import clearance from "@/public/projects/clearance.jpg";
 import { StaticImageData } from "next/image";
 
 export type Project = {
@@ -31,13 +32,14 @@ export const projects: Project[] = [
     title: "Fere: AI-Powered Desktop Dev Tooling Platform",
     subtitle: "January 2026 - May 2026",
     description:
-      "Built a desktop dev tooling platform that visualizes local environments intuitively. Won 2nd place ($10K) at Cal Poly's Innovation Quest. Built AI-powered querying, debugging, and proactive background monitoring with service-scoped context and adaptive suggestions.",
+      "Built a desktop platform that that maps a local dev environment into a live, interactive service graph, tracking processes, ports, Docker containers, and API routes in real time. Won 2nd place ($10K) at Cal Poly's Innovation Quest. Designed an in-app AI assistant wired into the graph for querying, debugging, and proactive background monitoring with service-scoped context and adaptive suggestions.",
     skills: ["electron", "typescript", "agentic ai", "desktop development"],
     image: fere,
     github: "https://github.com/fere-oss/fere",
     link: "https://getfere.com",
     secondaryImage: fere2,
   },
+
   {
     title: "Impasse: AI-Powered Negotiation Training Platform",
     subtitle: "January 2026",
@@ -53,10 +55,24 @@ export const projects: Project[] = [
     link: "https://youtu.be/VSajuy4SSEM",
   },
   {
+    title: "Clearance: Car Repair Shop Agent",
+    subtitle: "June 2026",
+    description:
+      "Built a FastAPI agent that lets a car repair shop's sales, manager, and technician roles query jobs and generate quotes through one interface. Scoped every tool call to per-user Scalekit connected accounts so a technician's access denies at the identity layer before reaching an external tool, and grounded quotes in real job history via Actian VectorAI retrieval. Won 1st place ($500) in the Actian VectorAI DB track at the Scalekit x Actian x Render hackathon.",
+    image: clearance,
+    skills: [
+      "fastapi & python",
+      "agentic ai development",
+      "role-based identity scoping",
+      "vector db retrieval",
+    ],
+    github: "https://github.com/Theswagblader/agents-in-production",
+  },
+  {
     title: "GU-Net: Diffuse Glioma Segmentation Research",
     subtitle: "June 2023 - July 2023",
     description:
-      "Developed a novel U-Net-based architecture for segmenting diffuse gliomas in medical images under data and processing constraints, achieving 71.58% accuracy. Applied advanced data augmentation to compensate for limited training data. Presented at UCSB and published in the Journal of Student Research.",
+      "Developed GU-Net, a novel U-Net-based architecture for segmenting diffuse gliomas in T2-FLAIR brain MRIs from the BraTS 2021 dataset, achieving 71.58% accuracy while training on just 1,647 images from 549 scans. Applied advanced data augmentation to compensate for the limited training data, aiming to make the model viable for underfunded hospitals with less imaging data on hand. Presented at UCSB and published in the Journal of Student Research.",
     link: "/projects/gu_net_diffuse_glioma_segmentation.pdf",
     github: "https://github.com/snek152/GU_Net_Glioma_Segmentation_SRA",
     image: sra,
@@ -70,7 +86,7 @@ export const projects: Project[] = [
     title: "Orbis: AI Agent Observability Dashboard",
     subtitle: "October 2025 - December 2025",
     description:
-      "Built a full-stack observability platform and Python SDK for devs to instrument and track AI agent executions, costs, and performance in real time. Engineered interactive DAG visualizations mapping agent execution graphs, integrated prompt versioning, and built cost analytics across runs.",
+      "Built a full-stack observability platform and Python SDK for devs to instrument and track AI agent executions, costs, and performance in real time. Engineered interactive DAG visualizations mapping agent execution graphs, integrated prompt versioning with rollback, and built cost analytics across runs. Enforced per-user tenant isolation on agents, traces, and prompts at both the API and database layer so one dev's data can never leak into another's.",
     image: orbis,
     skills: [
       "next.js & tailwindcss",
@@ -100,7 +116,7 @@ export const projects: Project[] = [
     title: "FloodSafe: Atmospheric River Prediction",
     subtitle: "January 2023 - March 2023",
     description:
-      "Assembled a dataset from scratch and constructed a neural network for atmospheric river prediction, achieving over 95% accuracy. Deployed the model with FastAPI and produced a web app for real-time results.",
+      "Assembled a dataset from scratch by scraping and processing historical weather data, then constructed a neural network for atmospheric river prediction, achieving over 95% accuracy. Built the full pipeline end-to-end, from scraping and train/test/val splitting to model training and evaluation. Deployed the model behind a FastAPI backend and built a web app for real-time predictions.",
     image: floodsafe,
     skills: [
       "pytorch computer vision",
@@ -152,7 +168,7 @@ export const projects: Project[] = [
     title: "Steam Force: Accessible STEAM Learning App",
     subtitle: "November 2021 - April 2022",
     description:
-      "Built an offline-capable STEAM learning app for underprivileged youth, focusing on accessibility. Won Honorable Mention at the 2022 Synopsys Science Fair.",
+      "Built a Next.js and Firebase web app delivering interactive STEAM education to underprivileged kids, spanning units across science, tech, engineering, art, and math with quiz-based lessons throughout. Focused on offline-capable, accessible design so the app worked regardless of a student's internet access or hardware. Won Honorable Mention in Physical Science and Engineering at the 2022 Synopsys Science Fair.",
     image: steamforce,
     skills: [
       "next.js & firebase",

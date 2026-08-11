@@ -46,7 +46,7 @@ export default function LoadingScreen({ onDone }: { onDone: () => void }) {
   /* The opaque gather intentionally owns the screen. Once `complete` starts,
    * though, the page is visible beneath a decorative, aria-hidden exit; it
    * must stop intercepting input immediately rather than holding clicks for
-   * the 900ms release. This also prevents a stalled exit animation from
+   * the 800ms release. This also prevents a stalled exit animation from
    * trapping the entire page behind an inert overlay. */
   if (prefersReducedMotion) {
     return <div className="fixed inset-0 z-[9999] bg-bg" />;
