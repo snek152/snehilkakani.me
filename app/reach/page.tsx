@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import Image from "next/image";
+import { FileText } from "lucide-react";
 import { motion, useInView } from "motion/react";
 import ManifestoHeading from "@/app/lib/components/home/ManifestoHeading";
 import ContactForm from "@/app/lib/components/contact/ContactForm";
@@ -37,7 +38,7 @@ export default function ContactPage() {
   const headingActive = useInView(headingRef, { once: true, margin: "0px 0px -15% 0px" });
 
   return (
-    <main className="px-6 pb-20 pt-16 sm:px-8 lg:px-12 lg:pt-[4.5rem]">
+    <div className="px-6 pb-20 pt-16 sm:px-8 lg:px-12 lg:pt-[4.5rem]">
       <motion.div
         ref={headingRef}
         initial={reduceMotion ? false : { opacity: 0, y: 20 }}
@@ -50,7 +51,7 @@ export default function ContactPage() {
           id="reach-heading"
           text="Let's talk."
           active={headingActive}
-          className="font-display text-[clamp(2.5rem,5vw,4rem)] font-extrabold leading-none tracking-[var(--track-display-lg)] text-fg"
+          className="font-display text-[length:var(--size-display-lg)] font-bold leading-none tracking-[var(--track-display-lg)] text-fg text-balance"
         />
       </motion.div>
 
@@ -64,7 +65,7 @@ export default function ContactPage() {
           <h2 id="contact-intro" className="sr-only">
             Send a message
           </h2>
-          <p className="mb-11 text-[0.95rem] leading-[1.8] text-dim">
+          <p className="mb-11 text-[length:var(--text-lead)] leading-[var(--leading-lead)] max-w-[var(--measure-lead)] text-dim">
             Open to internships, collaborations, and interesting problems.{" "}
             <a
               href={`mailto:${CONTACT_EMAIL}`}
@@ -77,6 +78,14 @@ export default function ContactPage() {
               {CONTACT_EMAIL}
             </a>
           </p>
+          <a
+            href="/resume.pdf"
+            download
+            className="mb-11 inline-flex items-center gap-1.5 border border-border px-[0.875rem] py-[0.45rem] text-[length:var(--text-meta)] text-dim transition-[color,border-color,scale] duration-[120ms] ease-[var(--ease-press)] hover:text-fg active:scale-[0.97] focus-visible:text-fg focus-visible:outline-none focus-visible:border-accent"
+          >
+            <FileText className="size-3.5" aria-hidden="true" />
+            Résumé
+          </a>
           <ContactForm />
         </section>
 
@@ -86,7 +95,7 @@ export default function ContactPage() {
         >
           <h2
             id="contact-photos"
-            className="mb-3 text-sm font-medium tracking-[0.01em] text-dim"
+            className="mb-3 text-[length:var(--text-meta)] font-medium tracking-[var(--track-text-sm)] text-dim"
           >
             A few things outside of work.
           </h2>
@@ -114,6 +123,6 @@ export default function ContactPage() {
           </div>
         </section>
       </motion.div>
-    </main>
+    </div>
   );
 }

@@ -11,7 +11,7 @@ export function ProjectSkills({ skills }: Pick<Project, "skills">) {
       {skills.map((skill) => (
         <li
           key={skill}
-          className="text-sm text-dim before:mr-1.5 before:text-dim2 before:content-['/']"
+          className="text-[length:var(--text-meta)] tracking-[var(--track-text-sm)] text-dim before:mr-1.5 before:text-dim2 before:content-['/']"
         >
           {skill}
         </li>
@@ -37,7 +37,7 @@ export function ProjectLinks({ project }: { project: Project }) {
       {project.privateRepo && (
         <span
           // This readable status label is body-copy contrast, not recessive icon contrast.
-          className="inline-flex items-center gap-1.5 text-sm font-medium uppercase tracking-[0.08em] text-dim"
+          className="inline-flex items-center gap-1.5 text-[length:var(--text-meta)] font-medium uppercase tracking-[0.08em] text-dim"
           title="Source repository is private"
         >
           <LockKeyhole size={14} strokeWidth={1.75} aria-hidden="true" />

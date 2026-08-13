@@ -116,11 +116,11 @@ export default function ProjectCard({ project }: { project: Project }) {
       </motion.div>
 
       <div className="flex flex-col lg:justify-center lg:pl-10">
-        {year && <p className="mb-3 text-sm tabular-nums text-dim">{year}</p>}
-        <h3 className="font-display text-[1.5rem] font-bold leading-tight tracking-[var(--track-display-md)] text-fg lg:text-[1.75rem]">
+        {year && <p className="mb-3 text-[length:var(--text-meta)] tabular-nums tracking-[var(--track-text-sm)] text-dim">{year}</p>}
+        <h3 className="font-display text-[length:var(--size-display-md)] font-semibold leading-tight tracking-[var(--track-display-md)] text-fg text-balance line-clamp-3">
           {shortTitle(project.title)}
         </h3>
-        <p className="mt-3 max-w-xl text-[0.9rem] leading-[1.7] text-dim">
+        <p className="mt-3 max-w-[var(--measure-body)] text-[length:var(--text-body)] leading-[var(--leading-body)] text-dim">
           {project.description}
         </p>
         <div className="mt-5">

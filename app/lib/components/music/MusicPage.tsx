@@ -46,7 +46,7 @@ export default function MusicPage() {
           id="music-heading"
           text="Music"
           active={headingActive}
-          className="font-display text-5xl font-extrabold tracking-[var(--track-display-lg)] text-fg sm:text-6xl"
+          className="font-display text-[length:var(--size-display-lg)] font-bold tracking-[var(--track-display-lg)] text-fg text-balance"
         />
       </div>
 
@@ -70,7 +70,7 @@ export default function MusicPage() {
               // spoken for: `text-fg` here means "this filter is on", so
               // flashing it would announce a selection that hasn't
               // happened yet. Dimming can't be misread that way.
-              className={`relative inline-flex min-h-11 items-center pb-1.5 font-sans text-sm capitalize transition-[color,scale,opacity] duration-[120ms] ease-[var(--ease-press)] active:scale-95 active:opacity-70 ${
+              className={`relative inline-flex min-h-11 items-center pb-1.5 font-sans text-[length:var(--text-meta)] capitalize transition-[color,scale,opacity] duration-[120ms] ease-[var(--ease-press)] active:scale-95 active:opacity-70 ${
                 isActive ? "text-fg" : "text-dim hover:text-fg"
               }`}
             >

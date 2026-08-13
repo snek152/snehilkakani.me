@@ -159,7 +159,7 @@ function Cell({
           } ${last ? "pr-4 sm:pr-8 lg:pr-12" : "pr-2 sm:pr-4 lg:pr-6"}`}
         >
           <span className="min-w-0">
-            <span className="block font-display text-xs font-semibold tracking-[var(--track-display-sm)] text-dim transition-colors duration-200 ease-[var(--ease-press)] group-hover:text-fg sm:text-[0.95rem]">
+            <span className="block font-display text-[length:var(--size-display-sm)] font-semibold tracking-[var(--track-display-sm)] text-dim transition-colors duration-200 ease-[var(--ease-press)] group-hover:text-fg">
               {item.label}
             </span>
             {/* Was `dim2` at 4.87:1 — the faintest text on the home page,
@@ -170,7 +170,7 @@ function Cell({
               * body copy reads at. Tracking is size-specific, so this is the
               * opposite end of the same rule the display sizes above follow
               * with their negative values. */}
-            <span className="mt-1 hidden text-[0.78rem] leading-snug tracking-[0.01em] text-dim sm:block">
+            <span className="mt-1 sr-only text-[length:var(--text-micro)] leading-snug tracking-[var(--track-text-sm)] text-dim sm:not-sr-only sm:block">
               {BLURBS[item.href]}
             </span>
           </span>

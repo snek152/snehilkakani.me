@@ -21,16 +21,39 @@ export default function LoadingScreen({ onDone }: { onDone: () => void }) {
   const onDoneRef = useRef(onDone);
   onDoneRef.current = onDone;
   const [complete, setComplete] = useState(false);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const completeTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (prefersReducedMotion) {
       const timer = window.setTimeout(() => onDoneRef.current(), 160);
       return () => window.clearTimeout(timer);
     }
-    const completeTimer = window.setTimeout(() => {
+    completeTimerRef.current = window.setTimeout(() => {
+      completeTimerRef.current = null;
       setComplete(true);
     }, COMPLETE_MS);
-    return () => window.clearTimeout(completeTimer);
+    return () => {
+      if (completeTimerRef.current !== null) {
+        window.clearTimeout(completeTimerRef.current);
+        completeTimerRef.current = null;
+      }
+    };
+  }, [prefersReducedMotion]);
+
+  /* Any pointer or key-based skip advances straight to the same `complete`
+   * state the timer sets, and cancels that timer so it cannot also fire. */
+  const skip = () => {
+    if (completeTimerRef.current !== null) {
+      window.clearTimeout(completeTimerRef.current);
+      completeTimerRef.current = null;
+    }
+    setComplete(true);
+  };
+
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+    overlayRef.current?.focus();
   }, [prefersReducedMotion]);
 
   /* Schedule the parent handoff one task after the local `complete` render.
@@ -54,11 +77,21 @@ export default function LoadingScreen({ onDone }: { onDone: () => void }) {
 
   return (
     <motion.div
-      aria-hidden
+      ref={overlayRef}
+      role="button"
+      tabIndex={0}
+      aria-label="Skip intro animation"
       exit={{ opacity: 0, transition: { duration: EXIT_MS / 1000 } }}
-      className={`fixed inset-0 z-[9999] overflow-hidden bg-bg ${
+      className={`fixed inset-0 z-[9999] overflow-hidden bg-bg outline-none ${
         complete ? "pointer-events-none" : ""
       }`}
+      onPointerDown={skip}
+      onKeyDown={(event) => {
+        if (event.key === "Escape" || event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          skip();
+        }
+      }}
     >
       <OrbitStage complete={complete} scale={2.1} />
     </motion.div>

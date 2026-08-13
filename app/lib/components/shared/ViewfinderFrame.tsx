@@ -109,7 +109,7 @@ export default function ViewfinderFrame({
 
       {(captionLeft || captionRight) && (
         <div
-          className={`pointer-events-none absolute right-2.5 bottom-2.5 left-2.5 flex items-end justify-between gap-3 text-sm tracking-[0.01em] text-fg/80 tabular-nums ${animate ? "transition-opacity duration-150" : ""} ${active ? "opacity-100" : "opacity-0"}`}
+          className={`pointer-events-none absolute right-2.5 bottom-2.5 left-2.5 flex items-end justify-between gap-3 text-[length:var(--text-micro)] tracking-[var(--track-text-sm)] text-fg/80 tabular-nums ${animate ? "transition-opacity duration-150" : ""} ${active ? "opacity-100" : "opacity-0"}`}
         >
           {captionLeft && <span className="bg-bg/70 px-1 py-0.5">{captionLeft}</span>}
           {captionRight && <span className="bg-bg/70 px-1 py-0.5">{captionRight}</span>}

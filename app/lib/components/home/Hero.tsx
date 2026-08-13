@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { FileText } from "lucide-react";
 import {
   motion,
   useTransform,
@@ -190,7 +191,7 @@ export default function Hero({
                   }
             }
             transition={{ duration: 0.5, ease: EASE_OUT }}
-            className="m-0 mb-4 font-display text-[clamp(3.2rem,8.5vw,7.4rem)] leading-[0.94] font-extrabold tracking-[var(--track-display-xl)] text-fg"
+            className="m-0 mb-4 font-display text-[length:var(--size-display-xl)] leading-[0.94] font-bold tracking-[var(--track-display-xl)] text-balance text-fg"
           >
             {NAME_LINES.map((line) => (
               <span key={line} className="block">
@@ -204,7 +205,7 @@ export default function Hero({
             whileInView={entrance}
             viewport={{ once: true, amount: 0.25 }}
             transition={{ duration: 0.45, ease: EASE_OUT }}
-            className="mb-14 mt-4 text-[0.975rem] leading-[1.82] text-dim"
+            className="mb-14 mt-4 text-[length:var(--text-lead)] leading-[var(--leading-lead)] max-w-[var(--measure-lead)] text-dim"
             id="home-introduction"
           >
             Building intelligent systems with a focus on creating accessible
@@ -244,15 +245,23 @@ export default function Hero({
                       * the least legible text in the card inverts that.
                       * `dim` is 8.42:1 and still recedes behind the `fg`
                       * value, so the hierarchy survives the lift. */}
-                    <dt className="mb-1 text-sm font-medium text-dim">
+                    <dt className="mb-1 text-[length:var(--text-meta)] font-normal tracking-[var(--track-text-sm)] text-dim">
                       {label}
                     </dt>
-                    <dd className="text-[0.92rem] leading-5 font-medium text-fg">
+                    <dd className="text-[length:var(--text-body)] leading-5 font-medium text-fg">
                       {value}
                     </dd>
                   </div>
                 ))}
               </dl>
+              <a
+                href="/resume.pdf"
+                download
+                className="mt-4 inline-flex items-center gap-1.5 border border-border px-[0.875rem] py-[0.45rem] text-[length:var(--text-meta)] text-dim transition-[color,border-color,scale] duration-[120ms] ease-[var(--ease-press)] hover:text-fg active:scale-[0.97] focus-visible:text-fg focus-visible:outline-none focus-visible:border-accent"
+              >
+                <FileText className="size-3.5" aria-hidden="true" />
+                Résumé
+              </a>
             </div>
           </ViewfinderFrame>
         </motion.div>

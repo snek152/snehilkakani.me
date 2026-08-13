@@ -1,28 +1,34 @@
 import type { Metadata } from "next";
-import { Epilogue, Schibsted_Grotesk } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import AppShell from "./lib/components/AppShell";
 
-// Epilogue sets every display line — the hero lockup, page titles, card and
-// section headings, the small display labels. Schibsted Grotesk, a news-media
-// grotesque, carries body copy and UI text.
+// Both faces are self-hosted rather than pulled from a font CDN. That is a
+// deliberate choice, not an optimisation: the free Google catalogue is where
+// every generated portfolio shops, and its most-reached-for grotesques are why
+// so many of them read the same. These two are drawn by the Indian Type
+// Foundry, so they share construction logic and sit together without being
+// lookalikes. Licences ship next to the files (`*-FFL-LICENSE.txt`).
 //
-// The weights requested here are exactly the ones the components use:
-// `font-semibold`/`font-bold`/`font-extrabold` on display (600 is the small
-// display labels in `GridIndex` and `RoleCycle`), and
-// `font-normal`/`font-medium`/`font-semibold` on body. A class asking for an
-// unloaded weight gets synthesized by the browser instead of rendered, so this
-// list and the classes have to stay in step. Schibsted is loaded as a VARIABLE
-// font (no `weight` array), so its whole 400..900 range is always available.
-const epilogue = Epilogue({
-  variable: "--font-epilogue",
-  subsets: ["latin"],
-  weight: ["600", "700", "800"],
+// Both are VARIABLE — one file each, every weight in the design available from
+// it, and no possibility of a class asking for a cut that was never fetched.
+//
+// Clash Display's axis stops at 700. There is no 800, which is why the display
+// tiers top out at `font-bold` and the card/section tier sits at
+// `font-semibold`: an `font-extrabold` class here would be synthesized by the
+// browser, not rendered. Do not reintroduce one.
+const clashDisplay = localFont({
+  src: "./fonts/ClashDisplay-Variable.woff2",
+  variable: "--font-clash-display",
+  weight: "200 700",
+  display: "swap",
 });
 
-const schibstedGrotesk = Schibsted_Grotesk({
-  variable: "--font-schibsted-grotesk",
-  subsets: ["latin"],
+const switzer = localFont({
+  src: "./fonts/Switzer-Variable.woff2",
+  variable: "--font-switzer",
+  weight: "100 900",
+  display: "swap",
 });
 
 
@@ -102,7 +108,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${epilogue.variable} ${schibstedGrotesk.variable} antialiased`}
+        className={`${clashDisplay.variable} ${switzer.variable} antialiased`}
       >
         <AppShell>{children}</AppShell>
       </body>

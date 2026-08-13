@@ -95,7 +95,7 @@ export default function TrackRow({
             // reflowed the row and drew the eye to a size change rather
             // than to what is playing; weight and colour say it without
             // moving anything.
-            className={`block min-w-0 flex-1 truncate font-sans text-[0.95rem] transition-colors duration-150 ${
+            className={`block min-w-0 flex-1 truncate font-sans text-[length:var(--text-meta)] transition-colors duration-150 ${
               isActive ? "font-semibold text-fg" : "font-medium text-dim"
             }`}
           >
@@ -107,11 +107,11 @@ export default function TrackRow({
           * columns; below, it stacks under the title, indented past the
           * glyph gutter (w-5 + gap-4) so it still hangs off the title's
           * left edge. */}
-        <span className="block truncate pl-9 font-sans text-sm text-dim2 lg:col-span-2 lg:pl-0">
+        <span className="block truncate pl-9 font-sans text-[length:var(--text-meta)] tracking-[var(--track-text-sm)] text-dim2 lg:col-span-2 lg:pl-0">
           {beat.description}
         </span>
 
-        <span className="hidden items-center justify-between font-sans text-sm text-dim2 lg:flex">
+        <span className="hidden items-center justify-between font-sans text-[length:var(--text-micro)] tracking-[var(--track-text-sm)] text-dim2 lg:flex">
           <span className="tabular-nums">{beat.tempo} BPM</span>
           <span className="tabular-nums">{formatTime(duration)}</span>
         </span>

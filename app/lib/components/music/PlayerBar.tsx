@@ -117,7 +117,7 @@ export default function PlayerBar({
         * rule and the grid below inherit the list's geometry exactly rather
         * than approximating it. */}
       <div className="h-full px-6 sm:px-8 lg:px-12">
-        <div className="relative h-full">
+        <div className="group relative h-full">
           <input
             type="range"
             aria-label={`Seek through ${active.name}`}
@@ -153,6 +153,21 @@ export default function PlayerBar({
             />
           </span>
 
+          {/* Accent handle at the current playhead — purely an affordance
+            * signalling the line is draggable. `pointer-events-none` keeps
+            * it out of the native range input's hit area; the input still
+            * owns all seeking, keyboard and screen-reader behaviour. It's
+            * invisible at rest and appears on hover of the transport, on
+            * focus of the range input, and while dragging (peer-active).
+            * Reduced motion keeps the dot visible on those states — it's
+            * an affordance, not decoration — and only drops the
+            * opacity/scale transition. */}
+          <span
+            aria-hidden="true"
+            style={{ left: `${pct}%` }}
+            className="pointer-events-none absolute top-0 h-[7px] w-[7px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent opacity-0 transition-[opacity,scale] duration-[120ms] ease-[var(--ease-press)] motion-reduce:transition-none group-hover:opacity-100 peer-focus-visible:opacity-100 peer-active:opacity-100 peer-active:scale-125"
+          />
+
           {/* Single announcement channel. The visible copies below are
             * marked aria-hidden so an error is never read twice. */}
           <p className="sr-only" role={error ? "alert" : "status"} aria-live="polite">
@@ -165,7 +180,7 @@ export default function PlayerBar({
                 * starts on the same x as every title in the list. */}
               <span className="hidden w-5 shrink-0 lg:block" aria-hidden="true" />
               <span className="min-w-0 flex-1">
-                <span className="block truncate font-sans text-[0.95rem] font-semibold text-fg">
+                <span className="block truncate font-sans text-[length:var(--text-meta)] font-semibold text-fg">
                   {active.name}
                 </span>
                 {/* Below `lg` the description is skipped — the row it came
@@ -174,7 +189,7 @@ export default function PlayerBar({
                   * truncated to nothing. An error has no other home, so it
                   * still gets the line. */}
                 {error && (
-                  <span aria-hidden="true" className="block truncate font-sans text-sm text-dim lg:hidden">
+                  <span aria-hidden="true" className="block truncate font-sans text-[length:var(--text-meta)] tracking-[var(--track-text-sm)] text-dim lg:hidden">
                     {error}
                   </span>
                 )}
@@ -183,7 +198,7 @@ export default function PlayerBar({
 
             <div
               aria-hidden="true"
-              className={`hidden truncate font-sans text-sm lg:col-span-2 lg:block ${
+              className={`hidden truncate font-sans text-[length:var(--text-meta)] tracking-[var(--track-text-sm)] lg:col-span-2 lg:block ${
                 error ? "text-dim" : "text-dim2"
               }`}
             >
@@ -191,14 +206,14 @@ export default function PlayerBar({
             </div>
 
             <div className="flex shrink-0 items-center font-sans text-dim2">
-              <span className="hidden text-sm tabular-nums xl:inline">
+              <span className="hidden text-[length:var(--text-micro)] tracking-[var(--track-text-sm)] tabular-nums xl:inline">
                 {active.tempo} BPM
               </span>
               {/* Stacked below `lg`: side by side the clock and the three
                 * controls took 166 of the 326px available and left the
                 * title 151px, narrow enough to cut real track names. */}
               <span className="ml-auto flex flex-col items-end gap-1.5 lg:flex-row lg:items-center lg:gap-6">
-                <span className="text-xs tabular-nums lg:text-sm">{clock}</span>
+                <span className="text-[length:var(--text-micro)] tracking-[var(--track-text-sm)] tabular-nums">{clock}</span>
                 <span className="flex items-center gap-3 lg:gap-4">
                   <button
                     type="button"

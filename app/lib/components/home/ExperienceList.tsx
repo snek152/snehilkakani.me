@@ -94,26 +94,26 @@ export default function ExperienceList({ experiences }: { experiences: Experienc
             * grey apart, putting the page's least legible text (`dim2`, at
             * 4.87:1) under the column a reader scans first. */}
           <motion.div variants={part} className="lg:pl-12 lg:pr-6">
-            <p className="text-[0.9rem] font-medium leading-snug tracking-[-0.01em] tabular-nums text-fg">
+            <p className="text-[length:var(--text-meta)] font-medium leading-snug tabular-nums text-fg">
               {dateRange(experience.period)}
             </p>
             {/* 0.8rem sans: at this size the face's default fit reads
               * cramped against the 0.9rem date above it. +0.01em is the
               * counterpart to the negative tracking the display sizes
               * carry — same rule, other end of the scale. */}
-            <p className="mt-1.5 text-[0.8rem] leading-snug tracking-[0.01em] text-dim">{experience.location}</p>
+            <p className="mt-1.5 text-[length:var(--text-micro)] leading-snug tracking-[var(--track-text-sm)] text-dim">{experience.location}</p>
           </motion.div>
 
           <div className="lg:col-span-3 lg:pl-10 lg:pr-12">
             <motion.div variants={part} className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <h3 className="font-display text-[1.35rem] font-bold tracking-[var(--track-display-md)] text-fg lg:text-[1.6rem]">
+              <h3 className="font-display text-[length:var(--size-display-md)] font-semibold tracking-[var(--track-display-md)] text-fg">
                 {experience.company}
               </h3>
-              <span className="text-base text-dim">{experience.title}</span>
+              <span className="text-[length:var(--text-meta)] tracking-[var(--track-text-sm)] text-dim">{experience.title}</span>
             </motion.div>
             <motion.ul variants={part} className="mt-4 space-y-2">
               {experience.description.map((line) => (
-                <li key={line} className="flex items-start gap-2.5 text-[0.95rem] leading-[1.7] text-dim">
+                <li key={line} className="flex items-start gap-2.5 text-[length:var(--text-body)] leading-[var(--leading-body)] max-w-[var(--measure-body)] text-dim">
                   <span aria-hidden="true" className="mt-[0.65rem] h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary/50" />
                   <span>{line}</span>
                 </li>
@@ -139,7 +139,7 @@ export default function ExperienceList({ experiences }: { experiences: Experienc
                         transition: { duration: reduceMotion ? 0 : beats(0.55), ease: EASE_OUT },
                       },
                     }}
-                    className="border border-border px-2.5 py-1 text-sm text-dim"
+                    className="border border-border px-2.5 py-1 text-[length:var(--text-meta)] tracking-[var(--track-text-sm)] text-dim"
                   >
                     {skill}
                   </motion.li>

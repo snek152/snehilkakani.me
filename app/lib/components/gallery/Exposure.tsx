@@ -22,7 +22,7 @@ export default function Exposure({
   return (
     <span
       id={id}
-      className={`flex flex-wrap items-baseline gap-x-3.5 gap-y-0.5 text-[0.78rem] tabular-nums leading-snug text-dim ${className}`}
+      className={`flex flex-wrap items-baseline gap-x-3.5 gap-y-0.5 text-[length:var(--text-micro)] tracking-[var(--track-text-sm)] tabular-nums leading-snug text-dim ${className}`}
     >
       {/* The gaps between the three values are flex gutters, so they do not
         * exist as characters: read out, the visible spans run together as

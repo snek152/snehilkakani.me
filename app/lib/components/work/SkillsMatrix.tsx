@@ -32,7 +32,7 @@ export default function SkillsMatrix() {
       <div className="mb-8 flex flex-wrap items-end justify-between gap-3">
         <h2
           id="skills-heading"
-          className="font-display text-2xl font-bold tracking-[var(--track-display-md)] text-fg"
+          className="font-display text-[length:var(--size-display-md)] font-semibold tracking-[var(--track-display-md)] text-fg"
         >
           Skills &amp; tools
         </h2>
@@ -61,7 +61,7 @@ export default function SkillsMatrix() {
             >
               <div className="mb-4 flex items-center gap-2">
                 <span className="h-4 w-0.5 bg-accent" aria-hidden="true" />
-                <h3 className="text-sm font-semibold uppercase tracking-[0.08em] text-fg">
+                <h3 className="text-[length:var(--text-meta)] font-semibold uppercase tracking-[0.08em] text-fg">
                   {CATEGORY_LABELS[type]}
                 </h3>
               </div>
@@ -75,7 +75,7 @@ export default function SkillsMatrix() {
                     <span aria-hidden="true">
                       <Icon className="size-3.5 shrink-0 text-dim2 transition-colors duration-150 group-hover/skill:text-accent" />
                     </span>
-                    <span className="text-sm text-dim transition-colors duration-150 group-hover/skill:text-fg">
+                    <span className="text-[length:var(--text-meta)] tracking-[var(--track-text-sm)] text-dim transition-colors duration-150 group-hover/skill:text-fg">
                       {label}
                     </span>
                   </li>

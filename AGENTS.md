@@ -62,37 +62,69 @@ Tailwind CSS 4 with custom theme tokens defined in `app/globals.css` via `@theme
 --color-on-surface: #404040
 ```
 
-**Fonts** — Epilogue (`--font-epilogue`, the `font-display` token, weights
-600/700/800) for headings and display lines, Schibsted Grotesk
-(`--font-schibsted-grotesk`, the `font-sans` token and the document default) for
-body copy and UI text. Both load in `app/layout.tsx` via `next/font/google`;
-Schibsted is a **variable** font, so its whole 400–900 range is available, while
-Epilogue fetches only those three weights — a class asking for another gets
-synthesized by the browser rather than rendered, so that list and the component
-classes have to stay in step.
+**Fonts** — both are **self-hosted variable** fonts from the Indian Type
+Foundry, loaded with `next/font/local` in `app/layout.tsx` from `app/fonts/`
+with their licences beside them (`*-FFL-LICENSE.txt`). They are deliberately
+not CDN webfonts: the free Google catalogue is where every generated portfolio
+shops, and its most-reached-for grotesques are why so many read alike.
+
+- **Clash Display** (`--font-clash-display`, the `font-display` token) — every
+  display line. Its axis is **200–700**. There is no 800, so the tiers top out
+  at `font-bold`; an `font-extrabold` class on a display element would be
+  browser-synthesized, not rendered. Do not reintroduce one.
+- **Switzer** (`--font-switzer`, the `font-sans` token and the document
+  default) — body copy and all UI text. Axis **100–900**, so every weight the
+  design uses is real.
 
 There is deliberately **no mono**. Numeric readouts (BPM, track durations, EXIF
 triplets, viewfinder captions) use `tabular-nums` on the sans, which aligns the
 figures without introducing a third voice.
 
-**Display type scale** — four tiers, each taking one weight and one tracking
-token from `globals.css`.
+**The type scale lives in `globals.css`, not at callsites.** Every size,
+leading, measure, and tracking value is a token; a component references the
+role it needs. A hand-picked `text-[0.93rem]` at a callsite is the defect this
+replaced — nine near-identical prose sizes across five surfaces, and four
+sibling page titles that each scaled differently.
+
+Display tiers — one size token paired with the tracking token of the same
+suffix:
 
 |Tier|Used for|Classes|
 |---|---|---|
-|XL|Hero name lockup|`font-extrabold tracking-[var(--track-display-xl)]`|
-|LG|Full-page titles (`text-5xl`, `text-4xl`, `clamp(2.5rem,5vw,4rem)`)|`font-extrabold tracking-[var(--track-display-lg)]`|
-|MD|Card + section headings (1.35rem–1.85rem, `text-2xl`)|`font-bold tracking-[var(--track-display-md)]`|
-|SM|Small display labels (≤1.3rem: index labels, role cycler)|`font-semibold tracking-[var(--track-display-sm)]`|
+|XL|Hero name lockup|`text-[length:var(--size-display-xl)] font-bold tracking-[var(--track-display-xl)]`|
+|LG|Full-page titles (all four routes)|`text-[length:var(--size-display-lg)] font-bold tracking-[var(--track-display-lg)]`|
+|MD|Card + section headings|`text-[length:var(--size-display-md)] font-semibold tracking-[var(--track-display-md)]`|
+|SM|Small display labels (index labels, role cycler)|`text-[length:var(--size-display-sm)] font-semibold tracking-[var(--track-display-sm)]`|
 
-The `SK` wordmark in `Sidebar` is the one documented exception: it sits at the
-SM size but takes `font-extrabold`, because it is a brand mark rather than a
-label.
+Every tier is a `clamp()`, so a heading is the same size on every route at every
+width. Never add a `sm:`/`lg:` size step to a display element — the token
+already scales.
 
-Tracking is size-specific by design — never one value for the whole page, and
-never a hand-picked number at the callsite. The values are tuned for Epilogue's
-open geometric counters. Body copy sits at the face's natural fit; the uppercase
-micro-labels keep their own positive `0.08em`.
+Text roles — four sizes, no others:
+
+|Token|Value|Used for|
+|---|---|---|
+|`--text-lead`|1.0625rem|the one intro paragraph per page|
+|`--text-body`|1rem|prose: descriptions, bullets, running copy|
+|`--text-meta`|0.875rem|metadata, labels, captions, nav, buttons|
+|`--text-micro`|0.8125rem|dense readouts: EXIF, transport clock, notices|
+
+Prose pairs with `--leading-lead`/`--leading-body` and a measure cap
+(`--measure-lead` 56ch, `--measure-body` 66ch). Prose without a cap is a bug:
+three blocks used to run unbounded across their columns.
+
+**Small dim text on this near-black surface gets `--track-text-sm` (+0.01em).**
+Any element at `--text-meta` or `--text-micro` coloured `text-dim`/`text-dim2`
+takes it. Uppercase micro-labels keep their own positive `0.08em` instead, and
+`text-fg` text takes neither.
+
+The `SK` wordmark in `Sidebar` is the one documented exception to all of the
+above: it keeps a fixed `text-[0.9rem]` and `font-bold`, because a brand mark is
+not a scale role.
+
+Tracking belongs to a **typeface**, not to a layout. The current values are
+retuned for Clash Display, which is narrower and drawn tighter than the Epilogue
+they were originally set for. Changing the display face means retuning them.
 
 ### Static Assets
 
@@ -158,5 +190,43 @@ A `Reveal` wrapper component used to be documented here as the standard. It
 was deleted — nothing ever imported it, and every component had gone on
 writing the pattern above inline. Reintroducing a wrapper is fine, but it
 would have to actually be adopted.
+
+**Durations vs. springs** — the pattern above is for *choreography*: entrances
+nobody interrupts, which is why a fixed duration on the BPM-92 grid is the
+right tool. Anything a hand can touch takes a spring instead, because a
+duration cannot answer new input — a grabbed or reversed drag has to animate
+from wherever the value currently is. `app/lib/motion.ts` exports three, in
+Apple's two-parameter form (`bounce` is the damping ratio inverted, `duration`
+is the response — how fast it reaches the target, not how long it may take):
+
+|Spring|Values|For|
+|---|---|---|
+|`SPRING_UI`|`bounce 0`, `0.4`|chrome that repositions: the sidebar rail, panels|
+|`SPRING_DRAWER`|`bounce 0`, `0.3`|sheets and drawers|
+|`SPRING_MOMENTUM`|`bounce 0.2`, `0.4`|**only** a release that carried velocity|
+
+Overshoot is earned. `bounce > 0` belongs solely where the gesture itself had
+momentum — a flick or a throw. A panel that merely appeared has no momentum to
+express and gets `bounce: 0`.
+
+Two helpers back the gesture work, and both name a formula whose inlined form
+would explain nothing:
+
+- `project(velocity)` — where a flick comes to rest, by exponential decay (the
+  scroll-deceleration form, **not** `v²/2a`). Commit on the *projected* rest and
+  the velocity *sign*, never on raw distance dragged: that is what makes a short
+  fast flick read as a throw instead of an ignored gesture.
+- `rubberband(overshoot, dimension)` — progressive resistance, and only ever
+  past a real boundary. Applying it from the first pixel makes the element lag
+  the finger, which is the one thing direct manipulation must not do. See
+  `Lightbox`: downward drag dismisses so it tracks 1:1, upward has nothing
+  behind it so that is where the resistance goes.
+
+Reduced motion means gentler, not dead. A drag must keep tracking — dragging is
+not vestibular motion, and removing it breaks the control. What changes is the
+settle: swap the spring for `{ duration: 0 }` and drop any overshoot. The
+`Lightbox` gesture and the `PlayerBar` scrubber handle both follow this — the
+handle still appears under reduced motion because it is an affordance, and only
+its transition is dropped.
 
 **Experience data ordering** — most recent first in `experience.ts`.

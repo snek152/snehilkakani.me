@@ -122,7 +122,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                 * with only the inner div lifted the Footer below it was
                 * being painted over. */}
               <div className="relative z-[1] flex min-h-[100dvh] flex-col lg:pl-[52px]">
-                <div className="relative z-[1] flex-1">{children}</div>
+                <main className="relative z-[1] flex-1">{children}</main>
                 {/* The transport's footprint is reserved INSIDE the
                   * footer (see `TRANSPORT_CLEARANCE`), not by a spacer
                   * after it — a sibling spacer left the document taller

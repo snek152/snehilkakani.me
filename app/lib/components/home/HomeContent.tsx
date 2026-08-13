@@ -39,7 +39,7 @@ export default function HomeContent({ heroProgress }: { heroProgress: MotionValu
             id="experience-heading"
             text="Experience"
             active={headingActive}
-            className="font-display text-[1.6rem] font-bold tracking-[var(--track-display-md)] text-fg"
+            className="font-display text-[length:var(--size-display-md)] font-semibold tracking-[var(--track-display-md)] text-fg"
           />
         </div>
         <ExperienceList experiences={experiences} />

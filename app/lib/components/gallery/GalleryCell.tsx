@@ -91,7 +91,7 @@ export default function GalleryCell({
         * editorial behaviour, not a defect worth that. */}
       <figcaption className="mt-3 border-t border-border pt-2">
         <span
-          className={`block text-sm font-medium leading-snug text-dim group-hover:text-fg group-has-[button:focus-visible]:text-fg ${
+          className={`block text-[length:var(--text-meta)] tracking-[var(--track-text-sm)] font-medium leading-snug text-dim group-hover:text-fg group-has-[button:focus-visible]:text-fg ${
             reduceMotion ? "" : "transition-colors duration-150"
           }`}
         >

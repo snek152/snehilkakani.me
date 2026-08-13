@@ -44,7 +44,7 @@ export default function WorkPage() {
             id="builds-heading"
             text="Builds"
             active={headerActive}
-            className="font-display text-5xl font-extrabold tracking-[var(--track-display-lg)] text-fg sm:text-6xl"
+            className="font-display text-[length:var(--size-display-lg)] font-bold tracking-[var(--track-display-lg)] text-fg text-balance"
           />
         </motion.header>
       </div>
@@ -57,7 +57,7 @@ export default function WorkPage() {
             id="studies-heading"
             text="More work, in sequence."
             active={studiesActive}
-            className="font-display text-4xl font-extrabold tracking-[var(--track-display-lg)] text-fg"
+            className="font-display text-[length:var(--size-display-md)] font-semibold tracking-[var(--track-display-md)] text-fg"
           />
         </div>
         <div className="flex flex-col">

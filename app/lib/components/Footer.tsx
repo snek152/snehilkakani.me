@@ -28,7 +28,7 @@ export default function Footer({
           : undefined
       }
     >
-      <span className="font-sans text-sm text-dim2">
+      <span className="font-sans text-[length:var(--text-meta)] tracking-[var(--track-text-sm)] text-dim2">
         © {new Date().getFullYear()} Snehil Kakani
       </span>
       {/* Icon + label links total 341px, which cannot sit inside the
@@ -58,7 +58,7 @@ export default function Footer({
             // that cannot disturb the hit area above: a transform would
             // scale the `::before` extender along with the link, shrinking
             // the 36px target at the exact moment a thumb is on it.
-            className="relative flex items-center gap-1.5 font-sans text-sm text-dim transition-[color,opacity] duration-[120ms] ease-[var(--ease-press)] before:absolute before:-inset-2 before:content-[''] hover:text-fg active:opacity-70"
+            className="relative flex items-center gap-1.5 font-sans text-[length:var(--text-meta)] tracking-[var(--track-text-sm)] text-dim transition-[color,opacity] duration-[120ms] ease-[var(--ease-press)] before:absolute before:-inset-2 before:content-[''] hover:text-fg active:opacity-70"
           >
             <Icon size={13} strokeWidth={1.75} className="hidden min-[420px]:block" />
             {label}

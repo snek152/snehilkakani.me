@@ -24,14 +24,75 @@
  * and the uppercase micro-labels keep their own positive `0.08em`.
  *
  * Referenced as `tracking-[var(--track-display-lg)]` so the scale lives here
- * instead of as a different hand-picked number at each heading. The values are
- * tuned for Epilogue: a geometric face with open counters, which drifts apart
- * faster at display sizes than a narrower grotesque would. */
+ * instead of as a different hand-picked number at each heading.
+ *
+ * Retuned for Clash Display. The previous values (-0.04 / -0.03 / -0.02 /
+ * -0.01) were drawn for Epilogue, a geometric face with wide sidebearings that
+ * genuinely drifts apart when set large. Clash is narrower and already drawn
+ * tight, so those same numbers closed the hero lockup's letters onto each
+ * other and cramped the accent label. Every step is roughly a third lighter,
+ * and the smallest is now zero: a 16px label in this face needs no correction
+ * at all. Retune these whenever the display face changes — tracking belongs to
+ * a specific typeface, not to the layout. */
 :root {
-  --track-display-xl: -0.04em;   /* hero lockup, 3.2rem-7.4rem */
-  --track-display-lg: -0.03em;   /* page titles, 2.25rem-4rem */
-  --track-display-md: -0.02em;   /* card + section heads, 1.35rem-1.85rem */
-  --track-display-sm: -0.01em;   /* small display labels, <=1.3rem */
+  --track-display-xl: -0.025em;  /* hero lockup, 3.2rem-7.4rem */
+  --track-display-lg: -0.02em;   /* page titles, 2.5rem-4rem */
+  --track-display-md: -0.012em;  /* card + section heads, 1.5rem-1.85rem */
+  --track-display-sm: 0em;       /* small display labels, <=1.15rem */
+}
+
+/* Display SIZE scale — one mechanism for every tier.
+ *
+ * Before this existed, each of the four sibling page titles picked its own
+ * value AND its own responsive behaviour: /lens and /reach scaled fluidly with
+ * `clamp()` while /builds and /music jumped at the `sm` breakpoint. Same
+ * nominal tier, two different behaviours, four different rendered sizes. Every
+ * tier is now fluid, so a title is the same size on every route at every
+ * width, and the tier — not the callsite — owns the number.
+ *
+ * Pair each size with the tracking token of the same suffix. */
+:root {
+  --size-display-xl: clamp(3.2rem, 8.5vw, 7.4rem);   /* hero lockup */
+  --size-display-lg: clamp(2.5rem, 5vw, 4rem);       /* full-page titles */
+  --size-display-md: clamp(1.5rem, 2.2vw, 1.85rem);  /* card + section heads */
+  --size-display-sm: clamp(0.95rem, 1.1vw, 1.15rem); /* small display labels */
+}
+
+/* Text roles.
+ *
+ * Four sizes, down from the nine bespoke literals (0.78, 0.8, 0.85, 0.875,
+ * 0.9, 0.92, 0.95, 0.975, 1rem) that used to realize these same four jobs.
+ * Pairs that differed by 2-3% — 0.78 against 0.8, 0.95 against 0.975 — were
+ * not hierarchy, they were drift: too close to read as different roles, but
+ * different enough to stop the roles being recognisable across surfaces.
+ *
+ * Prose sits at the 1rem/16px web floor. It used to run 0.875-0.975rem, which
+ * is below the floor for the primary reading blocks on the site. */
+:root {
+  --text-lead: 1.0625rem; /* the one intro paragraph per page */
+  --text-body: 1rem;      /* prose: descriptions, bullets, running copy */
+  --text-meta: 0.875rem;  /* metadata, labels, captions, nav, buttons */
+  --text-micro: 0.8125rem;/* dense readouts: EXIF, clock, secondary notices */
+
+  /* Leading rises with measure: the wider the line, the further the eye has to
+   * travel back, and the more it needs a clear next line to land on. Both
+   * values also carry the extra step that light text on a near-black surface
+   * needs to stop the lines closing up. */
+  --leading-lead: 1.75;
+  --leading-body: 1.7;
+
+  /* Measure caps, in characters, so they hold at any font size or zoom level.
+   * Three of the site's prose blocks had no cap at all — the experience
+   * bullets ran the full width of a 75% column, well past 100 characters on a
+   * wide display. */
+  --measure-lead: 56ch;
+  --measure-body: 66ch;
+
+  /* Dark-surface compensation for small dim text. The design already used
+   * +0.01em in a few places and documented why in a code comment, but it had
+   * reached only about half the elements that need it. It is a token now so it
+   * can be applied by rule instead of by memory. */
+  --track-text-sm: 0.01em;
 }
 
 @theme inline {
@@ -49,12 +110,13 @@
   --color-primary: var(--accent);
   --color-border: var(--border);
 
-  /* Two faces, two jobs: Epilogue for display lines, Schibsted Grotesk for
-   * everything read as running text. `--font-mono` is deliberately absent —
-   * there is no mono in this design, and the numeric readouts (BPM, durations,
-   * EXIF) use `tabular-nums` on the sans instead. */
-  --font-display: var(--font-epilogue);
-  --font-sans: var(--font-schibsted-grotesk);
+  /* Two faces, two jobs: Clash Display for display lines, Switzer for
+   * everything read as running text. Both are self-hosted variable fonts from
+   * the same foundry (see `app/layout.tsx`). `--font-mono` is deliberately
+   * absent — there is no mono in this design, and the numeric readouts (BPM,
+   * durations, EXIF) use `tabular-nums` on the sans instead. */
+  --font-display: var(--font-clash-display);
+  --font-sans: var(--font-switzer);
 }
 
 body {
@@ -69,7 +131,7 @@ body {
    * /lens in `ui-sans-serif` against 10 in the body face. Only nodes
    * carrying an explicit `font-sans`/`font-display` class were ever getting
    * the real typeface. */
-  font-family: var(--font-schibsted-grotesk);
+  font-family: var(--font-switzer);
   -webkit-font-smoothing: antialiased;
 }
 

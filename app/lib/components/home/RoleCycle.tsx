@@ -3,13 +3,19 @@
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import { useEffect, useRef, useState } from "react";
 
+// Order is load-bearing: index 0 is what reduced-motion users see
+// permanently (`ROLES[0]` below) and what a recruiter screening for a
+// software candidate reads first, so an engineering role must lead. The
+// remaining engineering/non-engineering roles are interleaved so no two
+// non-engineering roles sit adjacent — do not resort this alphabetically
+// or by "variety".
 const ROLES = [
-  "AI Engineer",
-  "Photographer",
   "Software Engineer",
-  "Audio Engineer",
-  "Full-Stack Developer",
+  "Photographer",
+  "AI Engineer",
   "Music Producer",
+  "Full-Stack Developer",
+  "Audio Engineer",
 ];
 
 const HOLD_MS = 4000;
@@ -82,7 +88,7 @@ export default function RoleCycle() {
   }, [index, reduceMotion]);
 
   const textClass =
-    "m-0 font-display text-[1.15rem] font-semibold tracking-[var(--track-display-sm)] text-accent-text tabular-nums sm:text-[1.3rem]";
+    "m-0 font-display text-[length:var(--size-display-sm)] font-semibold tracking-[var(--track-display-sm)] text-accent-text tabular-nums";
 
   if (reduceMotion) {
     return <p className={textClass}>{ROLES[0]}</p>;

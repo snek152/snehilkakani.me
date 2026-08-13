@@ -93,16 +93,16 @@ export default function FeaturedProject({ project }: { project: Project }) {
           secondary ? "" : "lg:border-l lg:border-t-0"
         }`}
       >
-        <span className="mb-5 self-start bg-accent px-2.5 py-1 text-sm font-semibold uppercase tracking-[0.08em] text-white">
+        <span className="mb-5 self-start bg-accent px-2.5 py-1 text-[length:var(--text-meta)] font-semibold uppercase tracking-[0.08em] text-white">
           Featured
         </span>
         {project.subtitle && (
-          <p className="mb-2 text-sm tabular-nums text-dim">{dateRange(project.subtitle)}</p>
+          <p className="mb-2 text-[length:var(--text-meta)] tabular-nums tracking-[var(--track-text-sm)] text-dim">{dateRange(project.subtitle)}</p>
         )}
-        <h2 className="font-display text-[1.85rem] font-bold leading-tight tracking-[var(--track-display-md)] text-fg">
+        <h2 className="font-display text-[length:var(--size-display-md)] font-semibold leading-tight tracking-[var(--track-display-md)] text-fg text-balance">
           {shortTitle(project.title)}
         </h2>
-        <p className="mt-3 max-w-2xl text-[0.875rem] leading-[1.72] text-dim">
+        <p className="mt-3 max-w-[var(--measure-body)] text-[length:var(--text-body)] leading-[var(--leading-body)] text-dim">
           {project.description}
         </p>
         <div className="mt-5">
