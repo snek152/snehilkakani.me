@@ -106,7 +106,7 @@ export default function ExperienceList({ experiences }: { experiences: Experienc
 
           <div className="lg:col-span-3 lg:pl-10 lg:pr-12">
             <motion.div variants={part} className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <h3 className="font-display text-[1.35rem] font-bold tracking-[-0.02em] text-fg lg:text-[1.6rem]">
+              <h3 className="font-display text-[1.35rem] font-bold tracking-[var(--track-display-md)] text-fg lg:text-[1.6rem]">
                 {experience.company}
               </h3>
               <span className="text-base text-dim">{experience.title}</span>

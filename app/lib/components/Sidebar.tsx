@@ -123,7 +123,7 @@ export default function Sidebar() {
           href="/"
           className="no-underline transition-opacity duration-[120ms] ease-[var(--ease-press)] active:opacity-60"
         >
-          <span className="font-display text-[0.9rem] font-extrabold text-fg">SK</span>
+          <span className="font-display text-[0.9rem] font-extrabold tracking-[var(--track-display-sm)] text-fg">SK</span>
         </Link>
         {/* The five labels measure 192.5px together; with a fixed 24px
           * gap the row is 288.5px, which together with the "SK" wordmark

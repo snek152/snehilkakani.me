@@ -14,9 +14,9 @@ export const experiences: Experience[] = [
     period: "Jun 2026 - Aug 2026",
     description: [
       "Shipping production infrastructure for Lindy's high-volume AI agent platform",
-      "Lead engineer of Routines, enabling agents to act on schedules or real-world events like incoming messages and email",
-      "Built natural-language CRUD, dry-run previews, and proactive triggers end to end, from data model to UI",
-      "Extended the system to power workspace-wide agents driven through Slack, migrating production behavior without disrupting live assistant workflows.",
+      "Lead engineer of Routines, enabling agents to act on schedules and real-world events",
+      "Built natural-language CRUD, dry-run previews, proactive triggers, and zero-LLM script routines end to end, from data model to UI, eventually scaling it into a managed catalog with fleet-wide rollout",
+      "Integrated the system into workspace-wide agents driven through Slack, enforcing capability boundaries and attribution on shared multi-user surfaces",
     ],
     skills: [
       "typescript",

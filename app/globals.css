@@ -15,6 +15,25 @@
   --border: rgba(255, 255, 255, 0.07);
 }
 
+/* Optical tracking scale.
+ *
+ * Tracking is size-specific, never one value for the whole page: letters read
+ * too far apart as they grow, so display type tightens as it gets bigger and
+ * relaxes back toward zero as it gets smaller. These four steps are the only
+ * negative tracking in the design — body copy sits at the face's natural fit,
+ * and the uppercase micro-labels keep their own positive `0.08em`.
+ *
+ * Referenced as `tracking-[var(--track-display-lg)]` so the scale lives here
+ * instead of as a different hand-picked number at each heading. The values are
+ * tuned for Epilogue: a geometric face with open counters, which drifts apart
+ * faster at display sizes than a narrower grotesque would. */
+:root {
+  --track-display-xl: -0.04em;   /* hero lockup, 3.2rem-7.4rem */
+  --track-display-lg: -0.03em;   /* page titles, 2.25rem-4rem */
+  --track-display-md: -0.02em;   /* card + section heads, 1.35rem-1.85rem */
+  --track-display-sm: -0.01em;   /* small display labels, <=1.3rem */
+}
+
 @theme inline {
   --color-bg: var(--bg);
   --color-card: var(--card);
@@ -30,8 +49,12 @@
   --color-primary: var(--accent);
   --color-border: var(--border);
 
+  /* Two faces, two jobs: Epilogue for display lines, Schibsted Grotesk for
+   * everything read as running text. `--font-mono` is deliberately absent —
+   * there is no mono in this design, and the numeric readouts (BPM, durations,
+   * EXIF) use `tabular-nums` on the sans instead. */
   --font-display: var(--font-epilogue);
-  --font-sans: var(--font-plus-jakarta-sans);
+  --font-sans: var(--font-schibsted-grotesk);
 }
 
 body {
@@ -43,10 +66,10 @@ body {
    * — so `var(--font-sans)` resolves to nothing here and the declaration is
    * dropped, silently falling the whole document back to the browser's UI
    * font. Measured before this line was corrected: 190 rendered elements on
-   * /lens in `ui-sans-serif` against 10 in Plus Jakarta Sans. Only nodes
+   * /lens in `ui-sans-serif` against 10 in the body face. Only nodes
    * carrying an explicit `font-sans`/`font-display` class were ever getting
    * the real typeface. */
-  font-family: var(--font-plus-jakarta-sans);
+  font-family: var(--font-schibsted-grotesk);
   -webkit-font-smoothing: antialiased;
 }
 

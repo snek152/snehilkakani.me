@@ -99,7 +99,7 @@ export default function FeaturedProject({ project }: { project: Project }) {
         {project.subtitle && (
           <p className="mb-2 text-sm tabular-nums text-dim">{dateRange(project.subtitle)}</p>
         )}
-        <h2 className="font-display text-[1.85rem] font-extrabold leading-tight tracking-[-0.03em] text-fg">
+        <h2 className="font-display text-[1.85rem] font-bold leading-tight tracking-[var(--track-display-md)] text-fg">
           {shortTitle(project.title)}
         </h2>
         <p className="mt-3 max-w-2xl text-[0.875rem] leading-[1.72] text-dim">

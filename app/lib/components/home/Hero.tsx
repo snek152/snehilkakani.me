@@ -190,7 +190,7 @@ export default function Hero({
                   }
             }
             transition={{ duration: 0.5, ease: EASE_OUT }}
-            className="m-0 mb-4 font-display text-[clamp(3.2rem,8.5vw,7.4rem)] leading-[0.95] font-extrabold tracking-[-0.04em] text-fg"
+            className="m-0 mb-4 font-display text-[clamp(3.2rem,8.5vw,7.4rem)] leading-[0.94] font-extrabold tracking-[var(--track-display-xl)] text-fg"
           >
             {NAME_LINES.map((line) => (
               <span key={line} className="block">

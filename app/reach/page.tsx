@@ -50,7 +50,7 @@ export default function ContactPage() {
           id="reach-heading"
           text="Let's talk."
           active={headingActive}
-          className="font-display text-[clamp(2.5rem,5vw,4rem)] font-extrabold leading-none tracking-[-0.03em] text-fg"
+          className="font-display text-[clamp(2.5rem,5vw,4rem)] font-extrabold leading-none tracking-[var(--track-display-lg)] text-fg"
         />
       </motion.div>
 

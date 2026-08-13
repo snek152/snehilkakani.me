@@ -82,7 +82,7 @@ export default function RoleCycle() {
   }, [index, reduceMotion]);
 
   const textClass =
-    "m-0 font-display text-[1.15rem] font-semibold tracking-[-0.01em] text-accent-text tabular-nums sm:text-[1.3rem]";
+    "m-0 font-display text-[1.15rem] font-semibold tracking-[var(--track-display-sm)] text-accent-text tabular-nums sm:text-[1.3rem]";
 
   if (reduceMotion) {
     return <p className={textClass}>{ROLES[0]}</p>;

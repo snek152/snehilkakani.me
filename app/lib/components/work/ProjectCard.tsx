@@ -117,7 +117,7 @@ export default function ProjectCard({ project }: { project: Project }) {
 
       <div className="flex flex-col lg:justify-center lg:pl-10">
         {year && <p className="mb-3 text-sm tabular-nums text-dim">{year}</p>}
-        <h3 className="font-display text-[1.5rem] font-bold leading-tight tracking-[-0.02em] text-fg lg:text-[1.75rem]">
+        <h3 className="font-display text-[1.5rem] font-bold leading-tight tracking-[var(--track-display-md)] text-fg lg:text-[1.75rem]">
           {shortTitle(project.title)}
         </h3>
         <p className="mt-3 max-w-xl text-[0.9rem] leading-[1.7] text-dim">

@@ -1,18 +1,28 @@
 import type { Metadata } from "next";
-import { Epilogue, Plus_Jakarta_Sans } from "next/font/google";
+import { Epilogue, Schibsted_Grotesk } from "next/font/google";
 import "./globals.css";
 import AppShell from "./lib/components/AppShell";
 
+// Epilogue sets every display line — the hero lockup, page titles, card and
+// section headings, the small display labels. Schibsted Grotesk, a news-media
+// grotesque, carries body copy and UI text.
+//
+// The weights requested here are exactly the ones the components use:
+// `font-semibold`/`font-bold`/`font-extrabold` on display (600 is the small
+// display labels in `GridIndex` and `RoleCycle`), and
+// `font-normal`/`font-medium`/`font-semibold` on body. A class asking for an
+// unloaded weight gets synthesized by the browser instead of rendered, so this
+// list and the classes have to stay in step. Schibsted is loaded as a VARIABLE
+// font (no `weight` array), so its whole 400..900 range is always available.
 const epilogue = Epilogue({
   variable: "--font-epilogue",
   subsets: ["latin"],
-  weight: ["700", "800"],
+  weight: ["600", "700", "800"],
 });
 
-const plusJakartaSans = Plus_Jakarta_Sans({
-  variable: "--font-plus-jakarta-sans",
+const schibstedGrotesk = Schibsted_Grotesk({
+  variable: "--font-schibsted-grotesk",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
 });
 
 
@@ -92,7 +102,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${epilogue.variable} ${plusJakartaSans.variable} antialiased`}
+        className={`${epilogue.variable} ${schibstedGrotesk.variable} antialiased`}
       >
         <AppShell>{children}</AppShell>
       </body>

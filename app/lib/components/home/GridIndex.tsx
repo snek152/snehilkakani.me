@@ -159,7 +159,7 @@ function Cell({
           } ${last ? "pr-4 sm:pr-8 lg:pr-12" : "pr-2 sm:pr-4 lg:pr-6"}`}
         >
           <span className="min-w-0">
-            <span className="block font-display text-xs font-semibold tracking-[-0.01em] text-dim transition-colors duration-200 ease-[var(--ease-press)] group-hover:text-fg sm:text-[0.95rem]">
+            <span className="block font-display text-xs font-semibold tracking-[var(--track-display-sm)] text-dim transition-colors duration-200 ease-[var(--ease-press)] group-hover:text-fg sm:text-[0.95rem]">
               {item.label}
             </span>
             {/* Was `dim2` at 4.87:1 — the faintest text on the home page,

@@ -46,7 +46,7 @@ export default function MusicPage() {
           id="music-heading"
           text="Music"
           active={headingActive}
-          className="font-display text-5xl font-extrabold tracking-tight text-fg sm:text-6xl"
+          className="font-display text-5xl font-extrabold tracking-[var(--track-display-lg)] text-fg sm:text-6xl"
         />
       </div>
 

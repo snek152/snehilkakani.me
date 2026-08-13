@@ -62,7 +62,37 @@ Tailwind CSS 4 with custom theme tokens defined in `app/globals.css` via `@theme
 --color-on-surface: #404040
 ```
 
-Fonts: IBM Plex Sans (`--gfont-ibm`, default) and Domine (`--gfont-domine`, serif accents) loaded from Google Fonts.
+**Fonts** — Epilogue (`--font-epilogue`, the `font-display` token, weights
+600/700/800) for headings and display lines, Schibsted Grotesk
+(`--font-schibsted-grotesk`, the `font-sans` token and the document default) for
+body copy and UI text. Both load in `app/layout.tsx` via `next/font/google`;
+Schibsted is a **variable** font, so its whole 400–900 range is available, while
+Epilogue fetches only those three weights — a class asking for another gets
+synthesized by the browser rather than rendered, so that list and the component
+classes have to stay in step.
+
+There is deliberately **no mono**. Numeric readouts (BPM, track durations, EXIF
+triplets, viewfinder captions) use `tabular-nums` on the sans, which aligns the
+figures without introducing a third voice.
+
+**Display type scale** — four tiers, each taking one weight and one tracking
+token from `globals.css`.
+
+|Tier|Used for|Classes|
+|---|---|---|
+|XL|Hero name lockup|`font-extrabold tracking-[var(--track-display-xl)]`|
+|LG|Full-page titles (`text-5xl`, `text-4xl`, `clamp(2.5rem,5vw,4rem)`)|`font-extrabold tracking-[var(--track-display-lg)]`|
+|MD|Card + section headings (1.35rem–1.85rem, `text-2xl`)|`font-bold tracking-[var(--track-display-md)]`|
+|SM|Small display labels (≤1.3rem: index labels, role cycler)|`font-semibold tracking-[var(--track-display-sm)]`|
+
+The `SK` wordmark in `Sidebar` is the one documented exception: it sits at the
+SM size but takes `font-extrabold`, because it is a brand mark rather than a
+label.
+
+Tracking is size-specific by design — never one value for the whole page, and
+never a hand-picked number at the callsite. The values are tuned for Epilogue's
+open geometric counters. Body copy sits at the face's natural fit; the uppercase
+micro-labels keep their own positive `0.08em`.
 
 ### Static Assets
 

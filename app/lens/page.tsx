@@ -44,7 +44,7 @@ export default function GalleryPage() {
           id="lens-heading"
           text="Lens"
           active={headingActive}
-          className="font-display text-[clamp(2.5rem,5vw,4rem)] font-extrabold tracking-[-0.03em] text-fg"
+          className="font-display text-[clamp(2.5rem,5vw,4rem)] font-extrabold tracking-[var(--track-display-lg)] text-fg"
         />
       </motion.div>
 

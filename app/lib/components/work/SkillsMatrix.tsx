@@ -32,7 +32,7 @@ export default function SkillsMatrix() {
       <div className="mb-8 flex flex-wrap items-end justify-between gap-3">
         <h2
           id="skills-heading"
-          className="font-display text-2xl font-bold tracking-[-0.02em] text-fg"
+          className="font-display text-2xl font-bold tracking-[var(--track-display-md)] text-fg"
         >
           Skills &amp; tools
         </h2>
