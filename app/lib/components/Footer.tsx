@@ -21,7 +21,7 @@ export default function Footer({
 }) {
   return (
     <footer
-      className="flex flex-wrap items-center justify-between gap-3 border-t border-border px-6 py-5 sm:px-10"
+      className="instrument-footer relative flex flex-wrap items-center justify-between gap-3 border-t border-border px-6 py-5 sm:px-10"
       style={
         bottomReserve
           ? { paddingBottom: `calc(1.25rem + ${bottomReserve}px)` }

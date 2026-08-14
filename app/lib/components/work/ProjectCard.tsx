@@ -10,7 +10,8 @@ import { useProximity } from "@/app/lib/components/shared/CursorField";
 import DrawnRule from "@/app/lib/components/shared/DrawnRule";
 import { beats } from "@/app/lib/tempo";
 import { ProjectLinks, ProjectSkills } from "./ProjectMeta";
-import { projectYear, shortTitle } from "./utils";
+import { dateRange } from "@/app/lib/format";
+import { shortTitle } from "./utils";
 
 /**
  * A single project, full width, in ordinary document flow.
@@ -23,13 +24,19 @@ import { projectYear, shortTitle } from "./utils";
  * screenshot roughly twice the width it had in the rail, and leaves the
  * page scrolling at the reader's own pace.
  */
-export default function ProjectCard({ project }: { project: Project }) {
+export default function ProjectCard({
+  project,
+  sequenceIndex,
+}: {
+  project: Project;
+  sequenceIndex: number;
+}) {
   const reduceMotion = useMotionPreference();
   const articleRef = useRef<HTMLElement>(null);
   const proximity = useProximity(articleRef, 320);
   const glowOpacity = useTransform(proximity, [0, 1], [0, 0.06]);
   const [active, setActive] = useState(false);
-  const year = projectYear(project.subtitle);
+  const reversesTrajectory = sequenceIndex % 2 === 1;
 
   return (
     <motion.article
@@ -42,27 +49,10 @@ export default function ProjectCard({ project }: { project: Project }) {
         if (!event.currentTarget.contains(event.relatedTarget))
           setActive(false);
       }}
-      // An even split with no column gap, so the photograph's right edge
-      // lands exactly on the page's centre grid stop - the same line Hero
-      // draws, the index divides at, and the featured band above splits
-      // on. At 57/43 that edge sat 77px past the line; with a gap it sat
-      // 20px short of it, because a gap centres the *gutter* on the line
-      // rather than the edge you can actually see. The gutter is inside
-      // the text column instead.
-      className="group relative isolate grid gap-y-5 py-10 first:pt-0 last:pb-0 lg:grid-cols-2 lg:gap-x-0 lg:py-14 lg:last:pb-0"
+      className="group relative isolate grid gap-y-5 py-10 first:pt-0 last:pb-0 lg:grid-cols-[minmax(0,1.12fr)_minmax(18rem,0.88fr)] lg:gap-x-0 lg:py-16 lg:last:pb-0"
     >
-      {/* Struck across as the row arrives — the same rule-draw the
-       * Experience list uses, so the two pages read as one system. The
-       * first row sits under the section header's own rule, so it skips
-       * its own rather than showing two lines a gap apart.
-       *
-       * Full-bleed, matching Experience, where the `<ol>` carries the
-       * negative margins instead. The bleed lives on this WRAPPER, never on
-       * the article: the article's grid is aligned so the photograph's right
-       * edge lands on the page's centre stop (see the comment above), and
-       * negative margins plus compensating padding on it would move that
-       * edge. The wrapper is positioned, has no layout effect, and the rule
-       * inside it stays `w-full` of the bled box. */}
+      {/* Each divider starts the next construction pass. The row keeps its
+       * layout alignment; only the divider bleeds to the viewport edges. */}
       <div className="absolute -inset-x-6 top-0 sm:-inset-x-8 lg:-inset-x-12 [article:first-child_&]:hidden">
         <DrawnRule />
       </div>
@@ -87,7 +77,7 @@ export default function ProjectCard({ project }: { project: Project }) {
        * removes the layer, so there is nothing to mask the glow with and
        * nothing to misalign. */}
       <motion.div
-        className="relative aspect-[16/10] overflow-hidden"
+        className={`relative aspect-[16/10] overflow-hidden ${reversesTrajectory ? "lg:order-2" : ""}`}
         initial={reduceMotion ? false : "hidden"}
         whileInView="shown"
         // The photograph has its own observer timing. `DrawnRule` starts at a
@@ -116,18 +106,24 @@ export default function ProjectCard({ project }: { project: Project }) {
           src={project.image}
           alt={shortTitle(project.title)}
           fill
-          sizes="(min-width: 1024px) 50vw, 100vw"
+          sizes="(min-width: 1024px) 56vw, 100vw"
           className="object-cover"
         />
         <motion.span
           aria-hidden="true"
-          className="absolute inset-x-0 bottom-0 h-0.5 origin-left bg-accent"
-          animate={{ scaleX: active ? 1 : 0 }}
-          transition={{ duration: reduceMotion ? 0 : 0.28, ease: EASE_OUT }}
+          className="absolute inset-x-0 bottom-0 h-px origin-left bg-[linear-gradient(90deg,var(--accent),color-mix(in_srgb,var(--accent)_42%,transparent),transparent)]"
+          animate={{ scaleX: active ? 1 : 0.25 }}
+          transition={{ duration: reduceMotion ? 0 : beats(0.45), ease: EASE_OUT }}
+        />
+        <span
+          aria-hidden="true"
+          className={`pointer-events-none absolute bottom-0 top-1/4 w-px bg-[linear-gradient(to_bottom,transparent,color-mix(in_srgb,var(--accent)_54%,transparent),transparent)] ${
+            reversesTrajectory ? "right-[16%]" : "left-[16%]"
+          }`}
         />
       </motion.div>
 
-      <div className="flex flex-col lg:justify-center lg:pl-10">
+      <div className={`flex flex-col lg:justify-center ${reversesTrajectory ? "lg:order-1 lg:pr-12" : "lg:pl-12"}`}>
         {/* Second beat of the wake, offset a further ~beats(0.08) past the
          * photograph so the row reads image, then heading, in that order. */}
         <motion.div
@@ -140,7 +136,11 @@ export default function ProjectCard({ project }: { project: Project }) {
             delay: reduceMotion ? 0 : beats(0.23),
           }}
         >
-          {year && <p className="mb-3 text-[length:var(--text-meta)] tabular-nums tracking-[var(--track-text-sm)] text-dim">{year}</p>}
+          {project.subtitle && (
+            <p className="mb-3 text-[length:var(--text-meta)] tabular-nums tracking-[var(--track-text-sm)] text-dim">
+              {dateRange(project.subtitle)}
+            </p>
+          )}
           <h3 className="font-display text-[length:var(--size-display-md)] font-semibold leading-tight tracking-[var(--track-display-md)] text-fg text-balance line-clamp-3">
             {shortTitle(project.title)}
           </h3>

@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion } from "motion/react";
 import type { Project } from "@/app/lib/data/projects";
 import { EASE_OUT } from "@/app/lib/motion";
+import { beats } from "@/app/lib/tempo";
 import { dateRange } from "@/app/lib/format";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import { ProjectLinks, ProjectSkills } from "./ProjectMeta";
@@ -15,7 +16,11 @@ import { shortTitle } from "./utils";
 export default function FeaturedProject({ project }: { project: Project }) {
   const reduceMotion = useMotionPreference();
   const [active, setActive] = useState(false);
-  const cropTransition = { duration: reduceMotion ? 0 : 0.65, ease: EASE_OUT };
+  /* `beats(1)` = 652ms, which is where this already sat as a bare 0.65 — the
+   * value did not need to change, only its derivation. Two literals in this
+   * file were the last entrance durations on the site not coming off the
+   * BPM-92 grid. */
+  const cropTransition = { duration: reduceMotion ? 0 : beats(1), ease: EASE_OUT };
 
   const secondary = project.secondaryImage;
 
@@ -36,11 +41,11 @@ export default function FeaturedProject({ project }: { project: Project }) {
     </div>
   );
 
-  const accentRule = (
+  const signalSeam = (
     <motion.span
       aria-hidden="true"
-      className="absolute inset-x-0 bottom-0 h-0.5 origin-left bg-accent"
-      animate={{ scaleX: active ? 1 : 0 }}
+      className="absolute inset-x-0 bottom-0 h-px origin-left bg-[linear-gradient(90deg,var(--accent),color-mix(in_srgb,var(--accent)_38%,transparent),transparent)]"
+      animate={{ scaleX: active ? 1 : 0.38 }}
       transition={cropTransition}
     />
   );
@@ -49,23 +54,20 @@ export default function FeaturedProject({ project }: { project: Project }) {
     <motion.article
       initial={reduceMotion ? false : { opacity: 0, y: 14 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: reduceMotion ? 0 : 0.5, ease: EASE_OUT }}
+      transition={{ duration: reduceMotion ? 0 : beats(0.75), ease: EASE_OUT }}
       onMouseEnter={() => setActive(true)}
       onMouseLeave={() => setActive(false)}
       onFocusCapture={() => setActive(true)}
       onBlurCapture={(event) => {
         if (!event.currentTarget.contains(event.relatedTarget)) setActive(false);
       }}
-      className={`mb-16 grid overflow-hidden border border-border lg:mb-[4.5rem] ${
-        secondary ? "" : "lg:grid-cols-[55fr_45fr]"
+      className={`group relative mb-16 grid overflow-hidden border-y border-border lg:mb-[4.5rem] ${
+        secondary ? "" : "lg:grid-cols-[minmax(0,1.28fr)_minmax(20rem,0.72fr)]"
       }`}
     >
       {secondary ? (
-        /* Two photos, evenly split. The band carries one aspect ratio so
-         * both halves share a height, and `object-cover` takes the small
-         * crop that costs. */
-        <div className="relative overflow-hidden bg-card">
-          <div className="grid grid-cols-2" style={{ aspectRatio: "3" }}>
+        <div className="relative overflow-hidden">
+          <div className="grid grid-cols-2 border-b border-border" style={{ aspectRatio: "3" }}>
             <div className="relative overflow-hidden">{primaryImage}</div>
             <div className="relative overflow-hidden border-l border-border">
               <div className="absolute inset-0">
@@ -79,23 +81,28 @@ export default function FeaturedProject({ project }: { project: Project }) {
               </div>
             </div>
           </div>
-          {accentRule}
+          {signalSeam}
         </div>
       ) : (
-        <div className="relative min-h-[220px] overflow-hidden bg-card sm:min-h-[290px] lg:min-h-[360px]">
+        <div className="relative min-h-[260px] overflow-hidden border-b border-border sm:min-h-[340px] lg:min-h-[430px] lg:border-b-0 lg:border-r">
           {primaryImage}
-          {accentRule}
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-y-0 right-[18%] w-px bg-[linear-gradient(to_bottom,transparent,color-mix(in_srgb,var(--accent)_62%,transparent),transparent)]"
+          />
+          {signalSeam}
         </div>
       )}
 
       <div
-        className={`flex flex-col justify-end border-t border-border px-6 py-8 sm:px-8 sm:py-9 ${
-          secondary ? "" : "lg:border-l lg:border-t-0"
+        className={`relative flex flex-col justify-end px-6 py-8 sm:px-8 sm:py-10 ${
+          secondary ? "" : "lg:py-12"
         }`}
       >
-        <span className="mb-5 self-start bg-accent px-2.5 py-1 text-[length:var(--text-meta)] font-semibold uppercase tracking-[0.08em] text-white">
-          Featured
-        </span>
+        <span
+          aria-hidden="true"
+          className="absolute left-0 top-0 h-px w-24 bg-[linear-gradient(90deg,var(--accent),transparent)]"
+        />
         {project.subtitle && (
           <p className="mb-2 text-[length:var(--text-meta)] tabular-nums tracking-[var(--track-text-sm)] text-dim">{dateRange(project.subtitle)}</p>
         )}

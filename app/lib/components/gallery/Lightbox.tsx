@@ -358,9 +358,23 @@ export default function Lightbox({
           aria-labelledby={titleId}
           aria-describedby={descId}
         >
+          {/* The sheet recedes rather than disappearing.
+            *
+            * `data-material` is load-bearing, not decorative: it opts this
+            * surface into the reduced-transparency and high-contrast overrides
+            * in `globals.css`, which replace the blur with an opaque `--bg`
+            * for anyone who asked not to have translucency. Without it this
+            * stays blurred for exactly the people who switched that off.
+            *
+            * The blur is STATIC while `opacity` is the animated channel. A
+            * `backdrop-filter` re-rasterises what is behind it, so animating
+            * the radius through a 60fps drag is the one thing here that could
+            * actually drop frames; opacity is compositor-only and carries the
+            * dismissal preview on its own. */}
           <motion.div
             aria-hidden
-            className="absolute inset-0"
+            data-material=""
+            className="absolute inset-0 backdrop-blur-[18px]"
             style={{ background: "var(--scrim)", opacity: backdropOpacity }}
           />
           <div onClick={(e) => e.stopPropagation()} className="relative flex flex-col items-center">
@@ -398,6 +412,28 @@ export default function Lightbox({
                   />
                 </motion.div>
               ))}
+              {photos.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    onPointerDown={(e) => e.stopPropagation()}
+                    onClick={() => onNavigate((index! - 1 + photos.length) % photos.length)}
+                    aria-label="Previous photo"
+                    className={`absolute bottom-3 left-3 z-10 border-0 bg-bg/70 p-3 text-dim hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent lg:hidden ${pressClass}`}
+                  >
+                    <ChevronLeft size={20} strokeWidth={1.5} />
+                  </button>
+                  <button
+                    type="button"
+                    onPointerDown={(e) => e.stopPropagation()}
+                    onClick={() => onNavigate((index! + 1) % photos.length)}
+                    aria-label="Next photo"
+                    className={`absolute right-3 bottom-3 z-10 border-0 bg-bg/70 p-3 text-dim hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent lg:hidden ${pressClass}`}
+                  >
+                    <ChevronRight size={20} strokeWidth={1.5} />
+                  </button>
+                </>
+              )}
             </motion.div>
 
             {/* Same caption shape as the grid: title, then the exposure line

@@ -8,6 +8,7 @@ import ManifestoHeading from "@/app/lib/components/home/ManifestoHeading";
 import ContactForm from "@/app/lib/components/contact/ContactForm";
 import { CONTACT_EMAIL } from "@/app/lib/components/contact/mailto";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
+import RouteSignal from "@/app/lib/components/shared/RouteSignal";
 import { BORDERED_CONTROL } from "@/app/lib/components/shared/controls";
 import { EASE_OUT } from "@/app/lib/motion";
 import { beats } from "@/app/lib/tempo";
@@ -39,14 +40,25 @@ export default function ContactPage() {
   const headingActive = useInView(headingRef, { once: true, margin: "0px 0px -15% 0px" });
 
   return (
-    <div className="px-6 pb-20 pt-16 sm:px-8 lg:px-12 lg:pt-[4.5rem]">
+    <div className="relative isolate overflow-hidden px-6 pb-20 pt-16 sm:px-8 lg:px-12 lg:pt-[4.5rem]">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-6 top-[8.85rem] h-px bg-border sm:inset-x-8 lg:inset-x-12" />
       <motion.div
         ref={headingRef}
         initial={reduceMotion ? false : { opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: beats(0.75), ease: EASE_OUT }}
-        className="mb-11"
+        className="relative mb-12 max-w-3xl pt-8 lg:mb-16 lg:pt-10"
       >
+        <span
+          aria-hidden="true"
+          className="absolute left-0 top-0 h-px w-[min(14rem,42vw)] bg-[linear-gradient(90deg,var(--accent),rgba(105,94,220,0))]"
+        />
+        <RouteSignal
+          scene="reach"
+          label="Open transmission"
+          detail="Contact channel"
+          className="absolute right-0 top-0 hidden w-28 sm:block lg:w-36"
+        />
         <ManifestoHeading
           as="h1"
           id="reach-heading"
@@ -60,67 +72,76 @@ export default function ContactPage() {
         initial={reduceMotion ? false : { opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: beats(0.75), delay: reduceMotion ? 0 : beats(0.15), ease: EASE_OUT }}
-        className="grid grid-cols-1 items-start gap-12 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:gap-[4.5rem]"
+        className="relative grid grid-cols-1 items-start gap-16 lg:grid-cols-[minmax(0,3fr)_minmax(19rem,2fr)] lg:gap-x-[clamp(3rem,8vw,8rem)] lg:gap-y-24"
       >
-        <section aria-labelledby="contact-intro">
+        <section aria-labelledby="contact-intro" className="max-w-[42rem]">
           <h2 id="contact-intro" className="sr-only">
             Send a message
           </h2>
-          <p className="mb-11 text-[length:var(--text-lead)] leading-[var(--leading-lead)] max-w-[var(--measure-lead)] text-dim">
+          <p className="mb-10 max-w-[var(--measure-lead)] text-[length:var(--text-lead)] leading-[var(--leading-lead)] text-dim">
             Open to internships, collaborations, and interesting problems.{" "}
             <a
               href={`mailto:${CONTACT_EMAIL}`}
-              /* Opacity, not scale: this is an inline box inside a
-               * paragraph, and `transform` does not apply to one. Hover
-               * moves to `accent-text` because `accent` is the shapes-only
-               * blue — 3.87:1 — and this is a word being read. */
               className="text-fg underline decoration-1 underline-offset-[3px] transition-[color,opacity] duration-[120ms] ease-[var(--ease-press)] hover:text-accent-text active:opacity-70 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
             >
               {CONTACT_EMAIL}
             </a>
           </p>
-          <a
-            href="/resume.pdf"
-            download
-            className={`mb-11 ${BORDERED_CONTROL}`}
-          >
-            <FileText className="size-3.5" aria-hidden="true" />
-            Résumé
-          </a>
-          <ContactForm />
+          <div className="mb-12 flex items-center gap-4">
+            <span aria-hidden="true" className="h-px w-10 bg-border" />
+            <a href="/resume.pdf" download className={BORDERED_CONTROL}>
+              <FileText className="size-3.5" aria-hidden="true" />
+              Résumé
+            </a>
+          </div>
+          <div className="relative">
+            <span aria-hidden="true" className="pointer-events-none absolute -left-3 top-0 h-full w-px bg-border lg:-left-5" />
+            <ContactForm />
+          </div>
         </section>
 
-        <section
-          className="hidden lg:block"
-          aria-labelledby="contact-photos"
-        >
-          <h2
-            id="contact-photos"
-            className="mb-3 text-[length:var(--text-meta)] font-medium tracking-[var(--track-text-sm)] text-dim"
-          >
-            A few things outside of work.
-          </h2>
-          <div className="grid grid-cols-2 gap-1.5">
-            {contactPhotos.map((photo, index) => (
-              <motion.div
-                key={photo.caption}
-                initial={reduceMotion ? false : { opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  duration: beats(0.6),
-                  delay: reduceMotion ? 0 : Math.min(index, 3) * beats(0.15),
-                  ease: EASE_OUT,
-                }}
-                className="group relative aspect-[4/5] overflow-hidden bg-card"
-              >
-                <Image
-                  src={photo.src}
-                  alt={photo.caption}
-                  sizes="(min-width: 1280px) 18vw, (min-width: 1024px) 17vw, 0px"
-                  className="h-full w-full object-cover"
-                />
-              </motion.div>
-            ))}
+        <section aria-labelledby="contact-photos" className="lg:pt-[7.5rem]">
+          <div className="mb-5 max-w-sm">
+            <h2
+              id="contact-photos"
+              className="text-[length:var(--text-meta)] font-medium tracking-[var(--track-text-sm)] text-dim"
+            >
+              A few things outside of work.
+            </h2>
+          </div>
+          <div className="grid grid-cols-12 gap-2 sm:gap-3">
+            {contactPhotos.map((photo, index) => {
+              const placement = [
+                "col-span-7 row-span-2 aspect-[4/5]",
+                "col-span-5 aspect-square",
+                "col-span-5 aspect-[5/4]",
+                "col-span-12 aspect-[16/7]",
+              ][index];
+
+              return (
+                <motion.figure
+                  key={photo.caption}
+                  initial={reduceMotion ? false : { opacity: 0, y: 14 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: beats(0.6),
+                    delay: reduceMotion ? 0 : Math.min(index, 3) * beats(0.15),
+                    ease: EASE_OUT,
+                  }}
+                  className={`group relative overflow-hidden bg-card ${placement}`}
+                >
+                  <Image
+                    src={photo.src}
+                    alt={photo.caption}
+                    sizes="(min-width: 1024px) 25vw, (min-width: 640px) 38vw, 86vw"
+                    className="h-full w-full object-cover transition-transform duration-500 ease-[var(--ease-press)] group-hover:scale-[1.025] group-focus-within:scale-[1.025]"
+                  />
+                  <figcaption className="absolute inset-x-0 bottom-0 bg-fg/85 px-3 py-2 text-[length:var(--text-micro)] tracking-[var(--track-text-sm)] text-bg opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100">
+                    {photo.caption}
+                  </figcaption>
+                </motion.figure>
+              );
+            })}
           </div>
         </section>
       </motion.div>

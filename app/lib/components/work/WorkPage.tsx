@@ -1,45 +1,37 @@
 "use client";
 
 import { useRef } from "react";
-import DrawnRule from "@/app/lib/components/shared/DrawnRule";
 import { motion, useInView } from "motion/react";
 import { projects } from "@/app/lib/data/projects";
-import { fadeUp } from "@/app/lib/motion";
+import { EASE_OUT } from "@/app/lib/motion";
+import { beats } from "@/app/lib/tempo";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
-import GridArrival from "@/app/lib/components/shared/GridArrival";
+import DrawnRule from "@/app/lib/components/shared/DrawnRule";
+import RouteSignal from "@/app/lib/components/shared/RouteSignal";
 import ManifestoHeading from "@/app/lib/components/home/ManifestoHeading";
 import FeaturedProject from "./FeaturedProject";
 import ProjectCard from "./ProjectCard";
-
 import SkillsMatrix from "./SkillsMatrix";
 
 export default function WorkPage() {
   const reduceMotion = useMotionPreference();
   const headerRef = useRef<HTMLElement>(null);
-  // Same trigger the /lens and /music page headings use.
   const headerActive = useInView(headerRef, { once: true, margin: "0px 0px -15% 0px" });
   const studiesRef = useRef<HTMLDivElement>(null);
-  // Decodes once as the section is reached, the same one-shot scramble
-  // the Experience heading uses — the two section titles on the site now
-  // arrive the same way.
   const studiesActive = useInView(studiesRef, { once: true, margin: "0px 0px -15% 0px" });
   const featured = projects[0];
   const remaining = projects.slice(1);
 
   return (
     <div className="px-6 pb-24 pt-16 sm:px-8 lg:px-12 lg:pt-[4.5rem]">
-      {/* Full-bleed so the grid stops land on the same page percentages
-        * the home hero uses, rather than being inset by this page's
-        * padding and drifting out of register with it. */}
-      <div className="relative -mx-6 -mt-16 mb-12 px-6 pt-16 sm:-mx-8 sm:px-8 lg:-mx-12 lg:-mt-[4.5rem] lg:px-12 lg:pt-[4.5rem]">
-        <GridArrival />
-        <motion.header
-          ref={headerRef}
-          initial={reduceMotion ? false : "hidden"}
-          animate="visible"
-          variants={fadeUp}
-          className="relative z-10 border-b border-border pb-6"
-        >
+      <motion.header
+        ref={headerRef}
+        initial={reduceMotion ? false : { clipPath: "inset(0 0 100% 0)" }}
+        animate={{ clipPath: "inset(0 0 0% 0)" }}
+        transition={{ duration: reduceMotion ? 0 : beats(1.1), ease: EASE_OUT }}
+        className="relative mb-14 grid overflow-hidden border-y border-border py-7 sm:mb-16 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end sm:gap-10 lg:mb-20 lg:py-9"
+      >
+        <div className="relative z-10">
           <ManifestoHeading
             as="h1"
             id="builds-heading"
@@ -47,33 +39,37 @@ export default function WorkPage() {
             active={headerActive}
             className="font-display text-[length:var(--size-display-lg)] font-bold tracking-[var(--track-display-lg)] text-fg text-balance"
           />
-        </motion.header>
-      </div>
+        </div>
+        <RouteSignal
+          scene="builds"
+          label="Builds"
+          detail={projects[0].title}
+          className="relative z-10 mt-6 sm:mt-0"
+        />
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-y-0 right-0 w-2/5 bg-[linear-gradient(112deg,transparent_12%,color-mix(in_srgb,var(--accent)_30%,transparent)_48%,transparent_74%)]"
+        />
+      </motion.header>
 
       <FeaturedProject project={featured} />
 
-      <section aria-label="More projects" aria-labelledby="studies-heading">
-        <div ref={studiesRef} className="pb-5">
+      <section aria-label="Project sequence" aria-labelledby="studies-heading">
+        <div ref={studiesRef} className="grid gap-5 pb-6 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
           <ManifestoHeading
             id="studies-heading"
             text="More work, in sequence."
             active={studiesActive}
             className="font-display text-[length:var(--size-display-md)] font-semibold tracking-[var(--track-display-md)] text-fg"
           />
+          <span aria-hidden="true" className="h-px w-24 bg-border sm:mb-2" />
         </div>
-        {/* The rule that strikes the sequence open, the same way each row's
-          * own rule opens it in turn — and full-bleed like them, so the
-          * section's opening line and the dividers under it are one system
-          * rather than two lengths of the same hairline. Negative margins on
-          * this wrapper rather than on the rule, so the rule keeps `w-full`
-          * of the bled box instead of fighting its own `width` against
-          * `left`/`right`. */}
         <div className="-mx-6 mb-10 sm:-mx-8 lg:-mx-12">
           <DrawnRule />
         </div>
         <div className="flex flex-col">
-          {remaining.map((project) => (
-            <ProjectCard key={project.title} project={project} />
+          {remaining.map((project, index) => (
+            <ProjectCard key={project.title} project={project} sequenceIndex={index} />
           ))}
         </div>
       </section>

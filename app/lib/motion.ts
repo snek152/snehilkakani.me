@@ -7,15 +7,35 @@ export const EASE_OUT = [0.22, 1, 0.36, 1] as const;
 /** Curtains / big choreographed moves. */
 export const EASE_INOUT = [0.76, 0, 0.24, 1] as const;
 
-/** Shared fade + rise entrance, used for page-level transitions. Duration
- * comes off the tempo grid so every page header lands on the same beat as
- * the rest of the site's motion, rather than a bare number picked in
- * isolation. */
+/** Shared entrance: content arrives by coming INTO FOCUS.
+ *
+ * Not a flat fade-and-rise. The site's signature motif is a viewfinder
+ * (`ViewfinderFrame`'s corner brackets contracting onto a frame), and what a
+ * viewfinder does is lock focus — so things arriving here resolve out of
+ * defocus, slightly back in space, and settle forward into sharpness. That is
+ * the same optical language `WaveField` uses for depth: it recedes by going
+ * SOFT, never by going dark.
+ *
+ * This is deliberate weaving. The interface is otherwise entirely flat and
+ * orthogonal — before this, every transform on the site was `opacity`, `y`,
+ * `scaleX/Y` or `clipPath`, with zero `perspective`, `translateZ` or
+ * defocus anywhere outside the wave canvas. Two sealed registers, one with
+ * space in it and one without. An entrance that focuses in gives the flat
+ * interface somewhere to arrive FROM.
+ *
+ * `blur` is the one non-compositor property here, which is why it is scoped to
+ * entrances — bounded, one-shot, a handful of elements per viewport — and
+ * never to anything continuous or gesture-driven.
+ *
+ * Duration comes off the tempo grid so every header lands on the same beat as
+ * the rest of the site's motion. */
 export const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 20, scale: 0.982, filter: "blur(8px)" },
   visible: {
     opacity: 1,
     y: 0,
+    scale: 1,
+    filter: "blur(0px)",
     transition: { duration: beats(0.75), ease: EASE_OUT },
   },
 };

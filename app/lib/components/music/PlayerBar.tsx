@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion, useTransform, type MotionValue } from "motion/react";
 import { createPortal } from "react-dom";
 import { Pause, Play, SkipBack, SkipForward } from "lucide-react";
 import type { Beat } from "@/app/lib/data/beats";
@@ -64,6 +64,7 @@ export default function PlayerBar({
   onToggle,
   onSkip,
   onScrub,
+  level,
 }: {
   active: Beat | null;
   error: string | null;
@@ -80,6 +81,9 @@ export default function PlayerBar({
   onToggle: () => void;
   onSkip: (direction: 1 | -1) => void;
   onScrub: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  /** Live spectral energy of the playing track, 0..1. Lights the signal line
+   * below — the same value that lights the whole page through `CursorGlow`. */
+  level: MotionValue<number>;
 }) {
   const reduceMotion = useMotionPreference();
   const isPlaybackActive = playbackState === "playing" || playbackState === "loading";
@@ -88,6 +92,9 @@ export default function PlayerBar({
   const beatSeconds = active ? 60 / active.tempo : 0;
   const pulseActive = isPlaying && !reduceMotion && beatSeconds > 0;
   const knownDuration = displayDuration > 0;
+  /* Hoisted above the `!active` early return: hooks must run in the same order
+   * on every render, and this one feeds the signal-line bloom far below. */
+  const bloom = useTransform(level, [0, 1], [0, 0.5]);
 
   if (!active) return null;
 
@@ -133,6 +140,31 @@ export default function PlayerBar({
             onChange={onScrub}
             disabled={!duration}
             className="peer absolute inset-x-0 -top-5 h-11 w-full cursor-pointer appearance-none bg-transparent opacity-0 disabled:cursor-default"
+          />
+
+          {/* The signal line, glowing with what is passing through it.
+            *
+            * The hairline above already carries elapsed progress in `accent`.
+            * This is the same line's light, bleeding a short way down into the
+            * bar and rising and falling with real spectral energy — the
+            * transport is the instrument doing the playing, so it is the one
+            * surface that should visibly respond to the signal. Same `level`
+            * that lights the page through `CursorGlow`; one source, two
+            * consumers.
+            *
+            * Deliberately 20px and capped low: the controls sit centred in a
+            * 64px bar, so the gradient is spent before it reaches the track
+            * name and cannot eat into text contrast. `opacity` only, so the
+            * frame stays compositor-only, and it is worth exactly nothing in
+            * silence — `level` rests at 0. */}
+          <motion.span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 top-0 h-5"
+            style={{
+              opacity: bloom,
+              background:
+                "linear-gradient(to bottom, rgb(var(--accent-rgb) / 0.28) 0%, rgb(var(--accent-rgb) / 0.06) 45%, transparent 100%)",
+            }}
           />
 
           {/* The bar's top edge, the list's row separator and the scrubber

@@ -40,11 +40,19 @@ function SidebarItem({
             : "hover:bg-white/[0.03] active:bg-white/[0.08]"
         }`}
       >
+        {active && (
+          <span
+            aria-hidden="true"
+            className={`nav-source absolute left-[7px] top-1/2 z-[1] h-1.5 w-1.5 -translate-y-1/2 rounded-full ${
+              expanded ? "opacity-0" : "opacity-100"
+            }`}
+          />
+        )}
         {active && expanded && (
           <motion.span
             layoutId="nav-bar"
-            className="absolute left-0 top-[22%] bottom-[22%] w-0.5 rounded-sm bg-accent"
-            transition={{ type: "spring", stiffness: 380, damping: 32 }}
+            className="absolute left-0 top-[22%] bottom-[22%] w-0.5 rounded-sm bg-[image:var(--spectral-seam)]"
+            transition={transition}
           />
         )}
         <span className="flex h-full w-[52px] flex-shrink-0 items-center justify-center">
@@ -190,11 +198,11 @@ export default function Sidebar() {
                 /* Opacity, not scale: these are 14px text labels, where a 3%
                  * transform is under two pixels and reads as nothing. Dimming
                  * on touch-down is what a native bar button does. */
-                className="inline-flex min-h-11 items-center no-underline transition-opacity duration-[120ms] ease-[var(--ease-press)] active:opacity-60"
+                className="relative inline-flex min-h-11 items-center no-underline transition-opacity duration-[120ms] ease-[var(--ease-press)] active:opacity-60"
               >
                 <span
-                  className={`font-sans text-[length:var(--text-meta)] transition-colors duration-150 ${
-                    active ? "text-fg" : "text-dim"
+                  className={`relative font-sans text-[length:var(--text-meta)] transition-colors duration-150 ${
+                    active ? "text-fg after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:bg-[image:var(--spectral-seam)] after:content-['']" : "text-dim"
                   }`}
                 >
                   {item.label}

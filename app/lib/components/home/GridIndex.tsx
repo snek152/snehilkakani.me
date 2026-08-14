@@ -61,6 +61,20 @@ export default function GridIndex({
         className="absolute inset-x-0 bottom-0 h-px origin-left bg-border"
         style={{ scaleX: reduceMotion ? 1 : ruleScale }}
       />
+      {/* The first three destinations are observations of the origin trace
+          above, not a set of equivalent utility cards. This short seam gives
+          that relationship a visible handoff while `/reach` remains the
+          distinct, practical fourth route. */}
+      <motion.span
+        aria-hidden="true"
+        className="pointer-events-none absolute left-0 top-3 h-px w-3/4 origin-left bg-linear-to-r from-accent/15 via-accent/80 to-[#7567e8]/20"
+        style={{ scaleX: reduceMotion ? 1 : ruleScale }}
+      />
+      <motion.span
+        aria-hidden="true"
+        className="pointer-events-none absolute left-[12.5%] top-2 size-2 -translate-x-1/2 rounded-full border border-accent/70 bg-card"
+        style={{ scale: reduceMotion ? 1 : ruleScale }}
+      />
       {items.map((item, index) => (
         <Cell
           key={item.href}

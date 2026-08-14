@@ -10,7 +10,9 @@ import { useMotionPreference } from "@/app/lib/components/shared/MotionPreferenc
 import { useMusicPlayer } from "@/app/lib/components/music/MusicPlayerProvider";
 import ManifestoHeading from "@/app/lib/components/home/ManifestoHeading";
 import DrawnRule from "@/app/lib/components/shared/DrawnRule";
+import RouteSignal from "@/app/lib/components/shared/RouteSignal";
 import TrackRow from "./TrackRow";
+import { formatTime } from "./format";
 
 type BeatFilter = "all" | Beat["category"];
 
@@ -37,23 +39,53 @@ export default function MusicPage() {
       : beats
           .map((beat, index) => ({ beat, index }))
           .filter(({ beat }) => beat.category === filter);
+  const activeBeat = activeIndex === null ? null : beats[activeIndex];
+  const activeDuration = activeBeat ? (BEAT_DURATIONS[activeBeat.file] ?? 0) : 0;
 
+  const activeDetail = activeBeat
+    ? `${activeBeat.category} · ${activeBeat.tempo} BPM · ${formatTime(activeDuration)}`
+    : `${filtered.length} releases · select a track to route it`;
   return (
     <div className="px-6 pb-16 pt-16 sm:px-8 lg:px-12 lg:pt-[4.5rem]">
-      <div ref={headingRef}>
-        <ManifestoHeading
-          as="h1"
-          id="music-heading"
-          text="Music"
-          active={headingActive}
-          className="font-display text-[length:var(--size-display-lg)] font-bold tracking-[var(--track-display-lg)] text-fg text-balance"
-        />
+      <div className="grid gap-8 border-b border-border pb-8 lg:grid-cols-[minmax(0,1fr)_minmax(16rem,0.38fr)] lg:items-end lg:gap-12">
+        <div ref={headingRef}>
+          <ManifestoHeading
+            as="h1"
+            id="music-heading"
+            text="Music"
+            active={headingActive}
+            className="font-display text-[length:var(--size-display-lg)] font-bold tracking-[var(--track-display-lg)] text-fg text-balance"
+          />
+          <p className="mt-4 max-w-xl font-sans text-[length:var(--text-meta)] leading-relaxed text-dim">
+            A release catalog organized as a playable sequence.
+          </p>
+        </div>
+
+        <div className="relative border-l border-border pl-5">
+          <span className="font-sans text-[length:var(--text-micro)] uppercase tracking-[var(--track-text-lg)] text-dim2">
+            Local output
+          </span>
+          <RouteSignal
+            scene="music"
+            label={activeBeat ? activeBeat.name : "Catalog signal"}
+            detail={activeDetail}
+            className="mt-3"
+          />
+          <span className="mt-2 block font-sans text-[length:var(--text-micro)] tracking-[var(--track-text-sm)] text-dim">
+            {activeBeat ? `${activeBeat.name} · ${activeDetail}` : activeDetail}
+          </span>
+          {activeBeat && (
+            <span className="mt-2 block font-sans text-[length:var(--text-micro)] uppercase tracking-[var(--track-text-lg)] text-[color:var(--accent-text)]">
+              {playbackState === "playing" ? "Live routing" : "Cue held"}
+            </span>
+          )}
+        </div>
       </div>
 
       <div
         role="group"
         aria-label="Filter beats by category"
-        className="mt-9 flex flex-wrap gap-x-5 gap-y-2"
+        className="mt-7 flex flex-wrap gap-x-5 gap-y-2"
       >
         {FILTERS.map((category) => {
           const isActive = filter === category;
@@ -90,7 +122,13 @@ export default function MusicPage() {
         })}
       </div>
 
-      <div className="mt-7">
+      <div className="mt-8">
+        <div className="mb-3 hidden grid-cols-[minmax(11rem,1fr)_minmax(0,2fr)_auto_auto] gap-x-4 px-2 font-sans text-[length:var(--text-micro)] uppercase tracking-[var(--track-text-lg)] text-dim2 lg:grid">
+          <span>Release</span>
+          <span>Material</span>
+          <span>Mode</span>
+          <span className="text-right">Tempo / length</span>
+        </div>
         <DrawnRule />
         {filtered.map(({ beat, index }, position) => (
           <TrackRow

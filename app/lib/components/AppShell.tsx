@@ -18,7 +18,7 @@ import { usePathname } from "next/navigation";
 import { AnimatePresence } from "motion/react";
 import CursorGlow from "./CursorGlow";
 import { CursorFieldProvider } from "./shared/CursorField";
-import WaveField from "./shared/WaveField";
+import WaveField, { sceneFromPathname } from "./shared/WaveField";
 import LoadingScreen from "./LoadingScreen";
 import { MotionPreferenceProvider } from "./shared/MotionPreference";
 import ScrollProgressRail from "./shared/ScrollProgressRail";
@@ -73,6 +73,7 @@ function FooterWithClearance() {
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const scene = sceneFromPathname(pathname);
   const prevIndexRef = useRef<number | null>(null);
 
   // Computed synchronously during render (not in an effect) so the new
@@ -117,7 +118,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <MotionPreferenceProvider>
       <CursorFieldProvider>
-        <div className="relative">
+        <div className="instrument-chassis relative isolate" data-field-scene={scene}>
           {/* First focusable element on every route, so a keyboard or screen
             * reader visitor can bypass the five nav items instead of tabbing
             * the same block on each navigation (WCAG 2.4.1). Invisible until
@@ -130,16 +131,18 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           >
             Skip to content
           </a>
-          <WaveField />
-          <CursorGlow />
-          <ScrollProgressRail />
-          <AnimatePresence>
-            {!introReady && <LoadingScreen key="loader" onDone={handleLoaderDone} />}
-          </AnimatePresence>
-          <Sidebar />
-          <IntroReadyContext.Provider value={introReady}>
-            <NavDirectionContext.Provider value={direction}>
-            <MusicPlayerProvider>
+          {/* The shell owns `MusicPlayerProvider` so its persistent transport
+            * remains available across route navigation. */}
+          <MusicPlayerProvider>
+            <WaveField scene={scene} />
+            <CursorGlow />
+            <ScrollProgressRail />
+            <AnimatePresence>
+              {!introReady && <LoadingScreen key="loader" onDone={handleLoaderDone} />}
+            </AnimatePresence>
+            <Sidebar />
+            <IntroReadyContext.Provider value={introReady}>
+              <NavDirectionContext.Provider value={direction}>
               {/* `relative z-[1]` sits on the whole column, not just the
                 * content div: `WaveField` is fixed at `z-0`, and a
                 * positioned element paints above unpositioned content, so
@@ -155,9 +158,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                   * than the footer, so max scroll ended below it. */}
                 <FooterWithClearance />
               </div>
-            </MusicPlayerProvider>
-            </NavDirectionContext.Provider>
-          </IntroReadyContext.Provider>
+              </NavDirectionContext.Provider>
+            </IntroReadyContext.Provider>
+          </MusicPlayerProvider>
         </div>
       </CursorFieldProvider>
     </MotionPreferenceProvider>

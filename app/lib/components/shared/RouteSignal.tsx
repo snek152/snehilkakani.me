@@ -1,0 +1,62 @@
+"use client";
+
+import { useId } from "react";
+import { motion } from "motion/react";
+import { EASE_OUT } from "@/app/lib/motion";
+import { beats } from "@/app/lib/tempo";
+import { useMotionPreference } from "./MotionPreference";
+
+export type RouteScene = "home" | "builds" | "music" | "lens" | "reach";
+
+export type RouteSignalProps = {
+  scene: RouteScene;
+  label: string;
+  detail: string;
+  className?: string;
+};
+
+const SCENES: Record<RouteScene, { path: string; mark: [number, number]; seam: string }> = {
+  home: { path: "M3 25C18 25 22 8 39 8S62 24 78 24", mark: [39, 8], seam: "M3 31H78" },
+  builds: { path: "M3 29L23 29L42 10L78 10", mark: [42, 10], seam: "M3 35L31 35L48 18L78 18" },
+  music: { path: "M3 25C12 25 12 12 21 12S30 32 39 32S48 16 57 16S66 25 78 25", mark: [39, 32], seam: "M3 34H78" },
+  lens: { path: "M3 29L20 12H54L78 29", mark: [54, 12], seam: "M12 35H69" },
+  reach: { path: "M3 27C18 27 24 9 40 9S57 27 78 27", mark: [40, 9], seam: "M3 34H78" },
+};
+
+/**
+ * A local, one-time route marker. It belongs beside a route's content rather
+ * than behind it: the path makes the field tangible without becoming a chart
+ * or a second ambient animation.
+ */
+export default function RouteSignal({ scene, label, detail, className }: RouteSignalProps) {
+  const reduceMotion = useMotionPreference();
+  const geometry = SCENES[scene];
+  const gradientId = useId().replace(/:/g, "");
+
+  return (
+    <motion.div
+      aria-hidden="true"
+      data-route-signal={scene}
+      data-signal-label={label}
+      data-signal-detail={detail}
+      initial={reduceMotion ? false : { opacity: 0, x: -8 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: reduceMotion ? 0 : beats(0.55), ease: EASE_OUT }}
+      className={`route-signal pointer-events-none select-none ${className ?? ""}`}
+    >
+      <svg viewBox="0 0 81 38" fill="none" focusable="false" aria-hidden="true">
+        <defs>
+          <linearGradient id={gradientId} x1="3" y1="0" x2="78" y2="0" gradientUnits="userSpaceOnUse">
+            <stop stopColor="var(--accent)" />
+            <stop offset="0.55" stopColor="rgb(var(--violet-rgb))" />
+            <stop offset="1" stopColor="var(--accent)" stopOpacity="0.12" />
+          </linearGradient>
+        </defs>
+        <path className="route-signal__axis" d="M3 34H78" />
+        <path className="route-signal__trajectory" d={geometry.path} />
+        <path className="route-signal__seam" d={geometry.seam} stroke={`url(#${gradientId})`} />
+        <circle className="route-signal__source" cx={geometry.mark[0]} cy={geometry.mark[1]} r="2.25" />
+      </svg>
+    </motion.div>
+  );
+}

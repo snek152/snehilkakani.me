@@ -11,29 +11,9 @@ import BeatBars from "./BeatBars";
 import { formatTime } from "./format";
 
 /**
- * One release, on the page's four-column grid — title in the first
- * quarter, the line about the track across the middle two, tempo and
- * (once known) duration sharing the last.
- *
- * The middle used to be the category word (and before that a colour
- * swatch keyed off a five-hex palette). Category is what the filter bar
- * above is for; repeating it on all twenty-two rows only restated the
- * filter you were already looking at. The description is the one thing
- * that actually distinguishes one row from the next, so it takes that
- * space instead of being a mobile-only afterthought. Category still
- * rides along in the row's `aria-label`, where the filter's effect
- * isn't visible.
- *
- * The split follows the text rather than the grid's convenience: the
- * longest title measures 159px and the longest description 517px, so
- * the title takes one column and the description two. Under the old
- * two-and-one split the titles sat in 594px of mostly empty space while
- * every description was cut off 200px short.
- *
- * The active/playing state is carried entirely by the row's rule turning
- * accent and the level bars replacing the play glyph — nothing about the
- * row's own position, size or scale changes, so toggling a track never
- * moves anything else on the page.
+ * A release lane in the catalog sequencer. Each row exposes the real
+ * category, tempo, and duration as stable scan points; only the selected
+ * release carries an output state and the live level bars.
  */
 export default function TrackRow({
   beat,
@@ -62,7 +42,7 @@ export default function TrackRow({
       whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "100000px 0px -18% 0px" }}
       transition={{ duration: reduceMotion ? 0 : beatTime(0.4), ease: EASE_OUT, delay }}
-      className="relative"
+      className={`relative ${isActive ? "bg-white/[0.025]" : ""}`}
     >
       <button
         type="button"
@@ -74,7 +54,7 @@ export default function TrackRow({
         // with it. Dimming the whole surface says "held" without moving
         // anything — and it works on the active row too, which has no
         // hover tint to darken.
-        className={`grid w-full grid-cols-1 items-center gap-x-4 gap-y-1 px-2 py-3.5 text-left transition-[background-color,opacity] duration-[120ms] ease-[var(--ease-press)] active:opacity-80 lg:grid-cols-4 ${
+        className={`grid w-full grid-cols-1 items-center gap-x-4 gap-y-1 px-2 py-3.5 text-left transition-[background-color,opacity] duration-[120ms] ease-[var(--ease-press)] active:opacity-80 lg:grid-cols-[minmax(11rem,1fr)_minmax(0,2fr)_auto_auto] ${
           isActive ? "" : "hover:bg-white/[0.02]"
         }`}
       >
@@ -101,37 +81,32 @@ export default function TrackRow({
           >
             {beat.name}
           </span>
-          {/* Below `lg` the four-column grid collapses and the BPM/duration
-            * cell below is `hidden`, which used to drop tempo and length off
-            * the page entirely on phones — while the flavour text kept its
-            * row and truncated mid-word. That inverted the value: on a beat
-            * list, tempo and length are the functional figures someone is
-            * actually scanning for, and the `aria-label` above was already
-            * announcing the tempo that sighted mobile visitors could not see.
-            * They ride here instead, in the dead space at the end of the
-            * truncating title, and the `lg` layout is untouched. */}
+          {/* On phones, keep the release's actual mode, tempo, and length in
+            * the title lane instead of hiding the desktop metadata. */}
           <span className="shrink-0 pl-3 font-sans text-[length:var(--text-micro)] tabular-nums tracking-[var(--track-text-sm)] text-dim2 lg:hidden">
-            {beat.tempo} BPM · {formatTime(duration)}
+            <span className="capitalize">{beat.category}</span> · {beat.tempo} BPM · {formatTime(duration)}
           </span>
         </span>
 
-        {/* One cell, two placements: at `lg` it spans the middle two
-          * columns; below, it stacks under the title, indented past the
-          * glyph gutter (w-5 + gap-4) so it still hangs off the title's
-          * left edge. */}
-        <span className="block truncate pl-9 font-sans text-[length:var(--text-meta)] tracking-[var(--track-text-sm)] text-dim2 lg:col-span-2 lg:pl-0">
+        <span className="block truncate pl-9 font-sans text-[length:var(--text-meta)] tracking-[var(--track-text-sm)] text-dim2 lg:pl-0">
           {beat.description}
         </span>
 
-        <span className="hidden items-center justify-between font-sans text-[length:var(--text-micro)] tracking-[var(--track-text-sm)] text-dim2 lg:flex">
+        <span className="hidden font-sans text-[length:var(--text-micro)] capitalize tracking-[var(--track-text-sm)] text-dim2 lg:block">
+          {beat.category}
+          {isActive && <span className="ml-2 text-[color:var(--accent-text)]">· routed</span>}
+        </span>
+
+        <span className="hidden items-center justify-end gap-3 font-sans text-[length:var(--text-micro)] tracking-[var(--track-text-sm)] text-dim2 lg:flex">
           <span className="tabular-nums">{beat.tempo} BPM</span>
+          <span aria-hidden="true" className="h-px w-3 bg-rule" />
           <span className="tabular-nums">{formatTime(duration)}</span>
         </span>
       </button>
 
-      {/* `ruleClassName`, not `className`: these classes PAINT the line (the
-        * active track's rule turns accent). `className` is for layout and, on
-        * an `accent` rule, lands on the wrapper rather than the line itself. */}
+      {/* The active release gains a quiet surface and an output marker; the
+        * rule remains the visible seam connecting its lane to the catalog
+        * signal without shifting the list. */}
       <DrawnRule
         ruleClassName={`transition-colors duration-150 ${isActive ? "!bg-accent" : ""}`}
       />

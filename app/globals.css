@@ -23,6 +23,13 @@
    * `strokeStyle` takes a string, not a computed custom property, so it keeps
    * its own constant and a comment pointing back here. */
   --accent-rgb: 37 99 235;
+  /* Violet is a material undertone, never a text role. It only appears where
+   * blue light refracts through a seam or instrument surface. */
+  --violet-rgb: 124 92 255;
+  --spectral-seam: linear-gradient(90deg, rgb(var(--accent-rgb) / 0.82), rgb(var(--violet-rgb) / 0.58), rgb(var(--accent-rgb) / 0));
+  /* Non-text light can be brighter than --accent-text because no words rely
+   * on it. Use for fine marks, source points, and material edges only. */
+  --signal-light: rgb(126 164 255);
   --border: rgba(255, 255, 255, 0.07);
   /* The drawn rules — the hairlines that scale open under a section heading
    * and between history rows. Brighter than `--border` because these are the
@@ -39,8 +46,16 @@
    * black leaves the frame sitting level with the page instead of lifted off
    * it. Its own token rather than a literal in `Lightbox`, which is also where
    * the drag-to-dismiss fade drives `opacity` — two colour ideas in one style
-   * attribute is how a value like this gets edited by accident. */
-  --scrim: rgba(4, 4, 4, 0.97);
+   * attribute is how a value like this gets edited by accident.
+   *
+   * 0.86, not the 0.97 it started at, because the scrim is now paired with a
+   * real `backdrop-blur`. At 0.97 the sheet behind was simply erased and the
+   * lightbox read as a photograph on a black card. Opened up and defocused,
+   * the contact sheet is still THERE, pushed far back — the frame is lifted
+   * off a space rather than pasted onto a surface. Depth by defocus is how
+   * `WaveField` expresses it too (its receding ends go soft, never darker),
+   * and this is the same idea reaching the interface. */
+  --scrim: rgba(4, 4, 4, 0.86);
 }
 
 /* Optical tracking scale.
@@ -163,6 +178,76 @@ body {
 ::selection {
   background: var(--accent);
   color: #fff;
+}
+
+/* Foreground-only instrument material. The seam is deliberately constrained
+ * to geometry: blue remains the authored accent while violet merely refracts
+ * within the light. */
+.spectral-seam {
+  background: var(--spectral-seam);
+}
+
+.signal-light {
+  background-color: var(--signal-light);
+}
+
+.route-signal {
+  width: clamp(4.5rem, 9vw, 6.5rem);
+  color: var(--signal-light);
+}
+
+.route-signal svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.route-signal__axis {
+  stroke: rgb(255 255 255 / 0.14);
+  stroke-width: 0.75;
+}
+
+.route-signal__trajectory {
+  stroke: currentColor;
+  stroke-width: 1.15;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.route-signal__seam {
+  stroke-width: 0.75;
+  opacity: 0.76;
+}
+
+.route-signal__source {
+  fill: var(--signal-light);
+  stroke: var(--bg);
+  stroke-width: 1.25;
+}
+
+/* The shell's chassis is a static edge treatment, not a layer behind route
+ * content. It gives the enduring column a quiet physical boundary while
+ * WaveField remains the only ambient medium. */
+.instrument-chassis {
+  min-height: 100dvh;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.025);
+}
+
+.nav-source {
+  background: var(--signal-light);
+  box-shadow: 0 0 0 2px var(--bg), 0 0 12px rgb(var(--accent-rgb) / 0.32);
+  transition: opacity 120ms var(--ease-press);
+}
+
+.instrument-footer::before {
+  position: absolute;
+  top: -1px;
+  left: clamp(1.5rem, 6vw, 5rem);
+  width: clamp(2.5rem, 7vw, 5rem);
+  height: 1px;
+  content: "";
+  background: var(--spectral-seam);
 }
 
 /* The pre-paint half of the intro gate (see `app/lib/loader-gate.ts`). The

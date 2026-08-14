@@ -10,6 +10,7 @@ import {
 } from "motion/react";
 import { useIntroReady } from "@/app/lib/components/AppShell";
 import { EASE_OUT } from "@/app/lib/motion";
+import { beats } from "@/app/lib/tempo";
 import ViewfinderFrame from "@/app/lib/components/shared/ViewfinderFrame";
 import { BORDERED_CONTROL } from "@/app/lib/components/shared/controls";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
@@ -19,17 +20,29 @@ import portrait from "@/public/about.jpg";
 
 const NAME_LINES = ["Snehil", "Kakani"];
 
+/* Both hero entrances resolve out of defocus, the same way `fadeUp` does — the
+ * loader is releasing as these arrive, so the name and the card come into focus
+ * as the instrument above them dissolves. Durations and delays are BPM-grid
+ * derived through `beats(...)`. */
 const riseVariants: Variants = {
-  hidden: { opacity: 0, y: 14 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE_OUT } },
+  hidden: { opacity: 0, y: 14, scale: 0.985, filter: "blur(9px)" },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    filter: "blur(0px)",
+    transition: { duration: beats(0.8), ease: EASE_OUT },
+  },
 };
 
 const photoVariants: Variants = {
-  hidden: { opacity: 0, x: 24 },
+  hidden: { opacity: 0, x: 24, scale: 0.985, filter: "blur(10px)" },
   visible: {
     opacity: 1,
     x: 0,
-    transition: { duration: 0.7, delay: 0.15, ease: EASE_OUT },
+    scale: 1,
+    filter: "blur(0px)",
+    transition: { duration: beats(1.05), delay: beats(0.25), ease: EASE_OUT },
   },
 };
 
@@ -169,6 +182,105 @@ export default function Hero({
           />
         ))}
       </div>
+      {/* A local trace, not another ambient layer: three paths leave one
+          source and resolve behind the three practices named in the intro.
+          It is deliberately bound to this content field, where it can give
+          systems, sound, and image a shared origin without competing with the
+          recruiter-facing card or becoming page decoration. */}
+      <motion.svg
+        aria-hidden="true"
+        viewBox="0 0 1000 560"
+        preserveAspectRatio="none"
+        className="pointer-events-none absolute inset-x-6 top-12 hidden h-[58%] overflow-visible sm:inset-x-8 lg:block lg:inset-x-12"
+        initial={reduceMotion ? false : "hidden"}
+        animate={reduceMotion ? undefined : state}
+      >
+        <defs>
+          <linearGradient id="home-origin-spectrum" x1="0%" x2="100%">
+            <stop offset="0%" stopColor="currentColor" stopOpacity="0.12" />
+            <stop offset="46%" stopColor="currentColor" stopOpacity="0.7" />
+            <stop offset="100%" stopColor="#7567e8" stopOpacity="0.18" />
+          </linearGradient>
+        </defs>
+        {[
+          "M 138 438 C 262 414, 286 158, 492 110",
+          "M 138 438 C 334 420, 404 262, 680 224",
+          "M 138 438 C 372 466, 604 432, 872 344",
+        ].map((path, index) => (
+          <motion.path
+            key={path}
+            d={path}
+            fill="none"
+            stroke="url(#home-origin-spectrum)"
+            strokeWidth="1.35"
+            vectorEffect="non-scaling-stroke"
+            initial={reduceMotion ? false : { pathLength: 0, opacity: 0 }}
+            variants={{
+              hidden: { pathLength: 0, opacity: 0 },
+              visible: {
+                pathLength: 1,
+                opacity: 1,
+                transition: {
+                  duration: beats(0.8),
+                  delay: beats(0.18 + index * 0.12),
+                  ease: EASE_OUT,
+                },
+              },
+            }}
+          />
+        ))}
+        <circle cx="138" cy="438" r="4" className="fill-accent" />
+        <circle cx="492" cy="110" r="2" className="fill-accent" />
+        <circle cx="680" cy="224" r="2" className="fill-accent" />
+        <circle cx="872" cy="344" r="2" className="fill-accent" />
+      </motion.svg>
+      <motion.svg
+        aria-hidden="true"
+        viewBox="0 0 240 120"
+        preserveAspectRatio="none"
+        className="pointer-events-none absolute right-6 top-10 z-0 h-24 w-40 overflow-visible text-accent/80 sm:right-8 sm:h-32 sm:w-56 lg:hidden"
+        initial={reduceMotion ? false : "hidden"}
+        animate={reduceMotion ? undefined : state}
+      >
+        <defs>
+          <linearGradient id="home-origin-spectrum-compact" x1="0%" x2="100%">
+            <stop offset="0%" stopColor="currentColor" stopOpacity="0.12" />
+            <stop offset="46%" stopColor="currentColor" stopOpacity="0.7" />
+            <stop offset="100%" stopColor="#7567e8" stopOpacity="0.18" />
+          </linearGradient>
+        </defs>
+        {[
+          "M 28 94 C 68 89, 66 25, 122 18",
+          "M 28 94 C 78 89, 100 55, 165 52",
+          "M 28 94 C 90 105, 142 94, 212 76",
+        ].map((path, index) => (
+          <motion.path
+            key={path}
+            d={path}
+            fill="none"
+            stroke="url(#home-origin-spectrum-compact)"
+            strokeWidth="1.35"
+            vectorEffect="non-scaling-stroke"
+            initial={reduceMotion ? false : { pathLength: 0, opacity: 0 }}
+            variants={{
+              hidden: { pathLength: 0, opacity: 0 },
+              visible: {
+                pathLength: 1,
+                opacity: 1,
+                transition: {
+                  duration: beats(0.8),
+                  delay: beats(0.18 + index * 0.12),
+                  ease: EASE_OUT,
+                },
+              },
+            }}
+          />
+        ))}
+        <circle cx="28" cy="94" r="3" className="fill-accent" />
+        <circle cx="122" cy="18" r="1.5" className="fill-accent" />
+        <circle cx="165" cy="52" r="1.5" className="fill-accent" />
+        <circle cx="212" cy="76" r="1.5" className="fill-accent" />
+      </motion.svg>
 
       {/* Three cells, not two, so the intro paragraph can be resequenced on
         * mobile. Below `lg` the reading order becomes role -> name -> the
@@ -184,8 +296,17 @@ export default function Hero({
         * `lg:gap-y-0` is load-bearing: with the paragraph promoted to a grid
         * child, a row gap would ALSO open between the name and the paragraph
         * on desktop, where their spacing is owned by the paragraph's own
-        * `lg:mt-4`. Column gap stays 8. */}
-      <div className="grid grid-cols-1 items-end gap-10 mt-10 z-10 lg:grid-cols-[1.5fr_minmax(220px,1.2fr)] lg:gap-x-8 lg:gap-y-0">
+        * `lg:mt-4`. Column gap stays 8.
+        *
+        * `lg:grid-rows-[1fr_auto]` is the other half of that, and without it
+        * this layout is broken: the card spans both rows, so with implicit
+        * `auto auto` rows the grid distributed the card's height ACROSS them
+        * and opened ~90px of dead space between the name and the paragraph.
+        * Pinning row 2 to the paragraph's own height and letting row 1 absorb
+        * all the slack puts the pair back together, and `items-end` keeps them
+        * bottom-aligned against the card exactly as they were when they shared
+        * one cell. */}
+      <div className="grid grid-cols-1 items-end gap-10 mt-10 z-10 lg:grid-cols-[1.5fr_minmax(220px,1.2fr)] lg:grid-rows-[1fr_auto] lg:gap-x-8 lg:gap-y-0">
         <div className="lg:col-start-1 lg:row-start-1">
           <motion.div
             initial={reduceMotion ? false : "hidden"}

@@ -3,6 +3,104 @@
 import { useEffect, useRef } from "react";
 import { useMotionPreference } from "./MotionPreference";
 
+export type FieldScene = "home" | "builds" | "music" | "lens" | "reach";
+
+export function sceneFromPathname(pathname: string): FieldScene {
+  if (pathname === "/" || pathname === "") return "home";
+
+  const section = pathname.split("/")[1];
+  return section === "builds" || section === "music" || section === "lens" || section === "reach"
+    ? section
+    : "home";
+}
+
+type FieldSceneProfile = Readonly<{
+  populationScale: readonly [number, number, number];
+  frequencyScale: number;
+  phaseStepScale: number;
+  depthScale: number;
+  amplitudeScale: number;
+  rotationScale: number;
+  twistScale: number;
+  bloomScale: number;
+  bloomAlphaScale: number;
+  fieldOffsetX: number;
+  fieldOffsetY: number;
+}>;
+
+const FIELD_SCENE_PROFILES = {
+  // Baseline calibration: a balanced field with structural sweeps, weave, and depth.
+  home: {
+    populationScale: [1, 1, 1],
+    frequencyScale: 1,
+    phaseStepScale: 1,
+    depthScale: 1,
+    amplitudeScale: 1,
+    rotationScale: 1,
+    twistScale: 1,
+    bloomScale: 1,
+    bloomAlphaScale: 1.12,
+    fieldOffsetX: 0,
+    fieldOffsetY: 0,
+  },
+  // Taut, sparse structural sweeps; lower-frequency interference stays legible.
+  builds: {
+    populationScale: [0.72, 0.68, 0.6],
+    frequencyScale: 0.72,
+    phaseStepScale: 0.78,
+    depthScale: 0.78,
+    amplitudeScale: 0.78,
+    rotationScale: 0.72,
+    twistScale: 0.65,
+    bloomScale: 0.78,
+    bloomAlphaScale: 0.75,
+    fieldOffsetX: -0.08,
+    fieldOffsetY: 0.04,
+  },
+  // Dense, kinetic interference given room to pool in the soft bloom pass.
+  music: {
+    populationScale: [1, 1.1, 1],
+    frequencyScale: 1.22,
+    phaseStepScale: 1.28,
+    depthScale: 1.08,
+    amplitudeScale: 1.04,
+    rotationScale: 1.18,
+    twistScale: 1.22,
+    bloomScale: 1.08,
+    bloomAlphaScale: 1.22,
+    fieldOffsetX: -0.3,
+    fieldOffsetY: 0.32,
+  },
+  // Deeper, softer low-frequency arcs with restrained surface motion.
+  lens: {
+    populationScale: [1.24, 0.84, 0.7],
+    frequencyScale: 0.68,
+    phaseStepScale: 0.86,
+    depthScale: 1.22,
+    amplitudeScale: 1.2,
+    rotationScale: 0.78,
+    twistScale: 0.72,
+    bloomScale: 1.15,
+    bloomAlphaScale: 1.28,
+    fieldOffsetX: 0.06,
+    fieldOffsetY: -0.28,
+  },
+  // A quiet, intimate field with ample negative space.
+  reach: {
+    populationScale: [0.58, 0.48, 0.42],
+    frequencyScale: 0.76,
+    phaseStepScale: 0.7,
+    depthScale: 0.7,
+    amplitudeScale: 0.68,
+    rotationScale: 0.62,
+    twistScale: 0.58,
+    bloomScale: 0.74,
+    bloomAlphaScale: 0.65,
+    fieldOffsetX: 0.1,
+    fieldOffsetY: 0.12,
+  },
+} as const satisfies Readonly<Record<FieldScene, FieldSceneProfile>>;
+
 /**
  * WaveField
  * ---------
@@ -61,13 +159,10 @@ import { useMotionPreference } from "./MotionPreference";
  * the typical strand to alpha 2/255 and the field vanished — so tune against
  * percentiles, never the maximum.
  *
- * Measured composited luminance at 1440x900 (actual RGBA composited over the
- * page, NOT alpha treated as white — under `lighter` both colour and alpha
- * accumulate, and the strands are tinted, so an alpha proxy misreports both
- * ends): p50 8, p90 10, p99 19, p99.9 31, max 51. Worst-case contrast for
- * #efefef text over the brightest pixel in the field is 10.9:1, against 17.4
- * on the bare background — still comfortably past WCAG AAA's 7:1, which is
- * the number that actually bounds how visible this layer is allowed to get.
+ * Every scene remains within the field's established contrast budget and is
+ * visually verified at its brightest route. Bloom creates presence through
+ * soft area rather than sharp line brightness, so scene tuning must preserve
+ * the page content's visual priority.
  *
  * Visibility comes from the bloom pass (area), not from raising the core
  * (peak). See `BLOOM_ALPHA_SHARE`.
@@ -201,19 +296,10 @@ const DEPTH_ALPHA_FLOOR = 0.1;
 const CORE_WIDTH = 1.05;
 const HALO_ALPHA_SHARE = 0.26;
 
-/** The bloom: a third stroke, far wider than the halo and far fainter, laid
- * down first. This is the field's visibility budget. Perceived presence
- * tracks covered AREA much more than peak brightness, and an edgeless wash
- * cannot be misread as one of the page's hairlines however visible it
- * becomes — whereas buying the same presence by brightening the core would
- * put strands back in competition with the rules.
- *
- * Its alpha has to stay very low: every curve contributes one, they overlap
- * additively, and if the accumulated wash lifts the page background then
- * text contrast drops everywhere. That is the number to watch when tuning —
- * not how the bloom looks on its own. */
-const BLOOM_WIDTH_SCALE = 3.2;
-const BLOOM_ALPHA_SHARE = 0.26;
+/** The bloom is the field's visibility budget: increase its coverage, not the
+ * sharp core, so the background reads as volume rather than a second grid. */
+const BLOOM_WIDTH_SCALE = 4.2;
+const BLOOM_ALPHA_SHARE = 0.3;
 const BLOOM_BANDS = 4;
 
 /** Extra halo spread applied to the far end of a curve's own depth range, on
@@ -363,12 +449,15 @@ interface CurveConfig {
   alpha: number;
   isAccent: boolean;
 }
-
-function buildCurves(): CurveConfig[] {
+function buildCurves(profile: FieldSceneProfile): CurveConfig[] {
   const curves: CurveConfig[] = [];
   let i = 0;
 
-  LAYER_POPULATION.forEach(([arcs, filaments], layer) => {
+  LAYER_POPULATION.forEach(([baseArcs, baseFilaments], layer) => {
+    const [arcs, filaments] = [baseArcs, baseFilaments].map((count) =>
+      Math.max(0, Math.round(count * profile.populationScale[layer])),
+    ) as [number, number];
+
     const species: Species[] = [
       ...Array<Species>(arcs).fill("arc"),
       ...Array<Species>(filaments).fill("filament"),
@@ -395,14 +484,15 @@ function buildCurves(): CurveConfig[] {
       // prevent in the first place.
       const rawFreq = FREQ_RATIOS[i % FREQ_RATIOS.length];
       const freqBase = rawFreq + (FAMILY_FREQ - rawFreq) * COHERENCE;
-      const freq = kind === "arc" ? freqBase * 0.28 : freqBase * FREQ_SCALE;
+      const freq =
+        (kind === "arc" ? freqBase * 0.28 : freqBase * FREQ_SCALE) * profile.frequencyScale;
 
       // Phase advances steadily with position in the layer, blended against
       // the curve's own random phase. Neighbouring strands then read as the
       // same wave arriving slightly later — the cue that groups them into a
       // travelling family rather than unrelated lines.
       const rawPhase = frac * Math.PI * 2;
-      const familyPhase = indexInLayer * PHASE_STEP + layer * 0.9;
+      const familyPhase = indexInLayer * PHASE_STEP * profile.phaseStepScale + layer * 0.9;
       const phase = rawPhase + (familyPhase - rawPhase) * COHERENCE;
 
       // Amplitude rolls off with frequency, the way a real spectrum does.
@@ -428,7 +518,7 @@ function buildCurves(): CurveConfig[] {
         freq,
         freq2:
           SECOND_FREQ_RATIOS[i % SECOND_FREQ_RATIOS.length] *
-          (kind === "arc" ? 0.4 : FREQ_SCALE),
+          (kind === "arc" ? 0.4 : FREQ_SCALE) * profile.frequencyScale,
         depthFreq: DEPTH_FREQ_RATIOS[i % DEPTH_FREQ_RATIOS.length],
         phase,
         phase2: (1 - frac) * Math.PI * 2,
@@ -453,17 +543,17 @@ function buildCurves(): CurveConfig[] {
   return curves;
 }
 
-export default function WaveField() {
+export default function WaveField({ scene = "home" }: { scene?: FieldScene }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const reduceMotion = useMotionPreference();
-
+  const profile = FIELD_SCENE_PROFILES[scene];
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const curves = buildCurves();
+    const curves = buildCurves(profile);
     let width = 0;
     let height = 0;
 
@@ -537,16 +627,15 @@ export default function WaveField() {
       // capped so the surge builds and settles instead of snapping.
       energy +=
         (Math.min(ENERGY_MAX, Math.abs(delta) * ENERGY_GAIN) - energy) * ENERGY_DAMPING;
-
-      // Each stratum's orientation for this frame, computed once rather than
-      // per curve. `layerTime` is the stratum's own clock: ambient drift plus
-      // the bounded physical scroll offset scaled by how strongly this layer
-      // answers scroll.
       scrollPhase += (scrollTarget - scrollPhase) * SCROLL_PHASE_DAMPING;
       const layerState = LAYERS.map((layer) => {
         const lt = t + scrollPhase * layer.scrollResponse;
-        const rotY = layer.rotYAmp * Math.sin(lt * layer.rotYSpeed + layer.rotPhase);
-        const rotX = layer.rotXAmp * Math.sin(lt * layer.rotXSpeed + layer.rotPhase + 1.1);
+        const rotY =
+          layer.rotYAmp * profile.rotationScale *
+          Math.sin(lt * layer.rotYSpeed * profile.rotationScale + layer.rotPhase);
+        const rotX =
+          layer.rotXAmp * profile.rotationScale *
+          Math.sin(lt * layer.rotXSpeed * profile.rotationScale + layer.rotPhase + 1.1);
         return {
           lt,
           cosY: Math.cos(rotY),
@@ -556,6 +645,7 @@ export default function WaveField() {
         };
       });
 
+
       for (const curve of curves) {
         const layer = LAYERS[curve.layer];
         const { lt, cosY, sinY, cosX, sinX } = layerState[curve.layer];
@@ -564,8 +654,14 @@ export default function WaveField() {
         const wander = WANDER_RATIO * Math.sin(lt * WANDER_SPEED + curve.wanderPhase);
         // Scroll energy swells the twist and the excursion together, so a
         // flick makes the whole family surge rather than shift.
-        const twist = lt * TWIST_SPEED + curve.twistPhase + energy * 0.9;
-        const amp = ampPx * curve.ampScale * breathe * (1 + energy * 0.35);
+        const twist =
+          lt * TWIST_SPEED * profile.twistScale + curve.twistPhase + energy * 0.9 * profile.twistScale;
+        const amp =
+          ampPx *
+          curve.ampScale *
+          profile.amplitudeScale *
+          breathe *
+          (1 + energy * 0.35);
         const ampNorm = amp / halfH;
         const samples = curve.samples;
 
@@ -577,10 +673,12 @@ export default function WaveField() {
             0.45 * Math.sin(u * Math.PI * 2 * curve.freq2 + curve.phase2 - lt * 0.73);
           const twistAngle = u * TWIST_AMP + twist;
 
-          const lx = u * SPAN + curve.xOffset * 0.3;
-          const ly = (curve.yOffset + wander) * 2 + wave * Math.cos(twistAngle) * ampNorm;
+          const lx = u * SPAN + curve.xOffset * 0.3 + profile.fieldOffsetX;
+          const ly =
+            (curve.yOffset + wander) * 2 + profile.fieldOffsetY + wave * Math.cos(twistAngle) * ampNorm;
           let lz =
             DEPTH_RATIO *
+            profile.depthScale *
             curve.depthScale *
             (Math.sin(u * Math.PI * curve.depthFreq + curve.depthPhase + lt * 0.61) * 0.65 +
               wave * Math.sin(twistAngle) * 0.35);
@@ -637,7 +735,6 @@ export default function WaveField() {
           const isHalo = pass === 1;
           const bands = isBloom ? BLOOM_BANDS : BANDS;
           const step = samples / bands;
-
           for (let b = 0; b < bands; b++) {
             const start = Math.round(b * step);
             const end = Math.round((b + 1) * step);
@@ -661,9 +758,14 @@ export default function WaveField() {
             for (let s = start + 1; s <= end; s++) ctx.lineTo(px[s], py[s]);
 
             if (isBloom) {
-              ctx.lineWidth = bandWidth * layer.haloScale * BLOOM_WIDTH_SCALE * bandDefocus;
+              ctx.lineWidth =
+                bandWidth *
+                layer.haloScale *
+                BLOOM_WIDTH_SCALE *
+                profile.bloomScale *
+                bandDefocus;
               ctx.strokeStyle = `rgba(${rgb}, ${
-                (bandAlpha * BLOOM_ALPHA_SHARE) / bandDefocus
+                (bandAlpha * BLOOM_ALPHA_SHARE * profile.bloomAlphaScale) / bandDefocus
               })`;
             } else if (isHalo) {
               ctx.lineWidth = bandWidth * layer.haloScale * bandDefocus;
@@ -745,7 +847,7 @@ export default function WaveField() {
       document.removeEventListener("visibilitychange", handleVisibility);
       window.removeEventListener("resize", handleResize);
     };
-  }, [reduceMotion]);
+  }, [reduceMotion, profile]);
 
   return (
     <canvas

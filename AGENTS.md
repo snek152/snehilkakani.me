@@ -166,11 +166,20 @@ Animations). What follows is what the code actually does.
 
 **Surfaces are defined by a hairline, not by a fill.** There is no card
 component and no elevation system. A region is separated from the page by a 1px
-`border-border` edge, a `DrawnRule`, or nothing at all — never by a shadow, and
-never by a corner radius above `rounded-sm`. `--card` (`#0e0e0e`) exists for
-the few surfaces that need to sit a shade off the page; it is 3 steps of
-lightness away from `--bg`, and that is the whole range the design uses.
-`shadow-*` appears nowhere. Do not introduce it.
+`border-border` edge, a `DrawnRule`, or nothing at all — never by a drop shadow
+standing in for depth, and never by a corner radius above `rounded-sm`.
+`--card` (`#0e0e0e`) exists for the few surfaces that need to sit a shade off
+the page; it is 3 steps of lightness away from `--bg`, and that is the whole
+range the design uses.
+
+Three shadow values exist and all three are doing a job no hairline can, so
+the earlier flat claim that "`shadow-*` appears nowhere" was simply false —
+it was written from the convention rather than from the code. What is banned
+is a shadow used as *elevation on a card*. What exists: `Sidebar`'s expanded
+rail casts a real directional shadow so it reads as a panel over the page
+rather than a wider strip of it; `ScrollProgressRail`'s fill carries an accent
+bloom; `OrbitStage`'s node carries a 1px accent ring. Depth in this design is
+expressed by DEFOCUS, not by drop shadow — see the Light section below.
 
 **Skill tags are text, not chips.** `ProjectSkills` sets each skill as a list
 item prefixed by a `/` divider drawn with `before:content-['/']` in `--dim2`,
@@ -286,6 +295,26 @@ systems in one background fight each other, and figures with no relationship to
 the content read exactly as what they were — random shapes. It was deleted, along
 with GSAP. Do not rebuild it. If a surface needs more presence, get it from
 typography, spacing, or the content itself, never from a second ambient layer.
+
+**One ambient system only.** `WaveField` is the site's volumetric, flowing
+background and its sole continuous animation. It carries the depth — curves
+recede by going soft, not dark — without becoming a second set of interface
+rules. Make the field perceptible by widening its soft bloom, never by
+brightening its sharp core or adding a new moving layer above it.
+
+`CursorGlow` is not ambience. It is precise-pointer feedback: it mounts only
+after `CursorField` reports an active cursor, tracks that cursor, and disappears
+for touch and reduced-motion visitors. Keep it local and input-driven; do not
+give it an idle position, autonomous drift, or audio-reactive scale.
+
+**Depth is expressed by defocus, never by a drop shadow.** `WaveField` recedes
+by going soft, not dark. The interface now says depth the same way: `Lightbox`
+pairs `--scrim` at `0.86` with an 18px `backdrop-blur`, so the contact sheet
+behind an opened photograph is still THERE, pushed back, instead of being
+erased by a near-opaque card at `0.97`. The scrim carries `data-material`, so
+`prefers-reduced-transparency` swaps the blur for an opaque `--bg` through the
+existing override rather than a second code path. If a surface needs to sit
+behind another, defocus it.
 
 What remains, and is enough:
 

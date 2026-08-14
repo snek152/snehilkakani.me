@@ -25,6 +25,11 @@ interface MusicPlayerContextValue {
   currentTime: number;
   duration: number;
   bars: MotionValue<number>[];
+  /** Bass-weighted spectral energy of whatever is playing, 0..1, resting at a
+   * true 0 in silence. The site's ambient light reads this: see `CursorGlow`.
+   * Lives on the transport because the transport is what knows — the light is
+   * downstream of the sound, not a second clock running beside it. */
+  level: MotionValue<number>;
   playTrack: (index: number) => void;
   toggleTrack: (index: number) => void;
   skip: (direction: 1 | -1) => void;
@@ -70,7 +75,7 @@ export function MusicPlayerProvider({ children }: { children: React.ReactNode })
   const [error, setError] = useState<string | null>(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const { bars, ensureAnalyser } = useAudioAnalyser(
+  const { bars, level, ensureAnalyser } = useAudioAnalyser(
     audioRef,
     playbackState === "playing",
     prefersReducedMotion,
@@ -273,6 +278,7 @@ export function MusicPlayerProvider({ children }: { children: React.ReactNode })
       currentTime,
       duration,
       bars,
+      level,
       playTrack,
       toggleTrack,
       skip,
@@ -285,6 +291,7 @@ export function MusicPlayerProvider({ children }: { children: React.ReactNode })
       currentTime,
       duration,
       bars,
+      level,
       playTrack,
       toggleTrack,
       skip,
@@ -308,6 +315,7 @@ export function MusicPlayerProvider({ children }: { children: React.ReactNode })
         onToggle={() => activeIndex !== null && toggleTrack(activeIndex)}
         onSkip={skip}
         onScrub={handleScrub}
+        level={level}
       />
     </MusicPlayerContext.Provider>
   );

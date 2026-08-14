@@ -74,7 +74,7 @@ function Field({
         />
         <motion.span
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left bg-accent"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left bg-[linear-gradient(90deg,var(--accent),#6d5ede,var(--accent))]"
           initial={false}
           animate={{ scaleX: focused ? 1 : 0 }}
           transition={{ duration: reduceMotion ? 0 : beats(0.4), ease: EASE_OUT }}
@@ -367,7 +367,7 @@ export default function ContactForm() {
         initial={false}
         animate={{ scaleX: sending ? 1 : 0, opacity: sending ? 1 : 0 }}
         transition={{ duration: reduceMotion ? 0 : 0.38, ease: EASE_OUT }}
-        className="absolute -bottom-2 left-0 h-px w-full origin-left bg-accent"
+        className="absolute -bottom-2 left-0 h-px w-full origin-left bg-[linear-gradient(90deg,var(--accent),#6d5ede,var(--accent))]"
       />
       <motion.div variants={fieldMotion}>
         <Field
@@ -428,7 +428,7 @@ export default function ContactForm() {
           />
           <motion.span
             aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left bg-accent"
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left bg-[linear-gradient(90deg,var(--accent),#6d5ede,var(--accent))]"
             initial={false}
             animate={{ scaleX: messageFocused ? 1 : 0 }}
             transition={{ duration: reduceMotion ? 0 : beats(0.4), ease: EASE_OUT }}
