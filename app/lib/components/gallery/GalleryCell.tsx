@@ -41,14 +41,17 @@ export default function GalleryCell({
   const reduceMotion = useMotionPreference();
 
   return (
-    <motion.figure
-      style={{ width: `${width}px` }}
-      initial={reduceMotion ? undefined : { opacity: 0 }}
-      whileInView={reduceMotion ? undefined : { opacity: 1 }}
-      viewport={{ once: true, margin: "100000px 0px -18% 0px" }}
-      transition={{ duration: beats(0.6), delay: (index % 6) * beats(0.05), ease: EASE_OUT }}
-      className="group m-0 shrink-0"
-    >
+    <figure style={{ width: `${width}px` }} className="group m-0 shrink-0">
+      <motion.div
+        initial={reduceMotion ? undefined : { clipPath: "inset(0% 100% 0% 0%)", scale: 1.02 }}
+        whileInView={reduceMotion ? undefined : { clipPath: "inset(0% 0% 0% 0%)", scale: 1 }}
+        viewport={{ once: true, margin: "100000px 0px -18% 0px" }}
+        transition={{
+          duration: beats(0.6),
+          delay: Math.min(index * beats(0.06), beats(0.5)),
+          ease: EASE_OUT,
+        }}
+      >
       {/* No viewfinder ticks on the thumbnails. The corner marks read as
         * chrome bolted onto a photograph rather than as part of it, and
         * driving them from React state meant the browser restoring focus
@@ -56,7 +59,7 @@ export default function GalleryCell({
         * the frame stuck on with the pointer nowhere near it. There is no
         * hover state to get stuck now: the caption lift is pure CSS, and
         * keyboard users get the focus ring. */}
-      <button
+        <button
         ref={cellRef}
         type="button"
         onClick={onOpen}
@@ -74,7 +77,8 @@ export default function GalleryCell({
           sizes={`${Math.ceil(width)}px`}
           className="block h-full w-full object-cover"
         />
-      </button>
+        </button>
+      </motion.div>
 
       {/* Title and exposure are one caption block, not two scraps: the
         * title carries it, and the exposure sits tight beneath in the
@@ -99,6 +103,6 @@ export default function GalleryCell({
         </span>
         <Exposure photo={photo} className="mt-1.5" />
       </figcaption>
-    </motion.figure>
+    </figure>
   );
 }

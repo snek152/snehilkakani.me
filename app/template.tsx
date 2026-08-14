@@ -1,6 +1,8 @@
 "use client";
 
 import { motion, useReducedMotion } from "motion/react";
+import { EASE_OUT } from "@/app/lib/motion";
+import { beats } from "@/app/lib/tempo";
 import { useNavDirection } from "@/app/lib/components/AppShell";
 
 /**
@@ -48,7 +50,15 @@ export default function Template({ children }: { children: React.ReactNode }) {
             }
       }
       animate={{ clipPath: "inset(0 0% 0 0%)" }}
-      transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+      /* On the same BPM-92 grid as every other transition on the site, so a
+       * route change lands on the pulse the incoming page's own rules draw to
+       * rather than on a number picked for this file alone. `beats(0.65)` is
+       * ~424ms, which is where this already was — the value did not need to
+       * change, only its derivation. Kept on `useReducedMotion()` rather than
+       * the site's `useMotionPreference()` hook: this wrapper sits between the
+       * layout and the route, and moving it inside the provider's scope is a
+       * structural change this file should not make on its own. */
+      transition={{ duration: beats(0.65), ease: EASE_OUT }}
     >
       {children}
     </motion.div>

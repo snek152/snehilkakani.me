@@ -229,4 +229,89 @@ settle: swap the spring for `{ duration: 0 }` and drop any overshoot. The
 handle still appears under reduced motion because it is an affordance, and only
 its transition is dropped.
 
+**The background belongs to `WaveField`, and nothing else may compete for it.**
+The site has exactly one continuous ambient motion: the wave canvas behind every
+route. It is the piece that carries the site's character, and it works because
+it is alone back there — a second animated layer in the same visual plane reads
+as clutter over it, no matter how quiet that layer is on its own.
+
+This is not a preference, it is a settled decision with a cost attached. An
+earlier version added a whole drawn-line system behind the content: full-height
+vertical construction lines (`DraftingGrid`) and a layer of self-tracing SVG
+draughtsman's figures (`SchematicLayer` — compass arcs, axonometric boxes,
+hatching, dimension lines) whose `stroke-dashoffset` was bound to scroll. Every
+piece of it measured correctly and it was still wrong: two independent line
+systems in one background fight each other, and figures with no relationship to
+the content read exactly as what they were — random shapes. It was deleted, along
+with GSAP. Do not rebuild it. If a surface needs more presence, get it from
+typography, spacing, or the content itself, never from a second ambient layer.
+
+What remains, and is enough:
+
+1. **Entrances come off one BPM-92 grid.** `beats()` from `app/lib/tempo.ts`,
+   `EASE_OUT` / the springs from `app/lib/motion.ts`. No component invents its
+   own duration.
+2. **Rules draw, they never fade, and the draw is meant to be seen.**
+   `DrawnRule` scales a 1px line from an origin, on its own `--rule` token at
+   0.15 alpha — brighter than `--border` (0.07), which stays quiet for card
+   edges, inputs and the nav. Three values have been tried: 0.07 was invisible,
+   0.2 read as loud, but only while a second drawn-line system was competing
+   with it. With the rules alone, 0.15 is where the draw is legible and the
+   dividers still don't take over.
+3. **Rules draw where the reader can watch them.** `DrawnRule` observes with a
+   negative bottom margin (`-240px`), starting its 0.8s draw at roughly
+   three-quarters of a laptop viewport rather than at the bottom edge where it
+   would complete unseen. Rows and cards keep their established, independent
+   observer margins: structural rules and content do not need to land in
+   lockstep, and those values must not be “tidied” into one shared constant.
+   The `240px` lead is deliberately `px`, not `%`: percentage root margins
+   resolve against the root's width, which is meaningless for a vertical lead.
+   A rule within that lead distance of the end of the document cannot ever
+   enter the observer band at maximum scroll. `DrawnRule` detects that rare
+   case on mount and resize, then renders it immediately rather than leaving a
+   missing separator. Do not add a `ResizeObserver` per rule; static image
+   imports reserve their aspect ratios, and the window resize pass is enough.
+   On `/builds`, the opening rule and per-project rules alone break out through
+   the page padding to match the full-bleed experience dividers; never put
+   those negative margins on `ProjectCard` itself because its grid's image edge
+   is aligned to the page centre stop.
+4. **Intricate, not flashy.** `WaveField` is the benchmark: a great deal of
+   coordination underneath, deliberately quiet on the surface. The spectacle
+   comes from how many parts move in agreement, never from brightness.
+
+**No pinned scroll sequences.** There were two — a `WorkCycle` "Selected work"
+section and an `ExperienceCycle` that held the history on screen while the roles
+cycled. Both are gone. Pinning fights the wave canvas for the same scroll and,
+more simply, it made the page feel like it was jumping around: the reader scrolls
+and the section refuses to move, which reads as a broken page rather than as an
+effect, and no amount of correct measurement fixes that impression. `/`'s
+Experience section is an ordinary scrolling section (`ExperienceList`), and
+that is the right answer. Scroll may *affect* motion — `GridIndex` and the hero
+accent lines already do — but it must never take the wheel.
+
+Each surface expresses its own reveal according to what its content actually is,
+rather than repeating one entrance: on `/builds` the rule LEADS and the row's
+content follows in its wake (`beats(0.15)` behind); on `/lens` the contact sheet
+DEVELOPS via a `clip-path` wipe travelling in reading order with a slight scale
+settle, because a contact sheet develops; on `/music` the accent moves from a
+playing row's rule down into the transport's hairline, which is visually the
+same line; on `/reach` a focused field's underline draws from the caret side and
+retracts the same way; on `/` the history builds as a spine, the date column
+leading its prose. Adding a generic fade-and-rise to a new section is the one
+thing that would cheapen all of it.
+
+`DrawnRule` takes `className` for layout and **`ruleClassName` for anything that
+paints the line** (a state colour like `!bg-accent`). They are separate because
+with `accent` the wrapper is not the line, so a `bg-*` in `className` would tint
+the box behind the rule and silently do nothing.
+
+Two traps worth keeping in mind, both measured and fixed rather than theorised:
+a scroll-triggered reveal needs `viewport={{ once: true, margin: "100000px 0px
+-6% 0px" }}` — the huge top margin makes "the reader already scrolled past this"
+count as seen, without which skipped rows stay at `opacity: 0` permanently, and
+a bottom band larger than about `-6%` leaves rules at the document's end that
+can never fire. And a transform that travels outside its container still creates
+scrollable overflow: the accent segment needed `overflow-hidden` on its wrapper
+or every struck page gained ~250px of horizontal scroll.
+
 **Experience data ordering** — most recent first in `experience.ts`.

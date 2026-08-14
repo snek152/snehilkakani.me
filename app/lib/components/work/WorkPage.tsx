@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import DrawnRule from "@/app/lib/components/shared/DrawnRule";
 import { motion, useInView } from "motion/react";
 import { projects } from "@/app/lib/data/projects";
 import { fadeUp } from "@/app/lib/motion";
@@ -52,13 +53,23 @@ export default function WorkPage() {
       <FeaturedProject project={featured} />
 
       <section aria-label="More projects" aria-labelledby="studies-heading">
-        <div ref={studiesRef} className="mb-10 border-b border-border pb-5">
+        <div ref={studiesRef} className="pb-5">
           <ManifestoHeading
             id="studies-heading"
             text="More work, in sequence."
             active={studiesActive}
             className="font-display text-[length:var(--size-display-md)] font-semibold tracking-[var(--track-display-md)] text-fg"
           />
+        </div>
+        {/* The rule that strikes the sequence open, the same way each row's
+          * own rule opens it in turn — and full-bleed like them, so the
+          * section's opening line and the dividers under it are one system
+          * rather than two lengths of the same hairline. Negative margins on
+          * this wrapper rather than on the rule, so the rule keeps `w-full`
+          * of the bled box instead of fighting its own `width` against
+          * `left`/`right`. */}
+        <div className="-mx-6 mb-10 sm:-mx-8 lg:-mx-12">
+          <DrawnRule />
         </div>
         <div className="flex flex-col">
           {remaining.map((project) => (

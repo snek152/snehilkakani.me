@@ -11,7 +11,6 @@ import { navItems, type NavItem } from "@/app/lib/nav";
 const SIDE_THIN = 52;
 const SIDE_FULL = 176;
 
-
 function SidebarItem({
   item,
   expanded,
@@ -68,7 +67,6 @@ function SidebarItem({
     </Link>
   );
 }
-
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -131,7 +129,11 @@ export default function Sidebar() {
               key={item.href}
               item={item}
               expanded={expanded}
-              active={item.end ? pathname === item.href : pathname.startsWith(item.href)}
+              active={
+                item.end
+                  ? pathname === item.href
+                  : pathname.startsWith(item.href)
+              }
               /* Collapse on navigate so the rail is not left covering the
                * page it just moved you to. Safe to do while the pointer is
                * still inside: the rail only expands on hover *start*, and no
@@ -156,26 +158,32 @@ export default function Sidebar() {
           href="/"
           className="no-underline transition-opacity duration-[120ms] ease-[var(--ease-press)] active:opacity-60"
         >
-          <span className="font-display text-[0.9rem] font-bold tracking-[var(--track-display-sm)] text-fg">SK</span>
+          <span className="font-display text-[0.9rem] font-bold tracking-[var(--track-display-sm)] text-fg">
+            SK
+          </span>
         </Link>
         {/* The five labels measure 192.5px together; with a fixed 24px
-          * gap the row is 288.5px, which together with the "SK" wordmark
-          * cannot clear the bar's 20px side padding at a 320px viewport
-          * — the nav overflowed the document by 8px there. The gap ramps
-          * from 12px at 320px to the full 24px at 420px instead of
-          * snapping at a breakpoint, so the spacing always tracks the
-          * room actually available, and at >=420px the bar is identical
-          * to what it was. Inline because the expression is far more
-          * legible here than as an underscore-escaped arbitrary value,
-          * and the middle term is wrapped in `calc()` so no engine can
-          * treat the bare math as an unparseable value and drop the whole
-          * declaration back to `gap: normal`. */}
+         * gap the row is 288.5px, which together with the "SK" wordmark
+         * cannot clear the bar's 20px side padding at a 320px viewport
+         * — the nav overflowed the document by 8px there. The gap ramps
+         * from 12px at 320px to the full 24px at 420px instead of
+         * snapping at a breakpoint, so the spacing always tracks the
+         * room actually available, and at >=420px the bar is identical
+         * to what it was. Inline because the expression is far more
+         * legible here than as an underscore-escaped arbitrary value,
+         * and the middle term is wrapped in `calc()` so no engine can
+         * treat the bare math as an unparseable value and drop the whole
+         * declaration back to `gap: normal`. */}
         <nav
           className="flex"
-          style={{ gap: "clamp(0.75rem, calc(0.75rem + (100vw - 320px) * 0.12), 1.5rem)" }}
+          style={{
+            gap: "clamp(0.75rem, calc(0.75rem + (100vw - 320px) * 0.12), 1.5rem)",
+          }}
         >
           {navItems.map((item) => {
-            const active = item.end ? pathname === item.href : pathname.startsWith(item.href);
+            const active = item.end
+              ? pathname === item.href
+              : pathname.startsWith(item.href);
             return (
               <Link
                 key={item.href}

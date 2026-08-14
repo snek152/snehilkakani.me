@@ -13,6 +13,16 @@
    * for anything shaped, `--accent-text` for anything read. */
   --accent-text: #4478ee;
   --border: rgba(255, 255, 255, 0.07);
+  /* The drawn rules — the hairlines that scale open under a section heading
+   * and between history rows. Brighter than `--border` because these are the
+   * one thing on the page you are meant to WATCH arrive; at `--border`'s 0.07
+   * the animation was real and nobody could see it. Deliberately its own token
+   * rather than a raised `--border`, which also paints card edges, inputs and
+   * the nav — those stay quiet. 0.2 was tried and read as loud, but only
+   * because a second drawn-line system was competing with it at the time;
+   * with the rules alone, this is the level where the draw is legible without
+   * the dividers taking over the page. */
+  --rule: rgba(255, 255, 255, 0.15);
 }
 
 /* Optical tracking scale.
@@ -109,6 +119,8 @@
    * and the palette still has exactly one blue in it. */
   --color-primary: var(--accent);
   --color-border: var(--border);
+  /* Available as `bg-rule`. Used only by `DrawnRule`. */
+  --color-rule: var(--rule);
 
   /* Two faces, two jobs: Clash Display for display lines, Switzer for
    * everything read as running text. Both are self-hosted variable fonts from

@@ -27,6 +27,7 @@ function Field({
   onChange,
   placeholder,
   autoComplete,
+  reduceMotion,
 }: {
   id: string;
   label: string;
@@ -35,7 +36,9 @@ function Field({
   onChange: (v: string) => void;
   placeholder: string;
   autoComplete: string;
+  reduceMotion: boolean;
 }) {
+  const [focused, setFocused] = useState(false);
   return (
     <div>
       <label
@@ -44,17 +47,33 @@ function Field({
       >
         {label}
       </label>
-      <input
-        id={id}
-        name={id}
-        type={type}
-        required
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
-        autoComplete={autoComplete}
-        className="w-full border-0 border-b border-border bg-transparent py-[0.6rem] text-[length:var(--text-body)] text-fg outline-none transition-colors duration-150 placeholder:text-dim2 focus:border-accent"
-      />
+      {/* The input's own bottom border is already the rule; on focus an
+        * accent overlay draws along it from the caret side (left, for LTR)
+        * instead of the border switching colour outright. `focus:border-accent`
+        * stays as the non-motion fallback, so a failed script still shows
+        * focus. */}
+      <div className="relative">
+        <input
+          id={id}
+          name={id}
+          type={type}
+          required
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+          placeholder={placeholder}
+          autoComplete={autoComplete}
+          className="w-full border-0 border-b border-border bg-transparent py-[0.6rem] text-[length:var(--text-body)] text-fg outline-none transition-colors duration-150 placeholder:text-dim2 focus:border-accent"
+        />
+        <motion.span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left bg-accent"
+          initial={false}
+          animate={{ scaleX: focused ? 1 : 0 }}
+          transition={{ duration: reduceMotion ? 0 : beats(0.4), ease: EASE_OUT }}
+        />
+      </div>
     </div>
   );
 }
@@ -72,6 +91,7 @@ export default function ContactForm() {
   const [failed, setFailed] = useState(false);
   const [copied, setCopied] = useState(false);
   const [copyFailed, setCopyFailed] = useState(false);
+  const [messageFocused, setMessageFocused] = useState(false);
   const messageId = useId();
 
   /* Two delivery paths, and which one is live is a deployment decision, not a
@@ -262,6 +282,7 @@ export default function ContactForm() {
           onChange={setName}
           placeholder="Your name"
           autoComplete="name"
+          reduceMotion={reduceMotion}
         />
       </motion.div>
       <motion.div variants={fieldMotion}>
@@ -273,6 +294,7 @@ export default function ContactForm() {
           onChange={setEmail}
           placeholder="your@email.com"
           autoComplete="email"
+          reduceMotion={reduceMotion}
         />
       </motion.div>
       <motion.div variants={fieldMotion}>
@@ -282,16 +304,27 @@ export default function ContactForm() {
         >
           Message
         </label>
-        <textarea
-          id={messageId}
-          name="message"
-          required
-          rows={5}
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          placeholder="What are you working on?"
-          className="w-full resize-none border-0 border-b border-border bg-transparent py-[0.6rem] text-[length:var(--text-body)] text-fg outline-none transition-colors duration-150 placeholder:text-dim2 focus:border-accent"
-        />
+        <div className="relative">
+          <textarea
+            id={messageId}
+            name="message"
+            required
+            rows={5}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onFocus={() => setMessageFocused(true)}
+            onBlur={() => setMessageFocused(false)}
+            placeholder="What are you working on?"
+            className="w-full resize-none border-0 border-b border-border bg-transparent py-[0.6rem] text-[length:var(--text-body)] text-fg outline-none transition-colors duration-150 placeholder:text-dim2 focus:border-accent"
+          />
+          <motion.span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left bg-accent"
+            initial={false}
+            animate={{ scaleX: messageFocused ? 1 : 0 }}
+            transition={{ duration: reduceMotion ? 0 : beats(0.4), ease: EASE_OUT }}
+          />
+        </div>
       </motion.div>
       <motion.button
         variants={fieldMotion}

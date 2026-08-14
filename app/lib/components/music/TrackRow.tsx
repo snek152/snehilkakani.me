@@ -117,8 +117,11 @@ export default function TrackRow({
         </span>
       </button>
 
+      {/* `ruleClassName`, not `className`: these classes PAINT the line (the
+        * active track's rule turns accent). `className` is for layout and, on
+        * an `accent` rule, lands on the wrapper rather than the line itself. */}
       <DrawnRule
-        className={`transition-colors duration-150 ${isActive ? "!bg-accent" : ""}`}
+        ruleClassName={`transition-colors duration-150 ${isActive ? "!bg-accent" : ""}`}
       />
     </motion.div>
   );

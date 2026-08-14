@@ -34,10 +34,7 @@ export default function ProjectCard({ project }: { project: Project }) {
   return (
     <motion.article
       ref={articleRef}
-      initial={reduceMotion ? false : { opacity: 0, y: 18 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: reduceMotion ? 0 : beats(0.85), ease: EASE_OUT }}
+      initial={reduceMotion ? false : undefined}
       onMouseEnter={() => setActive(true)}
       onMouseLeave={() => setActive(false)}
       onFocusCapture={() => setActive(true)}
@@ -57,8 +54,18 @@ export default function ProjectCard({ project }: { project: Project }) {
       {/* Struck across as the row arrives — the same rule-draw the
        * Experience list uses, so the two pages read as one system. The
        * first row sits under the section header's own rule, so it skips
-       * its own rather than showing two lines a gap apart. */}
-      <DrawnRule className="absolute inset-x-0 top-0 [article:first-child_&]:hidden" />
+       * its own rather than showing two lines a gap apart.
+       *
+       * Full-bleed, matching Experience, where the `<ol>` carries the
+       * negative margins instead. The bleed lives on this WRAPPER, never on
+       * the article: the article's grid is aligned so the photograph's right
+       * edge lands on the page's centre stop (see the comment above), and
+       * negative margins plus compensating padding on it would move that
+       * edge. The wrapper is positioned, has no layout effect, and the rule
+       * inside it stays `w-full` of the bled box. */}
+      <div className="absolute -inset-x-6 top-0 sm:-inset-x-8 lg:-inset-x-12 [article:first-child_&]:hidden">
+        <DrawnRule />
+      </div>
       <motion.div
         aria-hidden="true"
         className="pointer-events-none absolute -inset-x-6 -inset-y-2 -z-10 bg-accent blur-3xl"
@@ -83,8 +90,12 @@ export default function ProjectCard({ project }: { project: Project }) {
         className="relative aspect-[16/10] overflow-hidden"
         initial={reduceMotion ? false : "hidden"}
         whileInView="shown"
-        // Same trigger point as the rules (see `DrawnRule`), so a row's line
-        // and its photograph arrive together rather than a beat apart.
+        // The photograph has its own observer timing. `DrawnRule` starts at a
+        // fixed 240px reading-band lead; this frame keeps its established
+        // -18% margin because it is a separate image reveal. Those values can
+        // put the rule or image first depending on viewport width, and that is
+        // intentional: matching them would couple a structural divider to a
+        // photograph's entrance merely to make them land in lockstep.
         viewport={{ once: true, margin: "100000px 0px -18% 0px" }}
         variants={{
           hidden: { clipPath: "inset(0 100% 0 0)" },
@@ -93,6 +104,7 @@ export default function ProjectCard({ project }: { project: Project }) {
             transition: {
               duration: reduceMotion ? 0 : beats(1.4),
               ease: EASE_OUT,
+              delay: reduceMotion ? 0 : beats(0.15),
             },
           },
         }}
@@ -116,19 +128,45 @@ export default function ProjectCard({ project }: { project: Project }) {
       </motion.div>
 
       <div className="flex flex-col lg:justify-center lg:pl-10">
-        {year && <p className="mb-3 text-[length:var(--text-meta)] tabular-nums tracking-[var(--track-text-sm)] text-dim">{year}</p>}
-        <h3 className="font-display text-[length:var(--size-display-md)] font-semibold leading-tight tracking-[var(--track-display-md)] text-fg text-balance line-clamp-3">
-          {shortTitle(project.title)}
-        </h3>
-        <p className="mt-3 max-w-[var(--measure-body)] text-[length:var(--text-body)] leading-[var(--leading-body)] text-dim">
-          {project.description}
-        </p>
-        <div className="mt-5">
-          <ProjectSkills skills={project.skills} />
-        </div>
-        <div className="mt-6">
-          <ProjectLinks project={project} />
-        </div>
+        {/* Second beat of the wake, offset a further ~beats(0.08) past the
+         * photograph so the row reads image, then heading, in that order. */}
+        <motion.div
+          initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "100000px 0px -18% 0px" }}
+          transition={{
+            duration: reduceMotion ? 0 : beats(0.6),
+            ease: EASE_OUT,
+            delay: reduceMotion ? 0 : beats(0.23),
+          }}
+        >
+          {year && <p className="mb-3 text-[length:var(--text-meta)] tabular-nums tracking-[var(--track-text-sm)] text-dim">{year}</p>}
+          <h3 className="font-display text-[length:var(--size-display-md)] font-semibold leading-tight tracking-[var(--track-display-md)] text-fg text-balance line-clamp-3">
+            {shortTitle(project.title)}
+          </h3>
+        </motion.div>
+        {/* Third beat: capped at ~beats(0.3) behind the rule so a 7,000px
+         * page of these rows never turns the stagger into a chore. */}
+        <motion.div
+          initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "100000px 0px -18% 0px" }}
+          transition={{
+            duration: reduceMotion ? 0 : beats(0.6),
+            ease: EASE_OUT,
+            delay: reduceMotion ? 0 : beats(0.3),
+          }}
+        >
+          <p className="mt-3 max-w-[var(--measure-body)] text-[length:var(--text-body)] leading-[var(--leading-body)] text-dim">
+            {project.description}
+          </p>
+          <div className="mt-5">
+            <ProjectSkills skills={project.skills} />
+          </div>
+          <div className="mt-6">
+            <ProjectLinks project={project} />
+          </div>
+        </motion.div>
       </div>
     </motion.article>
   );

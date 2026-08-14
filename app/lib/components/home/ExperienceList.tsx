@@ -28,12 +28,15 @@ import DrawnRule from "@/app/lib/components/shared/DrawnRule";
 export default function ExperienceList({ experiences }: { experiences: Experience[] }) {
   const reduceMotion = useMotionPreference();
 
-  // Parts of a row arrive in reading order rather than as one block: the
-  // dates first, then who and what, then the detail. Small enough that
-  // it registers as the row settling rather than as a sequence.
+  // Parts of a row arrive in dependency order rather than as one block:
+  // the date column — what a reader scans first, and the leftmost — leads,
+  // then the company/bullets column follows as a single unit beats(0.1)
+  // behind it. Two steps, not three: staggering the heading and bullets
+  // as their own separate beats against the date would read as a cascade
+  // rather than "when, then what".
   const row = {
     hidden: {},
-    shown: { transition: { staggerChildren: beats(0.12), delayChildren: beats(0.05) } },
+    shown: { transition: { staggerChildren: beats(0.1) } },
   };
   const part = {
     hidden: reduceMotion ? {} : { opacity: 0, y: 12 },
@@ -42,6 +45,14 @@ export default function ExperienceList({ experiences }: { experiences: Experienc
       y: 0,
       transition: { duration: reduceMotion ? 0 : beats(0.7), ease: EASE_OUT },
     },
+  };
+  // The company heading and its bullets, staggered against each other by
+  // a much smaller beat so they read as one column arriving, not a
+  // further cascade off the date column. Keeps the last bullet within
+  // beats(0.35) of the rule.
+  const content = {
+    hidden: {},
+    shown: { transition: { staggerChildren: beats(0.06) } },
   };
 
   return (
@@ -52,19 +63,29 @@ export default function ExperienceList({ experiences }: { experiences: Experienc
     // near it by coincidence. `gap-x` is deliberately zero: a gap would
     // shrink the columns and push that boundary off the stop.
     <ol className="relative -mx-6 sm:-mx-8 lg:-mx-12">
-      <DrawnRule className="absolute inset-x-0 top-0" />
+      {/* The list's opening rule starts in the shared reading band, then the
+        * rows make their own entrance. Its small beat offset preserves a
+        * deliberate opening without coupling the content reveal to the
+        * structural line. */}
+      <DrawnRule className="absolute inset-x-0 top-0" delay={reduceMotion ? 0 : beats(0.15)} />
       {experiences.map((experience) => (
         <motion.li
           key={experience.company + experience.title}
           initial={reduceMotion ? false : "hidden"}
           whileInView="shown"
-          // Fires once the row is genuinely on screen rather than as it
-          // clears the fold. Triggering sooner sounds like it shows more
-          // of the animation and does the opposite: the row is still
-          // below the viewport while it plays, so it is finished by the
-          // time it can be seen. Only the trigger point moves — every
-          // duration, delay and curve below is unchanged.
-          viewport={{ once: true, amount: 0, margin: "0px 0px -18% 0px" }}
+          // The huge top margin is the same trick `DrawnRule` uses, and for
+          // the same reason: with no top margin a row the reader skipped —
+          // scrollbar drag, End key, a reload at a restored position — never
+          // fired, and its children stayed at `opacity: 0` permanently.
+          // Measured: 10 skill chips invisible on desktop and 15 on mobile
+          // after jumping to the foot of the page. It makes "already scrolled
+          // past" count as seen.
+          //
+          // The row deliberately keeps its own observer margin. `DrawnRule`
+          // enters a fixed 240px reading band while this keeps its established
+          // -6% reveal point; matching them would couple the line to the
+          // content merely to make both land in lockstep.
+          viewport={{ once: true, amount: 0, margin: "100000px 0px -6% 0px" }}
           variants={row}
           className="group relative grid gap-y-4 px-6 py-8 sm:px-8 lg:grid-cols-4 lg:gap-x-0 lg:px-0 lg:py-10"
         >
@@ -104,7 +125,7 @@ export default function ExperienceList({ experiences }: { experiences: Experienc
             <p className="mt-1.5 text-[length:var(--text-micro)] leading-snug tracking-[var(--track-text-sm)] text-dim">{experience.location}</p>
           </motion.div>
 
-          <div className="lg:col-span-3 lg:pl-10 lg:pr-12">
+          <motion.div variants={content} className="lg:col-span-3 lg:pl-10 lg:pr-12">
             <motion.div variants={part} className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
               <h3 className="font-display text-[length:var(--size-display-md)] font-semibold tracking-[var(--track-display-md)] text-fg">
                 {experience.company}
@@ -146,7 +167,7 @@ export default function ExperienceList({ experiences }: { experiences: Experienc
                 ))}
               </motion.ul>
             )}
-          </div>
+          </motion.div>
         </motion.li>
       ))}
     </ol>

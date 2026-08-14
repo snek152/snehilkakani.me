@@ -151,6 +151,33 @@ export default function PlayerBar({
                   : { duration: 0 }
               }
             />
+            {/* The accent's arrival at the transport, not the row's rule
+              * switching colour on its own — the same accent that just
+              * struck the active row's rule (`TrackRow`'s `!bg-accent`)
+              * continues down into this hairline a beat later, drawn in
+              * with `scaleX` from the side the progress fill grows from
+              * rather than snapping on. It settles by fading out once
+              * drawn, leaving the real elapsed-progress fill above to
+              * carry the accent from here on — this is the handoff, not
+              * a second progress indicator. */}
+            {!reduceMotion && (
+              <motion.span
+                key={activeIndex}
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 block h-full bg-accent"
+                style={{ transformOrigin: "left" }}
+                initial={{ scaleX: 0, opacity: 1 }}
+                animate={{ scaleX: 1, opacity: 0 }}
+                transition={{
+                  scaleX: { duration: beatTime(0.35), ease: EASE_OUT, delay: beatTime(0.25) },
+                  opacity: {
+                    duration: beatTime(0.35),
+                    ease: EASE_OUT,
+                    delay: beatTime(0.25) + beatTime(0.35),
+                  },
+                }}
+              />
+            )}
           </span>
 
           {/* Accent handle at the current playhead — purely an affordance

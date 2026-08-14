@@ -57,8 +57,27 @@ export default function SkillsMatrix() {
                 ease: EASE_OUT,
                 delay: reduceMotion ? 0 : categoryIndex * beats(0.14),
               }}
-              className="border-b border-r border-border p-5 sm:p-6"
+              className="relative border-b border-border p-5 sm:p-6"
             >
+              {/* The column divider itself, drawn top-to-bottom left to
+                * right across the four columns — the same rule-draw idea
+                * as everything else on the site, applied to the grid lines
+                * instead of a horizontal rule. Not the section's accent
+                * strike: that lives once, on the rule opening the project
+                * sequence above. */}
+              <motion.span
+                aria-hidden="true"
+                className="absolute inset-y-0 right-0 hidden w-px bg-border sm:block"
+                style={{ transformOrigin: "top" }}
+                initial={reduceMotion ? false : { scaleY: 0 }}
+                whileInView={reduceMotion ? undefined : { scaleY: 1 }}
+                viewport={{ once: true, margin: "100000px 0px -18% 0px" }}
+                transition={{
+                  duration: reduceMotion ? 0 : beats(1.1),
+                  ease: EASE_OUT,
+                  delay: reduceMotion ? 0 : categoryIndex * beats(0.1),
+                }}
+              />
               <div className="mb-4 flex items-center gap-2">
                 <span className="h-4 w-0.5 bg-accent" aria-hidden="true" />
                 <h3 className="text-[length:var(--text-meta)] font-semibold uppercase tracking-[0.08em] text-fg">
