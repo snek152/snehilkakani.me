@@ -1,4 +1,5 @@
 import { Github, Linkedin, Mail, FileText } from "lucide-react";
+import SignalRule from "./shared/SignalRule";
 
 const LINKS = [
   { href: "https://github.com/snek152", label: "GitHub", Icon: Github },
@@ -21,13 +22,14 @@ export default function Footer({
 }) {
   return (
     <footer
-      className="instrument-footer relative flex flex-wrap items-center justify-between gap-3 border-t border-border px-6 py-5 sm:px-10"
+      className="instrument-footer relative flex flex-wrap items-center justify-between gap-3 px-6 py-5 sm:px-8 lg:px-12"
       style={
         bottomReserve
           ? { paddingBottom: `calc(1.25rem + ${bottomReserve}px)` }
           : undefined
       }
     >
+      <SignalRule draw={false} className="absolute inset-x-0 top-0 z-10" />
       <span className="font-sans text-[length:var(--text-meta)] tracking-[var(--track-text-sm)] text-dim2">
         © {new Date().getFullYear()} Snehil Kakani
       </span>

@@ -2,12 +2,7 @@
 
 import Image from "next/image";
 import { FileText } from "lucide-react";
-import {
-  motion,
-  useTransform,
-  type MotionValue,
-  type Variants,
-} from "motion/react";
+import { motion, useTransform, type MotionValue, type Variants } from "motion/react";
 import { useIntroReady } from "@/app/lib/components/AppShell";
 import { EASE_OUT } from "@/app/lib/motion";
 import { beats } from "@/app/lib/tempo";
@@ -47,32 +42,9 @@ const photoVariants: Variants = {
 };
 
 /**
- * Asymmetric hero. `useIntroReady()` flips to `visible` the instant
- * `LoadingScreen` calls `onDone` — the same tick `OrbitStage` begins its
- * counterclockwise release — so the role label, name, photo/status card,
- * and grid all start settling into place while the loader is still
- * fading out above them, rather than only appearing once it's gone. This
- * is the single accessible instance of the name; nothing in the loader
- * shares a layout id with it, so there is no duplicate name at any point
- * in the handoff.
- *
- * `progress` (0 at this section's top hitting the viewport top, 1 at its
- * bottom hitting it) is computed once by `HomeShell` and shared with
- * `HomeContent`/`GridIndex` — see `HomeShell.tsx`.
- *
- * The four vertical grid lines' own scale collapses 1 → 0 over the same
- * *width* as the site's original behavior (0.65 of scroll progress per
- * line, matching remote's [0, 0.65]/[0.05, 0.7]/[0.1, 0.75]/[0.15, 0.8])
- * — same "speed", not compressed. The stagger between lines is tightened
- * from remote's 0.05 to 0.02 ([0, 0.65]/[0.02, 0.67]/[0.04, 0.69]/
- * [0.06, 0.71]), a genuine translation (same span width, earlier start)
- * rather than a rescale — line 0 itself can't start any earlier, since
- * progress 0 is already scroll position zero. Opacity is new on top of
- * this: it peaks *before* scale finishes collapsing (e.g. line 0 hits
- * full accent brightness by progress 0.45, inside its [0, 0.65] scale
- * range) rather than sharing scale's own endpoint, so there's a real
- * window where a line is both bright and still has visible height,
- * instead of "full opacity" landing exactly on "zero height". */
+ * Asymmetric hero. `useIntroReady()` releases the name and card under the
+ * loader; its structural grid retracts as the section scrolls away.
+ */
 export default function Hero({
   ref,
   progress,
@@ -83,59 +55,16 @@ export default function Hero({
   const introReady = useIntroReady();
   const reduceMotion = useMotionPreference();
   const state = introReady ? "visible" : "hidden";
-
-  // Linear, two-keyframe, matching remote's rate exactly (no curvature,
-  // no acceleration change). Stagger widened from 0.02 to 0.04 — still
-  // ending before remote's own values (0.69/0.73/0.77 vs remote's
-  // 0.7/0.75/0.8) so the "earlier than remote" fix holds, while roughly
-  // doubling the visible spread between lines at any given scroll
-  // position, for a more pronounced height difference across the four.
-  const lineScaleY0 = useTransform(
-    progress,
-    [0, 0.65],
-    reduceMotion ? [1, 1] : [1, 0],
-  );
-  const lineScaleY1 = useTransform(
-    progress,
-    [0.04, 0.69],
-    reduceMotion ? [1, 1] : [1, 0],
-  );
-  const lineScaleY2 = useTransform(
-    progress,
-    [0.08, 0.73],
-    reduceMotion ? [1, 1] : [1, 0],
-  );
-  const lineScaleY3 = useTransform(
-    progress,
-    [0.12, 0.77],
-    reduceMotion ? [1, 1] : [1, 0],
-  );
+  const lineScaleY0 = useTransform(progress, [0, 0.65], reduceMotion ? [1, 1] : [1, 0]);
+  const lineScaleY1 = useTransform(progress, [0.04, 0.69], reduceMotion ? [1, 1] : [1, 0]);
+  const lineScaleY2 = useTransform(progress, [0.08, 0.73], reduceMotion ? [1, 1] : [1, 0]);
+  const lineScaleY3 = useTransform(progress, [0.12, 0.77], reduceMotion ? [1, 1] : [1, 0]);
   const lineScaleY = [lineScaleY0, lineScaleY1, lineScaleY2, lineScaleY3];
-  // Opacity ramps over the first ~70% of each line's own scale range,
-  // reaching full brightness while scale still has real height left,
-  // then holds at 1 through the rest (where scale continues to 0).
-  const lineOpacity0 = useTransform(
-    progress,
-    [0, 0.3],
-    reduceMotion ? [0.25, 0.25] : [0.1, 1],
-  );
-  const lineOpacity1 = useTransform(
-    progress,
-    [0.04, 0.34],
-    reduceMotion ? [0.25, 0.25] : [0.1, 1],
-  );
-  const lineOpacity2 = useTransform(
-    progress,
-    [0.08, 0.38],
-    reduceMotion ? [0.25, 0.25] : [0.1, 1],
-  );
-  const lineOpacity3 = useTransform(
-    progress,
-    [0.12, 0.42],
-    reduceMotion ? [0.25, 0.25] : [0.1, 1],
-  );
+  const lineOpacity0 = useTransform(progress, [0, 0.3], reduceMotion ? [0.25, 0.25] : [0.1, 1]);
+  const lineOpacity1 = useTransform(progress, [0.04, 0.34], reduceMotion ? [0.25, 0.25] : [0.1, 1]);
+  const lineOpacity2 = useTransform(progress, [0.08, 0.38], reduceMotion ? [0.25, 0.25] : [0.1, 1]);
+  const lineOpacity3 = useTransform(progress, [0.12, 0.42], reduceMotion ? [0.25, 0.25] : [0.1, 1]);
   const lineOpacity = [lineOpacity0, lineOpacity1, lineOpacity2, lineOpacity3];
-
   const entrance = reduceMotion ? undefined : { opacity: 1, y: 0 };
   const STATUS = [
     {
@@ -152,20 +81,12 @@ export default function Hero({
       ref={ref}
       className="relative flex min-h-[95vh] flex-col justify-end overflow-hidden border-b border-border px-6 pb-10 sm:px-8 sm:pb-12 lg:px-12 lg:pb-14"
     >
-      {/* structural grid — a faint ambient line always sits at each
-          position; an accent line retracts from the top down as the
-          section scrolls out, brightening as it converges into the
-          bottom border, where each line lands as a divider of the
-          index in `GridIndex` below. */}
       <div aria-hidden className="pointer-events-none z-0 absolute inset-0">
         {GRID_STOPS.map((stop) => (
           <div
             key={stop}
             className="absolute inset-y-0 w-px bg-dim2/15"
-            style={{
-              left: `${stop}%`,
-              marginLeft: stop === 100 ? "-1px" : undefined,
-            }}
+            style={{ left: `${stop}%`, marginLeft: stop === 100 ? "-1px" : undefined }}
           />
         ))}
         {GRID_STOPS.map((stop, index) => (
@@ -182,105 +103,6 @@ export default function Hero({
           />
         ))}
       </div>
-      {/* A local trace, not another ambient layer: three paths leave one
-          source and resolve behind the three practices named in the intro.
-          It is deliberately bound to this content field, where it can give
-          systems, sound, and image a shared origin without competing with the
-          recruiter-facing card or becoming page decoration. */}
-      <motion.svg
-        aria-hidden="true"
-        viewBox="0 0 1000 560"
-        preserveAspectRatio="none"
-        className="pointer-events-none absolute inset-x-6 top-12 hidden h-[58%] overflow-visible sm:inset-x-8 lg:block lg:inset-x-12"
-        initial={reduceMotion ? false : "hidden"}
-        animate={reduceMotion ? undefined : state}
-      >
-        <defs>
-          <linearGradient id="home-origin-spectrum" x1="0%" x2="100%">
-            <stop offset="0%" stopColor="currentColor" stopOpacity="0.12" />
-            <stop offset="46%" stopColor="currentColor" stopOpacity="0.7" />
-            <stop offset="100%" stopColor="#7567e8" stopOpacity="0.18" />
-          </linearGradient>
-        </defs>
-        {[
-          "M 138 438 C 262 414, 286 158, 492 110",
-          "M 138 438 C 334 420, 404 262, 680 224",
-          "M 138 438 C 372 466, 604 432, 872 344",
-        ].map((path, index) => (
-          <motion.path
-            key={path}
-            d={path}
-            fill="none"
-            stroke="url(#home-origin-spectrum)"
-            strokeWidth="1.35"
-            vectorEffect="non-scaling-stroke"
-            initial={reduceMotion ? false : { pathLength: 0, opacity: 0 }}
-            variants={{
-              hidden: { pathLength: 0, opacity: 0 },
-              visible: {
-                pathLength: 1,
-                opacity: 1,
-                transition: {
-                  duration: beats(0.8),
-                  delay: beats(0.18 + index * 0.12),
-                  ease: EASE_OUT,
-                },
-              },
-            }}
-          />
-        ))}
-        <circle cx="138" cy="438" r="4" className="fill-accent" />
-        <circle cx="492" cy="110" r="2" className="fill-accent" />
-        <circle cx="680" cy="224" r="2" className="fill-accent" />
-        <circle cx="872" cy="344" r="2" className="fill-accent" />
-      </motion.svg>
-      <motion.svg
-        aria-hidden="true"
-        viewBox="0 0 240 120"
-        preserveAspectRatio="none"
-        className="pointer-events-none absolute right-6 top-10 z-0 h-24 w-40 overflow-visible text-accent/80 sm:right-8 sm:h-32 sm:w-56 lg:hidden"
-        initial={reduceMotion ? false : "hidden"}
-        animate={reduceMotion ? undefined : state}
-      >
-        <defs>
-          <linearGradient id="home-origin-spectrum-compact" x1="0%" x2="100%">
-            <stop offset="0%" stopColor="currentColor" stopOpacity="0.12" />
-            <stop offset="46%" stopColor="currentColor" stopOpacity="0.7" />
-            <stop offset="100%" stopColor="#7567e8" stopOpacity="0.18" />
-          </linearGradient>
-        </defs>
-        {[
-          "M 28 94 C 68 89, 66 25, 122 18",
-          "M 28 94 C 78 89, 100 55, 165 52",
-          "M 28 94 C 90 105, 142 94, 212 76",
-        ].map((path, index) => (
-          <motion.path
-            key={path}
-            d={path}
-            fill="none"
-            stroke="url(#home-origin-spectrum-compact)"
-            strokeWidth="1.35"
-            vectorEffect="non-scaling-stroke"
-            initial={reduceMotion ? false : { pathLength: 0, opacity: 0 }}
-            variants={{
-              hidden: { pathLength: 0, opacity: 0 },
-              visible: {
-                pathLength: 1,
-                opacity: 1,
-                transition: {
-                  duration: beats(0.8),
-                  delay: beats(0.18 + index * 0.12),
-                  ease: EASE_OUT,
-                },
-              },
-            }}
-          />
-        ))}
-        <circle cx="28" cy="94" r="3" className="fill-accent" />
-        <circle cx="122" cy="18" r="1.5" className="fill-accent" />
-        <circle cx="165" cy="52" r="1.5" className="fill-accent" />
-        <circle cx="212" cy="76" r="1.5" className="fill-accent" />
-      </motion.svg>
 
       {/* Three cells, not two, so the intro paragraph can be resequenced on
         * mobile. Below `lg` the reading order becomes role -> name -> the

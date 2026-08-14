@@ -18,7 +18,7 @@ import { usePathname } from "next/navigation";
 import { AnimatePresence } from "motion/react";
 import CursorGlow from "./CursorGlow";
 import { CursorFieldProvider } from "./shared/CursorField";
-import WaveField, { sceneFromPathname } from "./shared/WaveField";
+import WaveField from "./shared/WaveField";
 import LoadingScreen from "./LoadingScreen";
 import { MotionPreferenceProvider } from "./shared/MotionPreference";
 import ScrollProgressRail from "./shared/ScrollProgressRail";
@@ -27,6 +27,7 @@ import Footer from "./Footer";
 import { MusicPlayerProvider, useMusicPlayer } from "./music/MusicPlayerProvider";
 import { navItems } from "@/app/lib/nav";
 import { loaderRecentlySeen, stampLoaderSeen } from "@/app/lib/loader-gate";
+import { RELEASE_MS } from "./loader/OrbitStage";
 
 
 const IntroReadyContext = createContext(false);
@@ -73,7 +74,7 @@ function FooterWithClearance() {
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const scene = sceneFromPathname(pathname);
+  const isHome = pathname === "/";
   const prevIndexRef = useRef<number | null>(null);
 
   // Computed synchronously during render (not in an effect) so the new
@@ -104,21 +105,26 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
    * releases `introReady` so the hero's own entrance is not gated behind an
    * intro that is never going to finish. */
   const [introReady, setIntroReady] = useState(false);
+  const [curtainShown, setCurtainShown] = useState(true);
 
   useEffect(() => {
-    if (loaderRecentlySeen()) setIntroReady(true);
+    if (loaderRecentlySeen()) {
+      setCurtainShown(false);
+      setIntroReady(true);
+    }
   }, []);
 
   const handleLoaderDone = useCallback(() => {
     // Stamped on completion, not on arrival — see `stampLoaderSeen`.
     stampLoaderSeen();
     setIntroReady(true);
+    window.setTimeout(() => setCurtainShown(false), RELEASE_MS);
   }, []);
 
   return (
     <MotionPreferenceProvider>
       <CursorFieldProvider>
-        <div className="instrument-chassis relative isolate" data-field-scene={scene}>
+        <div className="instrument-chassis relative isolate">
           {/* First focusable element on every route, so a keyboard or screen
             * reader visitor can bypass the five nav items instead of tabbing
             * the same block on each navigation (WCAG 2.4.1). Invisible until
@@ -134,7 +140,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           {/* The shell owns `MusicPlayerProvider` so its persistent transport
             * remains available across route navigation. */}
           <MusicPlayerProvider>
-            <WaveField scene={scene} />
+            <WaveField staged={isHome} introReady={introReady} awaitCurtain={curtainShown} />
             <CursorGlow />
             <ScrollProgressRail />
             <AnimatePresence>

@@ -48,8 +48,7 @@ export default function GalleryCell({
             ? false
             : { clipPath: "inset(0% 100% 0% 0%)", scale: 1.02 }
         }
-        whileInView={reduceMotion ? undefined : { clipPath: "inset(0% 0% 0% 0%)", scale: 1 }}
-        viewport={{ once: true, margin: "100000px 0px -18% 0px" }}
+        animate={reduceMotion ? undefined : { clipPath: "inset(0% 0% 0% 0%)", scale: 1 }}
         transition={{
           duration: beats(0.6),
           delay: Math.min(index * beats(0.06), beats(0.5)),

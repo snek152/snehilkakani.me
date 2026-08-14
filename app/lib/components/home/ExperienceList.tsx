@@ -135,7 +135,7 @@ export default function ExperienceList({ experiences }: { experiences: Experienc
             <motion.ul variants={part} className="mt-4 space-y-2">
               {experience.description.map((line) => (
                 <li key={line} className="flex items-start gap-2.5 text-[length:var(--text-body)] leading-[var(--leading-body)] max-w-[var(--measure-body)] text-dim">
-                  <span aria-hidden="true" className="mt-[0.65rem] h-1.5 w-1.5 flex-shrink-0 rounded-full bg-accent/50" />
+                  <span aria-hidden="true" className="mt-[0.65rem] h-1.5 w-1.5 flex-shrink-0 rounded-full bg-fg/40" />
                   <span>{line}</span>
                 </li>
               ))}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, type MotionValue, useInView } from "motion/react";
+import { motion, useInView } from "motion/react";
 import { experiences } from "@/app/lib/data/experience";
 import { EASE_OUT } from "@/app/lib/motion";
 import { beats } from "@/app/lib/tempo";
@@ -12,7 +12,7 @@ import ExperienceList from "./ExperienceList";
 import ManifestoHeading from "./ManifestoHeading";
 import GridIndex from "./GridIndex";
 
-export default function HomeContent({ heroProgress }: { heroProgress: MotionValue<number> }) {
+export default function HomeContent() {
   const reduceMotion = useMotionPreference();
   const headingRef = useRef<HTMLDivElement>(null);
   // The heading scramble-decodes the instant it comes into view, echoing
@@ -20,11 +20,8 @@ export default function HomeContent({ heroProgress }: { heroProgress: MotionValu
   const headingActive = useInView(headingRef, { once: true });
 
   return (
-    // No top padding: the index band's dividers are Hero's grid lines
-    // continuing past its bottom border, so any gap between the two
-    // breaks the one thing the band is for.
     <div className="px-6 pb-20 sm:px-8 lg:px-12 lg:pb-12">
-      <GridIndex progress={heroProgress} />
+      <GridIndex />
 
       <motion.section
         aria-labelledby="experience-heading"

@@ -40,14 +40,6 @@ function SidebarItem({
             : "hover:bg-white/[0.03] active:bg-white/[0.08]"
         }`}
       >
-        {active && (
-          <span
-            aria-hidden="true"
-            className={`nav-source absolute left-[7px] top-1/2 z-[1] h-1.5 w-1.5 -translate-y-1/2 rounded-full ${
-              expanded ? "opacity-0" : "opacity-100"
-            }`}
-          />
-        )}
         {active && expanded && (
           <motion.span
             layoutId="nav-bar"

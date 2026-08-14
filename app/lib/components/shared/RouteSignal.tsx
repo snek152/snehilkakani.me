@@ -23,25 +23,19 @@ const SCENES: Record<RouteScene, { path: string; mark: [number, number]; seam: s
   reach: { path: "M3 27C18 27 24 9 40 9S57 27 78 27", mark: [40, 9], seam: "M3 34H78" },
 };
 
-/**
- * A local, one-time route marker. It belongs beside a route's content rather
- * than behind it: the path makes the field tangible without becoming a chart
- * or a second ambient animation.
- */
+/** A local geometric route marker that traces itself once. */
 export default function RouteSignal({ scene, label, detail, className }: RouteSignalProps) {
   const reduceMotion = useMotionPreference();
   const geometry = SCENES[scene];
   const gradientId = useId().replace(/:/g, "");
+  const drawDuration = reduceMotion ? 0 : beats(3);
 
   return (
-    <motion.div
+    <div
       aria-hidden="true"
       data-route-signal={scene}
       data-signal-label={label}
       data-signal-detail={detail}
-      initial={reduceMotion ? false : { opacity: 0, x: -8 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: reduceMotion ? 0 : beats(0.55), ease: EASE_OUT }}
       className={`route-signal pointer-events-none select-none ${className ?? ""}`}
     >
       <svg viewBox="0 0 81 38" fill="none" focusable="false" aria-hidden="true">
@@ -52,11 +46,31 @@ export default function RouteSignal({ scene, label, detail, className }: RouteSi
             <stop offset="1" stopColor="var(--accent)" stopOpacity="0.12" />
           </linearGradient>
         </defs>
-        <path className="route-signal__axis" d="M3 34H78" />
-        <path className="route-signal__trajectory" d={geometry.path} />
-        <path className="route-signal__seam" d={geometry.seam} stroke={`url(#${gradientId})`} />
-        <circle className="route-signal__source" cx={geometry.mark[0]} cy={geometry.mark[1]} r="2.25" />
+        <motion.path
+          className="route-signal__trajectory"
+          d={geometry.path}
+          initial={reduceMotion ? false : { pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: drawDuration, ease: EASE_OUT }}
+        />
+        <motion.path
+          className="route-signal__seam"
+          d={geometry.seam}
+          stroke={`url(#${gradientId})`}
+          initial={reduceMotion ? false : { pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: reduceMotion ? 0 : beats(2.4), delay: reduceMotion ? 0 : beats(0.5), ease: EASE_OUT }}
+        />
+        <motion.circle
+          className="route-signal__source"
+          cx={geometry.mark[0]}
+          cy={geometry.mark[1]}
+          r="2.25"
+          initial={reduceMotion ? false : { opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: reduceMotion ? 0 : beats(0.25), delay: reduceMotion ? 0 : drawDuration, ease: EASE_OUT }}
+        />
       </svg>
-    </motion.div>
+    </div>
   );
 }

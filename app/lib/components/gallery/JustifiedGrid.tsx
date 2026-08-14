@@ -100,20 +100,6 @@ function packRows(photos: Photo[], containerWidth: number, targetHeight: number)
   return rows;
 }
 
-function shutterValue(shutter: string) {
-  const [numerator, denominator] = shutter.split("/").map(Number);
-  return denominator ? numerator! / denominator : numerator!;
-}
-
-function captureRange(photos: Photo[]) {
-  const isos = photos.map((photo) => photo.iso);
-  const shutters = [...photos].sort((a, b) => shutterValue(a.shutter) - shutterValue(b.shutter));
-
-  return {
-    iso: `ISO ${Math.min(...isos)}–${Math.max(...isos)}`,
-    shutter: `${shutters[0]?.shutter}–${shutters[shutters.length - 1]?.shutter} s`,
-  };
-}
 
 export default function JustifiedGrid({
   photos,
@@ -154,58 +140,32 @@ export default function JustifiedGrid({
   // turning three photographs into three billboards.
   const targetHeight = Math.max(220, Math.min(400, width / 4.2));
   const rows = useMemo(() => packRows(photos, width, targetHeight), [photos, width, targetHeight]);
-  const capture = useMemo(() => captureRange(photos), [photos]);
 
 
   return (
     <section
       ref={containerRef}
-      className="relative overflow-hidden border-y border-border py-5 sm:py-7"
+      className="relative mt-0 overflow-hidden border-t border-border pt-5 sm:pt-7"
       aria-label={`Contact sheet of ${photos.length} photographs`}
     >
-      <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#5575d9] to-transparent"
-        aria-hidden="true"
-      />
-      <div className="relative">
-        <div className="mb-7 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 border-b border-border pb-3 text-[length:var(--text-meta)] tracking-[var(--track-text-sm)] text-dim">
-          <p>
-            {photos.length} frames <span className="text-fg">in reading order</span>
-          </p>
-          <p className="tabular-nums">
-            {capture.iso} <span aria-hidden="true">·</span> {capture.shutter}
-          </p>
-        </div>
-
-        <div className="flex flex-col" style={{ gap: ROW_GAP }}>
-          {rows.map((row, rowIndex) => {
-            const firstFrame = String(row.items[0]!.index + 1).padStart(2, "0");
-            const lastFrame = String(row.items[row.items.length - 1]!.index + 1).padStart(2, "0");
-
-            return (
-              <div key={rowIndex}>
-                <p className="mb-2 text-[length:var(--text-meta)] tracking-[var(--track-text-sm)] text-dim tabular-nums">
-                  Frame {firstFrame}–{lastFrame}
-                </p>
-                <div className="flex items-start" style={{ gap: COL_GAP }}>
-                  {row.items.map(({ photo, index, width: itemWidth }) => (
-                    <GalleryCell
-                      key={photo.image}
-                      photo={photo}
-                      index={index}
-                      width={itemWidth}
-                      height={row.height}
-                      onOpen={() => onOpen(index)}
-                      cellRef={(el) => {
-                        cellRefs.current[index] = el;
-                      }}
-                    />
-                  ))}
-                </div>
-              </div>
-            );
-          })}
-        </div>
+      <div className="flex flex-col" style={{ gap: ROW_GAP }}>
+        {rows.map((row, rowIndex) => (
+          <div key={rowIndex} className="flex items-start" style={{ gap: COL_GAP }}>
+            {row.items.map(({ photo, index, width: itemWidth }) => (
+              <GalleryCell
+                key={photo.image}
+                photo={photo}
+                index={index}
+                width={itemWidth}
+                height={row.height}
+                onOpen={() => onOpen(index)}
+                cellRef={(el) => {
+                  cellRefs.current[index] = el;
+                }}
+              />
+            ))}
+          </div>
+        ))}
       </div>
     </section>
   );

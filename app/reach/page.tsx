@@ -40,25 +40,14 @@ export default function ContactPage() {
   const headingActive = useInView(headingRef, { once: true, margin: "0px 0px -15% 0px" });
 
   return (
-    <div className="relative isolate overflow-hidden px-6 pb-20 pt-16 sm:px-8 lg:px-12 lg:pt-[4.5rem]">
-      <div aria-hidden="true" className="pointer-events-none absolute inset-x-6 top-[8.85rem] h-px bg-border sm:inset-x-8 lg:inset-x-12" />
+    <div className="relative isolate overflow-hidden px-6 pb-12 pt-16 sm:px-8 lg:px-12 lg:pt-[4.5rem]">
       <motion.div
         ref={headingRef}
         initial={reduceMotion ? false : { opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: beats(0.75), ease: EASE_OUT }}
-        className="relative mb-12 max-w-3xl pt-8 lg:mb-16 lg:pt-10"
+        className="relative mb-2 min-h-10 lg:mb-4"
       >
-        <span
-          aria-hidden="true"
-          className="absolute left-0 top-0 h-px w-[min(14rem,42vw)] bg-[linear-gradient(90deg,var(--accent),rgba(105,94,220,0))]"
-        />
-        <RouteSignal
-          scene="reach"
-          label="Open transmission"
-          detail="Contact channel"
-          className="absolute right-0 top-0 hidden w-28 sm:block lg:w-36"
-        />
         <ManifestoHeading
           as="h1"
           id="reach-heading"
@@ -66,13 +55,19 @@ export default function ContactPage() {
           active={headingActive}
           className="font-display text-[length:var(--size-display-lg)] font-bold leading-none tracking-[var(--track-display-lg)] text-fg text-balance"
         />
+        <RouteSignal
+          scene="reach"
+          label="Open transmission"
+          detail="Contact channel"
+          className="mt-4 sm:absolute sm:right-0 sm:top-1/2 sm:mt-0 sm:-translate-y-1/2"
+        />
       </motion.div>
 
       <motion.div
         initial={reduceMotion ? false : { opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: beats(0.75), delay: reduceMotion ? 0 : beats(0.15), ease: EASE_OUT }}
-        className="relative grid grid-cols-1 items-start gap-16 lg:grid-cols-[minmax(0,3fr)_minmax(19rem,2fr)] lg:gap-x-[clamp(3rem,8vw,8rem)] lg:gap-y-24"
+        className="relative grid grid-cols-1 items-start gap-12 md:grid-cols-[minmax(0,3fr)_minmax(15rem,2fr)] md:gap-x-[clamp(2rem,6vw,5rem)] md:gap-y-12"
       >
         <section aria-labelledby="contact-intro" className="max-w-[42rem]">
           <h2 id="contact-intro" className="sr-only">
@@ -87,20 +82,18 @@ export default function ContactPage() {
               {CONTACT_EMAIL}
             </a>
           </p>
-          <div className="mb-12 flex items-center gap-4">
-            <span aria-hidden="true" className="h-px w-10 bg-border" />
+          <div className="mb-12">
             <a href="/resume.pdf" download className={BORDERED_CONTROL}>
               <FileText className="size-3.5" aria-hidden="true" />
               Résumé
             </a>
           </div>
-          <div className="relative">
-            <span aria-hidden="true" className="pointer-events-none absolute -left-3 top-0 h-full w-px bg-border lg:-left-5" />
+          <div>
             <ContactForm />
           </div>
         </section>
 
-        <section aria-labelledby="contact-photos" className="lg:pt-[7.5rem]">
+        <section aria-labelledby="contact-photos" className="md:pt-[4.5rem]">
           <div className="mb-5 max-w-sm">
             <h2
               id="contact-photos"

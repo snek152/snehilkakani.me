@@ -46,8 +46,8 @@ export default function MusicPage() {
     ? `${activeBeat.category} · ${activeBeat.tempo} BPM · ${formatTime(activeDuration)}`
     : `${filtered.length} releases · select a track to route it`;
   return (
-    <div className="px-6 pb-16 pt-16 sm:px-8 lg:px-12 lg:pt-[4.5rem]">
-      <div className="grid gap-8 border-b border-border pb-8 lg:grid-cols-[minmax(0,1fr)_minmax(16rem,0.38fr)] lg:items-end lg:gap-12">
+    <div className="px-6 pb-12 pt-16 sm:px-8 lg:px-12 lg:pt-[4.5rem]">
+      <header className="relative min-h-10">
         <div ref={headingRef}>
           <ManifestoHeading
             as="h1"
@@ -56,31 +56,14 @@ export default function MusicPage() {
             active={headingActive}
             className="font-display text-[length:var(--size-display-lg)] font-bold tracking-[var(--track-display-lg)] text-fg text-balance"
           />
-          <p className="mt-4 max-w-xl font-sans text-[length:var(--text-meta)] leading-relaxed text-dim">
-            A release catalog organized as a playable sequence.
-          </p>
         </div>
-
-        <div className="relative border-l border-border pl-5">
-          <span className="font-sans text-[length:var(--text-micro)] uppercase tracking-[var(--track-text-lg)] text-dim2">
-            Local output
-          </span>
-          <RouteSignal
-            scene="music"
-            label={activeBeat ? activeBeat.name : "Catalog signal"}
-            detail={activeDetail}
-            className="mt-3"
-          />
-          <span className="mt-2 block font-sans text-[length:var(--text-micro)] tracking-[var(--track-text-sm)] text-dim">
-            {activeBeat ? `${activeBeat.name} · ${activeDetail}` : activeDetail}
-          </span>
-          {activeBeat && (
-            <span className="mt-2 block font-sans text-[length:var(--text-micro)] uppercase tracking-[var(--track-text-lg)] text-[color:var(--accent-text)]">
-              {playbackState === "playing" ? "Live routing" : "Cue held"}
-            </span>
-          )}
-        </div>
-      </div>
+        <RouteSignal
+          scene="music"
+          label={activeBeat ? activeBeat.name : "Catalog signal"}
+          detail={activeDetail}
+          className="mt-4 sm:absolute sm:right-0 sm:top-1/2 sm:mt-0 sm:-translate-y-1/2"
+        />
+      </header>
 
       <div
         role="group"

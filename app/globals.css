@@ -180,9 +180,8 @@ body {
   color: #fff;
 }
 
-/* Foreground-only instrument material. The seam is deliberately constrained
- * to geometry: blue remains the authored accent while violet merely refracts
- * within the light. */
+
+/* Foreground-only instrument material. */
 .spectral-seam {
   background: var(--spectral-seam);
 }
@@ -208,6 +207,7 @@ body {
   stroke-width: 0.75;
 }
 
+
 .route-signal__trajectory {
   stroke: currentColor;
   stroke-width: 1.15;
@@ -226,6 +226,7 @@ body {
   stroke-width: 1.25;
 }
 
+
 /* The shell's chassis is a static edge treatment, not a layer behind route
  * content. It gives the enduring column a quiet physical boundary while
  * WaveField remains the only ambient medium. */
@@ -234,21 +235,7 @@ body {
   box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.025);
 }
 
-.nav-source {
-  background: var(--signal-light);
-  box-shadow: 0 0 0 2px var(--bg), 0 0 12px rgb(var(--accent-rgb) / 0.32);
-  transition: opacity 120ms var(--ease-press);
-}
 
-.instrument-footer::before {
-  position: absolute;
-  top: -1px;
-  left: clamp(1.5rem, 6vw, 5rem);
-  width: clamp(2.5rem, 7vw, 5rem);
-  height: 1px;
-  content: "";
-  background: var(--spectral-seam);
-}
 
 /* The pre-paint half of the intro gate (see `app/lib/loader-gate.ts`). The
  * attribute is set in `<head>` before the body paints, so the loader in the
