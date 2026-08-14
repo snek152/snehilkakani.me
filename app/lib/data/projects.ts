@@ -32,7 +32,7 @@ export const projects: Project[] = [
     title: "Fere: AI-Powered Desktop Dev Tooling Platform",
     subtitle: "January 2026 - May 2026",
     description:
-      "Built a desktop platform that that maps a local dev environment into a live, interactive service graph, tracking processes, ports, Docker containers, and API routes in real time. Won 2nd place ($10K) at Cal Poly's Innovation Quest. Designed an in-app AI assistant wired into the graph for querying, debugging, and proactive background monitoring with service-scoped context and adaptive suggestions.",
+      "Built a desktop platform that maps a local dev environment into a live, interactive service graph, tracking processes, ports, Docker containers, and API routes in real time. Won 2nd place ($10K) at Cal Poly's Innovation Quest. Designed an in-app AI assistant wired into the graph for querying, debugging, and proactive background monitoring with service-scoped context and adaptive suggestions.",
     skills: ["electron", "typescript", "agentic ai", "desktop development"],
     image: fere,
     github: "https://github.com/fere-oss/fere",

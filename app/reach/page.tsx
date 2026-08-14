@@ -8,6 +8,7 @@ import ManifestoHeading from "@/app/lib/components/home/ManifestoHeading";
 import ContactForm from "@/app/lib/components/contact/ContactForm";
 import { CONTACT_EMAIL } from "@/app/lib/components/contact/mailto";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
+import { BORDERED_CONTROL } from "@/app/lib/components/shared/controls";
 import { EASE_OUT } from "@/app/lib/motion";
 import { beats } from "@/app/lib/tempo";
 import dog from "@/public/dog.jpg";
@@ -81,7 +82,7 @@ export default function ContactPage() {
           <a
             href="/resume.pdf"
             download
-            className="mb-11 inline-flex items-center gap-1.5 border border-border px-[0.875rem] py-[0.45rem] text-[length:var(--text-meta)] text-dim transition-[color,border-color,scale] duration-[120ms] ease-[var(--ease-press)] hover:text-fg active:scale-[0.97] focus-visible:text-fg focus-visible:outline-none focus-visible:border-accent"
+            className={`mb-11 ${BORDERED_CONTROL}`}
           >
             <FileText className="size-3.5" aria-hidden="true" />
             Résumé

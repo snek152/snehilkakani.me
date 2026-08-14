@@ -101,6 +101,18 @@ export default function TrackRow({
           >
             {beat.name}
           </span>
+          {/* Below `lg` the four-column grid collapses and the BPM/duration
+            * cell below is `hidden`, which used to drop tempo and length off
+            * the page entirely on phones — while the flavour text kept its
+            * row and truncated mid-word. That inverted the value: on a beat
+            * list, tempo and length are the functional figures someone is
+            * actually scanning for, and the `aria-label` above was already
+            * announcing the tempo that sighted mobile visitors could not see.
+            * They ride here instead, in the dead space at the end of the
+            * truncating title, and the `lg` layout is untouched. */}
+          <span className="shrink-0 pl-3 font-sans text-[length:var(--text-micro)] tabular-nums tracking-[var(--track-text-sm)] text-dim2 lg:hidden">
+            {beat.tempo} BPM · {formatTime(duration)}
+          </span>
         </span>
 
         {/* One cell, two placements: at `lg` it spans the middle two

@@ -232,12 +232,17 @@ const MAX_DPR = 1.5;
 
 /** Accent tint carried by a few curves, at very low alpha.
  *
- * This is `--accent` from `globals.css` as an rgb triple, since canvas needs
- * components rather than a hex. Note this design renamed the brand blue:
- * `--color-primary` is an alias of `--accent`, not a second colour, so there
- * is exactly one blue on the site and this is it. (`AGENTS.md` still
- * documents the previous site's `#0d6efd`.) Keep in step with the token. */
-const ACCENT_COLOR = "37, 99, 235"; // #2563eb
+ * The one legitimate copy of the accent's channels. A canvas `strokeStyle`
+ * takes a string, so it cannot resolve `--accent-rgb` from `globals.css` the
+ * way `CursorGlow` and `OrbitStage` now do — reading the custom property back
+ * out of the document per frame would be a computed-style hit inside the draw
+ * loop, and hoisting the read would just move the drift somewhere less
+ * obvious. Keep in step with `--accent-rgb`; nothing else may restate it.
+ *
+ * There is exactly one blue on the site and this is it. A `--color-primary`
+ * alias of `--accent` used to exist alongside it, kept only so a stale line in
+ * `AGENTS.md` stayed technically valid; both are gone. */
+const ACCENT_COLOR = "37, 99, 235"; // #2563eb — mirrors --accent-rgb
 const ACCENT_ALPHA_SCALE = 0.5;
 
 /** `FREQ_SCALE` sets how many times a filament crosses its own axis across

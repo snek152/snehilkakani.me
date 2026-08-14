@@ -12,7 +12,7 @@ import { useCursorField } from "@/app/lib/components/shared/CursorField";
  */
 export default function CursorGlow() {
   const { x, y, active } = useCursorField();
-  const background = useMotionTemplate`radial-gradient(540px circle at ${x}px ${y}px, rgba(37,99,235,0.12) 0%, rgba(37,99,235,0.045) 40%, transparent 70%)`;
+  const background = useMotionTemplate`radial-gradient(540px circle at ${x}px ${y}px, rgb(var(--accent-rgb) / 0.12) 0%, rgb(var(--accent-rgb) / 0.045) 40%, transparent 70%)`;
 
   if (!active) return null;
 

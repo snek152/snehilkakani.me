@@ -11,6 +11,7 @@ import {
 import { useIntroReady } from "@/app/lib/components/AppShell";
 import { EASE_OUT } from "@/app/lib/motion";
 import ViewfinderFrame from "@/app/lib/components/shared/ViewfinderFrame";
+import { BORDERED_CONTROL } from "@/app/lib/components/shared/controls";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import { GRID_STOPS } from "@/app/lib/grid";
 import RoleCycle from "@/app/lib/components/home/RoleCycle";
@@ -169,8 +170,23 @@ export default function Hero({
         ))}
       </div>
 
-      <div className="grid grid-cols-1 items-end gap-10 lg:grid-cols-[1.5fr_minmax(220px,1.2fr)] lg:gap-8 mt-10 z-10">
-        <div>
+      {/* Three cells, not two, so the intro paragraph can be resequenced on
+        * mobile. Below `lg` the reading order becomes role -> name -> the
+        * status card -> paragraph: the card carries what a recruiter came for
+        * (what he is building, what he is studying, where he is, what he
+        * wants, and the resume) and in a single column it used to sit roughly
+        * a screen and a half down, behind the paragraph and the portrait. The
+        * paragraph is context; it can wait its turn.
+        *
+        * DOM order is unchanged, so assistive tech still reads the prose
+        * before the card, and nothing focusable moves.
+        *
+        * `lg:gap-y-0` is load-bearing: with the paragraph promoted to a grid
+        * child, a row gap would ALSO open between the name and the paragraph
+        * on desktop, where their spacing is owned by the paragraph's own
+        * `lg:mt-4`. Column gap stays 8. */}
+      <div className="grid grid-cols-1 items-end gap-10 mt-10 z-10 lg:grid-cols-[1.5fr_minmax(220px,1.2fr)] lg:gap-x-8 lg:gap-y-0">
+        <div className="lg:col-start-1 lg:row-start-1">
           <motion.div
             initial={reduceMotion ? false : "hidden"}
             animate={reduceMotion ? undefined : state}
@@ -199,24 +215,32 @@ export default function Hero({
               </span>
             ))}
           </motion.h1>
-          <motion.p
-            aria-labelledby="home-introduction"
-            initial={reduceMotion ? false : { opacity: 0, y: 10 }}
-            whileInView={entrance}
-            viewport={{ once: true, amount: 0.25 }}
-            transition={{ duration: 0.45, ease: EASE_OUT }}
-            className="mb-14 mt-4 text-[length:var(--text-lead)] leading-[var(--leading-lead)] max-w-[var(--measure-lead)] text-dim"
-            id="home-introduction"
-          >
-            Building intelligent systems with a focus on creating accessible
-            user experiences. Exploring music production, photography, and video
-            games in my free time. Published researcher, NMSC finalist, and
-            entrepreneurial award winner.
-          </motion.p>
         </div>
 
+        <motion.p
+          aria-labelledby="home-introduction"
+          initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+          whileInView={entrance}
+          viewport={{ once: true, amount: 0.25 }}
+          transition={{ duration: 0.45, ease: EASE_OUT }}
+          className="order-last mb-14 text-[length:var(--text-lead)] leading-[var(--leading-lead)] max-w-[var(--measure-lead)] text-dim lg:order-none lg:col-start-1 lg:row-start-2 lg:mt-4"
+          id="home-introduction"
+        >
+          {/* "in my free time" and "video games" are deliberately gone. The
+            * site gives `/music` and `/lens` the same nav weight as
+            * `/builds` and backs all three with first-party work, so a
+            * sentence that filed two of them under free time contradicted
+            * the structure the reader is about to navigate. Video games had
+            * no artifact anywhere on the site, which is the one thing every
+            * claim here is supposed to have. */}
+          Building intelligent systems with a focus on creating accessible
+          user experiences. Producing music and shooting photography
+          alongside it. Published researcher, NMSC finalist, and
+          entrepreneurial award winner.
+        </motion.p>
+
         <motion.div
-          className="justify-self-center lg:justify-self-end bg-card z-10 border border-border"
+          className="justify-self-center lg:justify-self-end bg-card z-10 border border-border lg:col-start-2 lg:row-start-1 lg:row-span-2"
           initial={reduceMotion ? false : "hidden"}
           animate={reduceMotion ? undefined : state}
           variants={photoVariants}
@@ -257,7 +281,7 @@ export default function Hero({
               <a
                 href="/resume.pdf"
                 download
-                className="mt-4 inline-flex items-center gap-1.5 border border-border px-[0.875rem] py-[0.45rem] text-[length:var(--text-meta)] text-dim transition-[color,border-color,scale] duration-[120ms] ease-[var(--ease-press)] hover:text-fg active:scale-[0.97] focus-visible:text-fg focus-visible:outline-none focus-visible:border-accent"
+                className={`mt-4 ${BORDERED_CONTROL}`}
               >
                 <FileText className="size-3.5" aria-hidden="true" />
                 Résumé

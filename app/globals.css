@@ -12,6 +12,17 @@
    * fills and icons but fails for words. This is 4.93:1. Use `--accent`
    * for anything shaped, `--accent-text` for anything read. */
   --accent-text: #4478ee;
+  /* The accent's channels, unpacked, for the places that need to build a
+   * colour rather than reference one: a gradient stop with its own alpha, a
+   * ring at 18%. Those callsites had the literal `37,99,235` typed into them
+   * three separate times, which is three chances for the blue to drift away
+   * from `--accent` above. `rgb(var(--accent-rgb) / <alpha>)` resolves to the
+   * same colour without restating it.
+   *
+   * `WaveField` is the one place that legitimately cannot use this: a canvas
+   * `strokeStyle` takes a string, not a computed custom property, so it keeps
+   * its own constant and a comment pointing back here. */
+  --accent-rgb: 37 99 235;
   --border: rgba(255, 255, 255, 0.07);
   /* The drawn rules — the hairlines that scale open under a section heading
    * and between history rows. Brighter than `--border` because these are the
@@ -23,6 +34,13 @@
    * with the rules alone, this is the level where the draw is legible without
    * the dividers taking over the page. */
   --rule: rgba(255, 255, 255, 0.15);
+  /* The gallery scrim. Deliberately DARKER than `--bg`: the lightbox is the
+   * one surface where a photograph is the subject, and a backdrop at page
+   * black leaves the frame sitting level with the page instead of lifted off
+   * it. Its own token rather than a literal in `Lightbox`, which is also where
+   * the drag-to-dismiss fade drives `opacity` — two colour ideas in one style
+   * attribute is how a value like this gets edited by accident. */
+  --scrim: rgba(4, 4, 4, 0.97);
 }
 
 /* Optical tracking scale.
@@ -113,11 +131,6 @@
   --color-dim2: var(--dim2);
   --color-accent: var(--accent);
   --color-accent-text: var(--accent-text);
-  /* `AGENTS.md` specifies `bg-primary/50` for list bullets. This design
-   * renamed the brand blue to `accent`, so `primary` is kept as an alias
-   * of it rather than a second colour — the documented class stays valid
-   * and the palette still has exactly one blue in it. */
-  --color-primary: var(--accent);
   --color-border: var(--border);
   /* Available as `bg-rule`. Used only by `DrawnRule`. */
   --color-rule: var(--rule);
@@ -150,6 +163,16 @@ body {
 ::selection {
   background: var(--accent);
   color: #fff;
+}
+
+/* The pre-paint half of the intro gate (see `app/lib/loader-gate.ts`). The
+ * attribute is set in `<head>` before the body paints, so the loader in the
+ * prerendered HTML is never shown to a visitor who already saw it — `AppShell`
+ * then unmounts the hidden node on its first commit. `display` rather than
+ * `opacity`, because this must also stop the layer swallowing the first click
+ * during hydration. */
+html[data-loader-seen="1"] [data-loader] {
+  display: none;
 }
 
 /* Interaction curve for press/hover feedback only. Entrance motion keeps

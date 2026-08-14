@@ -52,15 +52,28 @@ All content lives in TypeScript files under `app/lib/data/`. To add or edit port
 
 ### Styling
 
-Tailwind CSS 4 with custom theme tokens defined in `app/globals.css` via `@theme`:
+Tailwind CSS 4. The palette is defined once in `app/globals.css` as `:root`
+custom properties and exposed to Tailwind through `@theme inline`, so
+`--bg` becomes `bg-bg`, `--dim2` becomes `text-dim2`, and so on.
 
 ```
---color-primary:    #0d6efd  (blue accent)
---color-secondary:  #262626  (card/surface dark)
---color-surface:    #fbfbfb
---color-background: #2b2b2b  (page background)
---color-on-surface: #404040
+--bg          #080808          page, and the only background there is
+--card        #0e0e0e          the one step off the page, for the few surfaces that need it
+--fg          #efefef          17.42:1 — anything read as primary text
+--dim         #a8a8a8           8.42:1 — secondary prose, metadata
+--dim2        #7d7d7d           4.87:1 — captions, dividers, recessive readouts
+--accent      #2563eb           3.87:1 — SHAPES ONLY: rules, fills, icons, focus rings
+--accent-text #4478ee           4.93:1 — REQUIRED for anything read as words
+--accent-rgb  37 99 235        the same blue unpacked, for `rgb(var(--accent-rgb) / <alpha>)`
+--border      rgba(255,255,255,0.07)   card edges, inputs, nav — stays quiet
+--rule        rgba(255,255,255,0.15)   `DrawnRule` only — the lines you are meant to watch arrive
+--scrim       rgba(4,4,4,0.97)         the lightbox backdrop, deliberately darker than the page
 ```
+
+Three greys and one blue. The `--accent` / `--accent-text` split is the load-
+bearing rule in that table: the brand blue is *under* the 4.5:1 floor on this
+background, so it may never carry a word. Reach for `--accent-text` the moment
+the blue thing is read rather than seen.
 
 **Fonts** — both are **self-hosted variable** fonts from the Indian Type
 Foundry, loaded with `next/font/local` in `app/layout.tsx` from `app/fonts/`
@@ -142,28 +155,47 @@ Project and skill images use static imports (`StaticImageData`) rather than publ
 
 ### Design Conventions
 
-**Cards**
-- Use `bg-secondary` (not `bg-background`) for card backgrounds — `bg-background` is the same as the page background (`#2b2b2b`) and will be invisible.
-- Standard card: `bg-secondary border-[1.5px] border-secondary/60 rounded-xl overflow-hidden shadow-lg`
-- Heavy card (e.g. AboutCard): `border-4 border-secondary bg-background rounded-xl` with a box-shadow glow via inline `style`
+Everything from here to the Animations heading below used to describe a
+different site: a `#2b2b2b` page with an `#fbfbfb` surface, Domine and IBM
+Plex, gradient pill tags, `rounded-xl` cards with `shadow-lg`. None of those
+values, fonts or classes exist anywhere in `app/` — they were checked, and
+every one of them appeared only in this file. A conventions doc that mandates a
+design the code does not have is worse than no doc: it is a defect generator,
+and it demonstrably generated defects (see the `OrbitStage` note under
+Animations). What follows is what the code actually does.
 
-**Skill tags** — use this exact class string everywhere for consistency:
-```
-bg-gradient-to-r from-primary/60 via-primary/40 to-primary/60 text-surface z-20 relative px-3 py-1 rounded-full text-sm font-ibm border-2 border-primary/70 shadow-md hover:scale-105 hover:shadow-lg active:scale-105 active:shadow-lg transition-all duration-200 font-semibold
-```
+**Surfaces are defined by a hairline, not by a fill.** There is no card
+component and no elevation system. A region is separated from the page by a 1px
+`border-border` edge, a `DrawnRule`, or nothing at all — never by a shadow, and
+never by a corner radius above `rounded-sm`. `--card` (`#0e0e0e`) exists for
+the few surfaces that need to sit a shade off the page; it is 3 steps of
+lightness away from `--bg`, and that is the whole range the design uses.
+`shadow-*` appears nowhere. Do not introduce it.
 
-**Typography hierarchy** (dark backgrounds)
-- Heading: `text-surface font-domine font-bold` — `text-xl lg:text-2xl` for card titles, `text-3xl lg:text-4xl` for section titles
-- Subheading: `text-surface/70 font-ibm font-semibold text-sm lg:text-base`
-- Meta (period, location): `text-surface/60` and `text-surface/50` at `text-sm font-ibm`
-- Body: `text-surface font-ibm text-sm lg:text-base leading-relaxed`
-- Do not add opacity modifiers just to dim body text — use `text-surface` at full opacity for readable content
+**Skill tags are text, not chips.** `ProjectSkills` sets each skill as a list
+item prefixed by a `/` divider drawn with `before:content-['/']` in `--dim2`,
+at `--text-meta` with `--track-text-sm`. No background, no border, no radius,
+no hover scale. The gradient-pill string this file used to mandate "everywhere
+for consistency" also carried `transition-all` and `hover:scale-105`, neither
+of which the design permits.
+
+**Typography goes through the scale in `globals.css`, never through a class
+recipe.** The display tiers and the four text roles are tabulated under
+Styling above; a component references the role it needs. Colour is
+`text-fg` / `text-dim` / `text-dim2` — three deliberate steps, all of which
+clear 4.5:1 on `--bg`. Never dim text with an opacity modifier: `text-dim` is
+a colour chosen for contrast, `text-fg/70` is a guess at one.
 
 **Bullet points** (in lists)
 ```
-<span className="w-1.5 h-1.5 rounded-full bg-primary/50 flex-shrink-0 mt-[0.65rem]" />
+<span aria-hidden="true" className="mt-[0.65rem] h-1.5 w-1.5 flex-shrink-0 rounded-full bg-accent/50" />
 ```
-Parent `<li>` should use `flex items-start gap-2.5` — never `items-center` or `self-center` on the dot, which causes misalignment on wrapped lines.
+Parent `<li>` uses `flex items-start gap-2.5` — never `items-center` or
+`self-center` on the dot, which misaligns it on wrapped lines. The dot is
+decorative, so it is `aria-hidden`. This used to read `bg-primary/50`, and
+`--color-primary` was kept in `@theme` purely as an alias so that this line
+stayed technically true; the alias is gone and the one callsite now names the
+colour the design actually has. There is exactly one blue.
 
 **Animations** — standard entrance pattern, applied directly on a
 `motion.*` element:
@@ -182,9 +214,18 @@ rather than inline targets. Always respect `useMotionPreference()` (from
 `app/lib/components/shared/MotionPreference.tsx`) for reduced-motion users.
 Note that some components delegate this upstream rather than branching
 themselves — `CursorGlow` renders nothing because `CursorField` clears
-`active`, `BeatBars` sits still because `useAudioAnalyser` never starts its
-frame loop, and `OrbitStage` is never mounted because `LoadingScreen`
-substitutes a plain backdrop. Check the provider before adding a branch.
+`active`, and `BeatBars` sits still because `useAudioAnalyser` never starts its
+frame loop. Check the provider before adding a branch.
+
+`LoadingScreen` is the exception that reads the preference directly, via
+motion's own `useReducedMotion` rather than `useMotionPreference()`: it gates
+first paint, so it runs before the provider it would otherwise consume. It
+mounts `OrbitStage` at `scale={2.1}` and shares `RELEASE_MS` with it so the
+backdrop and the orbit dissolve on the same frame. This paragraph previously
+claimed `OrbitStage` was never mounted and that the loader substituted a plain
+backdrop; that was false, and two separate reviewers went on to file its live
+`boxShadow` as dead code on the strength of it. A wrong comment costs more than
+a missing one.
 
 A `Reveal` wrapper component used to be documented here as the standard. It
 was deleted — nothing ever imported it, and every component had gone on

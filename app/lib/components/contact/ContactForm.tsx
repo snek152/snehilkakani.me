@@ -6,7 +6,8 @@ import { AlertTriangle, ArrowRight, Check, Mail } from "lucide-react";
 import { EASE_OUT, staggerContainer } from "@/app/lib/motion";
 import { beats } from "@/app/lib/tempo";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
-import { buildMailtoUrl, CONTACT_EMAIL } from "./mailto";
+import { BORDERED_CONTROL } from "@/app/lib/components/shared/controls";
+import { buildMailtoUrl, CONTACT_EMAIL, MAILTO_MAX_SAFE_LENGTH } from "./mailto";
 
 const fieldMotion: Variants = {
   hidden: { opacity: 0, y: 10 },
@@ -28,6 +29,7 @@ function Field({
   placeholder,
   autoComplete,
   reduceMotion,
+  error,
 }: {
   id: string;
   label: string;
@@ -37,8 +39,10 @@ function Field({
   placeholder: string;
   autoComplete: string;
   reduceMotion: boolean;
+  error?: string;
 }) {
   const [focused, setFocused] = useState(false);
+  const errorId = `${id}-error`;
   return (
     <div>
       <label
@@ -58,6 +62,8 @@ function Field({
           name={id}
           type={type}
           required
+          aria-invalid={error ? true : undefined}
+          aria-describedby={error ? errorId : undefined}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           onFocus={() => setFocused(true)}
@@ -74,8 +80,46 @@ function Field({
           transition={{ duration: reduceMotion ? 0 : beats(0.4), ease: EASE_OUT }}
         />
       </div>
+      {/* Full-contrast `text-fg` against the `text-dim` label, rather than a
+        * red: this palette is three greys and one blue, and a semantic colour
+        * introduced for three strings would be a new design decision rather
+        * than a fix. The problem is carried by the words, the position, and
+        * `aria-invalid` — never by hue alone. */}
+      {error && (
+        <p
+          id={errorId}
+          className="mt-[0.4rem] text-[length:var(--text-micro)] tracking-[var(--track-text-sm)] text-fg"
+        >
+          {error}
+        </p>
+      )}
     </div>
   );
+}
+
+type FieldErrors = { name?: string; email?: string; message?: string };
+
+/**
+ * Names the actual problem, not "invalid input".
+ *
+ * The form used to lean on the browser's own bubble, which says "Please fill
+ * out this field" in Chrome's voice — a different register from every other
+ * sentence on the site, unstyled, and gone the moment you click away. These
+ * strings say what is wrong and what to do, in the same plain register as the
+ * confirmation copy.
+ */
+function emailProblem(raw: string): string | undefined {
+  const value = raw.trim();
+  if (!value) return "Add an email address — there's no way to reply without one.";
+  if (/\s/.test(value)) return "An email address can't contain a space — remove it and try again.";
+  if (!value.includes("@")) return "This is missing an @. An address looks like you@example.com.";
+  const [local, ...rest] = value.split("@");
+  const domain = rest.join("@");
+  if (!local) return "There's nothing before the @ — add the first part, like you@example.com.";
+  if (!domain) return "There's nothing after the @ — add the domain, like example.com.";
+  if (!domain.includes(".")) return "The part after the @ needs a dot in it, like example.com.";
+  if (domain.startsWith(".") || domain.endsWith(".")) return "The domain has a stray dot at one end — check it and try again.";
+  return undefined;
 }
 
 export default function ContactForm() {
@@ -89,10 +133,22 @@ export default function ContactForm() {
    * this form may honestly say the message was delivered. */
   const [delivered, setDelivered] = useState(false);
   const [failed, setFailed] = useState(false);
+  /* The composed `mailto:` URL was too long to hand to a mail client, so no
+   * handoff was attempted. Distinct from `failed`: nothing was rejected, we
+   * declined to try something that loses text silently. */
+  const [tooLong, setTooLong] = useState(false);
   const [copied, setCopied] = useState(false);
   const [copyFailed, setCopyFailed] = useState(false);
   const [messageFocused, setMessageFocused] = useState(false);
   const messageId = useId();
+  const [errors, setErrors] = useState<FieldErrors>({});
+
+  /* Cleared as the visitor types, not re-checked on every keystroke: telling
+   * someone their address is malformed while they are still halfway through
+   * typing it is nagging, not help. The check runs on submit; editing a field
+   * retires its complaint. */
+  const clearError = (key: keyof FieldErrors) =>
+    setErrors((prev) => (prev[key] ? { ...prev, [key]: undefined } : prev));
 
   /* Two delivery paths, and which one is live is a deployment decision, not a
    * code change.
@@ -112,11 +168,43 @@ export default function ContactForm() {
 
   const submit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    /* The form carries `noValidate`, so this is the only gate — and it runs
+       before `sending` flips, so a rejected submit never shows the sending
+       hairline for a request that was never made. Focus moves to the first
+       field with a problem: an error message nobody is looking at is not a
+       message. */
+    const found: FieldErrors = {
+      name: name.trim() ? undefined : "Add your name, so a reply knows who it's answering.",
+      email: emailProblem(email),
+      message: message.trim() ? undefined : "Add the message you want to send.",
+    };
+    const firstBad = (["name", "email", "message"] as const).find((key) => found[key]);
+
+    if (firstBad) {
+      setErrors(found);
+      document.getElementById(firstBad === "message" ? messageId : firstBad)?.focus();
+      return;
+    }
+
+    setErrors({});
     setSending(true);
     setFailed(false);
 
     if (!endpoint) {
       const url = buildMailtoUrl(name, email, message);
+
+      // Declining the handoff is the honest move: past this length the draft
+      // opens truncated or not at all, and neither is detectable, so
+      // attempting it would produce a confident message about something that
+      // silently ate the visitor's text.
+      if (url.length > MAILTO_MAX_SAFE_LENGTH) {
+        setTooLong(true);
+        setSending(false);
+        setSent(true);
+        return;
+      }
+
       window.setTimeout(
         () => {
           window.location.href = url;
@@ -155,8 +243,10 @@ export default function ContactForm() {
     setSent(false);
     setDelivered(false);
     setFailed(false);
+    setTooLong(false);
     setCopied(false);
     setCopyFailed(false);
+    setErrors({});
   };
 
   const copyMessage = () => {
@@ -190,13 +280,13 @@ export default function ContactForm() {
       >
         {/* The icon has to agree with the sentence under it. A check means
          * delivered and nothing else; the mailto handoff gets a neutral mail
-         * glyph because nobody can know whether it worked, and a failure gets
-         * a warning. The old code showed a check above a paragraph that
-         * immediately retracted it. */}
+         * glyph because nobody can know whether it worked, and both the
+         * rejected and the not-attempted cases get a warning. The old code
+         * showed a check above a paragraph that immediately retracted it. */}
         <div className="flex size-9 items-center justify-center border border-border">
           {delivered ? (
             <Check size={15} strokeWidth={2} className="text-accent" />
-          ) : failed ? (
+          ) : failed || tooLong ? (
             <AlertTriangle size={15} strokeWidth={2} className="text-dim" />
           ) : (
             <Mail size={15} strokeWidth={2} className="text-dim" />
@@ -206,29 +296,31 @@ export default function ContactForm() {
          * `res.ok` means the endpoint accepted the payload — not that it
          * reached a person, and not that a reply is coming, so the copy says
          * "accepted" and stops there. The mailto branch cannot even prove that
-         * much. Overclaiming here is the specific defect this rewrite fixed. */}
+         * much, and the too-long branch is the one case where we know for
+         * certain nothing was attempted, so it says so outright rather than
+         * describing a draft that was never opened. Overclaiming here is the
+         * specific defect this rewrite fixed. */}
         <p className="text-[length:var(--text-body)] leading-[var(--leading-body)] max-w-[var(--measure-body)] text-dim">
           {delivered
             ? "Submitted — the server accepted your message. Keeping a copy below in case you want to follow up by email."
             : failed
               ? "That didn't go through — your message wasn't accepted. It's safe below; the quickest route now is email."
-              : `Your email app should have opened a draft to ${CONTACT_EMAIL} with your message filled in. Nothing happened, or you sent it already — either way, here's a fallback:`}
+              : tooLong
+                ? "Your message is longer than an email link can carry, so nothing was opened and nothing was sent — a draft this long arrives cut short, or not at all. Copy it below and paste it into a new email instead."
+                : `Your email app should have opened a draft to ${CONTACT_EMAIL} with your message filled in. Nothing happened, or you sent it already — either way, here's a fallback:`}
         </p>
         <div className="flex flex-wrap items-center gap-[0.6rem]">
+          {/* An empty draft when the message could not ride along: handing the
+            * same oversized URL to this link would fail the same way the
+            * submit just declined to. The copy button beside it holds the
+            * text. */}
           <a
-            href={buildMailtoUrl(name, email, message)}
-            /* `scale`, not `transform`: Tailwind v4 compiles `scale-[0.97]`
-             * to the independent `scale` property, so a list naming
-             * `transform` transitions nothing and the press snaps. */
-            className="border border-border px-[0.875rem] py-[0.45rem] text-[length:var(--text-meta)] text-dim transition-[color,border-color,scale] duration-[120ms] ease-[var(--ease-press)] hover:text-fg active:scale-[0.97] focus-visible:text-fg focus-visible:outline-none focus-visible:border-accent"
+            href={tooLong ? `mailto:${CONTACT_EMAIL}` : buildMailtoUrl(name, email, message)}
+            className={BORDERED_CONTROL}
           >
-            Email {CONTACT_EMAIL} directly
+            {tooLong ? `Open a blank email to ${CONTACT_EMAIL}` : `Email ${CONTACT_EMAIL} directly`}
           </a>
-          <button
-            type="button"
-            onClick={copyMessage}
-            className="border border-border px-[0.875rem] py-[0.45rem] text-[length:var(--text-meta)] text-dim transition-[color,border-color,scale] duration-[120ms] ease-[var(--ease-press)] hover:text-fg active:scale-[0.97] focus-visible:text-fg focus-visible:outline-none focus-visible:border-accent"
-          >
+          <button type="button" onClick={copyMessage} className={BORDERED_CONTROL}>
             {copied ? "Copied" : "Copy message"}
           </button>
         </div>
@@ -249,7 +341,7 @@ export default function ContactForm() {
         <button
           type="button"
           onClick={reset}
-          className="self-start border border-border px-[0.875rem] py-[0.45rem] text-[length:var(--text-meta)] text-dim transition-[color,border-color,scale] duration-[120ms] ease-[var(--ease-press)] hover:text-fg active:scale-[0.97] focus-visible:text-fg focus-visible:outline-none focus-visible:border-accent"
+          className={`self-start ${BORDERED_CONTROL}`}
         >
           Send another
         </button>
@@ -260,6 +352,10 @@ export default function ContactForm() {
   return (
     <motion.form
       onSubmit={submit}
+      /* Ours, not Chrome's. `required` stays on every control for semantics
+         (assistive tech announces it), but the browser's own bubble is
+         suppressed so the messaging is the site's rather than the vendor's. */
+      noValidate
       initial={reduceMotion ? false : "hidden"}
       animate="visible"
       variants={staggerContainer}
@@ -279,10 +375,14 @@ export default function ContactForm() {
           label="Name"
           type="text"
           value={name}
-          onChange={setName}
+          onChange={(v) => {
+            setName(v);
+            clearError("name");
+          }}
           placeholder="Your name"
           autoComplete="name"
           reduceMotion={reduceMotion}
+          error={errors.name}
         />
       </motion.div>
       <motion.div variants={fieldMotion}>
@@ -291,10 +391,14 @@ export default function ContactForm() {
           label="Email"
           type="email"
           value={email}
-          onChange={setEmail}
+          onChange={(v) => {
+            setEmail(v);
+            clearError("email");
+          }}
           placeholder="your@email.com"
           autoComplete="email"
           reduceMotion={reduceMotion}
+          error={errors.email}
         />
       </motion.div>
       <motion.div variants={fieldMotion}>
@@ -309,9 +413,14 @@ export default function ContactForm() {
             id={messageId}
             name="message"
             required
+            aria-invalid={errors.message ? true : undefined}
+            aria-describedby={errors.message ? `${messageId}-error` : undefined}
             rows={5}
             value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            onChange={(e) => {
+              setMessage(e.target.value);
+              clearError("message");
+            }}
             onFocus={() => setMessageFocused(true)}
             onBlur={() => setMessageFocused(false)}
             placeholder="What are you working on?"
@@ -325,6 +434,14 @@ export default function ContactForm() {
             transition={{ duration: reduceMotion ? 0 : beats(0.4), ease: EASE_OUT }}
           />
         </div>
+        {errors.message && (
+          <p
+            id={`${messageId}-error`}
+            className="mt-[0.4rem] text-[length:var(--text-micro)] tracking-[var(--track-text-sm)] text-fg"
+          >
+            {errors.message}
+          </p>
+        )}
       </motion.div>
       <motion.button
         variants={fieldMotion}

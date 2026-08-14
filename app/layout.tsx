@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import AppShell from "./lib/components/AppShell";
+import { LOADER_GATE_SCRIPT } from "./lib/loader-gate";
 
 // Both faces are self-hosted rather than pulled from a font CDN. That is a
 // deliberate choice, not an optimisation: the free Google catalogue is where
@@ -106,7 +107,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    /* `suppressHydrationWarning` is required, not defensive, and it is scoped
+     * to exactly one element on purpose. The script below sets
+     * `data-loader-seen` on this `<html>` before React hydrates, so the server
+     * markup and the client DOM legitimately disagree about one attribute —
+     * React reports that as a hydration mismatch it "won't patch up". The flag
+     * silences it for THIS element's own attributes only; children are still
+     * fully checked. Same mechanism a theme toggle uses for the same reason.
+     * Do not move it to `<body>` or a wrapper: it would stop covering the
+     * attribute that actually differs, and stop being true. */
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Before first paint, so a returning visitor never sees a frame of an
+          * intro they already watched. See `loader-gate.ts` for why an effect
+          * cannot do this job: the loader is in the prerendered HTML. */}
+        <script dangerouslySetInnerHTML={{ __html: LOADER_GATE_SCRIPT }} />
+      </head>
       <body
         className={`${clashDisplay.variable} ${switzer.variable} antialiased`}
       >

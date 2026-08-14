@@ -151,8 +151,7 @@ export default function Sidebar() {
       {/* Mobile sticky top bar */}
       <header
         data-material
-        className="sticky top-0 z-40 flex h-[50px] items-center justify-between border-b border-border px-5 backdrop-blur-[14px] lg:hidden"
-        style={{ background: "rgba(8,8,8,0.9)" }}
+        className="sticky top-0 z-40 flex h-[50px] items-center justify-between border-b border-border bg-bg/90 px-5 backdrop-blur-[14px] lg:hidden"
       >
         <Link
           href="/"

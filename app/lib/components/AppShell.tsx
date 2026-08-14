@@ -26,6 +26,7 @@ import Sidebar from "./Sidebar";
 import Footer from "./Footer";
 import { MusicPlayerProvider, useMusicPlayer } from "./music/MusicPlayerProvider";
 import { navItems } from "@/app/lib/nav";
+import { loaderRecentlySeen, stampLoaderSeen } from "@/app/lib/loader-gate";
 
 
 const IntroReadyContext = createContext(false);
@@ -96,9 +97,20 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     prevIndexRef.current = currentIndex;
   }, [pathname, currentIndex]);
 
+  /* The intro plays once a day, not once a navigation. The pre-paint script in
+   * `app/layout.tsx` has already hidden the prerendered overlay for a
+   * returning visitor; this unmounts that hidden node and, more importantly,
+   * releases `introReady` so the hero's own entrance is not gated behind an
+   * intro that is never going to finish. */
   const [introReady, setIntroReady] = useState(false);
 
+  useEffect(() => {
+    if (loaderRecentlySeen()) setIntroReady(true);
+  }, []);
+
   const handleLoaderDone = useCallback(() => {
+    // Stamped on completion, not on arrival — see `stampLoaderSeen`.
+    stampLoaderSeen();
     setIntroReady(true);
   }, []);
 
@@ -106,6 +118,18 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     <MotionPreferenceProvider>
       <CursorFieldProvider>
         <div className="relative">
+          {/* First focusable element on every route, so a keyboard or screen
+            * reader visitor can bypass the five nav items instead of tabbing
+            * the same block on each navigation (WCAG 2.4.1). Invisible until
+            * focused: it is an affordance for the people who need it, not
+            * chrome for everyone else. Sits above the rail's `z-50` but below
+            * the loader's `z-[9999]`. */}
+          <a
+            href="#main"
+            className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:left-4 focus-visible:top-4 focus-visible:z-[100] focus-visible:rounded-sm focus-visible:border focus-visible:border-accent focus-visible:bg-bg focus-visible:px-3 focus-visible:py-2 focus-visible:text-[length:var(--text-meta)] focus-visible:text-fg"
+          >
+            Skip to content
+          </a>
           <WaveField />
           <CursorGlow />
           <ScrollProgressRail />
@@ -122,7 +146,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                 * with only the inner div lifted the Footer below it was
                 * being painted over. */}
               <div className="relative z-[1] flex min-h-[100dvh] flex-col lg:pl-[52px]">
-                <main className="relative z-[1] flex-1">{children}</main>
+                <main id="main" className="relative z-[1] flex-1">
+                  {children}
+                </main>
                 {/* The transport's footprint is reserved INSIDE the
                   * footer (see `TRANSPORT_CLEARANCE`), not by a spacer
                   * after it — a sibling spacer left the document taller

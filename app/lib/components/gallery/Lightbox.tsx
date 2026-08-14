@@ -361,7 +361,7 @@ export default function Lightbox({
           <motion.div
             aria-hidden
             className="absolute inset-0"
-            style={{ background: "rgba(4,4,4,0.97)", opacity: backdropOpacity }}
+            style={{ background: "var(--scrim)", opacity: backdropOpacity }}
           />
           <div onClick={(e) => e.stopPropagation()} className="relative flex flex-col items-center">
             {/* Fixed shell: a constant box, sized from the viewport and

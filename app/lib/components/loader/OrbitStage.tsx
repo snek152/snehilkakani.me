@@ -111,7 +111,7 @@ export default function OrbitStage({
               width: centerSize,
               height: centerSize,
               translate: "-50% -50%",
-              boxShadow: "0 0 0 1px rgba(37,99,235,0.18)",
+              boxShadow: "0 0 0 1px rgb(var(--accent-rgb) / 0.18)",
             }}
           />
 

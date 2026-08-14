@@ -72,12 +72,13 @@ export default function LoadingScreen({ onDone }: { onDone: () => void }) {
    * the 800ms release. This also prevents a stalled exit animation from
    * trapping the entire page behind an inert overlay. */
   if (prefersReducedMotion) {
-    return <div className="fixed inset-0 z-[9999] bg-bg" />;
+    return <div data-loader className="fixed inset-0 z-[9999] bg-bg" />;
   }
 
   return (
     <motion.div
       ref={overlayRef}
+      data-loader
       role="button"
       tabIndex={0}
       aria-label="Skip intro animation"
