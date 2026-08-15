@@ -18,18 +18,11 @@ type BeatFilter = "all" | Beat["category"];
 
 const FILTERS: BeatFilter[] = ["all", ...categories];
 
-/**
- * The track list. Playback itself — the `<audio>` element, transport
- * state and the fixed `PlayerBar` — lives in `MusicPlayerProvider`,
- * mounted once in `AppShell` above every route, so it survives
- * navigating away from /music. This component only drives that shared
- * player through `useMusicPlayer()`.
- */
 export default function MusicPage() {
   const prefersReducedMotion = useMotionPreference();
   const { activeIndex, playbackState, bars, toggleTrack } = useMusicPlayer();
   const headingRef = useRef<HTMLDivElement>(null);
-  const headingActive = useInView(headingRef, { once: true });
+  const headingActive = useInView(headingRef, { once: true, margin: "0px 0px -15% 0px" });
 
   const [filter, setFilter] = useState<BeatFilter>("all");
 
@@ -46,9 +39,6 @@ export default function MusicPage() {
     ? `${activeBeat.category} · ${activeBeat.tempo} BPM · ${formatTime(activeDuration)}`
     : `${filtered.length} releases · select a track to route it`;
 
-  // Per-filter counts, derived once from `beats` rather than recomputed
-  // inside the render loop below. "all" is the full catalog; every other
-  // key is how many releases carry that category.
   const filterCounts = useMemo(() => {
     const counts = {} as Record<BeatFilter, number>;
     counts.all = beats.length;
@@ -96,13 +86,7 @@ export default function MusicPage() {
               aria-pressed={isActive}
               aria-label={label}
               onClick={() => setFilter(category)}
-              // Scale *and* opacity. The filters are short words — "all"
-              // is 20px wide, where a scale press on its own amounts to
-              // about a pixel — and the one press signal that would be
-              // unmistakable on touch, brightening the text, is already
-              // spoken for: `text-fg` here means "this filter is on", so
-              // flashing it would announce a selection that hasn't
-              // happened yet. Dimming can't be misread that way.
+
               className={`relative inline-flex min-h-11 items-center gap-1.5 pb-1.5 font-sans text-[length:var(--text-meta)] transition-[color,scale,opacity] duration-[120ms] ease-[var(--ease-press)] active:scale-95 active:opacity-70 ${
                 isActive ? "text-fg" : "text-dim hover:text-fg"
               }`}
@@ -146,24 +130,14 @@ export default function MusicPage() {
             key={beat.name}
             beat={beat}
             isActive={activeIndex === index}
-            // A loading track's next action is also pause: `toggleTrack`
-            // cancels its pending request exactly as it pauses an already
-            // playing track. Keep the row's glyph and accessible name
-            // honest about that action, rather than reporting "Play" until
-            // audio frames arrive.
             isPlayingRow={
               activeIndex === index &&
               (playbackState === "playing" || playbackState === "loading")
             }
+            isLoadingRow={activeIndex === index && playbackState === "loading"}
             duration={BEAT_DURATIONS[beat.file] ?? 0}
             bars={bars}
             onToggle={() => toggleTrack(index)}
-            // A list of twenty-two rows should read as arriving, not
-            // loading. The old grid — 0.6-beat rows stepped 0.05 of a
-            // beat apart, capped at ten — put 0.33s between the first
-            // and last row landing, long enough to watch rows queue up.
-            // A smaller step and a cap of six keep the sweep legible
-            // while halving the span to 0.16s.
             delay={Math.min(position, 6) * beatTime(0.04)}
           />
         ))}

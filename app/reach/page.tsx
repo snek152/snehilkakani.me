@@ -36,7 +36,7 @@ const contactPhotos = [
 export default function ContactPage() {
   const reduceMotion = useMotionPreference();
   const headingRef = useRef<HTMLDivElement>(null);
-  // Same trigger the other page headings use.
+
   const headingActive = useInView(headingRef, { once: true, margin: "0px 0px -15% 0px" });
 
   return (
@@ -108,11 +108,6 @@ export default function ContactPage() {
                 "col-span-7 row-span-2 aspect-[4/5]",
                 "col-span-5 aspect-square",
                 "col-span-5 aspect-[5/4]",
-                // Squarer only in the md band, where the photo column is
-                // the shorter of the two and this extra height is what
-                // closes the gap under it before the footer — back to the
-                // wide panoramic crop from `lg` up, where the column is
-                // already the taller one.
                 "col-span-12 aspect-[16/7] md:aspect-square lg:aspect-[16/7]",
               ][index];
 
@@ -132,7 +127,7 @@ export default function ContactPage() {
                     src={photo.src}
                     alt={photo.caption}
                     sizes="(min-width: 1024px) 25vw, (min-width: 640px) 38vw, 86vw"
-                    className="h-full w-full object-cover transition-transform duration-500 ease-[var(--ease-press)] group-hover:scale-[1.025] group-focus-within:scale-[1.025]"
+                    className="h-full w-full object-cover"
                   />
                   <figcaption className="absolute inset-x-0 bottom-0 bg-fg/85 px-3 py-2 text-[length:var(--text-micro)] tracking-[var(--track-text-sm)] text-bg opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100">
                     {photo.caption}

@@ -11,23 +11,14 @@ import { useMotionPreference } from "@/app/lib/components/shared/MotionPreferenc
 import { ProjectLinks, ProjectSkills } from "./ProjectMeta";
 import { shortTitle } from "./utils";
 
-
-
 export default function FeaturedProject({ project }: { project: Project }) {
   const reduceMotion = useMotionPreference();
   const [active, setActive] = useState(false);
-  /* `beats(1)` = 652ms, which is where this already sat as a bare 0.65 — the
-   * value did not need to change, only its derivation. Two literals in this
-   * file were the last entrance durations on the site not coming off the
-   * BPM-92 grid. */
+
   const cropTransition = { duration: reduceMotion ? 0 : beats(1), ease: EASE_OUT };
 
   const secondary = project.secondaryImage;
 
-  // No hover scale on either photo. The accent rule already marks the
-  // card as live; moving the photograph to say the same thing shifted the
-  // very composition the reader was looking at. `active` stays — it still
-  // drives that rule.
   const primaryImage = (
     <div className="absolute inset-0">
       <Image

@@ -20,10 +20,6 @@ import portrait from "@/public/about.jpg";
 
 const NAME_LINES = ["Snehil", "Kakani"];
 
-/* Both hero entrances resolve out of defocus, the same way `fadeUp` does — the
- * loader is releasing as these arrive, so the name and the card come into focus
- * as the instrument above them dissolves. Durations and delays are BPM-grid
- * derived through `beats(...)`. */
 const riseVariants: Variants = {
   hidden: { opacity: 0, y: 14, scale: 0.985, filter: "blur(9px)" },
   visible: {
@@ -46,10 +42,6 @@ const photoVariants: Variants = {
   },
 };
 
-/**
- * Asymmetric hero. `useIntroReady()` releases the name and card under the
- * loader; its structural grid retracts as the section scrolls away.
- */
 export default function Hero({
   ref,
   progress,
@@ -144,30 +136,6 @@ export default function Hero({
         ))}
       </div>
 
-      {/* Three cells, not two, so the intro paragraph can be resequenced on
-       * mobile. Below `lg` the reading order becomes role -> name -> the
-       * status card -> paragraph: the card carries what a recruiter came for
-       * (what he is building, what he is studying, where he is, what he
-       * wants, and the resume) and in a single column it used to sit roughly
-       * a screen and a half down, behind the paragraph and the portrait. The
-       * paragraph is context; it can wait its turn.
-       *
-       * DOM order is unchanged, so assistive tech still reads the prose
-       * before the card, and nothing focusable moves.
-       *
-       * `lg:gap-y-0` is load-bearing: with the paragraph promoted to a grid
-       * child, a row gap would ALSO open between the name and the paragraph
-       * on desktop, where their spacing is owned by the paragraph's own
-       * `lg:mt-4`. Column gap stays 8.
-       *
-       * `lg:grid-rows-[1fr_auto]` is the other half of that, and without it
-       * this layout is broken: the card spans both rows, so with implicit
-       * `auto auto` rows the grid distributed the card's height ACROSS them
-       * and opened ~90px of dead space between the name and the paragraph.
-       * Pinning row 2 to the paragraph's own height and letting row 1 absorb
-       * all the slack puts the pair back together, and `items-end` keeps them
-       * bottom-aligned against the card exactly as they were when they shared
-       * one cell. */}
       <div className="grid grid-cols-1 items-end gap-10 mt-10 z-10 lg:grid-cols-[1.5fr_minmax(220px,1.2fr)] lg:grid-rows-[1fr_auto] lg:gap-x-8 lg:gap-y-0">
         <div className="lg:col-start-1 lg:row-start-1">
           <motion.div
@@ -209,13 +177,7 @@ export default function Hero({
           className="order-last mb-14 text-[length:var(--text-lead)] leading-[var(--leading-lead)] max-w-[var(--measure-lead)] text-dim lg:order-none lg:col-start-1 lg:row-start-2 lg:mt-4"
           id="home-introduction"
         >
-          {/* "in my free time" and "video games" are deliberately gone. The
-           * site gives `/music` and `/lens` the same nav weight as
-           * `/builds` and backs all three with first-party work, so a
-           * sentence that filed two of them under free time contradicted
-           * the structure the reader is about to navigate. Video games had
-           * no artifact anywhere on the site, which is the one thing every
-           * claim here is supposed to have. */}
+
           Building intelligent systems with a focus on creating accessible user
           experiences. Exploring music production, photography, and video games
           in my free time. Published researcher, NMSC finalist, and
@@ -246,12 +208,6 @@ export default function Hero({
               <dl className="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2">
                 {STATUS.map(({ label, value }) => (
                   <div key={label}>
-                    {/* `dim2` is 4.87:1 — the floor. A definition list is a
-                     * two-step reading path: you find the label, then the
-                     * value under it. Setting the step you land on first as
-                     * the least legible text in the card inverts that.
-                     * `dim` is 8.42:1 and still recedes behind the `fg`
-                     * value, so the hierarchy survives the lift. */}
                     <dt className="mb-1 text-[length:var(--text-meta)] font-normal tracking-[var(--track-text-sm)] text-dim">
                       {label}
                     </dt>

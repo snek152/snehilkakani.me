@@ -5,7 +5,7 @@ import floodsafe from "@/public/projects/floodsafe.jpg";
 import steamforce from "@/public/projects/steamforce.jpg";
 import proco from "@/public/projects/proco.jpg";
 import euclidlearn from "@/public/projects/euclidlearn.jpg";
-// import swordselection from "@/public/projects/swordselection.png";
+
 import impasse from "@/public/projects/impasse.png";
 import orbis from "@/public/projects/orbis.png";
 import fere from "@/public/projects/fere.jpg";
@@ -18,8 +18,7 @@ export type Project = {
   subtitle?: string;
   description: string;
   image: StaticImageData | string;
-  /** Optional second shot for the featured slot, laid in over the
-   * primary as an inset plate. Ignored everywhere else. */
+
   secondaryImage?: StaticImageData | string;
   skills: string[];
   link?: string;
@@ -101,7 +100,6 @@ export const projects: Project[] = [
     subtitle: "September 2022 - June 2025",
     description:
       "Contributed to and maintained a competitive programming platform for 200+ users across 4 high schools. Engineered a remote code execution and grading server, SQL-based user management, and a responsive contest UI.",
-    // github: "https://github.com/lhsdevx/proco",
     link: "https://proco.vercel.app",
     privateRepo: true,
     skills: [
@@ -124,7 +122,6 @@ export const projects: Project[] = [
       "data science & engineering",
     ],
     github: "https://github.com/snek152/floodsafe",
-    // link: "https://floodsafe-web.vercel.app",
   },
   {
     title: "Website Development for Lynbrook Drama Department",
@@ -176,16 +173,5 @@ export const projects: Project[] = [
       "constraint optimization",
     ],
     github: "https://github.com/snek152/steam-force",
-    // link: "https://steamforce.snehilkakani.me",
   },
-  // {
-  //   title: "SwordSelection: Medieval-Inspired Minecraft Mod",
-  //   subtitle: "June 2021 - October 2021",
-  //   description:
-  //     "Developed a Minecraft mod introducing medieval-themed swords with unique abilities, enhancing gameplay with custom animations and mechanics. Promoted extensively on relevant forums and websites, resulting in 2.2k+ downloads.",
-  //   image: swordselection,
-  //   skills: ["java & gradle", "documentation & promotion", "minecraft modding"],
-  //   github: "https://github.com/snek152/SwordSelection",
-  //   link: "https://swordselection.snehilkakani.me",
-  // },
 ];

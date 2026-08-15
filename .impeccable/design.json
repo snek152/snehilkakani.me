@@ -1,0 +1,196 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-15T00:00:00Z",
+  "title": "Instrument Panel",
+  "extensions": {
+    "colorMeta": [
+      { "role": "background", "displayName": "Background", "value": "#080808" },
+      { "role": "surface", "displayName": "Card", "value": "#0e0e0e" },
+      { "role": "textPrimary", "displayName": "Foreground", "value": "#efefef" },
+      { "role": "textSecondary", "displayName": "Dim", "value": "#a8a8a8" },
+      { "role": "textTertiary", "displayName": "Dim 2", "value": "#7d7d7d" },
+      { "role": "accentShape", "displayName": "Accent (shapes only, 3.87:1 on #080808)", "value": "#2563eb" },
+      { "role": "accentText", "displayName": "Accent Text (required for words, 4.93:1 on #080808)", "value": "#4478ee" },
+      { "role": "accentRgb", "displayName": "Accent channels unpacked", "value": "37 99 235" },
+      { "role": "violetRgb", "displayName": "Violet material undertone, never a text role", "value": "124 92 255" },
+      { "role": "signalLight", "displayName": "Non-text light for fine marks / material edges", "value": "rgb(126 164 255)" },
+      { "role": "border", "displayName": "Border (quiet edges)", "value": "rgba(255, 255, 255, 0.07)" },
+      { "role": "rule", "displayName": "Rule (DrawnRule only)", "value": "rgba(255, 255, 255, 0.15)" },
+      { "role": "scrim", "displayName": "Lightbox scrim", "value": "rgba(4, 4, 4, 0.86)" },
+      { "role": "spectralSeam", "displayName": "Spectral seam gradient", "value": "linear-gradient(90deg, rgb(37 99 235 / 0.82), rgb(124 92 255 / 0.58), rgb(37 99 235 / 0))" },
+      { "role": "seamLens", "displayName": "Lens header rule gradient (pinned, not accent-derived)", "value": "linear-gradient(90deg, transparent, #5575d9, #8b66c9)" },
+      { "role": "seamFocus", "displayName": "Input focus underline gradient", "value": "linear-gradient(90deg, var(--accent), #6d5ede, var(--accent))" }
+    ],
+    "typographyMeta": {
+      "faces": [
+        {
+          "name": "Clash Display",
+          "cssVar": "--font-clash-display",
+          "themeToken": "font-display",
+          "foundry": "Indian Type Foundry",
+          "variableAxis": "200-700",
+          "file": "app/fonts/ClashDisplay-Variable.woff2",
+          "usage": "every display line",
+          "note": "axis stops at 700; font-extrabold on a display element is browser-synthesized, not rendered"
+        },
+        {
+          "name": "Switzer",
+          "cssVar": "--font-switzer",
+          "themeToken": "font-sans",
+          "foundry": "Indian Type Foundry",
+          "variableAxis": "100-900",
+          "file": "app/fonts/Switzer-Variable.woff2",
+          "usage": "body copy and all UI text; document default",
+          "note": "every weight the design uses is real, no synthesis"
+        }
+      ],
+      "mono": null,
+      "monoNote": "deliberately absent; numeric readouts (BPM, durations, EXIF) use tabular-nums on the sans instead",
+      "trackingScale": {
+        "display-xl": "-0.025em",
+        "display-lg": "-0.02em",
+        "display-md": "-0.012em",
+        "display-sm": "0em",
+        "text-sm": "0.01em (small dim text on near-black, meta/micro roles colored dim/dim2)",
+        "uppercaseMicroLabel": "0.08em (its own positive value, exception to text-sm)"
+      },
+      "measureCaps": { "lead": "56ch", "body": "66ch" },
+      "leading": { "lead": 1.75, "body": 1.7 },
+      "wordmarkException": {
+        "element": "SK wordmark in Sidebar",
+        "size": "text-[0.9rem]",
+        "weight": "font-bold",
+        "reason": "a brand mark is not a scale role"
+      },
+      "retuningNote": "tracking values are tuned for Clash Display (narrower, tighter than the previous Epilogue face); retune whenever the display face changes"
+    },
+    "shadows": [
+      {
+        "name": "sidebarRailShadow",
+        "value": "6px 0 28px -8px rgba(0,0,0,0.85)",
+        "purpose": "expanded Sidebar rail reads as a panel floating over the page rather than a wider strip of background",
+        "source": "app/lib/components/Sidebar.tsx"
+      },
+      {
+        "name": "scrollProgressRailBloom",
+        "value": "0 0 20px 2px var(--color-accent)",
+        "purpose": "charges the scroll indicator fill so it reads as lit, not flat",
+        "source": "app/lib/components/shared/ScrollProgressRail.tsx"
+      },
+      {
+        "name": "orbitStageRing",
+        "value": "0 0 0 1px rgb(var(--accent-rgb) / 0.18)",
+        "purpose": "1px accent ring around the loader's orbit node",
+        "source": "app/lib/components/loader/OrbitStage.tsx"
+      },
+      {
+        "name": "signalRuleBloom",
+        "value": "0 6px 14px -7px rgb(var(--accent-rgb) / 0.14) (quiet) or 0.26 (strong)",
+        "purpose": "restrained downward accent bloom on header-scale rules; real offset + blur, explicitly not a zero-offset halo which would read as decoration",
+        "source": "app/lib/components/shared/SignalRule.tsx"
+      }
+    ],
+    "motion": {
+      "easeOut": [0.22, 1, 0.36, 1],
+      "easeOutUse": "primary entrance easing, snappy deceleration",
+      "easePress": "cubic-bezier(0.23, 1, 0.32, 1)",
+      "easePressUse": "sub-200ms CSS/gesture transitions on things you can touch (press/hover feedback), not entrance motion",
+      "springs": {
+        "SPRING_UI": { "type": "spring", "bounce": 0, "duration": 0.4, "use": "chrome that repositions: sidebar rail, panels" },
+        "SPRING_MOMENTUM": { "type": "spring", "bounce": 0.2, "duration": 0.4, "use": "only a release that carried velocity: a flick, a throw, a drag let go" }
+      },
+      "tempo": {
+        "bpm": 92,
+        "beatSeconds": 0.6521739130434783,
+        "helper": "beats(fraction) = (60 / 92) * fraction",
+        "rationale": "single shared timing grid so sequenced animations land on the same underlying pulse instead of arbitrary per-component numbers; a quiet nod to the music-production identity, not a literal audio cue"
+      },
+      "gestureHelpers": {
+        "project": "project(velocity, decelerationRate = 0.998) — exponential-decay projected rest point of a flick, not v^2/2a; commit on projected rest + velocity sign, never raw distance dragged",
+        "rubberband": "rubberband(overshoot, dimension, constant = 0.55) — progressive resistance applied only past a real boundary; applying from the first pixel makes the element lag the finger"
+      },
+      "reducedMotion": "drag gestures keep tracking (not vestibular motion); only the settle changes — spring swaps to { duration: 0 } and overshoot drops"
+    },
+    "breakpoints": {
+      "lg": "single cutoff switching Sidebar between vertical rail (desktop) and top bar (mobile)",
+      "sm/md": "used within either nav mode to step content padding and grid columns, e.g. px-6 sm:px-8 lg:px-12",
+      "railThin": "52px",
+      "railFull": "176px"
+    }
+  },
+  "components": [
+    {
+      "name": "BORDERED_CONTROL",
+      "source": "app/lib/components/shared/controls.ts",
+      "snippet": "inline-flex items-center gap-1.5 border border-border px-[0.875rem] py-[0.45rem] text-[length:var(--text-meta)] text-dim transition-[color,border-color,scale] duration-[120ms] ease-[var(--ease-press)] hover:text-fg active:scale-[0.97] focus-visible:rounded-sm focus-visible:text-fg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+    },
+    {
+      "name": "ICON_LINK_CLASS",
+      "source": "app/lib/components/work/ProjectMeta.tsx",
+      "snippet": "relative rounded-sm text-dim2 transition-[color,scale] duration-[120ms] ease-[var(--ease-press)] before:absolute before:-inset-1 before:content-[''] hover:text-fg active:text-fg active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-bg"
+    },
+    {
+      "name": "ContactForm input",
+      "source": "app/lib/components/contact/ContactForm.tsx",
+      "snippet": "w-full border-0 border-b border-border bg-transparent py-[0.6rem] text-[length:var(--text-body)] text-fg outline-none transition-colors duration-150 placeholder:text-dim2 focus:border-accent"
+    },
+    {
+      "name": "ProjectSkills tag",
+      "source": "app/lib/components/work/ProjectMeta.tsx",
+      "snippet": "text-[length:var(--text-meta)] tracking-[var(--track-text-sm)] text-dim before:mr-1.5 before:text-dim2 before:content-['/']"
+    },
+    {
+      "name": "PlayerBar surface",
+      "source": "app/lib/components/music/PlayerBar.tsx",
+      "snippet": "fixed bottom-0 left-0 right-0 z-30 bg-bg/95 backdrop-blur-xl lg:left-[52px]"
+    },
+    {
+      "name": "Sidebar expanded rail",
+      "source": "app/lib/components/Sidebar.tsx",
+      "snippet": "fixed inset-y-0 left-0 z-50 hidden flex-col justify-center overflow-hidden border-r border-border bg-bg lg:flex backdrop-blur-[14px] shadow-[6px_0_28px_-8px_rgba(0,0,0,0.85)]"
+    },
+    {
+      "name": "Lightbox scrim",
+      "source": "app/lib/components/gallery/Lightbox.tsx",
+      "snippet": "absolute inset-0 backdrop-blur-[18px]; background: var(--scrim)"
+    }
+  ],
+  "narrative": {
+    "northStar": "Instrument panel — a near-black, hairline-ruled engineering surface with one continuous ambient field behind it and a music-derived BPM-92 timing grid.",
+    "overview": "A flat, orthogonal foreground of rules and text sits in front of the site's only volumetric layer, WaveField. Density is high but controlled by a four-role type scale and measure caps; colour is rationed to three greys and one blue, split by contrast role rather than taste. Every reveal times off a shared beat grid instead of a per-component guess, and entrances resolve out of defocus, echoing the ambient layer's own optical language.",
+    "keyCharacteristics": [
+      "Flat and orthogonal in the foreground, volumetric in one background layer only",
+      "Hairlines, not cards — no elevation system, no radius above rounded-sm, no shadow-as-depth",
+      "Three greys, one blue, split by role (accent for shapes, accent-text for words)",
+      "One shared BPM-92 timing grid instead of per-component durations",
+      "Depth by defocus, never by drop shadow"
+    ],
+    "rules": [
+      "accent (#2563eb, 3.87:1) is for shapes only; accent-text (#4478ee, 4.93:1) is required for anything read as words",
+      "no corner radius above rounded-sm anywhere",
+      "only four legitimate shadow uses exist: Sidebar rail, ScrollProgressRail bloom, OrbitStage ring, SignalRule bloom — nothing else may add a shadow",
+      "every display tier is a clamp(); never add an sm:/lg: size step to a display element",
+      "Clash Display's axis tops at 700; font-bold is the ceiling, font-extrabold would be synthesized",
+      "small dim text (meta/micro, colored dim/dim2) takes +0.01em tracking (--track-text-sm); uppercase micro-labels keep their own +0.08em instead",
+      "WaveField is the site's only continuous ambient animation; a second animated background layer is banned",
+      "SK wordmark is the one documented exception to the type scale"
+    ],
+    "dos": [
+      "use text-dim / text-dim2 for de-emphasis",
+      "separate surfaces with a hairline (border or rule) or nothing",
+      "use accent for shapes, accent-text for words",
+      "source every type size from the four text roles and four display tiers",
+      "derive every animation duration from beats() / EASE_OUT / the named springs",
+      "cap corner radius at rounded-sm"
+    ],
+    "donts": [
+      "never dim text with an opacity modifier (text-fg/70 is a guess, not a measured colour)",
+      "never add a second ambient animated background layer",
+      "never use a shadow as card elevation",
+      "never let accent (#2563eb) carry a word",
+      "never introduce a fifth text size or a hand-picked literal size at a callsite",
+      "never reintroduce a kicker/eyebrow label above a heading",
+      "never reach for rounded-lg/rounded-xl or a gradient-pill tag"
+    ]
+  }
+}

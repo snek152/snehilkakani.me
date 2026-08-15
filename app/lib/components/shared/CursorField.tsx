@@ -13,28 +13,14 @@ import { useMotionPreference } from "./MotionPreference";
 type CursorFieldValue = {
   x: MotionValue<number>;
   y: MotionValue<number>;
-  /** Bumped once per rAF-throttled scroll/resize, page-wide — a single
-   * shared invalidation signal every `useProximity` subscriber reacts to,
-   * instead of each one installing its own scroll/resize listener. Cheap
-   * with a handful of subscribers; matters once a page (e.g. a photo
-   * grid) has dozens. */
+
   layoutTick: MotionValue<number>;
-  /** False under reduced motion, coarse/touch pointers, or before the
-   * pointer has moved at all — cheap for consumers to bail out on before
-   * they subscribe to movement. */
+
   active: boolean;
 };
 
 const CursorFieldContext = createContext<CursorFieldValue | null>(null);
 
-/**
- * One shared pointer position for the whole page, held as motion values
- * (not React state) — `CursorGlow` used to track its own `mousemove`
- * listener in isolation; now it and anything else that wants to react to
- * the cursor (`useProximity`) read from this single source. Motion values
- * update outside React's render cycle, so a page full of proximity
- * subscribers never re-renders on every mouse move.
- */
 export function CursorFieldProvider({
   children,
 }: {
@@ -62,8 +48,6 @@ export function CursorFieldProvider({
     return () => window.removeEventListener("mousemove", onMove);
   }, [reduceMotion, isCoarsePointer, x, y]);
 
-  // One rAF-throttled scroll/resize listener for the whole page, not one
-  // per useProximity subscriber.
   useEffect(() => {
     if (reduceMotion || isCoarsePointer) return;
     let scheduled = false;
@@ -102,18 +86,6 @@ export function useCursorField(): CursorFieldValue {
   return ctx;
 }
 
-/**
- * 0 (far) to 1 (cursor centered on the element) closeness between the
- * cursor and `ref`. Recomputed on pointer movement or the shared
- * `layoutTick` (scroll/resize) — subscribed via `on("change", ...)`, not
- * a perpetual `requestAnimationFrame` loop or a per-instance scroll
- * listener. `x` and `y` both change per mousemove event, and every
- * subscriber (potentially dozens, e.g. a photo grid) hears both, so all
- * three signals are rAF-batched into a single rect-read per frame rather
- * than firing `update()` twice per mouse move per element. Returned as a
- * `MotionValue` so callers bind it straight to `style` — no React
- * re-renders for the whole page's worth of subscribers.
- */
 export function useProximity(
   ref: RefObject<HTMLElement | null>,
   radius = 200,

@@ -1,10 +1,5 @@
 import { routeMetadata } from "@/app/lib/metadata";
 
-// Track list and categories come from `app/lib/data/beats.ts`; the album
-// and live-sound claims from the last entry in
-// `app/lib/data/experience.ts`. No counts here on purpose — the library
-// grows, and a description that says "22 beats" is wrong the next time
-// it does.
 export const metadata = routeMetadata({
   title: "Music - Beats and Production",
   description:

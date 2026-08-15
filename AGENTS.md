@@ -2,6 +2,11 @@
 
 This file provides guidance to Codex (Codex.ai/code) when working with code in this repository.
 
+This codebase carries no code comments, by decision — engineering rationale,
+rejected alternatives and measured numbers live here and in `DESIGN.md`
+instead. If you learn something about the code worth remembering, write it
+into one of these two files rather than back into a comment.
+
 ## Commands
 
 ```bash
@@ -197,14 +202,16 @@ a colour chosen for contrast, `text-fg/70` is a guess at one.
 
 **Bullet points** (in lists)
 ```
-<span aria-hidden="true" className="mt-[0.65rem] h-1.5 w-1.5 flex-shrink-0 rounded-full bg-accent/50" />
+<span aria-hidden="true" className="mt-[0.65rem] h-1.5 w-1.5 flex-shrink-0 rounded-full bg-fg/40" />
 ```
 Parent `<li>` uses `flex items-start gap-2.5` — never `items-center` or
 `self-center` on the dot, which misaligns it on wrapped lines. The dot is
 decorative, so it is `aria-hidden`. This used to read `bg-primary/50`, and
 `--color-primary` was kept in `@theme` purely as an alias so that this line
-stayed technically true; the alias is gone and the one callsite now names the
-colour the design actually has. There is exactly one blue.
+stayed technically true; the alias is gone. The colour has since moved again
+— `ExperienceList` (the one caller) now renders the dot at `bg-fg/40`, not
+`bg-accent/50` — so this line is corrected to match the code rather than the
+other way around.
 
 **Animations** — standard entrance pattern, applied directly on a
 `motion.*` element:
@@ -245,14 +252,13 @@ would have to actually be adopted.
 nobody interrupts, which is why a fixed duration on the BPM-92 grid is the
 right tool. Anything a hand can touch takes a spring instead, because a
 duration cannot answer new input — a grabbed or reversed drag has to animate
-from wherever the value currently is. `app/lib/motion.ts` exports three, in
+from wherever the value currently is. `app/lib/motion.ts` exports two, in
 Apple's two-parameter form (`bounce` is the damping ratio inverted, `duration`
 is the response — how fast it reaches the target, not how long it may take):
 
 |Spring|Values|For|
 |---|---|---|
 |`SPRING_UI`|`bounce 0`, `0.4`|chrome that repositions: the sidebar rail, panels|
-|`SPRING_DRAWER`|`bounce 0`, `0.3`|sheets and drawers|
 |`SPRING_MOMENTUM`|`bounce 0.2`, `0.4`|**only** a release that carried velocity|
 
 Overshoot is earned. `bounce > 0` belongs solely where the gesture itself had
@@ -385,3 +391,280 @@ scrollable overflow: the accent segment needed `overflow-hidden` on its wrapper
 or every struck page gained ~250px of horizontal scroll.
 
 **Experience data ordering** — most recent first in `experience.ts`.
+
+## Implementation Notes
+
+This section is where the reasoning that used to live in code comments went
+when the comments were deleted. Same rule as everywhere else in this file:
+every number here was read from the source, not estimated.
+
+### Shell, routing, and the fixed transport
+
+- `PlayerBar` renders through `createPortal` into `document.body`, and must.
+  `template.tsx` animates each route's `clip-path` from `inset(0 100% 0 0%)`
+  (or the mirror, depending on direction) to `inset(0 0% 0 0%)`. A `clip-path`
+  clips every descendant including `position: fixed` ones, and the wrapper's
+  box ends where the page content ends — rendered in place, the transport was
+  clipped out of existence (not painted, not hit-testable) the moment the
+  footer owned the bottom of the window. Three fixes were tried and rejected:
+  dropping `clipPath` from the animation target (motion falls back to
+  rendering `initial`, which clips the whole route away), overriding the clip
+  via `style` (motion writes animated values imperatively after React's
+  commit and wins), and animating to `none` (not interpolatable, so it is
+  ignored and the settled inset stays). The rule that follows is structural:
+  any other `position: fixed` UI mounted inside a route must portal out too.
+  The portal reproduces its in-page layering with `z-30` — above the `z-0`
+  fixed backdrops, below the scroll rail and the sidebar.
+- `Footer` takes a `bottomReserve` prop (in px) rather than relying on a
+  sibling spacer for the transport's footprint — a spacer made the document
+  taller than the footer's own background, so max scroll ended in a band of
+  empty page below the footer. `AppShell`'s `FooterWithClearance` derives the
+  value from `useMusicPlayer().activeIndex` and passes `TRANSPORT_CLEARANCE`
+  (`64`, `AppShell.tsx`, exactly `PlayerBar`'s pinned height) whenever a track
+  is loaded, on any route.
+- `AppShell`'s nav `direction` (`1` forward / `-1` back / `0` initial or
+  same-route, through `navItems`) is computed synchronously during render,
+  not in an effect, so it is already in context by the time the incoming
+  route's `template.tsx` reads its `initial` clip position. The tracking ref
+  advances in a *following* `useEffect` — this render reads the OLD ref
+  value, and the effect sets it for the NEXT navigation.
+
+### The intro gate
+
+- `loader-gate.ts` + `app/layout.tsx` + `globals.css`: the skip decision runs
+  as a synchronous `<script>` in `<head>`, not a `useEffect`, because every
+  route is statically prerendered and `LoadingScreen` ships inside that HTML
+  as an opaque `fixed inset-0 z-[9999]` layer — the browser paints it before
+  any JS runs, so an effect-based decision leaves a returning visitor
+  watching the loader until hydration finishes. `LOADER_GATE_SCRIPT` reads
+  the `lastVisitTimestamp` key from `localStorage` (wrapped in `try/catch`:
+  Safari private mode throws on access rather than returning `null`) and, if
+  within `LOADER_INTERVAL_MS` (24h), sets `data-loader-seen="1"` on `<html>`.
+  `globals.css` keys `html[data-loader-seen="1"] [data-loader] { display:
+  none; }` off that attribute — `display`, not `opacity`, because the layer
+  must also stop swallowing the first click during hydration. The visit is
+  stamped seen by `stampLoaderSeen()` when the intro actually *finishes*, not
+  when it starts, so closing the tab mid-animation does not suppress it for
+  a day.
+- `suppressHydrationWarning` on `<html>` in `app/layout.tsx` is required, and
+  scoped to exactly that element: the gate script sets `data-loader-seen`
+  before React hydrates, so server and client legitimately disagree about
+  that one attribute. Moving the flag to `<body>` or a wrapper stops it
+  covering the attribute that actually differs.
+
+### Audio
+
+- `useAudioAnalyser`'s `ensureAnalyser()` must be called synchronously
+  inside the real click handler that starts playback, before `audio.play()`
+  — never from an effect reacting to state, which runs several hops (state
+  update, re-render, commit) removed from the gesture and can leave the
+  `AudioContext` suspended, silently muting playback once output is routed
+  through it. It is safe to call on every play attempt because
+  `createMediaElementSource` can only be called once ever per `<audio>`
+  element; the context and node are created once and reused.
+- `level` — one bass-weighted scalar (0–1, resting at a true `0` in
+  silence) — is the single signal lighting both `CursorGlow` and
+  `PlayerBar`'s bloom, and it lives on `MusicPlayerProvider` because the
+  transport is what knows the signal. Silence must cost nothing. `bars`
+  (the five-band meter) rests at a visible `0.12` instead, so the idle meter
+  reads as a shape rather than a gap.
+- Attack/release smoothing on `level` is deliberately asymmetric (`ATTACK
+  0.5`, `RELEASE 0.075`) so it reads as light glowing and fading rather than
+  a twitching meter; equal attack and release reads as a gauge.
+- `toggleTrack` branches on `playbackState`, not `audio.paused`: while a
+  track is `loading`, `play()` has already fired but `audio.paused` can
+  still read `true` until the browser actually produces frames. Branching on
+  it made a button showing "Pause" fall into the play branch and restart the
+  same load instead of cancelling it.
+- `formatTime` (`format.ts`) returns `--:--` for any value `<= 0`, correct
+  for an unknown duration and wrong for a playhead at rest. `PlayerBar`
+  special-cases `currentTime > 0 ? formatTime(currentTime) : "0:00"` for the
+  elapsed label so a track sitting at the start reads `0:00`, not `--:--`.
+
+### Gallery and lightbox
+
+- `Lightbox` preloads neighbours by rendering them hidden through the same
+  `next/image` props the visible image uses (`loading="eager"` — the default
+  is lazy, and a zero-opacity offscreen image is never fetched), not by
+  warming the raw file URL. `next/image` actually requests
+  `/_next/image?url=%2Fphotos%2Ffoo.jpg&w=...&q=75`; warming
+  `/photos/foo.jpg` downloads the untouched original — up to 4.6MB in this
+  gallery — competing for bandwidth with the image actually being displayed,
+  and warms a URL the lightbox never requests.
+- `Lightbox` uses a manual dual-layer crossfade (old frame stays opaque
+  underneath, new frame mounts and fades in over it, old layer is dropped)
+  instead of a nested `AnimatePresence`, because a nested `AnimatePresence`
+  previously stalled the *outer* dialog's own exit — its `onExitComplete`
+  never fired.
+- `Lightbox` implements its own Tab focus trap because it is a portal-less
+  overlay stacked on top of the page, unlike `PlayerBar`; without it, Tab
+  walks straight into the page content behind the dialog.
+- `getPhotoDims` (`photo-dims.ts`) throws at render on a missing entry
+  rather than handing `next/image` a fallback size, which would reintroduce
+  layout shift or a distorted aspect ratio for that cell. Regenerate
+  `photo-dims.generated.ts` with `npm run gen:dims` after adding or removing
+  photos.
+- `JustifiedGrid` seeds its width synchronously via
+  `el.getBoundingClientRect().width` before installing its
+  `ResizeObserver`, because the observer only guarantees a callback when it
+  has an observation to report — mounted inside a route already at final
+  size (as `template.tsx`'s transition layer does), the first callback never
+  arrives, width stays `0`, and the grid packs zero rows.
+- `GalleryCell` has no viewfinder corner ticks: they were previously driven
+  from React state, and the browser restoring focus to the cell's button
+  when the lightbox closed fired `onFocus` and left the corner marks stuck
+  on with the pointer nowhere near it. The caption lift (dim to full weight)
+  is pure CSS instead, so there is no interaction state left to get stuck.
+- `Lightbox` drag commit reads velocity from a short rolling history of the
+  last few pointer samples, not total distance over total gesture time —
+  that is what lets a slow long drag fail to commit while a fast short flick
+  commits. Release velocity feeds `project(velocity)` (see Durations vs.
+  springs above) to decide the projected rest position.
+
+### Forms
+
+- `mailto.ts`'s `buildMailtoUrl` handoff is declined outright above
+  `MAILTO_MAX_SAFE_LENGTH` (`1900`) rather than attempted truncated. Real
+  `mailto:` URL caps sit around 2048–2083 characters depending on OS/client;
+  1900 leaves headroom under the lowest of them. Past the limit the draft
+  opens silently truncated or not at all, and because the handoff is
+  undetectable either way, `ContactForm` declines it entirely rather than
+  telling the visitor "your mail app should have opened" about text that was
+  quietly cut in half.
+- `ContactForm.submit` only treats a `res.ok` response from
+  `NEXT_PUBLIC_CONTACT_ENDPOINT` as delivered — a resolved `fetch` proves
+  the request completed, not that the server accepted it, and a 500 that
+  reported success would be exactly the lie the mailto path exists to avoid.
+  The draft (name, email, message) is never cleared on either the success or
+  failure path; it stays in state so the confirmation screen can show it
+  back or offer it as a copyable fallback.
+- Field validation runs on submit, and on blur of a field the visitor
+  actually filled in — never per keystroke, which is nagging, and never on
+  blur of a field left empty (that is the submit gate's job, not a reason to
+  nag someone who hasn't reached it yet). Any edit clears that field's error
+  immediately via `clearError`.
+
+### Accessibility mechanics
+
+- Two hit-slop extenders use an absolutely-positioned, contentful
+  `::before` to grow the tap target without resizing the visible element or
+  shifting the row: `Footer`'s icon+label links use `before:-inset-2` (8px a
+  side) on a `gap-5` (20px) floor, leaving 4px of clearance between adjacent
+  hit areas; `ProjectMeta`'s `ICON_LINK_CLASS` uses `before:-inset-1` (4px a
+  side, lifting a 19×19 icon to a 27×27 target, clearing the WCAG 2.5.8
+  24×24 floor) on a `gap-3.5` (14px) floor, leaving 6px of clearance. Both
+  use opacity, not a transform, as the press signal — a transform would
+  scale the `::before` extender along with the element and shrink the
+  target at the exact moment a thumb is pressing it.
+- `PlayerBar`'s skip buttons use `before:-inset-3.5` (14px, a 44px target
+  around a 16px icon) at rest and `before:-inset-4.5` (a 52px box) at
+  `active:scale-90`: 52 × 0.9 = 46.8px, which keeps the target over the 44px
+  floor for the whole press, so a tap started at the edge cannot slip
+  outside it before release.
+- `RoleCycle` exposes the full, comma-joined role list once, statically, in
+  an `sr-only` span, and never `aria-live` (which would re-announce it every
+  `HOLD_MS`). Two earlier approaches failed: a single `aria-live="off"` node
+  holding the churning glyphs stopped the churn being *announced* but still
+  left mid-decode glyphs as the text a reader landed on; exposing only
+  `ROLES[index]` fixed that but lost the cycle itself — the site's central
+  "range" claim.
+- `ManifestoHeading` keeps the heading's real text in the DOM as an
+  `sr-only` span rather than an `aria-label` over `&nbsp;`, because
+  assistive tech takes an `h1`'s accessible name from its content, not an
+  attribute alone.
+- `useScrambleText`'s glyph set (`0123456789#%&*+=~<>/|`) is deliberately
+  letter-free. An earlier 65%-alphabetic set (`A-Z0-9#%&*`) made a
+  mid-decode word read as the same word MISSPELLED rather than assembling —
+  caught in the wild as `Full-Stack Developer` rendering mid-decode as
+  "Full-Stack Develoler" and the Experience heading as "V488rMC56L" — which
+  reads as a typo on a page whose whole job is credibility. Its
+  `decodedRef` is keyed to the decoded TEXT, not a boolean: a caller that
+  holds `active` true while swapping `text` (a cycling label, not a
+  one-shot reveal) got its first decode and then silently displayed the
+  stale string forever against a bare "has started" flag.
+
+### Motion details beyond the general rule
+
+- `MusicPage`'s row stagger caps at `Math.min(position, 6) * beats(0.04)`.
+  The previous grid (0.05-beat step, capped at ten) put `0.33s` between the
+  first and last row landing, long enough to watch rows queue up; the
+  smaller step and lower cap roughly halve the span to `0.16s`.
+- `ExperienceList` rows keep their own `-6%` bottom `viewport` margin and
+  deliberately do NOT match `DrawnRule`'s `240px` `DRAW_LEAD` — matching
+  them would couple a structural rule to a content reveal just to force
+  lockstep. The huge top margin (`100000px 0px -6% 0px`) fixes a measured
+  bug: 10 skill chips invisible on desktop and 15 on mobile after jumping to
+  the foot of the page.
+- `ExperienceList` rows stagger in exactly two steps — the date column,
+  then the company-plus-bullets column as one unit `beats(0.1)` behind it —
+  not three; a third step (splitting heading from bullets) reads as a
+  cascade rather than "when, then what".
+- `DrawnRule`'s `DRAW_LEAD` is `240` (px, deliberately not `%`: a percentage
+  root margin resolves against the root's *width*, meaningless for a
+  vertical lead), tuned from two rejected values: `-6%` (~54px, too low to
+  be watched) and a positive `72px` (started the draw below the fold, so it
+  finished before the rule ever appeared). A rule within `DRAW_LEAD` of the
+  end of the document is detected on mount and resize and rendered simply
+  present rather than stuck at `scaleX: 0` forever — measured as six
+  permanently undrawn separators at the foot of `/music` before the
+  fallback existed. Deliberately not a `ResizeObserver` per rule: static
+  image imports already reserve their aspect ratio, so a window resize pass
+  is enough.
+- `OrbitStage` shares one fixed `RELEASE_MS` (`1000`ms) window across every
+  staggered release element: each gets a start delay and a correspondingly
+  shorter duration so all reach full dissolve on the same frame. Its
+  spin-in-place release dropped an old `x: -110, y: 160` translation that
+  used to ride along with the spin — the assembly travelled to an offset
+  with nothing at it, ending a centred composition by sliding into open
+  page; it now turns and closes in place.
+- `Sidebar`'s mobile nav gap ramps via an inline
+  `clamp(0.75rem, calc(0.75rem + (100vw - 320px) * 0.12), 1.5rem)` — 12px at
+  320px up to 24px at 420px — with the middle term wrapped in `calc()` so no
+  engine treats the bare arithmetic as unparseable and drops `gap` to
+  `normal`. At a fixed 24px gap the five nav labels plus the `SK` wordmark
+  overflowed the document by 8px at a 320px viewport.
+- `Footer`'s icon+label row measures 341px and cannot fit inside the
+  footer's 24px side padding until ~420px (45px past the document edge at
+  320px). Below 420px the icons drop and the labels stay: the label names
+  the destination, the icon is decoration, and decoration is what gives
+  way. Label-only, the row is 193px.
+- `fadeUp`'s entrance blur is the one non-compositor CSS property used
+  anywhere outside the wave canvas, deliberately scoped to bounded,
+  one-shot entrances and never to anything continuous or gesture-driven.
+
+### Metadata and data ordering
+
+- `routeMetadata()` (`app/lib/metadata.ts`) exists because a child
+  segment's `metadata.openGraph` / `metadata.twitter` *replace* the
+  parent's object outright rather than merging field by field — a route
+  setting only `openGraph: { title, description }` silently drops
+  `og:site_name` / `og:locale` / `og:type`, and one setting only
+  `twitter: { title }` downgrades `twitter:card` from
+  `summary_large_image` to `summary`. Verified against the running dev
+  server, not assumed.
+- Every route description is grounded in a data module and must be kept in
+  step with it: `/builds` names the projects and the Innovation Quest 2nd
+  place from `projects.ts`; `/lens` names the real shoot locations from
+  `photos.ts`; `/music` deliberately carries no beat count, because the
+  library grows and a hardcoded number goes stale; `/reach`'s "freelance
+  web work" line is grounded in the live Freelance Website Developer entry
+  (Jun 2021–Present) in `experience.ts`; the root title/description are
+  grounded in `experience.ts`'s first (most recent) entry.
+- `beats.ts`'s array order IS the running order on `/music` — nothing sorts
+  at render. It is sequenced, not alphabetical (alphabetical order used to
+  open on "Alien Trap" next to "Alien Trap 3", reading like a directory
+  listing of variants), under three rules: no two adjacent entries share a
+  `category`; the first five rows cover all five categories, so the top of
+  the page demonstrates range before a visitor decides to keep scrolling;
+  and name variants never sit adjacent while tempo swings between
+  neighbours. `Ascension` leads deliberately, as the most immediately
+  genre-legible entry (160 BPM). Reorder freely but keep the three rules —
+  do not re-alphabetize.
+- `RoleCycle`'s `ROLES` order is load-bearing: index 0 is what
+  reduced-motion visitors see permanently and what a recruiter reads first,
+  so an engineering title leads (`"Software Engineer"`); the rest are
+  interleaved so no two non-engineering roles sit adjacent.
+- Regenerate `photo-dims.generated.ts` with `npm run gen:dims`
+  (`scripts/gen-photo-dims.mjs`) after adding or removing photos.
+- `app/lib/nav.ts`'s `NavItem.end` marks the one route (`/`) that needs
+  exact-match active state; every other route matches by prefix.

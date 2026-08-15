@@ -5,11 +5,6 @@ import { EASE_OUT } from "@/app/lib/motion";
 import { beats } from "@/app/lib/tempo";
 import { useMotionPreference } from "./MotionPreference";
 
-/**
- * A header-scale rule: a quiet structural border carrying the same restrained
- * blue cast as the persistent transport. It is intentionally distinct from
- * DrawnRule, which introduces content rows as the reader reaches them.
- */
 export default function SignalRule({
   draw = true,
   delay = 0,

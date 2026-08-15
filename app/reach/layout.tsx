@@ -1,8 +1,5 @@
 import { routeMetadata } from "@/app/lib/metadata";
 
-// "Freelance web work" is a live engagement in
-// `app/lib/data/experience.ts` (Freelance Website Developer, Jun 2021 -
-// Present), not a hopeful offer.
 export const metadata = routeMetadata({
   title: "Reach - Contact",
   description:

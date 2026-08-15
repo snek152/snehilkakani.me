@@ -95,37 +95,4 @@ export const experiences: Experience[] = [
       "project management",
     ],
   },
-  // {
-  //   title: "Director of Technology & CS Instructor",
-  //   company: "STEMist Education",
-  //   location: "San Jose, CA",
-  //   period: "Jan 2022 - Jan 2023",
-  //   description: [
-  //     "Built the organization's website from scratch and led a developer team to ship new features and improvements",
-  //     "Designed and taught a structured CS curriculum covering programming fundamentals and web development",
-  //     "Guided students through end-to-end coding projects, from concept to working software, with hands-on mentorship",
-  //   ],
-  //   skills: [
-  //     "web development",
-  //     "leadership",
-  //     "curriculum development",
-  //     "mentorship",
-  //   ],
-  // },
-  // {
-  //   title: "Music Producer & Audio Engineer",
-  //   company: "Freelance/Independent",
-  //   location: "Remote",
-  //   period: "Nov 2022 - Present",
-  //   description: [
-  //     "Produced and released hip-hop albums across streaming platforms, collaborating with multiple artists",
-  //     "Served as Head of Sound for multiple theatre productions, managing live audio systems",
-  //   ],
-  //   skills: [
-  //     "audio engineering",
-  //     "sound design",
-  //     "collaboration",
-  //     "creative direction",
-  //   ],
-  // },
 ];

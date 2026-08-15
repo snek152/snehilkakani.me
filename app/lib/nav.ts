@@ -11,7 +11,7 @@ export type NavItem = {
   href: string;
   label: string;
   Icon: LucideIcon;
-  /** Exact-match required for active state (e.g. "/") */
+
   end: boolean;
 };
 

@@ -12,46 +12,6 @@ import { formatTime } from "./format";
 
 type PlaybackState = "loading" | "playing" | "paused" | "error";
 
-/**
- * The fixed transport — the track list's own grid, continued.
- *
- * It is deliberately not a media-player slab docked to the window. It
- * reuses the page container's padding and the row's four-column grid, so
- * the playing track sits column-for-column under the list: title where
- * titles are, the line about the track where the list puts it, tempo
- * where tempo is, and the clock in the column the durations live in.
- * Nothing about it is centred on the window; everything is aligned to
- * the list.
- *
- * The bar's top hairline *is* the progress rule — the same 1px
- * `border` line that separates every row, inset to the same width,
- * filling with accent as the track plays. There is no second scrubber
- * floating above it. The native `<input type="range">` is still there as
- * a transparent 12px band straddling that rule, so dragging, keyboard
- * seeking and screen-reader semantics are untouched; focusing it
- * thickens the rule to 3px, which is the only visible chrome the
- * scrubber ever gets.
- *
- * The one allowed flourish: while a track plays, the fill breathes at
- * *that track's* tempo (`beat.tempo`), not the page's BPM-92 grid — this
- * stays entirely inside the player and never touches entrance timing.
- *
- * Height is pinned to `TRANSPORT_CLEARANCE`, the exact amount `AppShell`
- * has `Footer` reserve inside its own surface, so the page's maximum
- * scroll ends on the footer's background rather than in empty space
- * below it.
- *
- * It renders through a portal into `document.body`, and has to. The route
- * wrapper in `app/template.tsx` animates `clip-path` and settles on
- * `inset(0 0% 0 0%)` — a clip-path clips every descendant including
- * `position: fixed` ones, and that wrapper's box stops where the page
- * content stops. Rendered in place, the transport was clipped out of
- * existence the moment you scrolled far enough for the footer to own the
- * bottom of the window: not painted, not hit-testable, simply gone. The
- * portal puts it outside that clip. `z-30` reproduces the layering it had
- * inside the page column — above the fixed backdrops at `z-0`, below the
- * scroll rail and the sidebar.
- */
 export default function PlayerBar({
   active,
   error,
@@ -71,18 +31,14 @@ export default function PlayerBar({
   playbackState: PlaybackState;
   currentTime: number;
   duration: number;
-  /** Baked fallback length (from BEAT_DURATIONS) shown in the time labels
-   * before the audio element's real `duration` is known — the seek range
-   * below still uses the real `duration` for its bounds, since that's the
-   * only value the browser can actually scrub against. */
+
   displayDuration: number;
   activeIndex: number | null;
   totalTracks: number;
   onToggle: () => void;
   onSkip: (direction: 1 | -1) => void;
   onScrub: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  /** Live spectral energy of the playing track, 0..1. Lights the signal line
-   * below — the same value that lights the whole page through `CursorGlow`. */
+
   level: MotionValue<number>;
 }) {
   const reduceMotion = useMotionPreference();
@@ -92,27 +48,18 @@ export default function PlayerBar({
   const beatSeconds = active ? 60 / active.tempo : 0;
   const pulseActive = isPlaying && !reduceMotion && beatSeconds > 0;
   const knownDuration = displayDuration > 0;
-  /* Hoisted above the `!active` early return: hooks must run in the same order
-   * on every render, and this one feeds the signal-line bloom far below. */
+
   const bloom = useTransform(level, [0, 1], [0, 0.5]);
 
   if (!active) return null;
 
   const secondary = error ?? active.description ?? "";
-  // `formatTime` returns the unknown-length placeholder for 0, which is
-  // right for a duration and wrong for a playhead: a track sitting at the
-  // start is at 0:00, not at an unknown time.
+
   const elapsed = currentTime > 0 ? formatTime(currentTime) : "0:00";
   const clock = knownDuration ? `${elapsed} / ${formatTime(displayDuration)}` : "--:-- / --:--";
 
-  // `active` only becomes non-null through a click, so this never runs
-  // during SSR or the hydrating render — `document` is always there.
   return createPortal(
     <motion.div
-      // The bar is the site's one persistent translucent surface. The
-      // attribute is what `globals.css` keys its reduced-transparency and
-      // high-contrast overrides off; without it this stays blurred for
-      // people who asked for it not to be.
       data-material=""
       initial={reduceMotion ? false : { y: 12, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
@@ -120,9 +67,7 @@ export default function PlayerBar({
       style={{ height: TRANSPORT_CLEARANCE }}
       className="fixed bottom-0 left-0 right-0 z-30 bg-bg/95 backdrop-blur-xl lg:left-[52px]"
     >
-      {/* Same horizontal padding as the music page's own container, so the
-        * rule and the grid below inherit the list's geometry exactly rather
-        * than approximating it. */}
+
       <div className="h-full px-6 sm:px-8 lg:px-12">
         <div className="group relative h-full">
           <input
@@ -142,21 +87,6 @@ export default function PlayerBar({
             className="peer absolute inset-x-0 -top-5 h-11 w-full cursor-pointer appearance-none bg-transparent opacity-0 disabled:cursor-default"
           />
 
-          {/* The signal line, glowing with what is passing through it.
-            *
-            * The hairline above already carries elapsed progress in `accent`.
-            * This is the same line's light, bleeding a short way down into the
-            * bar and rising and falling with real spectral energy — the
-            * transport is the instrument doing the playing, so it is the one
-            * surface that should visibly respond to the signal. Same `level`
-            * that lights the page through `CursorGlow`; one source, two
-            * consumers.
-            *
-            * Deliberately 20px and capped low: the controls sit centred in a
-            * 64px bar, so the gradient is spent before it reaches the track
-            * name and cannot eat into text contrast. `opacity` only, so the
-            * frame stays compositor-only, and it is worth exactly nothing in
-            * silence — `level` rests at 0. */}
           <motion.span
             aria-hidden="true"
             className="pointer-events-none absolute inset-x-0 top-0 h-5"
@@ -167,8 +97,6 @@ export default function PlayerBar({
             }}
           />
 
-          {/* The bar's top edge, the list's row separator and the scrubber
-            * track are all this one line. */}
           <span
             aria-hidden="true"
             className="pointer-events-none absolute inset-x-0 top-0 h-px overflow-hidden bg-border transition-[height,background-color] duration-150 ease-[var(--ease-press)] peer-active:h-[3px] peer-active:bg-dim2 peer-focus-visible:h-[3px] peer-focus-visible:bg-dim2"
@@ -183,15 +111,7 @@ export default function PlayerBar({
                   : { duration: 0 }
               }
             />
-            {/* The accent's arrival at the transport, not the row's rule
-              * switching colour on its own — the same accent that just
-              * struck the active row's rule (`TrackRow`'s `!bg-accent`)
-              * continues down into this hairline a beat later, drawn in
-              * with `scaleX` from the side the progress fill grows from
-              * rather than snapping on. It settles by fading out once
-              * drawn, leaving the real elapsed-progress fill above to
-              * carry the accent from here on — this is the handoff, not
-              * a second progress indicator. */}
+
             {!reduceMotion && (
               <motion.span
                 key={activeIndex}
@@ -212,41 +132,24 @@ export default function PlayerBar({
             )}
           </span>
 
-          {/* Accent handle at the current playhead — purely an affordance
-            * signalling the line is draggable. `pointer-events-none` keeps
-            * it out of the native range input's hit area; the input still
-            * owns all seeking, keyboard and screen-reader behaviour. It's
-            * invisible at rest and appears on hover of the transport, on
-            * focus of the range input, and while dragging (peer-active).
-            * Reduced motion keeps the dot visible on those states — it's
-            * an affordance, not decoration — and only drops the
-            * opacity/scale transition. */}
           <span
             aria-hidden="true"
             style={{ left: `${pct}%` }}
             className="pointer-events-none absolute top-0 h-[7px] w-[7px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent opacity-0 transition-[opacity,scale] duration-[120ms] ease-[var(--ease-press)] motion-reduce:transition-none group-hover:opacity-100 peer-focus-visible:opacity-100 peer-active:opacity-100 peer-active:scale-125"
           />
 
-          {/* Single announcement channel. The visible copies below are
-            * marked aria-hidden so an error is never read twice. */}
           <p className="sr-only" role={error ? "alert" : "status"} aria-live="polite">
             {error ?? ""}
           </p>
 
           <div className="flex h-full items-center gap-4 px-2 lg:grid lg:grid-cols-4 lg:gap-x-4">
             <div className="flex min-w-0 flex-1 items-center gap-4">
-              {/* Holds the width of the row's play-state glyph so the title
-                * starts on the same x as every title in the list. */}
               <span className="hidden w-5 shrink-0 lg:block" aria-hidden="true" />
               <span className="min-w-0 flex-1">
                 <span className="block truncate font-sans text-[length:var(--text-meta)] font-semibold text-fg">
                   {active.name}
                 </span>
-                {/* Below `lg` the description is skipped — the row it came
-                  * from is a few pixels above and says it in full, and
-                  * stealing a second line here only bought a version of it
-                  * truncated to nothing. An error has no other home, so it
-                  * still gets the line. */}
+
                 {error && (
                   <span aria-hidden="true" className="block truncate font-sans text-[length:var(--text-meta)] tracking-[var(--track-text-sm)] text-dim lg:hidden">
                     {error}
@@ -268,9 +171,7 @@ export default function PlayerBar({
               <span className="hidden text-[length:var(--text-micro)] tracking-[var(--track-text-sm)] tabular-nums xl:inline">
                 {active.tempo} BPM
               </span>
-              {/* Stacked below `lg`: side by side the clock and the three
-                * controls took 166 of the 326px available and left the
-                * title 151px, narrow enough to cut real track names. */}
+
               <span className="ml-auto flex flex-col items-end gap-1.5 lg:flex-row lg:items-center lg:gap-6">
                 <span className="text-[length:var(--text-micro)] tracking-[var(--track-text-sm)] tabular-nums">{clock}</span>
                 <span className="flex items-center gap-3 lg:gap-4">
@@ -279,50 +180,16 @@ export default function PlayerBar({
                     onClick={() => onSkip(-1)}
                     disabled={activeIndex === 0}
                     aria-label="Previous track"
-                    // `-inset-3.5` (14px) pads the 16px icon out to a 44px
-                    // tap target via an invisible `::before`, without
-                    // resizing the button itself — resizing would have
-                    // shoved the play button and the clock over.
-                    //
-                    // The press scale is 0.90 rather than the site's 0.97:
-                    // on a 16px glyph a 3% shrink is half a pixel and reads
-                    // as nothing at all. The `::before` is a descendant, so
-                    // it scales too — the press therefore also widens it to
-                    // `-inset-4.5` (a 52px box), and 52 × 0.9 = 46.8px, so
-                    // the target stays over 44px for the whole time the
-                    // finger is down and a tap started at its edge can't
-                    // slip outside it before the release.
                     className="relative text-dim2 transition-[color,scale] duration-[120ms] ease-[var(--ease-press)] before:absolute before:-inset-3.5 before:content-[''] hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent active:scale-90 active:text-fg active:before:-inset-4.5 disabled:pointer-events-none disabled:opacity-30"
                   >
                     <SkipBack size={16} strokeWidth={1.5} aria-hidden="true" />
                   </button>
-                  {/* A hairline rectangle, the same idiom as the contact
-                    * form's and the study page's buttons — not a filled
-                    * pill, and deliberately not accent-coloured either.
-                    * The accent in this bar means one thing (elapsed
-                    * progress, and the active row's rule); spending it on
-                    * a button that is already unambiguous from its glyph
-                    * would cost the rule its meaning. */}
+
                   <button
                     type="button"
                     onClick={onToggle}
                     aria-label={isPlaybackActive ? "Pause" : "Play"}
-                    // Same invisible `::before` padding technique: the
-                    // visible 28px square is unchanged, `-inset-2` (8px)
-                    // brings the tap target to 44px — and `-inset-3` (52px,
-                    // 46.8px once scaled) while held, for the same reason
-                    // as the skip buttons.
-                    //
-                    // Two press channels, one of which isn't movement: the
-                    // box contracts *and* the hairline fills. Every other
-                    // control here has a non-motion signal already (the
-                    // skip glyphs brighten, the row and the filters dim),
-                    // and this was the only one that would have gone silent
-                    // on a display or a preference where a 2.8px contraction
-                    // doesn't read. The fill is neutral, not accent —
-                    // accent in this bar means elapsed progress. The border
-                    // is left to hover and focus so a keyboard activation
-                    // doesn't blink the accent focus border off mid-press.
+
                     className="relative flex h-7 w-7 items-center justify-center border border-border text-fg transition-[color,background-color,border-color,scale] duration-[120ms] ease-[var(--ease-press)] before:absolute before:-inset-2 before:content-[''] hover:border-dim focus:outline-none focus-visible:border-accent focus-visible:text-accent active:scale-90 active:bg-white/[0.07] active:before:-inset-3"
                   >
                     {isPlaybackActive ? (

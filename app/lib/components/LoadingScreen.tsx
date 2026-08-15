@@ -4,15 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import OrbitStage, { RELEASE_MS } from "./loader/OrbitStage";
 
-/**
- * The `/loader-orbit` study mechanic (see `OrbitStage`), shown once per
- * session, scaled up for full-viewport presence. `complete` flips at the
- * same mark the study page uses. The local update commits before the parent
- * begins the backdrop exit, so this now-releasing, aria-hidden layer no
- * longer captures input during its own fade. The backdrop's exit fade shares
- * `RELEASE_MS` with `OrbitStage` so the black backdrop and the marks/lines/
- * group finish dissolving together.
- */
 const COMPLETE_MS = 1500;
 const EXIT_MS = RELEASE_MS;
 
@@ -41,8 +32,6 @@ export default function LoadingScreen({ onDone }: { onDone: () => void }) {
     };
   }, [prefersReducedMotion]);
 
-  /* Any pointer or key-based skip advances straight to the same `complete`
-   * state the timer sets, and cancels that timer so it cannot also fire. */
   const skip = () => {
     if (completeTimerRef.current !== null) {
       window.clearTimeout(completeTimerRef.current);
@@ -56,21 +45,12 @@ export default function LoadingScreen({ onDone }: { onDone: () => void }) {
     overlayRef.current?.focus();
   }, [prefersReducedMotion]);
 
-  /* Schedule the parent handoff one task after the local `complete` render.
-   * React batches timer updates, so calling `onDone` alongside `setComplete`
-   * can move this exiting child into AnimatePresence with its pre-complete
-   * class still attached (`pointer-events: auto`). */
   useEffect(() => {
     if (!complete) return;
     const doneTimer = window.setTimeout(() => onDoneRef.current(), 0);
     return () => window.clearTimeout(doneTimer);
   }, [complete]);
 
-  /* The opaque gather intentionally owns the screen. Once `complete` starts,
-   * though, the page is visible beneath a decorative, aria-hidden exit; it
-   * must stop intercepting input immediately rather than holding clicks for
-   * the 800ms release. This also prevents a stalled exit animation from
-   * trapping the entire page behind an inert overlay. */
   if (prefersReducedMotion) {
     return <div data-loader className="fixed inset-0 z-[9999] bg-bg" />;
   }

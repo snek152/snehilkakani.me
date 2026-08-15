@@ -25,10 +25,7 @@ interface MusicPlayerContextValue {
   currentTime: number;
   duration: number;
   bars: MotionValue<number>[];
-  /** Bass-weighted spectral energy of whatever is playing, 0..1, resting at a
-   * true 0 in silence. The site's ambient light reads this: see `CursorGlow`.
-   * Lives on the transport because the transport is what knows — the light is
-   * downstream of the sound, not a second clock running beside it. */
+
   level: MotionValue<number>;
   playTrack: (index: number) => void;
   toggleTrack: (index: number) => void;
@@ -38,12 +35,6 @@ interface MusicPlayerContextValue {
 
 const MusicPlayerContext = createContext<MusicPlayerContextValue | null>(null);
 
-/**
- * Read the shared transport's state and controls. Must be used under
- * `MusicPlayerProvider` (mounted once in `AppShell`, above every route),
- * so the route that drives it — currently only `/music` — never owns an
- * `<audio>` element of its own.
- */
 export function useMusicPlayer() {
   const ctx = useContext(MusicPlayerContext);
   if (!ctx) {
@@ -52,18 +43,6 @@ export function useMusicPlayer() {
   return ctx;
 }
 
-/**
- * Owns the single `<audio>` element, all playback state, and the fixed
- * `PlayerBar` for the whole app.
- *
- * Mounted once in `AppShell`, above the route tree that `app/template.tsx`
- * animates — so navigating between routes never unmounts this component,
- * the `<audio>` element inside it, or the transport bar it renders. Beats
- * keep playing, `currentTime` keeps advancing, and the bar stays visible
- * across every route change. `MusicPage` (the only current driver) reaches
- * all of this through `useMusicPlayer()` instead of owning a second,
- * route-scoped player that would be destroyed on navigation.
- */
 export function MusicPlayerProvider({ children }: { children: React.ReactNode }) {
   const prefersReducedMotion = useMotionPreference();
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -86,9 +65,7 @@ export function MusicPlayerProvider({ children }: { children: React.ReactNode })
       const request = ++playbackRequestRef.current;
       setError(null);
       setPlaybackState("loading");
-      // Synchronous, still inside the click's call stack — creating (or
-      // resuming) the AudioContext here, not in an effect reacting to
-      // state, keeps it inside the actual user gesture.
+
       ensureAnalyser();
 
       void audio.play().catch(() => {
@@ -111,7 +88,6 @@ export function MusicPlayerProvider({ children }: { children: React.ReactNode })
       const audio = audioRef.current;
       const beat = beats[index];
       if (!audio || !beat) return;
-
       activeIndexRef.current = index;
       setActiveIndex(index);
       setError(null);
@@ -125,14 +101,9 @@ export function MusicPlayerProvider({ children }: { children: React.ReactNode })
     [attemptPlay],
   );
 
-  // A single audio element owns playback for the whole app, not just the
-  // /music route. The event handlers are registered once, here, and read
-  // the live active track from a ref to avoid stale closures when
-  // changing tracks.
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
-
     const updateDuration = () => {
       setDuration(
         Number.isFinite(audio.duration) && audio.duration > 0
@@ -165,7 +136,6 @@ export function MusicPlayerProvider({ children }: { children: React.ReactNode })
     const onEnded = () => {
       const index = activeIndexRef.current;
       if (index === null) return;
-
       const next = index + 1;
       if (next < beats.length) {
         playTrack(next);
@@ -192,9 +162,6 @@ export function MusicPlayerProvider({ children }: { children: React.ReactNode })
     audio.addEventListener("error", onError);
     audio.addEventListener("ended", onEnded);
 
-    // This provider is mounted once, above the route tree, so this
-    // cleanup only runs on real app teardown — not on navigation between
-    // routes the way the old route-owned player's did.
     return () => {
       audio.removeEventListener("play", onPlay);
       audio.removeEventListener("playing", onPlaying);
@@ -212,7 +179,6 @@ export function MusicPlayerProvider({ children }: { children: React.ReactNode })
     (index: number) => {
       const audio = audioRef.current;
       if (!audio) return;
-
       if (activeIndexRef.current !== index) {
         playTrack(index);
         return;
@@ -223,12 +189,6 @@ export function MusicPlayerProvider({ children }: { children: React.ReactNode })
         return;
       }
 
-      // Branch on `playbackState`, not `audio.paused`. While a track is
-      // still `loading`, `play()` has already been called, and
-      // `audio.paused` can still read true until the browser actually
-      // starts producing frames — that read `loading` as "not playing",
-      // so the button shown as "Pause" fell into the `attemptPlay` branch
-      // below and restarted the same load instead of cancelling it.
       if (playbackState === "playing" || playbackState === "loading") {
         ++playbackRequestRef.current;
         audio.pause();
@@ -244,7 +204,6 @@ export function MusicPlayerProvider({ children }: { children: React.ReactNode })
     (direction: 1 | -1) => {
       const index = activeIndexRef.current;
       if (index === null) return;
-
       const next = index + direction;
       if (next >= 0 && next < beats.length) playTrack(next);
     },

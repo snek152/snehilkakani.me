@@ -63,7 +63,6 @@ export default function GalleryPage() {
       </motion.div>
 
       <JustifiedGrid photos={featPhotos} onOpen={openAt} cellRefs={cellRefs} />
-
       <Lightbox
         photos={featPhotos}
         index={openIndex}

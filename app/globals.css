@@ -7,146 +7,52 @@
   --dim: #a8a8a8;
   --dim2: #7d7d7d;
   --accent: #2563eb;
-  /* The same blue, lightened just enough to be legible as TEXT. #2563eb on
-   * #080808 is 3.87:1 — under the 4.5:1 floor — so it is fine for rules,
-   * fills and icons but fails for words. This is 4.93:1. Use `--accent`
-   * for anything shaped, `--accent-text` for anything read. */
+
   --accent-text: #4478ee;
-  /* The accent's channels, unpacked, for the places that need to build a
-   * colour rather than reference one: a gradient stop with its own alpha, a
-   * ring at 18%. Those callsites had the literal `37,99,235` typed into them
-   * three separate times, which is three chances for the blue to drift away
-   * from `--accent` above. `rgb(var(--accent-rgb) / <alpha>)` resolves to the
-   * same colour without restating it.
-   *
-   * `WaveField` is the one place that legitimately cannot use this: a canvas
-   * `strokeStyle` takes a string, not a computed custom property, so it keeps
-   * its own constant and a comment pointing back here. */
+
   --accent-rgb: 37 99 235;
-  /* Violet is a material undertone, never a text role. It only appears where
-   * blue light refracts through a seam or instrument surface. */
+
   --violet-rgb: 124 92 255;
   --spectral-seam: linear-gradient(90deg, rgb(var(--accent-rgb) / 0.82), rgb(var(--violet-rgb) / 0.58), rgb(var(--accent-rgb) / 0));
-  /* The Lens header rule's colour segment. Its two stops are their own
-   * values rather than `--accent`/`--violet-rgb` composites: this exact pair
-   * is the pinned appearance of that rule, and rebuilding it out of the
-   * accent channels shifts the hue. A token so the callsite references the
-   * system instead of carrying two literal hexes. */
+
   --seam-lens: linear-gradient(90deg, transparent, #5575d9, #8b66c9);
-  /* The focus underline that draws along an input's own border from the caret
-   * side. Its violet mid-stop was typed literally at three separate callsites
-   * in `ContactForm`, which is three chances for one of them to drift; it is
-   * its own value rather than `--violet-rgb` composited over the page, because
-   * this gradient sits on top of a border rather than on the background. */
+
   --seam-focus: linear-gradient(90deg, var(--accent), #6d5ede, var(--accent));
-  /* Non-text light can be brighter than --accent-text because no words rely
-   * on it. Use for fine marks, source points, and material edges only. */
+
   --signal-light: rgb(126 164 255);
   --border: rgba(255, 255, 255, 0.07);
-  /* The drawn rules — the hairlines that scale open under a section heading
-   * and between history rows. Brighter than `--border` because these are the
-   * one thing on the page you are meant to WATCH arrive; at `--border`'s 0.07
-   * the animation was real and nobody could see it. Deliberately its own token
-   * rather than a raised `--border`, which also paints card edges, inputs and
-   * the nav — those stay quiet. 0.2 was tried and read as loud, but only
-   * because a second drawn-line system was competing with it at the time;
-   * with the rules alone, this is the level where the draw is legible without
-   * the dividers taking over the page. */
+
   --rule: rgba(255, 255, 255, 0.15);
-  /* The gallery scrim. Deliberately DARKER than `--bg`: the lightbox is the
-   * one surface where a photograph is the subject, and a backdrop at page
-   * black leaves the frame sitting level with the page instead of lifted off
-   * it. Its own token rather than a literal in `Lightbox`, which is also where
-   * the drag-to-dismiss fade drives `opacity` — two colour ideas in one style
-   * attribute is how a value like this gets edited by accident.
-   *
-   * 0.86, not the 0.97 it started at, because the scrim is now paired with a
-   * real `backdrop-blur`. At 0.97 the sheet behind was simply erased and the
-   * lightbox read as a photograph on a black card. Opened up and defocused,
-   * the contact sheet is still THERE, pushed far back — the frame is lifted
-   * off a space rather than pasted onto a surface. Depth by defocus is how
-   * `WaveField` expresses it too (its receding ends go soft, never darker),
-   * and this is the same idea reaching the interface. */
+
   --scrim: rgba(4, 4, 4, 0.86);
 }
 
-/* Optical tracking scale.
- *
- * Tracking is size-specific, never one value for the whole page: letters read
- * too far apart as they grow, so display type tightens as it gets bigger and
- * relaxes back toward zero as it gets smaller. These four steps are the only
- * negative tracking in the design — body copy sits at the face's natural fit,
- * and the uppercase micro-labels keep their own positive `0.08em`.
- *
- * Referenced as `tracking-[var(--track-display-lg)]` so the scale lives here
- * instead of as a different hand-picked number at each heading.
- *
- * Retuned for Clash Display. The previous values (-0.04 / -0.03 / -0.02 /
- * -0.01) were drawn for Epilogue, a geometric face with wide sidebearings that
- * genuinely drifts apart when set large. Clash is narrower and already drawn
- * tight, so those same numbers closed the hero lockup's letters onto each
- * other and cramped the accent label. Every step is roughly a third lighter,
- * and the smallest is now zero: a 16px label in this face needs no correction
- * at all. Retune these whenever the display face changes — tracking belongs to
- * a specific typeface, not to the layout. */
 :root {
-  --track-display-xl: -0.025em;  /* hero lockup, 3.2rem-7.4rem */
-  --track-display-lg: -0.02em;   /* page titles, 2.5rem-4rem */
-  --track-display-md: -0.012em;  /* card + section heads, 1.5rem-1.85rem */
-  --track-display-sm: 0em;       /* small display labels, <=1.15rem */
+  --track-display-xl: -0.025em;
+  --track-display-lg: -0.02em;
+  --track-display-md: -0.012em;
+  --track-display-sm: 0em;
 }
 
-/* Display SIZE scale — one mechanism for every tier.
- *
- * Before this existed, each of the four sibling page titles picked its own
- * value AND its own responsive behaviour: /lens and /reach scaled fluidly with
- * `clamp()` while /builds and /music jumped at the `sm` breakpoint. Same
- * nominal tier, two different behaviours, four different rendered sizes. Every
- * tier is now fluid, so a title is the same size on every route at every
- * width, and the tier — not the callsite — owns the number.
- *
- * Pair each size with the tracking token of the same suffix. */
 :root {
-  --size-display-xl: clamp(3.2rem, 8.5vw, 7.4rem);   /* hero lockup */
-  --size-display-lg: clamp(2.5rem, 5vw, 4rem);       /* full-page titles */
-  --size-display-md: clamp(1.5rem, 2.2vw, 1.85rem);  /* card + section heads */
-  --size-display-sm: clamp(0.95rem, 1.1vw, 1.15rem); /* small display labels */
+  --size-display-xl: clamp(3.2rem, 8.5vw, 7.4rem);
+  --size-display-lg: clamp(2.5rem, 5vw, 4rem);
+  --size-display-md: clamp(1.5rem, 2.2vw, 1.85rem);
+  --size-display-sm: clamp(0.95rem, 1.1vw, 1.15rem);
 }
 
-/* Text roles.
- *
- * Four sizes, down from the nine bespoke literals (0.78, 0.8, 0.85, 0.875,
- * 0.9, 0.92, 0.95, 0.975, 1rem) that used to realize these same four jobs.
- * Pairs that differed by 2-3% — 0.78 against 0.8, 0.95 against 0.975 — were
- * not hierarchy, they were drift: too close to read as different roles, but
- * different enough to stop the roles being recognisable across surfaces.
- *
- * Prose sits at the 1rem/16px web floor. It used to run 0.875-0.975rem, which
- * is below the floor for the primary reading blocks on the site. */
 :root {
-  --text-lead: 1.0625rem; /* the one intro paragraph per page */
-  --text-body: 1rem;      /* prose: descriptions, bullets, running copy */
-  --text-meta: 0.875rem;  /* metadata, labels, captions, nav, buttons */
-  --text-micro: 0.8125rem;/* dense readouts: EXIF, clock, secondary notices */
+  --text-lead: 1.0625rem;
+  --text-body: 1rem;
+  --text-meta: 0.875rem;
+  --text-micro: 0.8125rem;
 
-  /* Leading rises with measure: the wider the line, the further the eye has to
-   * travel back, and the more it needs a clear next line to land on. Both
-   * values also carry the extra step that light text on a near-black surface
-   * needs to stop the lines closing up. */
   --leading-lead: 1.75;
   --leading-body: 1.7;
 
-  /* Measure caps, in characters, so they hold at any font size or zoom level.
-   * Three of the site's prose blocks had no cap at all — the experience
-   * bullets ran the full width of a 75% column, well past 100 characters on a
-   * wide display. */
   --measure-lead: 56ch;
   --measure-body: 66ch;
 
-  /* Dark-surface compensation for small dim text. The design already used
-   * +0.01em in a few places and documented why in a code comment, but it had
-   * reached only about half the elements that need it. It is a token now so it
-   * can be applied by rule instead of by memory. */
   --track-text-sm: 0.01em;
 }
 
@@ -159,14 +65,9 @@
   --color-accent: var(--accent);
   --color-accent-text: var(--accent-text);
   --color-border: var(--border);
-  /* Available as `bg-rule`. Used only by `DrawnRule`. */
+
   --color-rule: var(--rule);
 
-  /* Two faces, two jobs: Clash Display for display lines, Switzer for
-   * everything read as running text. Both are self-hosted variable fonts from
-   * the same foundry (see `app/layout.tsx`). `--font-mono` is deliberately
-   * absent — there is no mono in this design, and the numeric readouts (BPM,
-   * durations, EXIF) use `tabular-nums` on the sans instead. */
   --font-display: var(--font-clash-display);
   --font-sans: var(--font-switzer);
 }
@@ -174,15 +75,7 @@
 body {
   background: var(--bg);
   color: var(--fg);
-  /* The font-face variable, not the theme token. `--font-sans` is declared
-   * inside `@theme inline`, and `inline` means Tailwind substitutes it into
-   * the utilities it generates rather than emitting it as a custom property
-   * — so `var(--font-sans)` resolves to nothing here and the declaration is
-   * dropped, silently falling the whole document back to the browser's UI
-   * font. Measured before this line was corrected: 190 rendered elements on
-   * /lens in `ui-sans-serif` against 10 in the body face. Only nodes
-   * carrying an explicit `font-sans`/`font-display` class were ever getting
-   * the real typeface. */
+
   font-family: var(--font-switzer);
   -webkit-font-smoothing: antialiased;
 }
@@ -190,16 +83,6 @@ body {
 ::selection {
   background: var(--accent);
   color: #fff;
-}
-
-
-/* Foreground-only instrument material. */
-.spectral-seam {
-  background: var(--spectral-seam);
-}
-
-.signal-light {
-  background-color: var(--signal-light);
 }
 
 .route-signal {
@@ -213,12 +96,6 @@ body {
   height: auto;
   overflow: visible;
 }
-
-.route-signal__axis {
-  stroke: rgb(255 255 255 / 0.14);
-  stroke-width: 0.75;
-}
-
 
 .route-signal__trajectory {
   stroke: currentColor;
@@ -238,41 +115,19 @@ body {
   stroke-width: 1.25;
 }
 
-
-/* The shell's chassis is a static edge treatment, not a layer behind route
- * content. It gives the enduring column a quiet physical boundary while
- * WaveField remains the only ambient medium. */
 .instrument-chassis {
   min-height: 100dvh;
   box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.025);
 }
 
-
-
-/* The pre-paint half of the intro gate (see `app/lib/loader-gate.ts`). The
- * attribute is set in `<head>` before the body paints, so the loader in the
- * prerendered HTML is never shown to a visitor who already saw it — `AppShell`
- * then unmounts the hidden node on its first commit. `display` rather than
- * `opacity`, because this must also stop the layer swallowing the first click
- * during hydration. */
 html[data-loader-seen="1"] [data-loader] {
   display: none;
 }
 
-/* Interaction curve for press/hover feedback only. Entrance motion keeps
- * deriving from `beats()` + `EASE_OUT` in app/lib/motion.ts — this is for the
- * sub-200ms CSS transitions on things you can touch, where the built-in
- * `ease-out` is too weak to read as a response. */
 :root {
   --ease-press: cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-/* Two preferences the site declared nothing for, while shipping two
- * translucent surfaces (the music transport and the mobile nav bar).
- *
- * Reduced transparency is not a motion preference — people set it because
- * blurred text is genuinely hard for them to read. Honouring it means the
- * material becomes opaque, not merely dimmer. */
 @media (prefers-reduced-transparency: reduce) {
   [data-material] {
     background: var(--bg) !important;
@@ -280,8 +135,6 @@ html[data-loader-seen="1"] [data-loader] {
   }
 }
 
-/* And at high contrast the same surfaces need a defined edge, since without
- * the blur there is nothing separating them from the content behind. */
 @media (prefers-contrast: more) {
   [data-material] {
     background: #000 !important;
@@ -290,7 +143,6 @@ html[data-loader-seen="1"] [data-loader] {
   }
 }
 
-/* Thin dark scrollbar */
 * {
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.15) var(--bg);
@@ -314,15 +166,12 @@ html[data-loader-seen="1"] [data-loader] {
   background: rgba(255, 255, 255, 0.25);
 }
 
-/* Page scrollbar hidden — ScrollProgressRail (fixed accent line, right
- * edge) replaces it as the scroll indicator. Internal scrollable elements
- * keep the thin styled scrollbar above. */
 html,
 body {
-  scrollbar-width: none; /* Firefox */
+  scrollbar-width: none;
 }
 
 html::-webkit-scrollbar,
 body::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Edge */
+  display: none;
 }

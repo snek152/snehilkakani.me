@@ -38,7 +38,6 @@ export default function WorkPage() {
       </header>
 
       <FeaturedProject project={featured} />
-
       <section aria-label="Project sequence" aria-labelledby="studies-heading">
         <div ref={studiesRef} className="pb-7 sm:pb-8">
           <ManifestoHeading

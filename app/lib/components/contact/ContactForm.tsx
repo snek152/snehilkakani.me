@@ -14,10 +14,6 @@ const fieldMotion: Variants = {
   visible: { opacity: 1, y: 0, transition: { duration: beats(0.6), ease: EASE_OUT } },
 };
 
-/** The `--ease-press` curve from globals.css, as a bezier motion can drive.
- * The submit button is a `motion.button` with an animated entrance, so it
- * carries an inline `transform` — an `active:scale-*` class cannot reach
- * past that, and the press has to be a gesture rather than a CSS state. */
 const EASE_PRESS = [0.23, 1, 0.32, 1] as const;
 
 function Field({
@@ -53,11 +49,7 @@ function Field({
       >
         {label}
       </label>
-      {/* The input's own bottom border is already the rule; on focus an
-        * accent overlay draws along it from the caret side (left, for LTR)
-        * instead of the border switching colour outright. `focus:border-accent`
-        * stays as the non-motion fallback, so a failed script still shows
-        * focus. */}
+
       <div className="relative">
         <input
           id={id}
@@ -85,11 +77,7 @@ function Field({
           transition={{ duration: reduceMotion ? 0 : beats(0.4), ease: EASE_OUT }}
         />
       </div>
-      {/* Full-contrast `text-fg` against the `text-dim` label, rather than a
-        * red: this palette is three greys and one blue, and a semantic colour
-        * introduced for three strings would be a new design decision rather
-        * than a fix. The problem is carried by the words, the position, and
-        * `aria-invalid` — never by hue alone. */}
+
       {error && (
         <p
           id={errorId}
@@ -104,15 +92,6 @@ function Field({
 
 type FieldErrors = { name?: string; email?: string; message?: string };
 
-/**
- * Names the actual problem, not "invalid input".
- *
- * The form used to lean on the browser's own bubble, which says "Please fill
- * out this field" in Chrome's voice — a different register from every other
- * sentence on the site, unstyled, and gone the moment you click away. These
- * strings say what is wrong and what to do, in the same plain register as the
- * confirmation copy.
- */
 function emailProblem(raw: string): string | undefined {
   const value = raw.trim();
   if (!value) return "Add an email address — there's no way to reply without one.";
@@ -134,13 +113,10 @@ export default function ContactForm() {
   const [message, setMessage] = useState("");
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
-  /* Only true when a configured endpoint returned 2xx — the one case in which
-   * this form may honestly say the message was delivered. */
+
   const [delivered, setDelivered] = useState(false);
   const [failed, setFailed] = useState(false);
-  /* The composed `mailto:` URL was too long to hand to a mail client, so no
-   * handoff was attempted. Distinct from `failed`: nothing was rejected, we
-   * declined to try something that loses text silently. */
+
   const [tooLong, setTooLong] = useState(false);
   const [copied, setCopied] = useState(false);
   const [copyFailed, setCopyFailed] = useState(false);
@@ -148,51 +124,20 @@ export default function ContactForm() {
   const messageId = useId();
   const [errors, setErrors] = useState<FieldErrors>({});
 
-  /* Cleared as the visitor types, not re-checked on every keystroke: telling
-   * someone their address is malformed while they are still halfway through
-   * typing it is nagging, not help. The full check runs on submit; editing a
-   * field retires its complaint immediately. The one earlier signal we do
-   * give is on blur, and only for a field the visitor actually filled in —
-   * leaving an empty field untouched still says nothing, since that's the
-   * submit gate's job, not a reason to nag someone who hasn't gotten there
-   * yet. */
   const clearError = (key: keyof FieldErrors) =>
     setErrors((prev) => (prev[key] ? { ...prev, [key]: undefined } : prev));
 
-  /* Name and message have no rule beyond "did you fill this in", so on blur
-   * they can only ever pass — a non-empty value never produces an error.
-   * Email is the one field where "non-empty" isn't the same as "valid", so
-   * it's the only case that can actually surface something here. */
   const validateOnBlur = (key: keyof FieldErrors, value: string) => {
     if (!value.trim()) return;
     const problem = key === "email" ? emailProblem(value) : undefined;
     setErrors((prev) => ({ ...prev, [key]: problem }));
   };
 
-  /* Two delivery paths, and which one is live is a deployment decision, not a
-   * code change.
-   *
-   * `NEXT_PUBLIC_CONTACT_ENDPOINT` set  -> POST the message and report the
-   *   real outcome. Only `res.ok` counts as delivered: a resolved `fetch` says
-   *   the request completed, not that the server accepted it, and a 500 that
-   *   reported success would be the exact lie the mailto path was written to
-   *   avoid.
-   * unset (today) -> the original mailto handoff, whose copy never claims
-   *   delivery because the OS launching a mail client cannot be detected.
-   *
-   * The draft is never cleared by either path. It stays in state so the
-   * confirmation can show it back, which is what makes the failure case
-   * recoverable. */
   const endpoint = process.env.NEXT_PUBLIC_CONTACT_ENDPOINT;
 
   const submit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    /* The form carries `noValidate`, so this is the only gate — and it runs
-       before `sending` flips, so a rejected submit never shows the sending
-       hairline for a request that was never made. Focus moves to the first
-       field with a problem: an error message nobody is looking at is not a
-       message. */
     const found: FieldErrors = {
       name: name.trim() ? undefined : "Add your name, so a reply knows who it's answering.",
       email: emailProblem(email),
@@ -213,10 +158,6 @@ export default function ContactForm() {
     if (!endpoint) {
       const url = buildMailtoUrl(name, email, message);
 
-      // Declining the handoff is the honest move: past this length the draft
-      // opens truncated or not at all, and neither is detectable, so
-      // attempting it would produce a confident message about something that
-      // silently ate the visitor's text.
       if (url.length > MAILTO_MAX_SAFE_LENGTH) {
         setTooLong(true);
         setSending(false);
@@ -245,9 +186,6 @@ export default function ContactForm() {
       setDelivered(true);
       setSent(true);
     } catch {
-      // Network error, CORS rejection, or a non-2xx status. The message is
-      // still in state, so the confirmation offers the mailto route and the
-      // copyable draft rather than dead-ending.
       setFailed(true);
       setSent(true);
     } finally {
@@ -270,9 +208,6 @@ export default function ContactForm() {
 
   const copyMessage = () => {
     const draft = `${name} <${email}>\n\n${message}`;
-    // Clipboard access can be unavailable (insecure origin, no navigator.clipboard)
-    // or rejected (denied permission). Either way, fall back to selectable text
-    // instead of silently doing nothing.
     if (typeof navigator === "undefined" || !navigator.clipboard) {
       setCopyFailed(true);
       return;
@@ -297,11 +232,7 @@ export default function ContactForm() {
         role="status"
         aria-live="polite"
       >
-        {/* The icon has to agree with the sentence under it. A check means
-         * delivered and nothing else; the mailto handoff gets a neutral mail
-         * glyph because nobody can know whether it worked, and both the
-         * rejected and the not-attempted cases get a warning. The old code
-         * showed a check above a paragraph that immediately retracted it. */}
+
         <div className="flex size-9 items-center justify-center border border-border">
           {delivered ? (
             <Check size={15} strokeWidth={2} className="text-accent" />
@@ -311,14 +242,7 @@ export default function ContactForm() {
             <Mail size={15} strokeWidth={2} className="text-dim" />
           )}
         </div>
-        {/* Each branch claims exactly what the code proved and nothing more.
-         * `res.ok` means the endpoint accepted the payload — not that it
-         * reached a person, and not that a reply is coming, so the copy says
-         * "accepted" and stops there. The mailto branch cannot even prove that
-         * much, and the too-long branch is the one case where we know for
-         * certain nothing was attempted, so it says so outright rather than
-         * describing a draft that was never opened. Overclaiming here is the
-         * specific defect this rewrite fixed. */}
+
         <p className="text-[length:var(--text-body)] leading-[var(--leading-body)] max-w-[var(--measure-body)] text-dim">
           {delivered
             ? "Submitted — the server accepted your message. Keeping a copy below in case you want to follow up by email."
@@ -329,10 +253,6 @@ export default function ContactForm() {
                 : `Your email app should have opened a draft to ${CONTACT_EMAIL} with your message filled in. Nothing happened, or you sent it already — either way, here's a fallback:`}
         </p>
         <div className="flex flex-wrap items-center gap-[0.6rem]">
-          {/* An empty draft when the message could not ride along: handing the
-            * same oversized URL to this link would fail the same way the
-            * submit just declined to. The copy button beside it holds the
-            * text. */}
           <a
             href={tooLong ? `mailto:${CONTACT_EMAIL}` : buildMailtoUrl(name, email, message)}
             className={BORDERED_CONTROL}
@@ -371,9 +291,7 @@ export default function ContactForm() {
   return (
     <motion.form
       onSubmit={submit}
-      /* Ours, not Chrome's. `required` stays on every control for semantics
-         (assistive tech announces it), but the browser's own bubble is
-         suppressed so the messaging is the site's rather than the vendor's. */
+
       noValidate
       initial={reduceMotion ? false : "hidden"}
       animate="visible"
@@ -470,26 +388,14 @@ export default function ContactForm() {
       <motion.button
         variants={fieldMotion}
         type="submit"
-        /* A second activation while the first is in flight would POST the
-         * message twice, or fire a second `mailto:` navigation on top of the
-         * first. Enter-on-focus makes that trivially easy, so the button is
-         * inert for the duration rather than merely looking busy. */
         disabled={sending}
         whileHover={reduceMotion || sending ? undefined : { scale: 1.03 }}
-        /* Reduced motion drops the scale, so the press moves to a channel
-         * that isn't movement rather than disappearing: feedback that the
-         * form was submitted is not decoration. The old spring here was
-         * underdamped (damping 25 against stiffness 400) and overshot on
-         * release; the press curve settles without the bounce. */
+
         whileTap={sending ? undefined : reduceMotion ? { opacity: 0.7 } : { scale: 0.97 }}
         transition={{ duration: 0.12, ease: EASE_PRESS }}
         className="inline-flex list-none items-center gap-[0.45rem] self-start bg-accent px-[1.375rem] py-[0.7rem] text-[length:var(--text-meta)] font-medium text-white transition-opacity duration-150 hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent focus-visible:opacity-80 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {/* The label has to match what this click actually does, because this
-          * is where the expectation forms — before any confirmation copy is
-          * read. With no endpoint configured the click opens a draft in the
-          * visitor's own mail app and sends nothing, so it must not say
-          * "Send"; with an endpoint it really does submit. */}
+
         {endpoint
           ? sending
             ? "Submitting"

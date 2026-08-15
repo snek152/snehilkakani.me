@@ -23,7 +23,6 @@ const SCENES: Record<RouteScene, { path: string; mark: [number, number]; seam: s
   reach: { path: "M3 27C18 27 24 9 40 9S57 27 78 27", mark: [40, 9], seam: "M3 34H78" },
 };
 
-/** A local geometric route marker that traces itself once. */
 export default function RouteSignal({ scene, label, detail, className }: RouteSignalProps) {
   const reduceMotion = useMotionPreference();
   const geometry = SCENES[scene];

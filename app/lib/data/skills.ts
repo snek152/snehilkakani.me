@@ -6,7 +6,7 @@ import {
   SiGraphql,
   SiLanggraph,
   SiOllama,
-  // SiCanva,
+
   SiCss,
   SiDeepgram,
   SiElectron,

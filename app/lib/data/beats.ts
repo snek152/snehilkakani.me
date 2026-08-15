@@ -14,30 +14,6 @@ export type Beat = {
   description?: string;
 };
 
-/**
- * Array order IS the running order on `/music` — nothing sorts at render, so
- * this sequence is what a visitor scrolls.
- *
- * It is sequenced, not sorted. It used to be alphabetical, which is a
- * directory listing rather than a release sheet, and it read like one: the
- * first two rows were "Alien Trap" and "Alien Trap 3", and "Vengeance" sat
- * next to "Vengeance 3" further down. Opening on two near-identical names
- * makes 22 beats look like variants of each other.
- *
- * Three rules hold this order together:
- * 1. No two adjacent entries share a `category`.
- * 2. The first five rows cover all five categories, so the top of the page
- *    demonstrates range — the claim the whole site is making — before the
- *    visitor decides whether to keep scrolling.
- * 3. Name variants never sit adjacent, and tempo swings between neighbours
- *    instead of settling into one energy band.
- *
- * Which beat LEADS is a taste call, not a derivable one: `Ascension` opens
- * because it is the most immediately genre-legible of the set (160 BPM, "fast
- * hi-hats and booming 808s"), which is the right first impression for someone
- * arriving from a shared link. Reorder freely — just keep the three rules, and
- * do not re-alphabetize.
- */
 export const beats: Beat[] = [
   {
     name: "Ascension",

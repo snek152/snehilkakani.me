@@ -1,10 +1,3 @@
-/** Track lengths in seconds, read from the audio files with `ffprobe`
- * at authoring time.
- *
- * Baked rather than measured in the browser on purpose: the list shows
- * every track's length up front, and the alternative is loading metadata
- * for all of them on page load just to fill a column. Regenerate when the
- * beats change. */
 export const BEAT_DURATIONS: Record<string, number> = {
   "/beats/alien_trap.mp3": 131.58,
   "/beats/alien_trap_3.mp3": 179.17,

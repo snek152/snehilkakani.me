@@ -24,8 +24,7 @@ export default function SkillsMatrix() {
       initial={reduceMotion ? false : { opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "0px 0px -60px 0px" }}
-      // Same curve and grid as everything else on the page. This block
-      // used to spring, and was the last thing here that wobbled.
+
       transition={{ duration: reduceMotion ? 0 : beats(0.75), ease: EASE_OUT }}
       className="mt-14 border-t border-border pt-10 lg:mt-16 lg:pt-12"
     >
@@ -45,10 +44,7 @@ export default function SkillsMatrix() {
           return (
             <motion.div
               key={type}
-              // No alternating tilt: nothing else on either page rotates,
-              // and four cards each leaning a different way read as a
-              // stack of cards rather than as part of the same grid the
-              // rest of the layout is built on.
+
               initial={reduceMotion ? false : { opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "0px 0px -18% 0px" }}
@@ -59,12 +55,7 @@ export default function SkillsMatrix() {
               }}
               className="relative border-b border-border p-5 sm:p-6"
             >
-              {/* The column divider itself, drawn top-to-bottom left to
-                * right across the four columns — the same rule-draw idea
-                * as everything else on the site, applied to the grid lines
-                * instead of a horizontal rule. Not the section's accent
-                * strike: that lives once, on the rule opening the project
-                * sequence above. */}
+
               <motion.span
                 aria-hidden="true"
                 className="absolute inset-y-0 right-0 hidden w-px bg-border sm:block"

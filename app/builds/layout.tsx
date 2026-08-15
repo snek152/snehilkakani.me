@@ -1,13 +1,5 @@
 import { routeMetadata } from "@/app/lib/metadata";
 
-// `page.tsx` here renders `WorkPage`, and /lens and /reach are `"use
-// client"` outright — a client component cannot export `metadata`, so
-// every route's metadata lives in a server layout like this one.
-// Without them, all five routes served the root's title and description
-// verbatim.
-//
-// The named projects and the Innovation Quest placing come from
-// `app/lib/data/projects.ts`. Keep them in step with it.
 export const metadata = routeMetadata({
   title: "Builds - Software Projects",
   description:

@@ -6,23 +6,19 @@ import { experiences } from "@/app/lib/data/experience";
 import { EASE_OUT } from "@/app/lib/motion";
 import { beats } from "@/app/lib/tempo";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
-
 import ExperienceList from "./ExperienceList";
-
 import ManifestoHeading from "./ManifestoHeading";
 import GridIndex from "./GridIndex";
 
 export default function HomeContent() {
   const reduceMotion = useMotionPreference();
   const headingRef = useRef<HTMLDivElement>(null);
-  // The heading scramble-decodes the instant it comes into view, echoing
-  // the loader's decode motif rather than a plain fade.
-  const headingActive = useInView(headingRef, { once: true });
+
+  const headingActive = useInView(headingRef, { once: true, margin: "0px 0px -15% 0px" });
 
   return (
     <div className="px-6 pb-20 sm:px-8 lg:px-12 lg:pb-12">
       <GridIndex />
-
       <motion.section
         aria-labelledby="experience-heading"
         className="mt-12"
@@ -41,7 +37,6 @@ export default function HomeContent() {
         </div>
         <ExperienceList experiences={experiences} />
       </motion.section>
-
     </div>
   );
 }

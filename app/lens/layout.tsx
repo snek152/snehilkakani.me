@@ -1,9 +1,5 @@
 import { routeMetadata } from "@/app/lib/metadata";
 
-// Locations are the ones actually present in `app/lib/data/photos.ts`
-// (Yosemite, New York, Berlin and Munich, and the Central Coast around
-// Cayucos, Pismo and Bishop's Peak), and every frame there really does
-// carry exp/shutter/aperture/iso. Nothing here is scene-setting.
 export const metadata = routeMetadata({
   title: "Lens - Photography",
   description:

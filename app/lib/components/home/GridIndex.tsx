@@ -13,11 +13,6 @@ const BLURBS: Record<string, string> = {
 
 const items = navItems.filter((item) => item.href in BLURBS);
 
-/**
- * Static route index beneath the hero. The hero owns the site's one
- * scroll-linked line moment; carrying it into this navigation made two
- * adjacent systems compete for the same attention.
- */
 export default function GridIndex() {
   return (
     <nav
@@ -66,7 +61,7 @@ function Cell({
           } ${last ? "pr-4 sm:pr-8 lg:pr-12" : "pr-2 sm:pr-4 lg:pr-6"}`}
         >
           <span className="min-w-0">
-            <span className="block font-display text-[length:var(--size-display-sm)] font-semibold tracking-[var(--track-display-sm)] text-dim transition-colors duration-200 ease-[var(--ease-press)] group-hover:text-fg">
+            <span className="block break-words font-display text-[length:var(--size-display-sm)] font-semibold tracking-[var(--track-display-sm)] text-dim transition-colors duration-200 ease-[var(--ease-press)] group-hover:text-fg">
               {item.label}
             </span>
             <span className="mt-1 sr-only text-[length:var(--text-micro)] leading-snug tracking-[var(--track-text-sm)] text-dim sm:not-sr-only sm:block">
