@@ -53,20 +53,33 @@ export default function RoleCycle() {
   const textClass =
     "m-0 font-display text-[length:var(--size-display-sm)] font-semibold tracking-[var(--track-display-sm)] text-accent-text tabular-nums";
 
+  const fullRoleList = ROLES.join(", ");
+
   if (reduceMotion) {
-    return <p className={textClass}>{ROLES[0]}</p>;
+    return (
+      <p className={textClass}>
+        <span aria-hidden="true">{ROLES[0]}</span>
+        <span className="sr-only">{fullRoleList}</span>
+      </p>
+    );
   }
 
   return (
     <div className="relative h-[1.6em] overflow-hidden">
-      {/* The settled role for assistive tech, the churning glyphs hidden from
-        * it — the same split `ManifestoHeading` uses. This used to be a single
-        * `aria-live="off"` node holding `display`, which stops the churn being
-        * ANNOUNCED but still leaves mid-decode glyphs as the text a screen
-        * reader finds when it reaches the line. The role is the one word here
-        * worth reading; it should never be `7#4%` to anyone. */}
+      {/* The full role list is read once, statically, as the sr-only twin —
+        * not `aria-live`, which would re-announce every few seconds and be
+        * hostile to anyone reading the page. The churning glyphs stay
+        * `aria-hidden` for the same reason as before: this used to be a
+        * single `aria-live="off"` node holding `display`, which stopped the
+        * churn being ANNOUNCED but still left mid-decode glyphs as the text
+        * a screen reader would find when it reached the line. Exposing only
+        * `ROLES[index]` fixed that but still handed assistive tech a single
+        * role frozen at whatever point it reached the line — losing the
+        * cycle itself, which is the site's central "range" claim. The full,
+        * comma-joined list read once is the only phrasing that survives
+        * both problems. */}
       <p className={textClass}>
-        <span className="sr-only">{ROLES[index]}</span>
+        <span className="sr-only">{fullRoleList}</span>
         <span aria-hidden="true">{display}</span>
       </p>
     </div>

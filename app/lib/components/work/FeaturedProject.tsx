@@ -67,15 +67,15 @@ export default function FeaturedProject({ project }: { project: Project }) {
     >
       {secondary ? (
         <div className="relative overflow-hidden">
-          <div className="grid grid-cols-2 border-b border-border" style={{ aspectRatio: "3" }}>
-            <div className="relative overflow-hidden">{primaryImage}</div>
-            <div className="relative overflow-hidden border-l border-border">
+          <div className="grid grid-cols-1 border-b border-border sm:grid-cols-2 sm:aspect-[3/1] sm:border-b-0">
+            <div className="relative aspect-[16/10] overflow-hidden sm:aspect-auto">{primaryImage}</div>
+            <div className="relative aspect-[16/10] overflow-hidden border-t border-border sm:aspect-auto sm:border-l sm:border-t-0">
               <div className="absolute inset-0">
                 <Image
                   src={secondary}
                   alt=""
                   fill
-                  sizes="(min-width: 1024px) 50vw, 50vw"
+                  sizes="(min-width: 640px) 50vw, 100vw"
                   className="object-cover"
                 />
               </div>

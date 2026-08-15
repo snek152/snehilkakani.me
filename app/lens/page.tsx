@@ -54,7 +54,7 @@ export default function GalleryPage() {
           transition={{ duration: reduceMotion ? 0 : beats(1.2), ease: EASE_OUT }}
         >
           <motion.div
-            className="absolute inset-y-0 left-0 w-[38%] origin-left bg-gradient-to-r from-transparent via-[#5575d9] to-[#8b66c9]"
+            className="absolute inset-y-0 left-0 w-[38%] origin-left bg-[image:var(--seam-lens)]"
             initial={reduceMotion ? false : { scaleX: 0 }}
             animate={{ scaleX: 1 }}
             transition={{ duration: reduceMotion ? 0 : beats(0.9), delay: reduceMotion ? 0 : beats(0.2), ease: EASE_OUT }}

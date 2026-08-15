@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { motion, useInView } from "motion/react";
 import { beats, categories, type Beat } from "@/app/lib/data/beats";
 import { BEAT_DURATIONS } from "@/app/lib/data/beat-durations";
@@ -45,6 +45,18 @@ export default function MusicPage() {
   const activeDetail = activeBeat
     ? `${activeBeat.category} · ${activeBeat.tempo} BPM · ${formatTime(activeDuration)}`
     : `${filtered.length} releases · select a track to route it`;
+
+  // Per-filter counts, derived once from `beats` rather than recomputed
+  // inside the render loop below. "all" is the full catalog; every other
+  // key is how many releases carry that category.
+  const filterCounts = useMemo(() => {
+    const counts = {} as Record<BeatFilter, number>;
+    counts.all = beats.length;
+    for (const category of categories) {
+      counts[category] = beats.filter((beat) => beat.category === category).length;
+    }
+    return counts;
+  }, []);
   return (
     <div className="px-6 pb-12 pt-16 sm:px-8 lg:px-12 lg:pt-[4.5rem]">
       <header className="relative min-h-10">
@@ -65,18 +77,24 @@ export default function MusicPage() {
         />
       </header>
 
-      <div
-        role="group"
-        aria-label="Filter beats by category"
-        className="mt-7 flex flex-wrap gap-x-5 gap-y-2"
-      >
+      <section aria-labelledby="music-filter-heading" className="mt-7">
+        <h2 id="music-filter-heading" className="sr-only">
+          Filter releases by category
+        </h2>
+        <div className="flex flex-wrap gap-x-5 gap-y-2">
         {FILTERS.map((category) => {
           const isActive = filter === category;
+          const count = filterCounts[category];
+          const label =
+            category === "all"
+              ? `All releases, ${count}`
+              : `${category.charAt(0).toUpperCase()}${category.slice(1)}, ${count} release${count === 1 ? "" : "s"}`;
           return (
             <button
               key={category}
               type="button"
               aria-pressed={isActive}
+              aria-label={label}
               onClick={() => setFilter(category)}
               // Scale *and* opacity. The filters are short words — "all"
               // is 20px wide, where a scale press on its own amounts to
@@ -85,11 +103,17 @@ export default function MusicPage() {
               // spoken for: `text-fg` here means "this filter is on", so
               // flashing it would announce a selection that hasn't
               // happened yet. Dimming can't be misread that way.
-              className={`relative inline-flex min-h-11 items-center pb-1.5 font-sans text-[length:var(--text-meta)] capitalize transition-[color,scale,opacity] duration-[120ms] ease-[var(--ease-press)] active:scale-95 active:opacity-70 ${
+              className={`relative inline-flex min-h-11 items-center gap-1.5 pb-1.5 font-sans text-[length:var(--text-meta)] transition-[color,scale,opacity] duration-[120ms] ease-[var(--ease-press)] active:scale-95 active:opacity-70 ${
                 isActive ? "text-fg" : "text-dim hover:text-fg"
               }`}
             >
-              {category}
+              <span className="capitalize">{category}</span>
+              <span
+                aria-hidden="true"
+                className="text-[length:var(--text-micro)] tabular-nums text-dim2"
+              >
+                {count}
+              </span>
               <motion.span
                 aria-hidden="true"
                 className="absolute inset-x-0 -bottom-px h-px origin-left bg-accent"
@@ -103,9 +127,13 @@ export default function MusicPage() {
             </button>
           );
         })}
-      </div>
+        </div>
+      </section>
 
-      <div className="mt-8">
+      <section aria-labelledby="music-tracklist-heading" className="mt-8">
+        <h2 id="music-tracklist-heading" className="sr-only">
+          Track list
+        </h2>
         <div className="mb-3 hidden grid-cols-[minmax(11rem,1fr)_minmax(0,2fr)_auto_auto] gap-x-4 px-2 font-sans text-[length:var(--text-micro)] uppercase tracking-[var(--track-text-lg)] text-dim2 lg:grid">
           <span>Release</span>
           <span>Material</span>
@@ -139,7 +167,7 @@ export default function MusicPage() {
             delay={Math.min(position, 6) * beatTime(0.04)}
           />
         ))}
-      </div>
+      </section>
     </div>
   );
 }

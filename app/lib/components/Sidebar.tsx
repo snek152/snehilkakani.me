@@ -155,7 +155,7 @@ export default function Sidebar() {
       >
         <Link
           href="/"
-          className="no-underline transition-opacity duration-[120ms] ease-[var(--ease-press)] active:opacity-60"
+          className="relative inline-flex min-h-11 items-center pr-2 no-underline transition-opacity duration-[120ms] ease-[var(--ease-press)] active:opacity-60"
         >
           <span className="font-display text-[0.9rem] font-bold tracking-[var(--track-display-sm)] text-fg">
             SK

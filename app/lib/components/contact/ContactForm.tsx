@@ -26,6 +26,7 @@ function Field({
   type,
   value,
   onChange,
+  onBlurValidate,
   placeholder,
   autoComplete,
   reduceMotion,
@@ -36,6 +37,7 @@ function Field({
   type: "text" | "email";
   value: string;
   onChange: (v: string) => void;
+  onBlurValidate?: () => void;
   placeholder: string;
   autoComplete: string;
   reduceMotion: boolean;
@@ -67,14 +69,17 @@ function Field({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
+          onBlur={() => {
+            setFocused(false);
+            onBlurValidate?.();
+          }}
           placeholder={placeholder}
           autoComplete={autoComplete}
           className="w-full border-0 border-b border-border bg-transparent py-[0.6rem] text-[length:var(--text-body)] text-fg outline-none transition-colors duration-150 placeholder:text-dim2 focus:border-accent"
         />
         <motion.span
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left bg-[linear-gradient(90deg,var(--accent),#6d5ede,var(--accent))]"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left bg-[image:var(--seam-focus)]"
           initial={false}
           animate={{ scaleX: focused ? 1 : 0 }}
           transition={{ duration: reduceMotion ? 0 : beats(0.4), ease: EASE_OUT }}
@@ -145,10 +150,24 @@ export default function ContactForm() {
 
   /* Cleared as the visitor types, not re-checked on every keystroke: telling
    * someone their address is malformed while they are still halfway through
-   * typing it is nagging, not help. The check runs on submit; editing a field
-   * retires its complaint. */
+   * typing it is nagging, not help. The full check runs on submit; editing a
+   * field retires its complaint immediately. The one earlier signal we do
+   * give is on blur, and only for a field the visitor actually filled in —
+   * leaving an empty field untouched still says nothing, since that's the
+   * submit gate's job, not a reason to nag someone who hasn't gotten there
+   * yet. */
   const clearError = (key: keyof FieldErrors) =>
     setErrors((prev) => (prev[key] ? { ...prev, [key]: undefined } : prev));
+
+  /* Name and message have no rule beyond "did you fill this in", so on blur
+   * they can only ever pass — a non-empty value never produces an error.
+   * Email is the one field where "non-empty" isn't the same as "valid", so
+   * it's the only case that can actually surface something here. */
+  const validateOnBlur = (key: keyof FieldErrors, value: string) => {
+    if (!value.trim()) return;
+    const problem = key === "email" ? emailProblem(value) : undefined;
+    setErrors((prev) => ({ ...prev, [key]: problem }));
+  };
 
   /* Two delivery paths, and which one is live is a deployment decision, not a
    * code change.
@@ -366,8 +385,8 @@ export default function ContactForm() {
         aria-hidden
         initial={false}
         animate={{ scaleX: sending ? 1 : 0, opacity: sending ? 1 : 0 }}
-        transition={{ duration: reduceMotion ? 0 : 0.38, ease: EASE_OUT }}
-        className="absolute -bottom-2 left-0 h-px w-full origin-left bg-[linear-gradient(90deg,var(--accent),#6d5ede,var(--accent))]"
+        transition={{ duration: reduceMotion ? 0 : beats(0.6), ease: EASE_OUT }}
+        className="absolute -bottom-2 left-0 h-px w-full origin-left bg-[image:var(--seam-focus)]"
       />
       <motion.div variants={fieldMotion}>
         <Field
@@ -381,6 +400,7 @@ export default function ContactForm() {
           }}
           placeholder="Your name"
           autoComplete="name"
+          onBlurValidate={() => validateOnBlur("name", name)}
           reduceMotion={reduceMotion}
           error={errors.name}
         />
@@ -397,6 +417,7 @@ export default function ContactForm() {
           }}
           placeholder="your@email.com"
           autoComplete="email"
+          onBlurValidate={() => validateOnBlur("email", email)}
           reduceMotion={reduceMotion}
           error={errors.email}
         />
@@ -422,13 +443,16 @@ export default function ContactForm() {
               clearError("message");
             }}
             onFocus={() => setMessageFocused(true)}
-            onBlur={() => setMessageFocused(false)}
+            onBlur={() => {
+              setMessageFocused(false);
+              validateOnBlur("message", message);
+            }}
             placeholder="What are you working on?"
             className="w-full resize-none border-0 border-b border-border bg-transparent py-[0.6rem] text-[length:var(--text-body)] text-fg outline-none transition-colors duration-150 placeholder:text-dim2 focus:border-accent"
           />
           <motion.span
             aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left bg-[linear-gradient(90deg,var(--accent),#6d5ede,var(--accent))]"
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left bg-[image:var(--seam-focus)]"
             initial={false}
             animate={{ scaleX: messageFocused ? 1 : 0 }}
             transition={{ duration: reduceMotion ? 0 : beats(0.4), ease: EASE_OUT }}

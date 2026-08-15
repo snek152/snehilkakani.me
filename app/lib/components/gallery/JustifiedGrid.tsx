@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useId, useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { MutableRefObject } from "react";
 import GalleryCell from "./GalleryCell";
 import { getPhotoDims } from "./photo-dims";
@@ -111,6 +111,7 @@ export default function JustifiedGrid({
   cellRefs: MutableRefObject<(HTMLButtonElement | null)[]>;
 }) {
   const containerRef = useRef<HTMLElement | null>(null);
+  const headingId = useId();
   const [width, setWidth] = useState(0);
 
   useLayoutEffect(() => {
@@ -146,8 +147,11 @@ export default function JustifiedGrid({
     <section
       ref={containerRef}
       className="relative mt-0 overflow-hidden border-t border-border pt-5 sm:pt-7"
-      aria-label={`Contact sheet of ${photos.length} photographs`}
+      aria-labelledby={headingId}
     >
+      <h2 id={headingId} className="sr-only">
+        {`Contact sheet of ${photos.length} photographs`}
+      </h2>
       <div className="flex flex-col" style={{ gap: ROW_GAP }}>
         {rows.map((row, rowIndex) => (
           <div key={rowIndex} className="flex items-start" style={{ gap: COL_GAP }}>

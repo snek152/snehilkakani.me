@@ -160,7 +160,7 @@ export default function ExperienceList({ experiences }: { experiences: Experienc
                         transition: { duration: reduceMotion ? 0 : beats(0.55), ease: EASE_OUT },
                       },
                     }}
-                    className="border border-border px-2.5 py-1 text-[length:var(--text-meta)] tracking-[var(--track-text-sm)] text-dim"
+                    className="border border-border px-2.5 py-1.5 text-[length:var(--text-meta)] tracking-[var(--track-text-sm)] text-dim"
                   >
                     {skill}
                   </motion.li>

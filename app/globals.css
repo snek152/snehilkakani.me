@@ -27,6 +27,18 @@
    * blue light refracts through a seam or instrument surface. */
   --violet-rgb: 124 92 255;
   --spectral-seam: linear-gradient(90deg, rgb(var(--accent-rgb) / 0.82), rgb(var(--violet-rgb) / 0.58), rgb(var(--accent-rgb) / 0));
+  /* The Lens header rule's colour segment. Its two stops are their own
+   * values rather than `--accent`/`--violet-rgb` composites: this exact pair
+   * is the pinned appearance of that rule, and rebuilding it out of the
+   * accent channels shifts the hue. A token so the callsite references the
+   * system instead of carrying two literal hexes. */
+  --seam-lens: linear-gradient(90deg, transparent, #5575d9, #8b66c9);
+  /* The focus underline that draws along an input's own border from the caret
+   * side. Its violet mid-stop was typed literally at three separate callsites
+   * in `ContactForm`, which is three chances for one of them to drift; it is
+   * its own value rather than `--violet-rgb` composited over the page, because
+   * this gradient sits on top of a border rather than on the background. */
+  --seam-focus: linear-gradient(90deg, var(--accent), #6d5ede, var(--accent));
   /* Non-text light can be brighter than --accent-text because no words rely
    * on it. Use for fine marks, source points, and material edges only. */
   --signal-light: rgb(126 164 255);

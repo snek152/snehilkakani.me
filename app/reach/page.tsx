@@ -93,7 +93,7 @@ export default function ContactPage() {
           </div>
         </section>
 
-        <section aria-labelledby="contact-photos" className="md:pt-[4.5rem]">
+        <section aria-labelledby="contact-photos" className="lg:pt-[4.5rem]">
           <div className="mb-5 max-w-sm">
             <h2
               id="contact-photos"
@@ -108,7 +108,12 @@ export default function ContactPage() {
                 "col-span-7 row-span-2 aspect-[4/5]",
                 "col-span-5 aspect-square",
                 "col-span-5 aspect-[5/4]",
-                "col-span-12 aspect-[16/7]",
+                // Squarer only in the md band, where the photo column is
+                // the shorter of the two and this extra height is what
+                // closes the gap under it before the footer — back to the
+                // wide panoramic crop from `lg` up, where the column is
+                // already the taller one.
+                "col-span-12 aspect-[16/7] md:aspect-square lg:aspect-[16/7]",
               ][index];
 
               return (
