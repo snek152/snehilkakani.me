@@ -17,6 +17,7 @@ import { useMotionPreference } from "@/app/lib/components/shared/MotionPreferenc
 import { GRID_STOPS } from "@/app/lib/grid";
 import RoleCycle from "@/app/lib/components/home/RoleCycle";
 import portrait from "@/public/about.jpg";
+import { socialLinks } from "../../nav";
 
 const NAME_LINES = ["Snehil", "Kakani"];
 
@@ -136,13 +137,13 @@ export default function Hero({
         ))}
       </div>
 
-      <div className="grid grid-cols-1 items-end gap-10 mt-10 z-10 lg:grid-cols-[1.5fr_minmax(220px,1.2fr)] lg:grid-rows-[1fr_auto] lg:gap-x-8 lg:gap-y-0">
+      <div className="grid grid-cols-1 items-end gap-0 mt-10 z-10 lg:grid-cols-[1.5fr_minmax(220px,1.2fr)] lg:grid-rows-[1fr_auto] lg:gap-x-8 lg:gap-y-0">
         <div className="lg:col-start-1 lg:row-start-1">
           <motion.div
             initial={reduceMotion ? false : "hidden"}
             animate={reduceMotion ? undefined : state}
             variants={riseVariants}
-            className="mb-3"
+            className="mb-1"
           >
             <RoleCycle />
           </motion.div>
@@ -160,11 +161,7 @@ export default function Hero({
             transition={{ duration: 0.5, ease: EASE_OUT }}
             className="m-0 mb-4 font-display text-[length:var(--size-display-xl)] leading-[0.94] font-bold tracking-[var(--track-display-xl)] text-balance text-fg"
           >
-            {NAME_LINES.map((line) => (
-              <span key={line} className="block">
-                {line}
-              </span>
-            ))}
+            Snehil Kakani
           </motion.h1>
         </div>
 
@@ -174,10 +171,9 @@ export default function Hero({
           whileInView={entrance}
           viewport={{ once: true, amount: 0.25 }}
           transition={{ duration: 0.45, ease: EASE_OUT }}
-          className="order-last mb-14 text-[length:var(--text-lead)] leading-[var(--leading-lead)] max-w-[var(--measure-lead)] text-dim lg:order-none lg:col-start-1 lg:row-start-2 lg:mt-4"
+          className="mb-14 text-[length:var(--text-lead)] leading-[var(--leading-lead)] max-w-[var(--measure-lead)] text-dim lg:col-start-1 lg:row-start-2"
           id="home-introduction"
         >
-
           Building intelligent systems with a focus on creating accessible user
           experiences. Exploring music production, photography, and video games
           in my free time. Published researcher, NMSC finalist, and
@@ -185,7 +181,7 @@ export default function Hero({
         </motion.p>
 
         <motion.div
-          className="justify-self-center lg:justify-self-end bg-card z-10 border border-border lg:col-start-2 lg:row-start-1 lg:row-span-2"
+          className="justify-self-start lg:justify-self-end bg-card z-10 border border-border lg:col-start-2 lg:row-start-1 lg:row-span-2"
           initial={reduceMotion ? false : "hidden"}
           animate={reduceMotion ? undefined : state}
           variants={photoVariants}
@@ -217,14 +213,29 @@ export default function Hero({
                   </div>
                 ))}
               </dl>
-              <a
+              <div className="grid grid-cols-4 gap-2">
+                {socialLinks.map(({ href, label, Icon }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`mt-4 ${BORDERED_CONTROL}`}
+                  >
+                    <Icon className="size-3.5" aria-hidden="true" />
+                    {label}
+                  </a>
+                ))}
+              </div>
+              {/* <a
                 href="/resume.pdf"
-                download
+                target="_blank"
+                rel="noopener noreferrer"
                 className={`mt-4 ${BORDERED_CONTROL}`}
               >
                 <FileText className="size-3.5" aria-hidden="true" />
                 Résumé
-              </a>
+              </a> */}
             </div>
           </ViewfinderFrame>
         </motion.div>

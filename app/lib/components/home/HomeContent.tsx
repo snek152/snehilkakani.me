@@ -14,27 +14,22 @@ export default function HomeContent() {
   const reduceMotion = useMotionPreference();
   const headingRef = useRef<HTMLDivElement>(null);
 
-  const headingActive = useInView(headingRef, { once: true, margin: "0px 0px -15% 0px" });
+  const headingActive = useInView(headingRef, {
+    once: true,
+    margin: "0px 0px -15% 0px",
+  });
 
   return (
     <div className="px-6 pb-20 sm:px-8 lg:px-12 lg:pb-12">
       <GridIndex />
       <motion.section
         aria-labelledby="experience-heading"
-        className="mt-12"
+        className="mt-0"
         initial={reduceMotion ? false : { opacity: 0, y: 20 }}
         whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.08 }}
         transition={{ duration: beats(0.75), ease: EASE_OUT }}
       >
-        <div ref={headingRef} className="mb-6">
-          <ManifestoHeading
-            id="experience-heading"
-            text="Experience"
-            active={headingActive}
-            className="font-display text-[length:var(--size-display-md)] font-semibold tracking-[var(--track-display-md)] text-fg"
-          />
-        </div>
         <ExperienceList experiences={experiences} />
       </motion.section>
     </div>

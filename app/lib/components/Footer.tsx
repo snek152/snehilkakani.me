@@ -1,12 +1,5 @@
-import { Github, Linkedin, Mail, FileText } from "lucide-react";
 import SignalRule from "./shared/SignalRule";
-
-const LINKS = [
-  { href: "https://github.com/snek152", label: "GitHub", Icon: Github },
-  { href: "https://linkedin.com/in/snehilkakani", label: "LinkedIn", Icon: Linkedin },
-  { href: "mailto:kakanisnehil@gmail.com", label: "Email", Icon: Mail },
-  { href: "/resume.pdf", label: "Résumé", Icon: FileText },
-] as const;
+import { socialLinks } from "@/app/lib/nav";
 
 export default function Footer({
   bottomReserve = 0,
@@ -15,7 +8,7 @@ export default function Footer({
 }) {
   return (
     <footer
-      className="instrument-footer relative flex flex-wrap items-center justify-between gap-3 px-6 py-5 sm:px-8 lg:px-12"
+      className="instrument-footer relative flex flex-wrap items-center justify-between gap-3 px-6 py-5 sm:px-8 lg:px-12 bg-bg"
       style={
         bottomReserve
           ? { paddingBottom: `calc(1.25rem + ${bottomReserve}px)` }
@@ -28,15 +21,19 @@ export default function Footer({
       </span>
 
       <div className="flex flex-wrap gap-3 gap-x-5 min-[420px]:gap-x-6">
-        {LINKS.map(({ href, label, Icon }) => (
+        {socialLinks.map(({ href, label, Icon }) => (
           <a
             key={label}
             href={href}
-            target={href.startsWith("http") ? "_blank" : undefined}
+            target="_blank"
             rel="noopener noreferrer"
             className="relative flex items-center gap-1.5 font-sans text-[length:var(--text-meta)] tracking-[var(--track-text-sm)] text-dim transition-[color,opacity] duration-[120ms] ease-[var(--ease-press)] before:absolute before:-inset-2 before:content-[''] hover:text-fg active:opacity-70"
           >
-            <Icon size={13} strokeWidth={1.75} className="hidden min-[420px]:block" />
+            <Icon
+              size={13}
+              strokeWidth={1.75}
+              className="hidden min-[420px]:block"
+            />
             {label}
           </a>
         ))}

@@ -30,7 +30,7 @@ export default function RoleCycle() {
   const display = useScrambleText(ROLES[index], true, { skip: reduceMotion });
 
   const textClass =
-    "m-0 font-display text-[length:var(--size-display-sm)] font-semibold tracking-[var(--track-display-sm)] text-accent-text tabular-nums";
+    "m-0 font-display text-[length:var(--size-display-md)] font-semibold tracking-[var(--track-display-sm)] text-accent-text tabular-nums z-20";
 
   const fullRoleList = ROLES.join(", ");
 
@@ -44,7 +44,7 @@ export default function RoleCycle() {
   }
 
   return (
-    <div className="relative h-[1.6em] overflow-hidden">
+    <div className="relative overflow-hidden">
       <p className={textClass}>
         <span className="sr-only">{fullRoleList}</span>
         <span aria-hidden="true">{display}</span>

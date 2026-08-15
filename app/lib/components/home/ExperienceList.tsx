@@ -8,7 +8,11 @@ import { dateRange } from "@/app/lib/format";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import DrawnRule from "@/app/lib/components/shared/DrawnRule";
 
-export default function ExperienceList({ experiences }: { experiences: Experience[] }) {
+export default function ExperienceList({
+  experiences,
+}: {
+  experiences: Experience[];
+}) {
   const reduceMotion = useMotionPreference();
 
   const row = {
@@ -31,7 +35,6 @@ export default function ExperienceList({ experiences }: { experiences: Experienc
 
   return (
     <ol className="relative -mx-6 sm:-mx-8 lg:-mx-12">
-      <DrawnRule className="absolute inset-x-0 top-0" delay={reduceMotion ? 0 : beats(0.15)} />
       {experiences.map((experience) => (
         <motion.li
           key={experience.company + experience.title}
@@ -39,36 +42,57 @@ export default function ExperienceList({ experiences }: { experiences: Experienc
           whileInView="shown"
           viewport={{ once: true, amount: 0, margin: "100000px 0px -6% 0px" }}
           variants={row}
-          className="group relative grid gap-y-4 px-6 py-8 sm:px-8 lg:grid-cols-4 lg:gap-x-0 lg:px-0 lg:py-10"
+          className="group relative grid gap-y-4 px-6 py-8 sm:px-8 lg:grid-cols-16 lg:gap-x-0 lg:px-0 lg:py-10"
         >
-
           <DrawnRule className="absolute inset-x-0 bottom-0 [li:last-child_&]:hidden" />
-          <motion.div variants={part} className="lg:pl-12 lg:pr-6">
+          <motion.div
+            variants={part}
+            className="lg:pl-12 lg:pr-6 lg:col-span-3 lg:pt-2"
+          >
             <p className="text-[length:var(--text-meta)] font-medium leading-snug tabular-nums text-fg">
               {dateRange(experience.period)}
             </p>
 
-            <p className="mt-1.5 text-[length:var(--text-micro)] leading-snug tracking-[var(--track-text-sm)] text-dim">{experience.location}</p>
+            <p className="mt-1.5 text-[length:var(--text-micro)] leading-snug tracking-[var(--track-text-sm)] text-dim">
+              {experience.location}
+            </p>
           </motion.div>
 
-          <motion.div variants={content} className="lg:col-span-3 lg:pl-10 lg:pr-12">
-            <motion.div variants={part} className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+          <motion.div
+            variants={content}
+            className="lg:col-span-13 lg:pl-10 lg:pr-12"
+          >
+            <motion.div
+              variants={part}
+              className="flex flex-wrap items-baseline gap-x-3 gap-y-1"
+            >
               <h3 className="font-display text-[length:var(--size-display-md)] font-semibold tracking-[var(--track-display-md)] text-fg">
                 {experience.company}
               </h3>
-              <span className="text-[length:var(--text-meta)] tracking-[var(--track-text-sm)] text-dim">{experience.title}</span>
+              <h3 className="tracking-[var(--track-display-md)] text-dim2/50 text-[length:var(--size-display-md)] font-display font-normal">
+                {experience.title}
+              </h3>
             </motion.div>
             <motion.ul variants={part} className="mt-4 space-y-2">
               {experience.description.map((line) => (
-                <li key={line} className="flex items-start gap-2.5 text-[length:var(--text-body)] leading-[var(--leading-body)] max-w-[var(--measure-body)] text-dim">
-                  <span aria-hidden="true" className="mt-[0.65rem] h-1.5 w-1.5 flex-shrink-0 rounded-full bg-fg/40" />
+                <li
+                  key={line}
+                  className="flex items-start gap-2.5 text-[length:var(--text-body)] leading-[var(--leading-body)] text-dim"
+                >
+                  <span
+                    aria-hidden="true"
+                    className="mt-[0.65rem] h-1.5 w-1.5 flex-shrink-0 rounded-full bg-fg/40"
+                  />
                   <span>{line}</span>
                 </li>
               ))}
             </motion.ul>
             {experience.skills && (
               <motion.ul
-                variants={{ hidden: {}, shown: { transition: { staggerChildren: beats(0.07) } } }}
+                variants={{
+                  hidden: {},
+                  shown: { transition: { staggerChildren: beats(0.07) } },
+                }}
                 className="mt-5 flex flex-wrap gap-x-3 gap-y-1.5"
                 aria-label="Skills and tools"
               >
@@ -80,10 +104,13 @@ export default function ExperienceList({ experiences }: { experiences: Experienc
                       shown: {
                         opacity: 1,
                         x: 0,
-                        transition: { duration: reduceMotion ? 0 : beats(0.55), ease: EASE_OUT },
+                        transition: {
+                          duration: reduceMotion ? 0 : beats(0.55),
+                          ease: EASE_OUT,
+                        },
                       },
                     }}
-                    className="text-[length:var(--text-meta)] tracking-[var(--track-text-sm)] text-dim before:mr-1.5 before:text-dim2 before:content-['/']"
+                    className="text-[length:var(--text-meta)] tracking-[var(--track-text-sm)] text-dim before:mr-1.5 before:text-accent before:content-['/']"
                   >
                     {skill}
                   </motion.li>

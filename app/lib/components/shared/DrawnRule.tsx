@@ -31,7 +31,9 @@ export default function DrawnRule({
     if (!el) return;
     const measure = () => {
       const fromDocumentTop = el.getBoundingClientRect().top + window.scrollY;
-      setStranded(document.documentElement.scrollHeight - fromDocumentTop < DRAW_LEAD);
+      setStranded(
+        document.documentElement.scrollHeight - fromDocumentTop < DRAW_LEAD,
+      );
     };
 
     measure();
@@ -50,10 +52,12 @@ export default function DrawnRule({
       initial={present ? false : { scaleX: 0 }}
       animate={present ? { scaleX: 1 } : undefined}
       whileInView={present ? undefined : { scaleX: 1 }}
-
       viewport={{ once: true, margin: `100000px 0px -${DRAW_LEAD}px 0px` }}
-
-      transition={present ? { duration: 0 } : { duration: beats(1.25), ease: EASE_OUT, delay }}
+      transition={
+        present
+          ? { duration: 0 }
+          : { duration: beats(1.25), ease: EASE_OUT, delay }
+      }
     />
   );
 }
