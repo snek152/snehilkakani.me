@@ -2,7 +2,12 @@
 
 import Image from "next/image";
 import { FileText } from "lucide-react";
-import { motion, useTransform, type MotionValue, type Variants } from "motion/react";
+import {
+  motion,
+  useTransform,
+  type MotionValue,
+  type Variants,
+} from "motion/react";
 import { useIntroReady } from "@/app/lib/components/AppShell";
 import { EASE_OUT } from "@/app/lib/motion";
 import { beats } from "@/app/lib/tempo";
@@ -55,15 +60,47 @@ export default function Hero({
   const introReady = useIntroReady();
   const reduceMotion = useMotionPreference();
   const state = introReady ? "visible" : "hidden";
-  const lineScaleY0 = useTransform(progress, [0, 0.65], reduceMotion ? [1, 1] : [1, 0]);
-  const lineScaleY1 = useTransform(progress, [0.04, 0.69], reduceMotion ? [1, 1] : [1, 0]);
-  const lineScaleY2 = useTransform(progress, [0.08, 0.73], reduceMotion ? [1, 1] : [1, 0]);
-  const lineScaleY3 = useTransform(progress, [0.12, 0.77], reduceMotion ? [1, 1] : [1, 0]);
+  const lineScaleY0 = useTransform(
+    progress,
+    [0, 0.65],
+    reduceMotion ? [1, 1] : [1, 0],
+  );
+  const lineScaleY1 = useTransform(
+    progress,
+    [0.04, 0.69],
+    reduceMotion ? [1, 1] : [1, 0],
+  );
+  const lineScaleY2 = useTransform(
+    progress,
+    [0.08, 0.73],
+    reduceMotion ? [1, 1] : [1, 0],
+  );
+  const lineScaleY3 = useTransform(
+    progress,
+    [0.12, 0.77],
+    reduceMotion ? [1, 1] : [1, 0],
+  );
   const lineScaleY = [lineScaleY0, lineScaleY1, lineScaleY2, lineScaleY3];
-  const lineOpacity0 = useTransform(progress, [0, 0.3], reduceMotion ? [0.25, 0.25] : [0.1, 1]);
-  const lineOpacity1 = useTransform(progress, [0.04, 0.34], reduceMotion ? [0.25, 0.25] : [0.1, 1]);
-  const lineOpacity2 = useTransform(progress, [0.08, 0.38], reduceMotion ? [0.25, 0.25] : [0.1, 1]);
-  const lineOpacity3 = useTransform(progress, [0.12, 0.42], reduceMotion ? [0.25, 0.25] : [0.1, 1]);
+  const lineOpacity0 = useTransform(
+    progress,
+    [0, 0.3],
+    reduceMotion ? [0.25, 0.25] : [0.1, 1],
+  );
+  const lineOpacity1 = useTransform(
+    progress,
+    [0.04, 0.34],
+    reduceMotion ? [0.25, 0.25] : [0.1, 1],
+  );
+  const lineOpacity2 = useTransform(
+    progress,
+    [0.08, 0.38],
+    reduceMotion ? [0.25, 0.25] : [0.1, 1],
+  );
+  const lineOpacity3 = useTransform(
+    progress,
+    [0.12, 0.42],
+    reduceMotion ? [0.25, 0.25] : [0.1, 1],
+  );
   const lineOpacity = [lineOpacity0, lineOpacity1, lineOpacity2, lineOpacity3];
   const entrance = reduceMotion ? undefined : { opacity: 1, y: 0 };
   const STATUS = [
@@ -86,7 +123,10 @@ export default function Hero({
           <div
             key={stop}
             className="absolute inset-y-0 w-px bg-dim2/15"
-            style={{ left: `${stop}%`, marginLeft: stop === 100 ? "-1px" : undefined }}
+            style={{
+              left: `${stop}%`,
+              marginLeft: stop === 100 ? "-1px" : undefined,
+            }}
           />
         ))}
         {GRID_STOPS.map((stop, index) => (
@@ -105,29 +145,29 @@ export default function Hero({
       </div>
 
       {/* Three cells, not two, so the intro paragraph can be resequenced on
-        * mobile. Below `lg` the reading order becomes role -> name -> the
-        * status card -> paragraph: the card carries what a recruiter came for
-        * (what he is building, what he is studying, where he is, what he
-        * wants, and the resume) and in a single column it used to sit roughly
-        * a screen and a half down, behind the paragraph and the portrait. The
-        * paragraph is context; it can wait its turn.
-        *
-        * DOM order is unchanged, so assistive tech still reads the prose
-        * before the card, and nothing focusable moves.
-        *
-        * `lg:gap-y-0` is load-bearing: with the paragraph promoted to a grid
-        * child, a row gap would ALSO open between the name and the paragraph
-        * on desktop, where their spacing is owned by the paragraph's own
-        * `lg:mt-4`. Column gap stays 8.
-        *
-        * `lg:grid-rows-[1fr_auto]` is the other half of that, and without it
-        * this layout is broken: the card spans both rows, so with implicit
-        * `auto auto` rows the grid distributed the card's height ACROSS them
-        * and opened ~90px of dead space between the name and the paragraph.
-        * Pinning row 2 to the paragraph's own height and letting row 1 absorb
-        * all the slack puts the pair back together, and `items-end` keeps them
-        * bottom-aligned against the card exactly as they were when they shared
-        * one cell. */}
+       * mobile. Below `lg` the reading order becomes role -> name -> the
+       * status card -> paragraph: the card carries what a recruiter came for
+       * (what he is building, what he is studying, where he is, what he
+       * wants, and the resume) and in a single column it used to sit roughly
+       * a screen and a half down, behind the paragraph and the portrait. The
+       * paragraph is context; it can wait its turn.
+       *
+       * DOM order is unchanged, so assistive tech still reads the prose
+       * before the card, and nothing focusable moves.
+       *
+       * `lg:gap-y-0` is load-bearing: with the paragraph promoted to a grid
+       * child, a row gap would ALSO open between the name and the paragraph
+       * on desktop, where their spacing is owned by the paragraph's own
+       * `lg:mt-4`. Column gap stays 8.
+       *
+       * `lg:grid-rows-[1fr_auto]` is the other half of that, and without it
+       * this layout is broken: the card spans both rows, so with implicit
+       * `auto auto` rows the grid distributed the card's height ACROSS them
+       * and opened ~90px of dead space between the name and the paragraph.
+       * Pinning row 2 to the paragraph's own height and letting row 1 absorb
+       * all the slack puts the pair back together, and `items-end` keeps them
+       * bottom-aligned against the card exactly as they were when they shared
+       * one cell. */}
       <div className="grid grid-cols-1 items-end gap-10 mt-10 z-10 lg:grid-cols-[1.5fr_minmax(220px,1.2fr)] lg:grid-rows-[1fr_auto] lg:gap-x-8 lg:gap-y-0">
         <div className="lg:col-start-1 lg:row-start-1">
           <motion.div
@@ -170,15 +210,15 @@ export default function Hero({
           id="home-introduction"
         >
           {/* "in my free time" and "video games" are deliberately gone. The
-            * site gives `/music` and `/lens` the same nav weight as
-            * `/builds` and backs all three with first-party work, so a
-            * sentence that filed two of them under free time contradicted
-            * the structure the reader is about to navigate. Video games had
-            * no artifact anywhere on the site, which is the one thing every
-            * claim here is supposed to have. */}
-          Building intelligent systems with a focus on creating accessible
-          user experiences. Producing music and shooting photography
-          alongside it. Published researcher, NMSC finalist, and
+           * site gives `/music` and `/lens` the same nav weight as
+           * `/builds` and backs all three with first-party work, so a
+           * sentence that filed two of them under free time contradicted
+           * the structure the reader is about to navigate. Video games had
+           * no artifact anywhere on the site, which is the one thing every
+           * claim here is supposed to have. */}
+          Building intelligent systems with a focus on creating accessible user
+          experiences. Exploring music production, photography, and video games
+          in my free time. Published researcher, NMSC finalist, and
           entrepreneurial award winner.
         </motion.p>
 
@@ -207,11 +247,11 @@ export default function Hero({
                 {STATUS.map(({ label, value }) => (
                   <div key={label}>
                     {/* `dim2` is 4.87:1 — the floor. A definition list is a
-                      * two-step reading path: you find the label, then the
-                      * value under it. Setting the step you land on first as
-                      * the least legible text in the card inverts that.
-                      * `dim` is 8.42:1 and still recedes behind the `fg`
-                      * value, so the hierarchy survives the lift. */}
+                     * two-step reading path: you find the label, then the
+                     * value under it. Setting the step you land on first as
+                     * the least legible text in the card inverts that.
+                     * `dim` is 8.42:1 and still recedes behind the `fg`
+                     * value, so the hierarchy survives the lift. */}
                     <dt className="mb-1 text-[length:var(--text-meta)] font-normal tracking-[var(--track-text-sm)] text-dim">
                       {label}
                     </dt>
