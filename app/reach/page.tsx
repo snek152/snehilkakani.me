@@ -35,10 +35,13 @@ export default function ContactPage() {
   const reduceMotion = useMotionPreference();
   const headingRef = useRef<HTMLDivElement>(null);
 
-  const headingActive = useInView(headingRef, { once: true, margin: "0px 0px -15% 0px" });
+  const headingActive = useInView(headingRef, {
+    once: true,
+    margin: "0px 0px -15% 0px",
+  });
 
   return (
-    <div className="relative isolate overflow-hidden px-6 pb-12 pt-16 sm:px-8 lg:px-12 lg:pt-[4.5rem]">
+    <div className="relative isolate overflow-hidden px-6 pb-12 pt-10 sm:px-8 lg:px-12 lg:pt-10">
       <motion.div
         ref={headingRef}
         initial={reduceMotion ? false : { opacity: 0, y: 20 }}
@@ -64,7 +67,11 @@ export default function ContactPage() {
       <motion.div
         initial={reduceMotion ? false : { opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: beats(0.75), delay: reduceMotion ? 0 : beats(0.15), ease: EASE_OUT }}
+        transition={{
+          duration: beats(0.75),
+          delay: reduceMotion ? 0 : beats(0.15),
+          ease: EASE_OUT,
+        }}
         className="relative grid grid-cols-1 items-start gap-12 md:grid-cols-[minmax(0,3fr)_minmax(15rem,2fr)] md:gap-x-[clamp(2rem,6vw,5rem)] md:gap-y-12"
       >
         <section aria-labelledby="contact-intro" className="max-w-[42rem]">

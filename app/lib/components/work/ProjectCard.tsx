@@ -38,7 +38,7 @@ export default function ProjectCard({
         if (!event.currentTarget.contains(event.relatedTarget))
           setActive(false);
       }}
-      className="group relative isolate grid gap-y-5 py-10 first:pt-0 last:pb-0 lg:grid-cols-[minmax(0,1.12fr)_minmax(18rem,0.88fr)] lg:gap-x-0 lg:py-16 lg:last:pb-0"
+      className="group relative isolate grid gap-y-5 py-10 first:pt-0 last:pb-0 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-x-0 lg:py-16 lg:last:pb-0"
     >
 
       <div className="absolute -inset-x-6 top-0 sm:-inset-x-8 lg:-inset-x-12 [article:first-child_&]:hidden">
@@ -56,7 +56,7 @@ export default function ProjectCard({
         whileInView="shown"
         viewport={{ once: true, margin: "100000px 0px -18% 0px" }}
         variants={{
-          hidden: { clipPath: "inset(0 100% 0 0)" },
+          hidden: { clipPath: reversesTrajectory ? "inset(0 0 0 100%)" : "inset(0 100% 0 0)" },
           shown: {
             clipPath: "inset(0 0% 0 0)",
             transition: {
@@ -80,12 +80,6 @@ export default function ProjectCard({
           className="absolute inset-x-0 bottom-0 h-px origin-left bg-[linear-gradient(90deg,var(--accent),color-mix(in_srgb,var(--accent)_42%,transparent),transparent)]"
           animate={{ scaleX: active ? 1 : 0.25 }}
           transition={{ duration: reduceMotion ? 0 : beats(0.45), ease: EASE_OUT }}
-        />
-        <span
-          aria-hidden="true"
-          className={`pointer-events-none absolute bottom-0 top-1/4 w-px bg-[linear-gradient(to_bottom,transparent,color-mix(in_srgb,var(--accent)_54%,transparent),transparent)] ${
-            reversesTrajectory ? "right-[16%]" : "left-[16%]"
-          }`}
         />
       </motion.div>
 

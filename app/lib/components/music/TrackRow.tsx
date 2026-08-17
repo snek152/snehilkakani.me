@@ -37,8 +37,12 @@ export default function TrackRow({
     <motion.div
       initial={reduceMotion ? false : { opacity: 0, y: 6 }}
       whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "100000px 0px -18% 0px" }}
-      transition={{ duration: reduceMotion ? 0 : beatTime(0.4), ease: EASE_OUT, delay }}
+      viewport={{ once: true }}
+      transition={{
+        duration: reduceMotion ? 0 : beatTime(0.4),
+        ease: EASE_OUT,
+        delay,
+      }}
       className={`relative ${isActive ? "bg-white/[0.025]" : ""}`}
     >
       <button
@@ -59,11 +63,19 @@ export default function TrackRow({
               <motion.span
                 aria-hidden="true"
                 className="h-2 w-2 rounded-sm bg-accent"
-                animate={reduceMotion ? { opacity: 0.55 } : { opacity: [0.35, 1, 0.35] }}
+                animate={
+                  reduceMotion
+                    ? { opacity: 0.55 }
+                    : { opacity: [0.35, 1, 0.35] }
+                }
                 transition={
                   reduceMotion
                     ? { duration: 0 }
-                    : { duration: beatTime(2), repeat: Infinity, ease: EASE_OUT }
+                    : {
+                        duration: beatTime(2),
+                        repeat: Infinity,
+                        ease: EASE_OUT,
+                      }
                 }
               />
             ) : isPlayingRow ? (
@@ -85,7 +97,8 @@ export default function TrackRow({
           </span>
 
           <span className="pl-3 font-sans text-[length:var(--text-micro)] tabular-nums tracking-[var(--track-text-sm)] text-dim2 lg:hidden">
-            <span className="capitalize">{beat.category}</span> · {beat.tempo} BPM · {formatTime(duration)}
+            <span className="capitalize">{beat.category}</span> · {beat.tempo}{" "}
+            BPM · {formatTime(duration)}
           </span>
         </span>
 

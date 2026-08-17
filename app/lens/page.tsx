@@ -16,7 +16,10 @@ export default function GalleryPage() {
   const cellRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const returnFocusRef = useRef<HTMLButtonElement | null>(null);
   const headingRef = useRef<HTMLDivElement>(null);
-  const headingActive = useInView(headingRef, { once: true, margin: "0px 0px -15% 0px" });
+  const headingActive = useInView(headingRef, {
+    once: true,
+    margin: "0px 0px -15% 0px",
+  });
 
   const openAt = useCallback((i: number) => {
     returnFocusRef.current = cellRefs.current[i] ?? null;
@@ -31,7 +34,7 @@ export default function GalleryPage() {
   const close = useCallback(() => setOpenIndex(null), []);
 
   return (
-    <div className="px-6 pt-16 pb-12 sm:px-8 lg:px-12 lg:pt-[4.5rem]">
+    <div className="px-6 pb-12 pt-6 sm:px-8 lg:px-12 lg:pt-6">
       <motion.div
         initial={reduceMotion ? false : "hidden"}
         animate="visible"
@@ -48,16 +51,23 @@ export default function GalleryPage() {
         />
         <motion.div
           aria-hidden="true"
-          className="relative mt-10 mb-8 h-px origin-left overflow-hidden bg-border"
+          className="relative mt-2 mb-8 h-px origin-left overflow-hidden bg-border"
           initial={reduceMotion ? false : { scaleX: 0 }}
           animate={{ scaleX: 1 }}
-          transition={{ duration: reduceMotion ? 0 : beats(1.2), ease: EASE_OUT }}
+          transition={{
+            duration: reduceMotion ? 0 : beats(1.2),
+            ease: EASE_OUT,
+          }}
         >
           <motion.div
             className="absolute inset-y-0 left-0 w-[38%] origin-left bg-[image:var(--seam-lens)]"
             initial={reduceMotion ? false : { scaleX: 0 }}
             animate={{ scaleX: 1 }}
-            transition={{ duration: reduceMotion ? 0 : beats(0.9), delay: reduceMotion ? 0 : beats(0.2), ease: EASE_OUT }}
+            transition={{
+              duration: reduceMotion ? 0 : beats(0.9),
+              delay: reduceMotion ? 0 : beats(0.2),
+              ease: EASE_OUT,
+            }}
           />
         </motion.div>
       </motion.div>

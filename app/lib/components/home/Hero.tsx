@@ -66,12 +66,7 @@ export default function Hero({
     [0.08, 0.73],
     reduceMotion ? [1, 1] : [1, 0],
   );
-  const lineScaleY3 = useTransform(
-    progress,
-    [0.12, 0.77],
-    reduceMotion ? [1, 1] : [1, 0],
-  );
-  const lineScaleY = [lineScaleY0, lineScaleY1, lineScaleY2, lineScaleY3];
+  const lineScaleY = [lineScaleY0, lineScaleY1, lineScaleY2];
   const lineOpacity0 = useTransform(
     progress,
     [0, 0.3],
@@ -87,12 +82,7 @@ export default function Hero({
     [0.08, 0.38],
     reduceMotion ? [0.25, 0.25] : [0.1, 1],
   );
-  const lineOpacity3 = useTransform(
-    progress,
-    [0.12, 0.42],
-    reduceMotion ? [0.25, 0.25] : [0.1, 1],
-  );
-  const lineOpacity = [lineOpacity0, lineOpacity1, lineOpacity2, lineOpacity3];
+  const lineOpacity = [lineOpacity0, lineOpacity1, lineOpacity2];
   const entrance = reduceMotion ? undefined : { opacity: 1, y: 0 };
   const STATUS = [
     {
@@ -116,7 +106,6 @@ export default function Hero({
             className="absolute inset-y-0 w-px bg-dim2/15"
             style={{
               left: `${stop}%`,
-              marginLeft: stop === 100 ? "-1px" : undefined,
             }}
           />
         ))}
@@ -126,7 +115,6 @@ export default function Hero({
             className="absolute inset-y-0 w-px bg-accent"
             style={{
               left: `${stop}%`,
-              marginLeft: stop === 100 ? "-1px" : undefined,
               scaleY: lineScaleY[index],
               transformOrigin: "bottom",
               opacity: lineOpacity[index],
