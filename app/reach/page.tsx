@@ -112,7 +112,7 @@ export default function ContactPage() {
                   delay: reduceMotion ? 0 : Math.min(index, 3) * beats(0.15),
                   ease: EASE_OUT,
                 }}
-                className="relative aspect-square overflow-hidden bg-card"
+                className="relative aspect-[4/5] overflow-hidden bg-card"
               >
                 <Image
                   src={photo.src}

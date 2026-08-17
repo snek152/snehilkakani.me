@@ -523,21 +523,13 @@ every number here was read from the source, not estimated.
 
 ### Forms
 
-- `mailto.ts`'s `buildMailtoUrl` handoff is declined outright above
-  `MAILTO_MAX_SAFE_LENGTH` (`1900`) rather than attempted truncated. Real
-  `mailto:` URL caps sit around 2048–2083 characters depending on OS/client;
-  1900 leaves headroom under the lowest of them. Past the limit the draft
-  opens silently truncated or not at all, and because the handoff is
-  undetectable either way, `ContactForm` declines it entirely rather than
-  telling the visitor "your mail app should have opened" about text that was
-  quietly cut in half.
-- `ContactForm.submit` only treats a `res.ok` response from
-  `NEXT_PUBLIC_CONTACT_ENDPOINT` as delivered — a resolved `fetch` proves
-  the request completed, not that the server accepted it, and a 500 that
-  reported success would be exactly the lie the mailto path exists to avoid.
-  The draft (name, email, message) is never cleared on either the success or
-  failure path; it stays in state so the confirmation screen can show it
-  back or offer it as a copyable fallback.
+- `ContactForm` posts JSON (`name`, `email`, `message`) directly to Formspree at
+  `https://formspree.io/f/xyylnqbg` using `mode: "no-cors"`. That makes a
+  successful delivery resolve as an opaque response whose status cannot be read,
+  so any fulfilled `fetch` is the success criterion; only a rejected request
+  leaves the form open with a retry error. On success, the form clears its
+  fields and replaces itself with the confirmation state; `Send another`
+  restores the empty form and returns focus to the name field.
 - Field validation runs on submit, and on blur of a field the visitor
   actually filled in — never per keystroke, which is nagging, and never on
   blur of a field left empty (that is the submit gate's job, not a reason to

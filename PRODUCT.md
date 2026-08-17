@@ -70,24 +70,15 @@ Published at `snehilkakani.me`.
 
 ## Capabilities and Constraints
 
-- **Contact has two delivery paths, selected by deployment config.** The form
-  reads `NEXT_PUBLIC_CONTACT_ENDPOINT`.
-  - **Unset — the state today.** No endpoint URL has been supplied yet, so the
-    live behaviour is the original `mailto:` handoff to the OS mail client.
-    Because that handoff cannot be detected, the confirmation copy must never
-    claim the message was sent: it says the handoff was attempted and offers a
-    copy-to-clipboard fallback (which degrades to selectable text when the
-    clipboard is unavailable).
-  - **Set — pending, not yet active.** The form POSTs JSON
-    (`{ name, email, message }`) to the endpoint and reports the real outcome.
-    Only a `2xx` response may say the message was delivered; a resolved
-    `fetch` proves the request completed, not that the server accepted it. Any
-    non-2xx or network failure falls back to offering the `mailto:` route with
-    the draft preserved.
-  - The user's typed draft is never discarded on either path — it stays
-    available in the confirmation so a failure is always recoverable.
-  - There is still no database, auth, or server-side code in this project; the
-    endpoint, when configured, is external.
+- **Contact submits directly to Formspree.** `ContactForm` POSTs JSON
+  (`{ name, email, message }`) to `https://formspree.io/f/xyylnqbg` using
+  `mode: "no-cors"`. Its opaque fulfilled response has no readable status, so a
+  fulfilled `fetch` is the successful submission signal; a rejected request
+  leaves the form open for retry. Success clears the form and shows a
+  confirmation; `Send another` restores the empty form and focuses the name
+  field.
+- There is still no database, auth, or server-side code in this project; the
+  contact delivery is external.
 - All routes are statically prerendered (14 at present, including generated
   icon and OG image routes).
 - No test suite is configured; correctness is verified by build, lint, and

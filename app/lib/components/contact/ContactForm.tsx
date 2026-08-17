@@ -2,12 +2,12 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { motion, type Variants } from "motion/react";
-import { AlertTriangle, ArrowRight, Check, Mail } from "lucide-react";
+import { Check, ArrowRight } from "lucide-react";
 import { EASE_OUT, staggerContainer } from "@/app/lib/motion";
 import { beats } from "@/app/lib/tempo";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
-import { BORDERED_CONTROL } from "@/app/lib/components/shared/controls";
-import { buildMailtoUrl, CONTACT_EMAIL, MAILTO_MAX_SAFE_LENGTH } from "./mailto";
+
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/xyylnqbg";
 
 const fieldMotion: Variants = {
   hidden: { opacity: 0, y: 10 },
@@ -117,12 +117,7 @@ export default function ContactForm() {
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
 
-  const [delivered, setDelivered] = useState(false);
-  const [failed, setFailed] = useState(false);
-
-  const [tooLong, setTooLong] = useState(false);
-  const [copied, setCopied] = useState(false);
-  const [copyFailed, setCopyFailed] = useState(false);
+  const [submissionError, setSubmissionError] = useState<string | null>(null);
   const [messageFocused, setMessageFocused] = useState(false);
   const messageId = useId();
   const [errors, setErrors] = useState<FieldErrors>({});
@@ -150,9 +145,7 @@ export default function ContactForm() {
     setErrors((prev) => ({ ...prev, [key]: problem }));
   };
 
-  const endpoint = process.env.NEXT_PUBLIC_CONTACT_ENDPOINT;
-
-  const submit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const found: FieldErrors = {
@@ -169,75 +162,36 @@ export default function ContactForm() {
     }
 
     setErrors({});
+    setSubmissionError(null);
     setSending(true);
-    setFailed(false);
 
-    if (!endpoint) {
-      const url = buildMailtoUrl(name, email, message);
-
-      if (url.length > MAILTO_MAX_SAFE_LENGTH) {
-        setTooLong(true);
+    fetch(FORMSPREE_ENDPOINT, {
+      headers: {
+        "Content-Type": "application/json",
+        "Data-Type": "json",
+      },
+      method: "POST",
+      mode: "no-cors",
+      body: JSON.stringify({ name, email, message }),
+    })
+      .then(() => {
         setSending(false);
+        setName("");
+        setEmail("");
+        setMessage("");
         setSent(true);
-        return;
-      }
-
-      window.setTimeout(
-        () => {
-          window.location.href = url;
-          setSending(false);
-          setSent(true);
-        },
-        reduceMotion ? 0 : 420,
-      );
-      return;
-    }
-
-    try {
-      const res = await fetch(endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, message }),
+      })
+      .catch(() => {
+        setSubmissionError("Failed to send message. Please try again later.");
+        setSending(false);
       });
-      if (!res.ok) throw new Error(`Endpoint responded ${res.status}`);
-      setDelivered(true);
-      setSent(true);
-    } catch {
-      setFailed(true);
-      setSent(true);
-    } finally {
-      setSending(false);
-    }
   };
 
   const reset = () => {
     restoreFocusRef.current = true;
-    setName("");
-    setEmail("");
-    setMessage("");
     setSent(false);
-    setDelivered(false);
-    setFailed(false);
-    setTooLong(false);
-    setCopied(false);
-    setCopyFailed(false);
+    setSubmissionError(null);
     setErrors({});
-  };
-
-  const copyMessage = () => {
-    const draft = `${name} <${email}>\n\n${message}`;
-    if (typeof navigator === "undefined" || !navigator.clipboard) {
-      setCopyFailed(true);
-      return;
-    }
-    navigator.clipboard.writeText(draft).then(
-      () => {
-        setCopied(true);
-        setCopyFailed(false);
-        window.setTimeout(() => setCopied(false), 1800);
-      },
-      () => setCopyFailed(true),
-    );
   };
 
   if (sent) {
@@ -252,55 +206,16 @@ export default function ContactForm() {
         role="status"
         aria-live="polite"
       >
-
         <div className="flex size-9 items-center justify-center border border-border">
-          {delivered ? (
-            <Check size={15} strokeWidth={2} className="text-accent" />
-          ) : failed || tooLong ? (
-            <AlertTriangle size={15} strokeWidth={2} className="text-dim" />
-          ) : (
-            <Mail size={15} strokeWidth={2} className="text-dim" />
-          )}
+          <Check size={15} strokeWidth={2} className="text-accent" />
         </div>
-
-        <p className="text-[length:var(--text-body)] leading-[var(--leading-body)] max-w-[var(--measure-body)] text-dim">
-          {delivered
-            ? "Submitted — the server accepted your message. Keeping a copy below in case you want to follow up by email."
-            : failed
-              ? "That didn't go through — your message wasn't accepted. It's safe below; the quickest route now is email."
-              : tooLong
-                ? "Your message is longer than an email link can carry, so nothing was opened and nothing was sent — a draft this long arrives cut short, or not at all. Copy it below and paste it into a new email instead."
-                : `Your email app should have opened a draft to ${CONTACT_EMAIL} with your message filled in. Nothing happened, or you sent it already — either way, here's a fallback:`}
+        <p className="max-w-[var(--measure-body)] text-[length:var(--text-body)] leading-[var(--leading-body)] text-dim">
+          Thanks for reaching out! I&apos;ll get back to you soon.
         </p>
-        <div className="flex flex-wrap items-center gap-[0.6rem]">
-          <a
-            href={tooLong ? `mailto:${CONTACT_EMAIL}` : buildMailtoUrl(name, email, message)}
-            className={BORDERED_CONTROL}
-          >
-            {tooLong ? `Open a blank email to ${CONTACT_EMAIL}` : `Email ${CONTACT_EMAIL} directly`}
-          </a>
-          <button type="button" onClick={copyMessage} className={BORDERED_CONTROL}>
-            {copied ? "Copied" : "Copy message"}
-          </button>
-        </div>
-        {copyFailed && (
-          <div>
-            <p className="mb-[0.3rem] text-[length:var(--text-micro)] tracking-[var(--track-text-sm)] text-dim2">
-              Copy didn&apos;t work here — select the text below instead:
-            </p>
-            <textarea
-              readOnly
-              rows={4}
-              value={`${name} <${email}>\n\n${message}`}
-              onFocus={(e) => e.currentTarget.select()}
-              className="w-full resize-none border border-border bg-transparent p-[0.6rem] text-[length:var(--text-micro)] text-fg outline-none focus:border-accent"
-            />
-          </div>
-        )}
         <button
           type="button"
           onClick={reset}
-          className={`self-start ${BORDERED_CONTROL}`}
+          className="self-start border border-border px-[0.875rem] py-[0.45rem] text-[length:var(--text-meta)] text-dim transition-colors duration-[120ms] hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
         >
           Send another
         </button>
@@ -317,7 +232,7 @@ export default function ContactForm() {
       animate="visible"
       variants={staggerContainer}
       className="relative flex flex-col gap-[1.875rem]"
-      aria-label={`Send a message to ${CONTACT_EMAIL}`}
+      aria-label="Send a message"
     >
       <motion.span
         aria-hidden
@@ -417,13 +332,17 @@ export default function ContactForm() {
         className="inline-flex list-none items-center gap-[0.45rem] self-start bg-accent px-[1.375rem] py-[0.7rem] text-[length:var(--text-meta)] font-medium text-white transition-opacity duration-150 hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent focus-visible:opacity-80 disabled:cursor-not-allowed disabled:opacity-60"
       >
 
-        {endpoint
-          ? sending
-            ? "Submitting"
-            : "Send message"
-          : "Open in email app"}{" "}
+        {sending ? "Sending" : "Send message"}{" "}
         <ArrowRight size={13} strokeWidth={1.75} />
       </motion.button>
+      {submissionError && (
+        <p
+          role="alert"
+          className="text-[length:var(--text-micro)] tracking-[var(--track-text-sm)] text-fg"
+        >
+          {submissionError}
+        </p>
+      )}
     </motion.form>
   );
 }
