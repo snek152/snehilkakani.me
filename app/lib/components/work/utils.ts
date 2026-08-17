@@ -7,8 +7,3 @@ export function projectYear(subtitle?: string): string {
   if (first === last) return first;
   return `${first}\u2013${last.slice(2)}`;
 }
-
-export function shortTitle(title: string): string {
-  const idx = title.indexOf(":");
-  return idx === -1 ? title : title.slice(0, idx).trim();
-}

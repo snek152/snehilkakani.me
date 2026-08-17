@@ -9,7 +9,6 @@ import { beats } from "@/app/lib/tempo";
 import { dateRange } from "@/app/lib/format";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import { ProjectLinks, ProjectSkills } from "./ProjectMeta";
-import { shortTitle } from "./utils";
 
 export default function FeaturedProject({ project }: { project: Project }) {
   const reduceMotion = useMotionPreference();
@@ -26,7 +25,7 @@ export default function FeaturedProject({ project }: { project: Project }) {
     <div className="absolute inset-0">
       <Image
         src={project.image}
-        alt={shortTitle(project.title)}
+        alt={project.title}
         fill
         priority
         sizes="(min-width: 1024px) 55vw, 100vw"
@@ -106,7 +105,7 @@ export default function FeaturedProject({ project }: { project: Project }) {
           </p>
         )}
         <h2 className="font-display text-[length:var(--size-display-md)] font-semibold leading-tight tracking-[var(--track-display-md)] text-fg text-balance">
-          {shortTitle(project.title)}
+          {project.title}
         </h2>
         <p className="mt-3 text-[length:var(--text-body)] leading-[var(--leading-body)] text-dim">
           {project.description}

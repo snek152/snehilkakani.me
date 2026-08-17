@@ -22,7 +22,6 @@
 
   --seam-lens: linear-gradient(90deg, transparent, #5575d9, #8b66c9);
 
-  --seam-focus: linear-gradient(90deg, var(--accent), #6d5ede, var(--accent));
 
   --signal-light: rgb(126 164 255);
   --border: rgba(255, 255, 255, 0.07);

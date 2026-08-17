@@ -11,7 +11,6 @@ import DrawnRule from "@/app/lib/components/shared/DrawnRule";
 import { beats } from "@/app/lib/tempo";
 import { ProjectLinks, ProjectSkills } from "./ProjectMeta";
 import { dateRange } from "@/app/lib/format";
-import { shortTitle } from "./utils";
 
 export default function ProjectCard({
   project,
@@ -40,7 +39,6 @@ export default function ProjectCard({
       }}
       className="group relative isolate grid gap-y-5 py-10 first:pt-0 last:pb-0 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-x-0 lg:py-16 lg:last:pb-0"
     >
-
       <div className="absolute -inset-x-6 top-0 sm:-inset-x-8 lg:-inset-x-12 [article:first-child_&]:hidden">
         <DrawnRule />
       </div>
@@ -56,7 +54,11 @@ export default function ProjectCard({
         whileInView="shown"
         viewport={{ once: true, margin: "100000px 0px -18% 0px" }}
         variants={{
-          hidden: { clipPath: reversesTrajectory ? "inset(0 0 0 100%)" : "inset(0 100% 0 0)" },
+          hidden: {
+            clipPath: reversesTrajectory
+              ? "inset(0 0 0 100%)"
+              : "inset(0 100% 0 0)",
+          },
           shown: {
             clipPath: "inset(0 0% 0 0)",
             transition: {
@@ -67,10 +69,9 @@ export default function ProjectCard({
           },
         }}
       >
-
         <Image
           src={project.image}
-          alt={shortTitle(project.title)}
+          alt={project.title}
           fill
           sizes="(min-width: 1024px) 56vw, 100vw"
           className="object-cover"
@@ -79,11 +80,16 @@ export default function ProjectCard({
           aria-hidden="true"
           className="absolute inset-x-0 bottom-0 h-px origin-left bg-[linear-gradient(90deg,var(--accent),color-mix(in_srgb,var(--accent)_42%,transparent),transparent)]"
           animate={{ scaleX: active ? 1 : 0.25 }}
-          transition={{ duration: reduceMotion ? 0 : beats(0.45), ease: EASE_OUT }}
+          transition={{
+            duration: reduceMotion ? 0 : beats(0.45),
+            ease: EASE_OUT,
+          }}
         />
       </motion.div>
 
-      <div className={`flex flex-col lg:justify-center ${reversesTrajectory ? "lg:order-1 lg:pr-12" : "lg:pl-12"}`}>
+      <div
+        className={`flex flex-col lg:justify-center ${reversesTrajectory ? "lg:order-1 lg:pr-12" : "lg:pl-12"}`}
+      >
         <motion.div
           initial={reduceMotion ? false : { opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -100,7 +106,7 @@ export default function ProjectCard({
             </p>
           )}
           <h3 className="font-display text-[length:var(--size-display-md)] font-semibold leading-tight tracking-[var(--track-display-md)] text-fg text-balance line-clamp-3">
-            {shortTitle(project.title)}
+            {project.title}
           </h3>
         </motion.div>
 

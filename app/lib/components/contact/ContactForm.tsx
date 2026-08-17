@@ -25,7 +25,6 @@ function Field({
   onBlurValidate,
   placeholder,
   autoComplete,
-  reduceMotion,
   error,
   inputRef,
 }: {
@@ -37,11 +36,9 @@ function Field({
   onBlurValidate?: () => void;
   placeholder: string;
   autoComplete: string;
-  reduceMotion: boolean;
   error?: string;
   inputRef?: React.RefObject<HTMLInputElement | null>;
 }) {
-  const [focused, setFocused] = useState(false);
   const errorId = `${id}-error`;
   return (
     <div>
@@ -63,21 +60,10 @@ function Field({
           aria-describedby={error ? errorId : undefined}
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          onFocus={() => setFocused(true)}
-          onBlur={() => {
-            setFocused(false);
-            onBlurValidate?.();
-          }}
+          onBlur={onBlurValidate}
           placeholder={placeholder}
           autoComplete={autoComplete}
           className="w-full border-0 border-b border-border bg-transparent py-[0.6rem] text-[length:var(--text-body)] text-fg outline-none transition-colors duration-150 placeholder:text-dim2 focus:border-accent"
-        />
-        <motion.span
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left bg-[image:var(--seam-focus)]"
-          initial={false}
-          animate={{ scaleX: focused ? 1 : 0 }}
-          transition={{ duration: reduceMotion ? 0 : beats(0.4), ease: EASE_OUT }}
         />
       </div>
 
@@ -118,7 +104,6 @@ export default function ContactForm() {
   const [sending, setSending] = useState(false);
 
   const [submissionError, setSubmissionError] = useState<string | null>(null);
-  const [messageFocused, setMessageFocused] = useState(false);
   const messageId = useId();
   const [errors, setErrors] = useState<FieldErrors>({});
   const statusRef = useRef<HTMLDivElement>(null);
@@ -239,7 +224,7 @@ export default function ContactForm() {
         initial={false}
         animate={{ scaleX: sending ? 1 : 0, opacity: sending ? 1 : 0 }}
         transition={{ duration: reduceMotion ? 0 : beats(0.6), ease: EASE_OUT }}
-        className="absolute -bottom-2 left-0 h-px w-full origin-left bg-[image:var(--seam-focus)]"
+        className="absolute -bottom-2 left-0 h-px w-full origin-left bg-accent"
       />
       <motion.div variants={fieldMotion}>
         <Field
@@ -255,7 +240,6 @@ export default function ContactForm() {
           placeholder="Your name"
           autoComplete="name"
           onBlurValidate={() => validateOnBlur("name", name)}
-          reduceMotion={reduceMotion}
           error={errors.name}
         />
       </motion.div>
@@ -272,7 +256,6 @@ export default function ContactForm() {
           placeholder="your@email.com"
           autoComplete="email"
           onBlurValidate={() => validateOnBlur("email", email)}
-          reduceMotion={reduceMotion}
           error={errors.email}
         />
       </motion.div>
@@ -296,20 +279,9 @@ export default function ContactForm() {
               setMessage(e.target.value);
               clearError("message");
             }}
-            onFocus={() => setMessageFocused(true)}
-            onBlur={() => {
-              setMessageFocused(false);
-              validateOnBlur("message", message);
-            }}
+            onBlur={() => validateOnBlur("message", message)}
             placeholder="What are you working on?"
             className="w-full resize-none border-0 border-b border-border bg-transparent py-[0.6rem] text-[length:var(--text-body)] text-fg outline-none transition-colors duration-150 placeholder:text-dim2 focus:border-accent"
-          />
-          <motion.span
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left bg-[image:var(--seam-focus)]"
-            initial={false}
-            animate={{ scaleX: messageFocused ? 1 : 0 }}
-            transition={{ duration: reduceMotion ? 0 : beats(0.4), ease: EASE_OUT }}
           />
         </div>
         {errors.message && (

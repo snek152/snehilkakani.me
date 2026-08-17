@@ -1,10 +1,12 @@
 import { ArrowUpRight, Github, LockKeyhole } from "lucide-react";
 import type { Project } from "@/app/lib/data/projects";
-import { shortTitle } from "./utils";
 
 export function ProjectSkills({ skills }: Pick<Project, "skills">) {
   return (
-    <ul className="flex flex-wrap gap-x-3 gap-y-1.5" aria-label="Technologies and disciplines">
+    <ul
+      className="flex flex-wrap gap-x-3 gap-y-1.5"
+      aria-label="Technologies and disciplines"
+    >
       {skills.map((skill) => (
         <li
           key={skill}
@@ -35,10 +37,11 @@ function projectLinkLabel(name: string, link: string) {
 }
 
 export function ProjectLinks({ project }: { project: Project }) {
-  const name = shortTitle(project.title);
+  const name = project.title;
   const hasPublicRepository = Boolean(project.github && !project.privateRepo);
 
-  if (!project.link && !hasPublicRepository && !project.privateRepo) return null;
+  if (!project.link && !hasPublicRepository && !project.privateRepo)
+    return null;
 
   return (
     <div className="flex shrink-0 items-center gap-3.5">
