@@ -10,7 +10,7 @@ export function ProjectSkills({ skills }: Pick<Project, "skills">) {
       {skills.map((skill) => (
         <li
           key={skill}
-          className="text-[length:var(--text-meta)] tracking-[var(--track-text-sm)] text-dim before:mr-1.5 before:text-accent before:content-['/']"
+          className="text-[length:var(--text-body)] tracking-[var(--track-text-sm)] text-dim before:mr-1.5 before:text-accent before:content-['/']"
         >
           {skill}
         </li>

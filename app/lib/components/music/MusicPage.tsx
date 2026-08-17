@@ -44,7 +44,7 @@ export default function MusicPage() {
     ? `${activeBeat.tempo} BPM · ${formatTime(activeDuration)}`
     : "";
   return (
-    <div className="px-6 pb-12 pt-6 sm:px-8 lg:px-12 lg:pt-6">
+    <div className="px-6 pb-12 pt-8 sm:px-8 lg:px-12 lg:pt-8">
       <header className="relative min-h-10">
         <div ref={headingRef}>
           <ManifestoHeading

@@ -3,7 +3,7 @@ import { routeMetadata } from "@/app/lib/metadata";
 export const metadata = routeMetadata({
   title: "Lens - Photography",
   description:
-    "Photographs from Yosemite, New York, Germany and California's Central Coast, each frame captioned with the exposure, shutter speed, aperture and ISO it was shot at.",
+    "Photographs from Yosemite, New York, Germany and California's Central Coast, with exposure, shutter speed, aperture and ISO details.",
   path: "/lens",
 });
 

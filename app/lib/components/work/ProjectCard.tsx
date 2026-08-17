@@ -101,7 +101,7 @@ export default function ProjectCard({
           }}
         >
           {project.subtitle && (
-            <p className="mb-3 text-[length:var(--text-meta)] tabular-nums tracking-[var(--track-text-sm)] text-dim">
+            <p className="mb-3 text-[length:var(--text-body)] tabular-nums tracking-[var(--track-text-sm)] text-dim">
               {dateRange(project.subtitle)}
             </p>
           )}

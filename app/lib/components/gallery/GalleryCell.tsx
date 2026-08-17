@@ -64,15 +64,8 @@ export default function GalleryCell({
         </button>
       </motion.div>
 
-      <figcaption className="mt-3 border-t border-border pt-2">
-        <span
-          className={`block text-[length:var(--text-meta)] tracking-[var(--track-text-sm)] font-medium leading-snug text-dim group-hover:text-fg group-has-[button:focus-visible]:text-fg ${
-            reduceMotion ? "" : "transition-colors duration-150"
-          }`}
-        >
-          {photo.alt}
-        </span>
-        <Exposure photo={photo} className="mt-1.5" />
+      <figcaption className="mt-2">
+        <Exposure photo={photo} />
       </figcaption>
     </figure>
   );

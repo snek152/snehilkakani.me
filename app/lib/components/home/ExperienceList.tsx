@@ -42,36 +42,33 @@ export default function ExperienceList({
           whileInView="shown"
           viewport={{ once: true, amount: 0, margin: "100000px 0px -6% 0px" }}
           variants={row}
-          className="group relative grid gap-y-4 px-6 py-8 sm:px-8 lg:grid-cols-16 lg:gap-x-0 lg:px-0 lg:py-10"
+          className="group relative grid gap-y-5 px-6 py-8 sm:px-8 lg:grid-cols-16 lg:gap-x-0 lg:px-0 lg:py-10"
         >
           <DrawnRule className="absolute inset-x-0 bottom-0 [li:last-child_&]:hidden" />
           <motion.div
             variants={part}
-            className="lg:pl-12 lg:pr-6 lg:col-span-3 lg:pt-2"
+            className="lg:col-span-4 lg:border-r lg:border-border lg:pl-12 lg:pr-10 lg:pt-2"
           >
             <p className="text-[length:var(--text-meta)] font-medium leading-snug tabular-nums text-fg">
               {dateRange(experience.period)}
             </p>
 
-            <p className="mt-1.5 text-[length:var(--text-micro)] leading-snug tracking-[var(--track-text-sm)] text-dim">
+            <p className="mt-2 text-[length:var(--text-micro)] leading-snug tracking-[var(--track-text-sm)] text-dim">
               {experience.location}
             </p>
           </motion.div>
 
           <motion.div
             variants={content}
-            className="lg:col-span-13 lg:pl-10 lg:pr-12"
+            className="lg:col-span-12 lg:pl-10 lg:pr-12"
           >
-            <motion.div
-              variants={part}
-              className="flex flex-wrap items-baseline gap-x-3 gap-y-1"
-            >
+            <motion.div variants={part}>
               <h3 className="font-display text-[length:var(--size-display-md)] font-semibold tracking-[var(--track-display-md)] text-fg">
                 {experience.company}
               </h3>
-              <h3 className="tracking-[var(--track-display-md)] text-dim2/50 text-[length:var(--size-display-md)] font-display font-normal">
+              <p className="mt-1 text-[length:var(--text-body)] leading-snug text-dim">
                 {experience.title}
-              </h3>
+              </p>
             </motion.div>
             <motion.ul variants={part} className="mt-4 space-y-2">
               {experience.description.map((line) => (

@@ -124,8 +124,8 @@ Text roles — four sizes, no others:
 |---|---|---|
 |`--text-lead`|1.0625rem|the one intro paragraph per page|
 |`--text-body`|1rem|prose: descriptions, bullets, running copy|
-|`--text-meta`|0.875rem|metadata, labels, captions, nav, buttons|
-|`--text-micro`|0.8125rem|dense readouts: EXIF, transport clock, notices|
+|`--text-meta`|0.875rem|metadata, labels, captions, nav, buttons, EXIF readouts|
+|`--text-micro`|0.8125rem|dense readouts: transport clock, notices|
 
 Prose pairs with `--leading-lead`/`--leading-body` and a measure cap
 (`--measure-lead` 56ch, `--measure-body` 66ch). Prose without a cap is a bug:
@@ -188,7 +188,7 @@ expressed by DEFOCUS, not by drop shadow — see the Light section below.
 
 **Skill tags are text, not chips.** `ProjectSkills` sets each skill as a list
 item prefixed by a `/` divider drawn with `before:content-['/']` in `--dim2`,
-at `--text-meta` with `--track-text-sm`. No background, no border, no radius,
+at `--text-body` with `--track-text-sm`. No background, no border, no radius,
 no hover scale. The gradient-pill string this file used to mandate "everywhere
 for consistency" also carried `transition-all` and `hover:scale-105`, neither
 of which the design permits.
@@ -513,8 +513,8 @@ every number here was read from the source, not estimated.
 - `GalleryCell` has no viewfinder corner ticks: they were previously driven
   from React state, and the browser restoring focus to the cell's button
   when the lightbox closed fired `onFocus` and left the corner marks stuck
-  on with the pointer nowhere near it. The caption lift (dim to full weight)
-  is pure CSS instead, so there is no interaction state left to get stuck.
+  on with the pointer nowhere near it. The EXIF readout stays independent of
+  interaction state, so there is no hover/focus UI left to get stuck.
 - `Lightbox` drag commit reads velocity from a short rolling history of the
   last few pointer samples, not total distance over total gesture time —
   that is what lets a slow long drag fail to commit while a fast short flick

@@ -41,7 +41,7 @@ export default function ContactPage() {
   });
 
   return (
-    <div className="relative isolate overflow-hidden px-6 pb-12 pt-10 sm:px-8 lg:px-12 lg:pt-10">
+    <div className="relative isolate overflow-hidden px-6 pb-12 pt-8 sm:px-8 lg:px-12 lg:pt-8">
       <motion.div
         ref={headingRef}
         initial={reduceMotion ? false : { opacity: 0, y: 20 }}
@@ -54,7 +54,7 @@ export default function ContactPage() {
           id="reach-heading"
           text="Let's talk."
           active={headingActive}
-          className="font-display text-[length:var(--size-display-lg)] font-bold leading-none tracking-[var(--track-display-lg)] text-fg text-balance"
+          className="font-display text-[length:var(--size-display-lg)] font-bold tracking-[var(--track-display-lg)] text-fg text-balance"
         />
         <RouteSignal
           scene="reach"

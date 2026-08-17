@@ -140,8 +140,8 @@ Text roles — four sizes, no others:
 |---|---|---|
 |Lead|`1.0625rem`|The one intro paragraph per page|
 |Body|`1rem`|Prose: descriptions, bullets, running copy|
-|Meta|`0.875rem`|Metadata, labels, captions, nav, buttons|
-|Micro|`0.8125rem`|Dense readouts: EXIF, transport clock, notices|
+|Meta|`0.875rem`|Metadata, labels, captions, nav, buttons, EXIF readouts|
+|Micro|`0.8125rem`|Dense readouts: transport clock, notices|
 
 Leading rises with measure — `--leading-lead` 1.75, `--leading-body` 1.7 — because light text on near-black needs the extra step to stop lines closing up. Measure caps hold at any font size or zoom level: `--measure-lead` 56ch, `--measure-body` 66ch. Prose without a cap is a bug.
 
@@ -197,9 +197,9 @@ Hairlines carry three brightness levels, each scoped to a distinct job:
 
 **Drawn rules** (`DrawnRule`, `SignalRule`) — a hairline that draws itself across as it enters view rather than fading, because the site is built almost entirely out of 1px rules and having each one draw turns the page's own structure into the animation. `DrawnRule` starts its draw `240px` above the fold (roughly 73% of a laptop viewport) so the ~0.8s draw finishes where the reader is actually looking, not in an unseen strip at the bottom. `SignalRule` is the header-scale relative — a quiet border with the same restrained blue cast as the transport, distinct from `DrawnRule`'s content-row role.
 
-**Skill tags as text** (`ProjectSkills`) — a `/`-prefixed list item in `--dim2` at Meta size with `--track-text-sm`. No background, no border, no radius, no hover scale — never a gradient-pill chip.
+**Skill tags as text** (`ProjectSkills`) — a `/`-prefixed list item in `--dim2` at Body size with `--track-text-sm`. No background, no border, no radius, no hover scale — never a gradient-pill chip.
 
-**Gallery cell** (`GalleryCell`) — the image box is sized in exact pixels from the justified grid's row packing, always its true aspect ratio. No hover zoom, no corner ticks; hover/focus only lifts the caption title from dim to full weight, done in CSS so no interaction state can stick.
+**Gallery cell** (`GalleryCell`) — the image box is sized in exact pixels from the justified grid's row packing, always its true aspect ratio. No hover zoom, no corner ticks, and no visual caption; only the aligned EXIF readout sits beneath the frame.
 
 **Lightbox** — `--scrim` at `0.86` with an 18px `backdrop-blur`, `data-material` for the transparency/contrast overrides. Drag-to-dismiss tracks the pointer 1:1 downward (`project()` commits on projected rest + velocity sign, never raw distance); upward has nothing behind it, so that is where `rubberband()` resistance goes.
 

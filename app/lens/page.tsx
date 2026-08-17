@@ -34,7 +34,7 @@ export default function GalleryPage() {
   const close = useCallback(() => setOpenIndex(null), []);
 
   return (
-    <div className="px-6 pb-12 pt-6 sm:px-8 lg:px-12 lg:pt-6">
+    <div className="px-6 pb-12 pt-8 sm:px-8 lg:px-12 lg:pt-8">
       <motion.div
         initial={reduceMotion ? false : "hidden"}
         animate="visible"

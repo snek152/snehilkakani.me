@@ -19,7 +19,7 @@ export default function WorkPage() {
   const remaining = projects.slice(1);
 
   return (
-    <div className="px-6 pb-12 pt-6 sm:px-8 lg:px-12 lg:pt-6">
+    <div className="px-6 pb-12 pt-8 sm:px-8 lg:px-12 lg:pt-8">
       <header
         ref={headerRef}
         className="relative mb-12 min-h-10 sm:mb-4 lg:mb-8"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { PointerEvent as ReactPointerEvent } from "react";
 import Image from "next/image";
 import { animate, motion, useMotionValue, useTransform } from "motion/react";
@@ -36,8 +36,6 @@ export default function Lightbox({
   const reduceMotion = useMotionPreference();
   const closeRef = useRef<HTMLButtonElement | null>(null);
   const dialogRef = useRef<HTMLDivElement | null>(null);
-  const titleId = useId();
-  const descId = useId();
   const open = index !== null;
   const photo = open ? photos[index] : null;
 
@@ -283,9 +281,8 @@ export default function Lightbox({
           transition={reduceMotion ? { duration: 0 } : { duration: beats(0.4), ease: EASE_OUT }}
           role="dialog"
           aria-modal="true"
+          aria-label="Photo viewer"
           className="fixed inset-0 z-100 flex flex-col items-center justify-center p-8"
-          aria-labelledby={titleId}
-          aria-describedby={descId}
         >
 
           <motion.div
@@ -350,16 +347,10 @@ export default function Lightbox({
               )}
             </motion.div>
 
-            <div className="mt-4 max-w-[min(88vw,1100px)] text-center">
-              <span id={titleId} className="block text-[length:var(--text-meta)] font-medium text-fg">
-                {photo.alt}
-              </span>
-              <Exposure
-                id={descId}
-                photo={photo}
-                className="mt-1.5 justify-center"
-              />
-            </div>
+            <Exposure
+              photo={photo}
+              className="mt-4 justify-center"
+            />
 
             <div aria-hidden className="pointer-events-none absolute h-px w-px overflow-hidden opacity-0">
               {neighbours.map((n) => (

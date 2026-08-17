@@ -100,7 +100,7 @@ export default function FeaturedProject({ project }: { project: Project }) {
           className="absolute left-0 top-0 h-px w-24 bg-[linear-gradient(90deg,var(--accent),transparent)]"
         />
         {project.subtitle && (
-          <p className="mb-2 text-[length:var(--text-meta)] tabular-nums tracking-[var(--track-text-sm)] text-dim">
+          <p className="mb-2 text-[length:var(--text-body)] tabular-nums tracking-[var(--track-text-sm)] text-dim">
             {dateRange(project.subtitle)}
           </p>
         )}
