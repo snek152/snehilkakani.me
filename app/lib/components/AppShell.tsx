@@ -14,7 +14,6 @@ import Footer from "./Footer";
 import { MusicPlayerProvider, useMusicPlayer } from "./music/MusicPlayerProvider";
 import { navItems } from "@/app/lib/nav";
 import { loaderRecentlySeen, stampLoaderSeen } from "@/app/lib/loader-gate";
-import { RELEASE_MS } from "./loader/OrbitStage";
 
 const IntroReadyContext = createContext(false);
 
@@ -37,7 +36,6 @@ function FooterWithClearance() {
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isHome = pathname === "/";
   const prevIndexRef = useRef<number | null>(null);
 
   const currentIndex = navItems.findIndex((item) =>
@@ -56,11 +54,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   }, [pathname, currentIndex]);
 
   const [introReady, setIntroReady] = useState(false);
-  const [curtainShown, setCurtainShown] = useState(true);
 
   useEffect(() => {
     if (loaderRecentlySeen()) {
-      setCurtainShown(false);
       setIntroReady(true);
     }
   }, []);
@@ -68,7 +64,6 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const handleLoaderDone = useCallback(() => {
     stampLoaderSeen();
     setIntroReady(true);
-    window.setTimeout(() => setCurtainShown(false), RELEASE_MS);
   }, []);
 
   return (
@@ -83,7 +78,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           </a>
 
           <MusicPlayerProvider>
-            <WaveField staged={isHome} introReady={introReady} awaitCurtain={curtainShown} />
+            <WaveField />
             <CursorGlow />
             <ScrollProgressRail />
             <AnimatePresence>

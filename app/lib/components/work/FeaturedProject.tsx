@@ -15,7 +15,10 @@ export default function FeaturedProject({ project }: { project: Project }) {
   const reduceMotion = useMotionPreference();
   const [active, setActive] = useState(false);
 
-  const cropTransition = { duration: reduceMotion ? 0 : beats(1), ease: EASE_OUT };
+  const cropTransition = {
+    duration: reduceMotion ? 0 : beats(1),
+    ease: EASE_OUT,
+  };
 
   const secondary = project.secondaryImage;
 
@@ -50,7 +53,8 @@ export default function FeaturedProject({ project }: { project: Project }) {
       onMouseLeave={() => setActive(false)}
       onFocusCapture={() => setActive(true)}
       onBlurCapture={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget)) setActive(false);
+        if (!event.currentTarget.contains(event.relatedTarget))
+          setActive(false);
       }}
       className={`group relative mb-16 grid overflow-hidden border-y border-border lg:mb-[4.5rem] ${
         secondary ? "" : "lg:grid-cols-[minmax(0,1.28fr)_minmax(20rem,0.72fr)]"
@@ -59,7 +63,9 @@ export default function FeaturedProject({ project }: { project: Project }) {
       {secondary ? (
         <div className="relative overflow-hidden">
           <div className="grid grid-cols-1 border-b border-border sm:grid-cols-2 sm:aspect-[3/1] sm:border-b-0">
-            <div className="relative aspect-[16/10] overflow-hidden sm:aspect-auto">{primaryImage}</div>
+            <div className="relative aspect-[16/10] overflow-hidden sm:aspect-auto">
+              {primaryImage}
+            </div>
             <div className="relative aspect-[16/10] overflow-hidden border-t border-border sm:aspect-auto sm:border-l sm:border-t-0">
               <div className="absolute inset-0">
                 <Image
@@ -95,12 +101,14 @@ export default function FeaturedProject({ project }: { project: Project }) {
           className="absolute left-0 top-0 h-px w-24 bg-[linear-gradient(90deg,var(--accent),transparent)]"
         />
         {project.subtitle && (
-          <p className="mb-2 text-[length:var(--text-meta)] tabular-nums tracking-[var(--track-text-sm)] text-dim">{dateRange(project.subtitle)}</p>
+          <p className="mb-2 text-[length:var(--text-meta)] tabular-nums tracking-[var(--track-text-sm)] text-dim">
+            {dateRange(project.subtitle)}
+          </p>
         )}
         <h2 className="font-display text-[length:var(--size-display-md)] font-semibold leading-tight tracking-[var(--track-display-md)] text-fg text-balance">
           {shortTitle(project.title)}
         </h2>
-        <p className="mt-3 max-w-[var(--measure-body)] text-[length:var(--text-body)] leading-[var(--leading-body)] text-dim">
+        <p className="mt-3 text-[length:var(--text-body)] leading-[var(--leading-body)] text-dim">
           {project.description}
         </p>
         <div className="mt-5">

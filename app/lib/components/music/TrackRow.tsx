@@ -44,8 +44,8 @@ export default function TrackRow({
       <button
         type="button"
         onClick={onToggle}
-        aria-pressed={isActive}
-        aria-label={`${isPlayingRow ? "Pause" : "Play"} ${beat.name}, ${beat.category}, ${beat.tempo} BPM`}
+        aria-pressed={isPlayingRow}
+        aria-label={`${isLoadingRow ? "Cancel loading" : isPlayingRow ? "Pause" : "Play"} ${beat.name}, ${beat.category}, ${beat.tempo} BPM`}
         className={`grid w-full grid-cols-1 items-center gap-x-4 gap-y-1 px-2 py-3.5 text-left transition-[background-color,opacity] duration-[120ms] ease-[var(--ease-press)] active:opacity-80 lg:grid-cols-[minmax(11rem,1fr)_minmax(0,2fr)_auto_auto] ${
           isActive ? "" : "hover:bg-white/[0.02]"
         }`}
@@ -95,7 +95,6 @@ export default function TrackRow({
 
         <span className="hidden font-sans text-[length:var(--text-micro)] capitalize tracking-[var(--track-text-sm)] text-dim2 lg:block">
           {beat.category}
-          {isActive && <span className="ml-2 text-[color:var(--accent-text)]">· routed</span>}
         </span>
 
         <span className="hidden items-center justify-end gap-3 font-sans text-[length:var(--text-micro)] tracking-[var(--track-text-sm)] text-dim2 lg:flex">

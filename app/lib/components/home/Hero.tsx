@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { FileText } from "lucide-react";
 import {
   motion,
   useTransform,
@@ -19,7 +18,6 @@ import RoleCycle from "@/app/lib/components/home/RoleCycle";
 import portrait from "@/public/about.jpg";
 import { socialLinks } from "../../nav";
 
-const NAME_LINES = ["Snehil", "Kakani"];
 
 const riseVariants: Variants = {
   hidden: { opacity: 0, y: 14, scale: 0.985, filter: "blur(9px)" },
@@ -213,29 +211,21 @@ export default function Hero({
                   </div>
                 ))}
               </dl>
-              <div className="grid grid-cols-4 gap-2">
-                {socialLinks.map(({ href, label, Icon }) => (
-                  <a
-                    key={label}
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`mt-4 ${BORDERED_CONTROL}`}
-                  >
-                    <Icon className="size-3.5" aria-hidden="true" />
-                    {label}
-                  </a>
-                ))}
-              </div>
-              {/* <a
-                href="/resume.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`mt-4 ${BORDERED_CONTROL}`}
-              >
-                <FileText className="size-3.5" aria-hidden="true" />
-                Résumé
-              </a> */}
+
+            </div>
+            <div className="grid grid-cols-2 gap-2 border-t border-t-border p-4 xl:grid-cols-4">
+              {socialLinks.map(({ href, label, Icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`${BORDERED_CONTROL} w-full justify-center whitespace-nowrap px-3`}
+                >
+                  <Icon className="size-3.5" aria-hidden="true" />
+                  {label}
+                </a>
+              ))}
             </div>
           </ViewfinderFrame>
         </motion.div>

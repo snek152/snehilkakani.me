@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type { PointerEvent as ReactPointerEvent } from "react";
 import Image from "next/image";
-import { AnimatePresence, animate, motion, useMotionValue, useTransform } from "motion/react";
+import { animate, motion, useMotionValue, useTransform } from "motion/react";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { EASE_OUT, SPRING_MOMENTUM, SPRING_UI, project, rubberband } from "@/app/lib/motion";
 import { beats } from "@/app/lib/tempo";
@@ -58,8 +58,8 @@ export default function Lightbox({
   };
   const dragState = useRef<DragState | null>(null);
 
-  const isDraggingRef = useRef(false);
-
+  const [closing, setClosing] = useState(false);
+  const closeTimerRef = useRef<number | null>(null);
   const [layers, setLayers] = useState<{ key: string; photo: Photo }[]>([]);
 
   useEffect(() => {
@@ -74,6 +74,20 @@ export default function Lightbox({
     });
   }, [photo]);
 
+
+  useEffect(() => {
+    if (closeTimerRef.current !== null) {
+      window.clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+    setClosing(false);
+    return () => {
+      if (closeTimerRef.current !== null) {
+        window.clearTimeout(closeTimerRef.current);
+        closeTimerRef.current = null;
+      }
+    };
+  }, [index]);
   useEffect(() => {
     if (layers.length < 2) return;
     const timer = setTimeout(() => {
@@ -106,13 +120,26 @@ export default function Lightbox({
     x.set(0);
     y.set(0);
   }, [open, x, y]);
+  const requestClose = useCallback(() => {
+    if (closing) return;
+    setClosing(true);
+    if (reduceMotion) {
+      onClose();
+      return;
+    }
+    closeTimerRef.current = window.setTimeout(() => {
+      closeTimerRef.current = null;
+      onClose();
+    }, beats(0.4) * 1000);
+  }, [closing, onClose, reduceMotion]);
 
   useEffect(() => {
     if (!open) return;
     const handleKey = (e: KeyboardEvent) => {
+    if (closing) return;
       if (e.key === "Escape") {
         e.preventDefault();
-        onClose();
+        requestClose();
       } else if (e.key === "ArrowLeft") {
         e.preventDefault();
         onNavigate((index! - 1 + photos.length) % photos.length);
@@ -144,7 +171,8 @@ export default function Lightbox({
     };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-  }, [open, index, photos.length, onClose, onNavigate]);
+  }, [closing, open, index, photos.length, onNavigate, requestClose]);
+
 
   const neighbours =
     open && index !== null
@@ -181,7 +209,6 @@ export default function Lightbox({
     if (state.axis === null) {
       if (Math.abs(dx) < AXIS_HYSTERESIS && Math.abs(dy) < AXIS_HYSTERESIS) return;
       state.axis = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
-      isDraggingRef.current = true;
     }
 
     e.preventDefault();
@@ -202,7 +229,6 @@ export default function Lightbox({
     }
 
     if (state.axis === null || index === null) {
-      isDraggingRef.current = false;
       return;
     }
 
@@ -237,39 +263,27 @@ export default function Lightbox({
         const exitY = state.stageH + 200;
         const exitTransition = reduceMotion ? { duration: 0 } : { ...SPRING_MOMENTUM, velocity: vy };
 
-        animate(y, exitY, exitTransition).then(() => {
-          onClose();
-        });
+        animate(y, exitY, exitTransition).then(requestClose);
       } else {
         const settleTransition = reduceMotion ? { duration: 0 } : { ...SPRING_UI, velocity: vy };
         animate(y, 0, settleTransition);
       }
     }
 
-    setTimeout(() => {
-      isDraggingRef.current = false;
-    }, 0);
   };
 
   const pressClass =
     "transition-[color,scale] duration-[120ms] ease-[var(--ease-press)] active:scale-[0.95] active:text-fg";
 
-  return (
-    <AnimatePresence>
-      {open && photo && (
+  return open && photo ? (
         <motion.div
           ref={dialogRef}
           initial={reduceMotion ? undefined : { opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={reduceMotion ? undefined : { opacity: 0 }}
-          transition={{ duration: beats(0.4) }}
-          onClick={() => {
-            if (isDraggingRef.current) return;
-            onClose();
-          }}
-          className="fixed inset-0 z-100 flex flex-col items-center justify-center p-8"
+          animate={{ opacity: closing ? 0 : 1 }}
+          transition={reduceMotion ? { duration: 0 } : { duration: beats(0.4), ease: EASE_OUT }}
           role="dialog"
           aria-modal="true"
+          className="fixed inset-0 z-100 flex flex-col items-center justify-center p-8"
           aria-labelledby={titleId}
           aria-describedby={descId}
         >
@@ -277,15 +291,16 @@ export default function Lightbox({
           <motion.div
             aria-hidden
             data-material=""
-            className="absolute inset-0 backdrop-blur-[18px]"
+            onClick={requestClose}
+            className="absolute inset-0 cursor-pointer backdrop-blur-[18px]"
             style={{ background: "var(--scrim)", opacity: backdropOpacity }}
           />
-          <div onClick={(e) => e.stopPropagation()} className="relative flex flex-col items-center">
+          <div className={`relative flex flex-col items-center${closing ? " pointer-events-none" : ""}`}>
             <motion.div
               ref={frameRef}
               data-testid="lightbox-frame"
               className="relative flex touch-none items-center justify-center"
-              style={{ width: "min(88vw, 1100px)", height: "min(76vh, 780px)", x, y }}
+              style={{ width: lightboxSizesFor(photo.image), height: "min(76vh, 780px)", x, y }}
               onPointerDown={handlePointerDown}
               onPointerMove={handlePointerMove}
               onPointerUp={endDrag}
@@ -363,7 +378,7 @@ export default function Lightbox({
             <button
               ref={closeRef}
               type="button"
-              onClick={onClose}
+              onClick={requestClose}
               aria-label="Close lightbox"
               className={`absolute -top-9 right-0 border-0 bg-transparent p-0 text-dim hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent ${pressClass}`}
             >
@@ -392,7 +407,5 @@ export default function Lightbox({
             )}
           </div>
         </motion.div>
-      )}
-    </AnimatePresence>
-  );
+  ) : null;
 }

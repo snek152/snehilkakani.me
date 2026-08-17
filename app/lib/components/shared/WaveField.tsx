@@ -1,13 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { motion } from "motion/react";
-import { RELEASE_MS } from "../loader/OrbitStage";
-import { EASE_OUT } from "@/app/lib/motion";
-import { beats } from "@/app/lib/tempo";
+import { useEffect, useRef } from "react";
 import { useMotionPreference } from "./MotionPreference";
-
-const INTRO_DRAW_MS = beats(2) * 1000;
 
 const BANDS = 12;
 
@@ -206,40 +200,10 @@ function buildCurves(): CurveConfig[] {
   return curves;
 }
 
-export default function WaveField({
-  staged = false,
-  introReady = true,
-  awaitCurtain = false,
-}: {
-  staged?: boolean;
-  introReady?: boolean;
-  awaitCurtain?: boolean;
-}) {
+export default function WaveField() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const reduceMotion = useMotionPreference();
-  const startedRef = useRef(false);
-  const introRef = useRef<boolean | null>(null);
-  if (introRef.current === null) introRef.current = staged && !reduceMotion;
 
-  const [bright, setBright] = useState(() => !introRef.current);
-  const [clipOpen, setClipOpen] = useState(() => !introRef.current);
-  const settleRef = useRef<(() => void) | null>(null);
-
-  useEffect(() => {
-    if (!introRef.current || !introReady) return;
-    if (!awaitCurtain) {
-      setClipOpen(true);
-      return;
-    }
-    const timer = window.setTimeout(() => setClipOpen(true), RELEASE_MS);
-    return () => window.clearTimeout(timer);
-  }, [introReady, awaitCurtain]);
-
-  useEffect(() => {
-    if (staged) return;
-    setClipOpen(true);
-    settleRef.current?.();
-  }, [staged]);
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -355,9 +319,7 @@ export default function WaveField({
         const baseAlpha =
           curve.alpha * layer.alphaScale * (curve.isAccent ? ACCENT_ALPHA_SCALE : 1);
 
-        const drawProgress =
-          isStagedIntro && clipOpen ? Math.min(1, timeMs / INTRO_DRAW_MS) : 1;
-        const visibleSample = Math.max(1, Math.round(samples * drawProgress));
+        const visibleSample = samples;
         for (let pass = 0; pass < 3; pass++) {
           const isBloom = pass === 0;
           const isHalo = pass === 1;
@@ -425,15 +387,9 @@ export default function WaveField({
       }
     };
 
-    const isStagedIntro = introRef.current && !reduceMotion;
     if (reduceMotion) {
-      setBright(true);
-      setClipOpen(true);
-      draw(0);
-    } else if (isStagedIntro && !clipOpen) {
       draw(0);
     } else {
-      startedRef.current = !isStagedIntro;
       start();
     }
 
@@ -447,7 +403,7 @@ export default function WaveField({
           startTime += performance.now() - hiddenAt;
         }
         hiddenAt = null;
-        if (!isStagedIntro || startedRef.current) start();
+        start();
       }
     };
     document.addEventListener("visibilitychange", handleVisibility);
@@ -458,36 +414,18 @@ export default function WaveField({
     };
     window.addEventListener("resize", handleResize);
 
-    let handleScroll: (() => void) | null = null;
-    if (isStagedIntro) {
-      const settle = () => {
-        if (startedRef.current) return;
-        startedRef.current = true;
-        start();
-        setBright(true);
-      };
-      handleScroll = settle;
-      settleRef.current = settle;
-      window.addEventListener("scroll", handleScroll, { passive: true, once: true });
-    }
-
     return () => {
       stop();
-      settleRef.current = null;
       document.removeEventListener("visibilitychange", handleVisibility);
       window.removeEventListener("resize", handleResize);
-      if (handleScroll) window.removeEventListener("scroll", handleScroll);
     };
-  }, [clipOpen, reduceMotion]);
+  }, [reduceMotion]);
 
   return (
-    <motion.canvas
+    <canvas
       ref={canvasRef}
       aria-hidden
       className="pointer-events-none fixed inset-0 z-0"
-      initial={introRef.current ? { opacity: 0.15 } : false}
-      animate={{ opacity: bright ? 1 : 0.15 }}
-      transition={reduceMotion ? { duration: 0 } : { duration: beats(0.75), ease: EASE_OUT }}
     />
   );
 }

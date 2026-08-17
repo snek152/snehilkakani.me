@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { motion, type Variants } from "motion/react";
 import { AlertTriangle, ArrowRight, Check, Mail } from "lucide-react";
 import { EASE_OUT, staggerContainer } from "@/app/lib/motion";
@@ -27,6 +27,7 @@ function Field({
   autoComplete,
   reduceMotion,
   error,
+  inputRef,
 }: {
   id: string;
   label: string;
@@ -38,6 +39,7 @@ function Field({
   autoComplete: string;
   reduceMotion: boolean;
   error?: string;
+  inputRef?: React.RefObject<HTMLInputElement | null>;
 }) {
   const [focused, setFocused] = useState(false);
   const errorId = `${id}-error`;
@@ -52,6 +54,7 @@ function Field({
 
       <div className="relative">
         <input
+          ref={inputRef}
           id={id}
           name={id}
           type={type}
@@ -123,6 +126,20 @@ export default function ContactForm() {
   const [messageFocused, setMessageFocused] = useState(false);
   const messageId = useId();
   const [errors, setErrors] = useState<FieldErrors>({});
+  const statusRef = useRef<HTMLDivElement>(null);
+  const nameInputRef = useRef<HTMLInputElement>(null);
+  const restoreFocusRef = useRef(false);
+
+  useEffect(() => {
+    if (sent) statusRef.current?.focus();
+  }, [sent]);
+
+  useEffect(() => {
+    if (!sent && restoreFocusRef.current) {
+      restoreFocusRef.current = false;
+      nameInputRef.current?.focus();
+    }
+  }, [sent]);
 
   const clearError = (key: keyof FieldErrors) =>
     setErrors((prev) => (prev[key] ? { ...prev, [key]: undefined } : prev));
@@ -194,6 +211,7 @@ export default function ContactForm() {
   };
 
   const reset = () => {
+    restoreFocusRef.current = true;
     setName("");
     setEmail("");
     setMessage("");
@@ -225,10 +243,12 @@ export default function ContactForm() {
   if (sent) {
     return (
       <motion.div
+        ref={statusRef}
+        tabIndex={-1}
         initial={reduceMotion ? undefined : { opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3 }}
-        className="flex flex-col gap-[0.875rem]"
+        className="flex flex-col gap-[0.875rem] outline-none"
         role="status"
         aria-live="polite"
       >
@@ -309,6 +329,7 @@ export default function ContactForm() {
       <motion.div variants={fieldMotion}>
         <Field
           id="name"
+          inputRef={nameInputRef}
           label="Name"
           type="text"
           value={name}

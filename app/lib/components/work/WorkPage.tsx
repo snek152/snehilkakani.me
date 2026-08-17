@@ -11,15 +11,19 @@ import SkillsMatrix from "./SkillsMatrix";
 
 export default function WorkPage() {
   const headerRef = useRef<HTMLElement>(null);
-  const headerActive = useInView(headerRef, { once: true, margin: "0px 0px -15% 0px" });
-  const studiesRef = useRef<HTMLDivElement>(null);
-  const studiesActive = useInView(studiesRef, { once: true, margin: "0px 0px -15% 0px" });
+  const headerActive = useInView(headerRef, {
+    once: true,
+    margin: "0px 0px -15% 0px",
+  });
   const featured = projects[0];
   const remaining = projects.slice(1);
 
   return (
-    <div className="px-6 pb-12 pt-16 sm:px-8 lg:px-12 lg:pt-[4.5rem]">
-      <header ref={headerRef} className="relative mb-12 min-h-10 sm:mb-14 lg:mb-16">
+    <div className="px-6 pb-12 pt-6 sm:px-8 lg:px-12 lg:pt-6">
+      <header
+        ref={headerRef}
+        className="relative mb-12 min-h-10 sm:mb-4 lg:mb-8"
+      >
         <div className="relative z-10">
           <ManifestoHeading
             as="h1"
@@ -38,18 +42,14 @@ export default function WorkPage() {
       </header>
 
       <FeaturedProject project={featured} />
-      <section aria-label="Project sequence" aria-labelledby="studies-heading">
-        <div ref={studiesRef} className="pb-7 sm:pb-8">
-          <ManifestoHeading
-            id="studies-heading"
-            text="More work, in sequence."
-            active={studiesActive}
-            className="font-display text-[length:var(--size-display-md)] font-semibold tracking-[var(--track-display-md)] text-fg"
-          />
-        </div>
+      <section aria-label="Projects">
         <div className="flex flex-col">
           {remaining.map((project, index) => (
-            <ProjectCard key={project.title} project={project} sequenceIndex={index} />
+            <ProjectCard
+              key={project.title}
+              project={project}
+              sequenceIndex={index}
+            />
           ))}
         </div>
       </section>

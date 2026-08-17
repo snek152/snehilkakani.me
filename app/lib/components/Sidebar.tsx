@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, type Transition } from "motion/react";
@@ -21,7 +21,7 @@ function SidebarItem({
   item: NavItem;
   expanded: boolean;
   active: boolean;
-  onNavigate: () => void;
+  onNavigate: (event: React.MouseEvent<HTMLAnchorElement>) => void;
   transition: Transition;
 }) {
   const { href, label, Icon } = item;
@@ -29,21 +29,21 @@ function SidebarItem({
     <Link
       href={href}
       onClick={onNavigate}
+      aria-current={active ? "page" : undefined}
       className="relative block w-full no-underline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
     >
       <span
         className={`relative flex h-[42px] w-full items-center transition-colors duration-[120ms] ease-[var(--ease-press)] ${
           active
-            ? !expanded
-              ? "bg-accent/10 active:bg-accent/20"
-              : "active:bg-white/[0.08]"
+            ? "bg-accent/10 hover:bg-accent/15 active:bg-accent/20"
             : "hover:bg-white/[0.03] active:bg-white/[0.08]"
         }`}
       >
-        {active && expanded && (
+        {active && (
           <motion.span
-            layoutId="nav-bar"
-            className="absolute left-0 top-[22%] bottom-[22%] w-0.5 rounded-sm bg-[image:var(--spectral-seam)]"
+            aria-hidden
+            className="absolute left-0 top-[22%] bottom-[22%] w-0.5 origin-center rounded-sm bg-[image:var(--spectral-seam)]"
+            animate={{ opacity: expanded ? 1 : 0, scaleY: expanded ? 1 : 0.4 }}
             transition={transition}
           />
         )}
@@ -72,6 +72,8 @@ export default function Sidebar() {
   const pathname = usePathname();
   const [expanded, setExpanded] = useState(false);
   const reduceMotion = useMotionPreference();
+  const inputModalityRef = useRef<"keyboard" | "pointer">("keyboard");
+  const asideRef = useRef<HTMLElement | null>(null);
 
   const transition: Transition = reduceMotion ? { duration: 0 } : SPRING_UI;
 
@@ -80,21 +82,42 @@ export default function Sidebar() {
     : "";
 
   useEffect(() => {
+    if (asideRef.current?.contains(document.activeElement)) return;
     setExpanded(false);
   }, [pathname]);
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Tab" || event.metaKey || event.ctrlKey || event.altKey) return;
+      inputModalityRef.current = "keyboard";
+    };
+
+    document.addEventListener("keydown", onKeyDown, true);
+    return () => document.removeEventListener("keydown", onKeyDown, true);
+  }, []);
 
   return (
     <>
 
       <motion.aside
+        ref={asideRef}
         data-material={expanded ? "" : undefined}
         className={`fixed inset-y-0 left-0 z-50 hidden flex-col justify-center overflow-hidden border-r border-border bg-bg lg:flex ${material}`}
-        onHoverStart={() => setExpanded(true)}
-        onHoverEnd={() => setExpanded(false)}
-
-        onFocusCapture={() => setExpanded(true)}
-        onBlurCapture={(e) => {
-          if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
+        onPointerDown={() => {
+          inputModalityRef.current = "pointer";
+        }}
+        onPointerMove={() => {
+          inputModalityRef.current = "pointer";
+          setExpanded(true);
+        }}
+        onPointerLeave={() => {
+          setExpanded(false);
+        }}
+        onFocus={() => {
+          if (inputModalityRef.current === "keyboard") setExpanded(true);
+        }}
+        onBlur={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
             setExpanded(false);
           }
         }}
@@ -113,7 +136,11 @@ export default function Sidebar() {
                   : pathname.startsWith(item.href)
               }
 
-              onNavigate={() => setExpanded(false)}
+              onNavigate={(event) => {
+                if (event.detail === 0) return;
+                inputModalityRef.current = "pointer";
+                setExpanded(false);
+              }}
               transition={transition}
             />
           ))}
@@ -147,7 +174,7 @@ export default function Sidebar() {
               <Link
                 key={item.href}
                 href={item.href}
-
+                aria-current={active ? "page" : undefined}
                 className="relative inline-flex min-h-11 items-center no-underline transition-opacity duration-[120ms] ease-[var(--ease-press)] active:opacity-60"
               >
                 <span

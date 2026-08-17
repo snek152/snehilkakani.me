@@ -2,14 +2,12 @@
 
 import { useRef } from "react";
 import Image from "next/image";
-import { FileText } from "lucide-react";
 import { motion, useInView } from "motion/react";
 import ManifestoHeading from "@/app/lib/components/home/ManifestoHeading";
 import ContactForm from "@/app/lib/components/contact/ContactForm";
 import { CONTACT_EMAIL } from "@/app/lib/components/contact/mailto";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import RouteSignal from "@/app/lib/components/shared/RouteSignal";
-import { BORDERED_CONTROL } from "@/app/lib/components/shared/controls";
 import { EASE_OUT } from "@/app/lib/motion";
 import { beats } from "@/app/lib/tempo";
 import dog from "@/public/dog.jpg";
@@ -82,18 +80,12 @@ export default function ContactPage() {
               {CONTACT_EMAIL}
             </a>
           </p>
-          <div className="mb-12">
-            <a href="/resume.pdf" download className={BORDERED_CONTROL}>
-              <FileText className="size-3.5" aria-hidden="true" />
-              Résumé
-            </a>
-          </div>
           <div>
             <ContactForm />
           </div>
         </section>
 
-        <section aria-labelledby="contact-photos" className="lg:pt-[4.5rem]">
+        <section aria-labelledby="contact-photos" className="self-start">
           <div className="mb-5 max-w-sm">
             <h2
               id="contact-photos"
@@ -102,39 +94,27 @@ export default function ContactPage() {
               A few things outside of work.
             </h2>
           </div>
-          <div className="grid grid-cols-12 gap-2 sm:gap-3">
-            {contactPhotos.map((photo, index) => {
-              const placement = [
-                "col-span-7 row-span-2 aspect-[4/5]",
-                "col-span-5 aspect-square",
-                "col-span-5 aspect-[5/4]",
-                "col-span-12 aspect-[16/7] md:aspect-square lg:aspect-[16/7]",
-              ][index];
-
-              return (
-                <motion.figure
-                  key={photo.caption}
-                  initial={reduceMotion ? false : { opacity: 0, y: 14 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    duration: beats(0.6),
-                    delay: reduceMotion ? 0 : Math.min(index, 3) * beats(0.15),
-                    ease: EASE_OUT,
-                  }}
-                  className={`group relative overflow-hidden bg-card ${placement}`}
-                >
-                  <Image
-                    src={photo.src}
-                    alt={photo.caption}
-                    sizes="(min-width: 1024px) 25vw, (min-width: 640px) 38vw, 86vw"
-                    className="h-full w-full object-cover"
-                  />
-                  <figcaption className="absolute inset-x-0 bottom-0 bg-fg/85 px-3 py-2 text-[length:var(--text-micro)] tracking-[var(--track-text-sm)] text-bg opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100">
-                    {photo.caption}
-                  </figcaption>
-                </motion.figure>
-              );
-            })}
+          <div className="grid grid-cols-2 gap-2 sm:gap-3">
+            {contactPhotos.map((photo, index) => (
+              <motion.figure
+                key={photo.caption}
+                initial={reduceMotion ? false : { opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: beats(0.6),
+                  delay: reduceMotion ? 0 : Math.min(index, 3) * beats(0.15),
+                  ease: EASE_OUT,
+                }}
+                className="relative aspect-square overflow-hidden bg-card"
+              >
+                <Image
+                  src={photo.src}
+                  alt={photo.caption}
+                  sizes="(min-width: 768px) 20vw, 44vw"
+                  className="h-full w-full object-cover"
+                />
+              </motion.figure>
+            ))}
           </div>
         </section>
       </motion.div>
