@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { useInView } from "motion/react";
 import { projects } from "@/app/lib/data/projects";
 import RouteSignal from "@/app/lib/components/shared/RouteSignal";
+import DrawnRule from "@/app/lib/components/shared/DrawnRule";
 import ManifestoHeading from "@/app/lib/components/home/ManifestoHeading";
 import FeaturedProject from "./FeaturedProject";
 import ProjectCard from "./ProjectCard";
@@ -16,7 +17,8 @@ export default function WorkPage() {
     margin: "0px 0px -15% 0px",
   });
   const featured = projects[0];
-  const remaining = projects.slice(1);
+  const detailed = projects.slice(1, 5);
+  const rest = projects.slice(5);
 
   return (
     <div className="px-6 pb-12 pt-8 sm:px-8 lg:px-12 lg:pt-8">
@@ -41,14 +43,30 @@ export default function WorkPage() {
         />
       </header>
 
-      <FeaturedProject project={featured} />
       <section aria-label="Projects">
+
+        <FeaturedProject project={featured} />
+        <div className="relative -mx-6 sm:-mx-8 lg:-mx-12">
+          <DrawnRule />
+        </div>
+
         <div className="flex flex-col">
-          {remaining.map((project, index) => (
+          {detailed.map((project, index) => (
             <ProjectCard
               key={project.title}
               project={project}
               sequenceIndex={index}
+            />
+          ))}
+        </div>
+
+        <div className="flex flex-col">
+          {rest.map((project, index) => (
+            <ProjectCard
+              key={project.title}
+              project={project}
+              sequenceIndex={index}
+              compact
             />
           ))}
         </div>

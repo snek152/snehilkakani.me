@@ -15,16 +15,13 @@ export default function HomeContent() {
     <div className="px-6 pb-20 sm:px-8 lg:px-12 lg:pb-12">
       <GridIndex />
       <motion.section
-        aria-labelledby="experience-heading"
+        aria-label="Experience"
         className="mt-0"
         initial={reduceMotion ? false : { opacity: 0, y: 20 }}
         whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.08 }}
         transition={{ duration: beats(0.75), ease: EASE_OUT }}
       >
-        <h2 id="experience-heading" className="sr-only">
-          Experience
-        </h2>
         <ExperienceList experiences={experiences} />
       </motion.section>
     </div>

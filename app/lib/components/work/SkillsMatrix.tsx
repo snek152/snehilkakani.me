@@ -9,10 +9,10 @@ import { useMotionPreference } from "@/app/lib/components/shared/MotionPreferenc
 type SkillType = (typeof skillTypes)[number];
 
 const CATEGORY_LABELS: Record<SkillType, string> = {
-  frontend: "Frontend",
-  backend: "Backend",
-  AI: "AI / ML",
-  other: "Tools",
+  language: "Languages",
+  aiSystems: "AI systems",
+  webPlatforms: "Web platforms",
+  dataWorkflow: "Data & workflow",
 };
 
 export default function SkillsMatrix() {
@@ -26,7 +26,7 @@ export default function SkillsMatrix() {
       viewport={{ once: true, margin: "0px 0px -60px 0px" }}
 
       transition={{ duration: reduceMotion ? 0 : beats(0.75), ease: EASE_OUT }}
-      className="mt-14 border-t border-border pt-10 lg:mt-16 lg:pt-12"
+      className="mt-10 lg:mt-12"
     >
       <div className="mb-8 flex flex-wrap items-end justify-between gap-3">
         <h2

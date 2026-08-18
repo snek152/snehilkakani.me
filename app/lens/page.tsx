@@ -3,10 +3,10 @@
 import { useCallback, useRef, useState } from "react";
 import { motion, useInView } from "motion/react";
 import featPhotos from "@/app/lib/data/photos";
-import { EASE_OUT, fadeUp } from "@/app/lib/motion";
-import { beats } from "@/app/lib/tempo";
+import { fadeUp } from "@/app/lib/motion";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import ManifestoHeading from "@/app/lib/components/home/ManifestoHeading";
+import RouteSignal from "@/app/lib/components/shared/RouteSignal";
 import JustifiedGrid from "@/app/lib/components/gallery/JustifiedGrid";
 import Lightbox from "@/app/lib/components/gallery/Lightbox";
 
@@ -15,7 +15,7 @@ export default function GalleryPage() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const cellRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const returnFocusRef = useRef<HTMLButtonElement | null>(null);
-  const headingRef = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLElement>(null);
   const headingActive = useInView(headingRef, {
     once: true,
     margin: "0px 0px -15% 0px",
@@ -35,42 +35,29 @@ export default function GalleryPage() {
 
   return (
     <div className="px-6 pb-12 pt-8 sm:px-8 lg:px-12 lg:pt-8">
-      <motion.div
+      <motion.header
         initial={reduceMotion ? false : "hidden"}
         animate="visible"
         variants={fadeUp}
         ref={headingRef}
-        className="max-w-3xl"
+        className="relative mb-12 min-h-10 sm:mb-4 lg:mb-8"
       >
-        <ManifestoHeading
-          as="h1"
-          id="lens-heading"
-          text="Lens"
-          active={headingActive}
-          className="font-display text-[length:var(--size-display-lg)] font-bold tracking-[var(--track-display-lg)] text-fg text-balance"
-        />
-        <motion.div
-          aria-hidden="true"
-          className="relative mt-2 mb-8 h-px origin-left overflow-hidden bg-border"
-          initial={reduceMotion ? false : { scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{
-            duration: reduceMotion ? 0 : beats(1.2),
-            ease: EASE_OUT,
-          }}
-        >
-          <motion.div
-            className="absolute inset-y-0 left-0 w-[38%] origin-left bg-[image:var(--seam-lens)]"
-            initial={reduceMotion ? false : { scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{
-              duration: reduceMotion ? 0 : beats(0.9),
-              delay: reduceMotion ? 0 : beats(0.2),
-              ease: EASE_OUT,
-            }}
+        <div className="relative z-10 max-w-3xl">
+          <ManifestoHeading
+            as="h1"
+            id="lens-heading"
+            text="Lens"
+            active={headingActive}
+            className="font-display text-[length:var(--size-display-lg)] font-bold tracking-[var(--track-display-lg)] text-fg text-balance"
           />
-        </motion.div>
-      </motion.div>
+        </div>
+        <RouteSignal
+          scene="lens"
+          label="Lens"
+          detail="Photography"
+          className="mt-4 sm:absolute sm:right-0 sm:top-1/2 sm:mt-0 sm:-translate-y-1/2"
+        />
+      </motion.header>
 
       <JustifiedGrid photos={featPhotos} onOpen={openAt} cellRefs={cellRefs} />
       <Lightbox

@@ -11,7 +11,7 @@ export default function Exposure({
   return (
     <span
       id={id}
-      className={`flex flex-wrap items-baseline gap-x-3.5 gap-y-0.5 text-[length:var(--text-meta)] tracking-[var(--track-text-sm)] tabular-nums leading-snug text-dim ${className}`}
+      className={`flex flex-wrap items-baseline gap-x-3.5 gap-y-0.5 text-[length:var(--text-body)] tabular-nums leading-snug text-dim ${className}`}
     >
 
       <span className="sr-only">

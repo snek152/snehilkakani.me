@@ -11,7 +11,11 @@ const FORMSPREE_ENDPOINT = "https://formspree.io/f/xyylnqbg";
 
 const fieldMotion: Variants = {
   hidden: { opacity: 0, y: 10 },
-  visible: { opacity: 1, y: 0, transition: { duration: beats(0.6), ease: EASE_OUT } },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: beats(0.6), ease: EASE_OUT },
+  },
 };
 
 const EASE_PRESS = [0.23, 1, 0.32, 1] as const;
@@ -83,15 +87,16 @@ type FieldErrors = { name?: string; email?: string; message?: string };
 
 function emailProblem(raw: string): string | undefined {
   const value = raw.trim();
-  if (!value) return "Add an email address — there's no way to reply without one.";
-  if (/\s/.test(value)) return "An email address can't contain a space — remove it and try again.";
-  if (!value.includes("@")) return "This is missing an @. An address looks like you@example.com.";
+  if (!value) return "Add an email address.";
+  if (/\s/.test(value)) return "Not a valid email address.";
+  if (!value.includes("@")) return "Not a valid email address.";
   const [local, ...rest] = value.split("@");
   const domain = rest.join("@");
-  if (!local) return "There's nothing before the @ — add the first part, like you@example.com.";
-  if (!domain) return "There's nothing after the @ — add the domain, like example.com.";
-  if (!domain.includes(".")) return "The part after the @ needs a dot in it, like example.com.";
-  if (domain.startsWith(".") || domain.endsWith(".")) return "The domain has a stray dot at one end — check it and try again.";
+  if (!local) return "Not a valid email address.";
+  if (!domain) return "Not a valid email address";
+  if (!domain.includes(".")) return "Not a valid email address.";
+  if (domain.startsWith(".") || domain.endsWith("."))
+    return "Not a valid email address.";
   return undefined;
 }
 
@@ -134,15 +139,19 @@ export default function ContactForm() {
     e.preventDefault();
 
     const found: FieldErrors = {
-      name: name.trim() ? undefined : "Add your name, so a reply knows who it's answering.",
+      name: name.trim() ? undefined : "Add your name.",
       email: emailProblem(email),
       message: message.trim() ? undefined : "Add the message you want to send.",
     };
-    const firstBad = (["name", "email", "message"] as const).find((key) => found[key]);
+    const firstBad = (["name", "email", "message"] as const).find(
+      (key) => found[key],
+    );
 
     if (firstBad) {
       setErrors(found);
-      document.getElementById(firstBad === "message" ? messageId : firstBad)?.focus();
+      document
+        .getElementById(firstBad === "message" ? messageId : firstBad)
+        ?.focus();
       return;
     }
 
@@ -211,7 +220,6 @@ export default function ContactForm() {
   return (
     <motion.form
       onSubmit={submit}
-
       noValidate
       initial={reduceMotion ? false : "hidden"}
       animate="visible"
@@ -298,12 +306,16 @@ export default function ContactForm() {
         type="submit"
         disabled={sending}
         whileHover={reduceMotion || sending ? undefined : { scale: 1.03 }}
-
-        whileTap={sending ? undefined : reduceMotion ? { opacity: 0.7 } : { scale: 0.97 }}
+        whileTap={
+          sending
+            ? undefined
+            : reduceMotion
+              ? { opacity: 0.7 }
+              : { scale: 0.97 }
+        }
         transition={{ duration: 0.12, ease: EASE_PRESS }}
         className="inline-flex list-none items-center gap-[0.45rem] self-start bg-accent px-[1.375rem] py-[0.7rem] text-[length:var(--text-meta)] font-medium text-white transition-opacity duration-150 hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent focus-visible:opacity-80 disabled:cursor-not-allowed disabled:opacity-60"
       >
-
         {sending ? "Sending" : "Send message"}{" "}
         <ArrowRight size={13} strokeWidth={1.75} />
       </motion.button>

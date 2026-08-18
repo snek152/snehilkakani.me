@@ -18,6 +18,9 @@ const HOLD_MS = 4000;
 export default function RoleCycle() {
   const reduceMotion = useMotionPreference();
   const [index, setIndex] = useState(0);
+  const display = useScrambleText(ROLES[index], true, {
+    skip: reduceMotion,
+  });
 
   useEffect(() => {
     if (reduceMotion) return;
@@ -27,27 +30,12 @@ export default function RoleCycle() {
     return () => clearInterval(id);
   }, [reduceMotion]);
 
-  const display = useScrambleText(ROLES[index], true, { skip: reduceMotion });
-
-  const textClass =
-    "m-0 font-display text-[length:var(--size-display-md)] font-semibold tracking-[var(--track-display-sm)] text-accent-text tabular-nums z-20";
-
-  const fullRoleList = ROLES.join(", ");
-
-  if (reduceMotion) {
-    return (
-      <p className={textClass}>
-        <span aria-hidden="true">{ROLES[0]}</span>
-        <span className="sr-only">{fullRoleList}</span>
-      </p>
-    );
-  }
-
   return (
-    <div className="relative overflow-hidden">
-      <p className={textClass}>
-        <span className="sr-only">{fullRoleList}</span>
+    <div className="flex items-center gap-3">
+      <span aria-hidden="true" className="h-px w-7 shrink-0 bg-accent" />
+      <p className="m-0 font-display text-[length:var(--size-display-sm)] font-semibold tracking-[var(--track-display-sm)] text-fg">
         <span aria-hidden="true">{display}</span>
+        <span className="sr-only">{ROLES.join(", ")}</span>
       </p>
     </div>
   );

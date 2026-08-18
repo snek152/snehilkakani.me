@@ -82,7 +82,7 @@ export default function ContactPage() {
             Open to internships, collaborations, and interesting problems.{" "}
             <a
               href={`mailto:${CONTACT_EMAIL}`}
-              className="text-fg underline decoration-1 underline-offset-[3px] transition-[color,opacity] duration-[120ms] ease-[var(--ease-press)] hover:text-accent-text active:opacity-70 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+              className="relative text-fg underline decoration-1 underline-offset-[3px] transition-[color,opacity] duration-[120ms] ease-[var(--ease-press)] before:absolute before:-inset-x-1 before:-inset-y-2 before:content-[''] hover:text-accent-text active:opacity-70 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
             >
               {CONTACT_EMAIL}
             </a>
@@ -96,7 +96,7 @@ export default function ContactPage() {
           <div className="mb-5 max-w-sm">
             <h2
               id="contact-photos"
-              className="text-[length:var(--text-meta)] font-medium tracking-[var(--track-text-sm)] text-dim"
+              className="text-[length:var(--text-body)] font-medium tracking-[var(--track-text-sm)] text-dim"
             >
               A few things outside of work.
             </h2>

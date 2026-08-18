@@ -18,6 +18,7 @@ export default function TrackRow({
   duration,
   bars,
   onToggle,
+  showRule,
   delay,
 }: {
   beat: Beat;
@@ -29,6 +30,7 @@ export default function TrackRow({
   bars: MotionValue<number>[];
   onToggle: () => void;
 
+  showRule: boolean;
   delay: number;
 }) {
   const reduceMotion = useMotionPreference();
@@ -54,9 +56,6 @@ export default function TrackRow({
           isActive ? "" : "hover:bg-white/[0.02]"
         }`}
       >
-        <span className="sr-only" role="status" aria-live="polite">
-          {isLoadingRow ? `Loading ${beat.name}` : ""}
-        </span>
         <span className="flex min-w-0 flex-wrap items-center gap-4">
           <span className="flex w-5 shrink-0 items-center justify-center">
             {isLoadingRow ? (
@@ -117,9 +116,7 @@ export default function TrackRow({
         </span>
       </button>
 
-      <DrawnRule
-        ruleClassName={`transition-colors duration-150 ${isActive ? "!bg-accent" : ""}`}
-      />
+      {showRule && <DrawnRule ruleClassName="!bg-border" />}
     </motion.div>
   );
 }

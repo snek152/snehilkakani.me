@@ -30,20 +30,20 @@ function SidebarItem({
       href={href}
       onClick={onNavigate}
       aria-current={active ? "page" : undefined}
-      className="relative block w-full no-underline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
+      className="relative block w-full cursor-pointer no-underline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
     >
       <span
         className={`relative flex h-[42px] w-full items-center transition-colors duration-[120ms] ease-[var(--ease-press)] ${
           active
-            ? "bg-accent/10 hover:bg-accent/15 active:bg-accent/20"
+            ? "bg-accent/15 hover:bg-accent/20 active:bg-accent/25"
             : "hover:bg-white/[0.03] active:bg-white/[0.08]"
         }`}
       >
         {active && (
           <motion.span
             aria-hidden
-            className="absolute left-0 top-[22%] bottom-[22%] w-0.5 origin-center rounded-sm bg-[image:var(--spectral-seam)]"
-            animate={{ opacity: expanded ? 1 : 0, scaleY: expanded ? 1 : 0.4 }}
+            className="absolute left-0 top-[18%] bottom-[18%] w-1 origin-center bg-accent"
+            animate={{ opacity: 1, scaleY: 1 }}
             transition={transition}
           />
         )}
@@ -51,7 +51,7 @@ function SidebarItem({
           <Icon
             size={15}
             strokeWidth={1.75}
-            className={`shrink-0 transition-colors duration-150 ${active ? "text-fg" : "text-dim"}`}
+            className={`shrink-0 transition-colors duration-150 ${active ? "text-accent" : "text-dim"}`}
           />
         </span>
         <motion.span
@@ -153,7 +153,7 @@ export default function Sidebar() {
       >
         <Link
           href="/"
-          className="relative inline-flex min-h-11 items-center pr-2 no-underline transition-opacity duration-[120ms] ease-[var(--ease-press)] active:opacity-60"
+          className="relative inline-flex min-h-11 cursor-pointer items-center pr-2 no-underline transition-opacity duration-[120ms] ease-[var(--ease-press)] active:opacity-60"
         >
           <span className="font-display text-[0.9rem] font-bold tracking-[var(--track-display-sm)] text-fg">
             SK
@@ -175,11 +175,11 @@ export default function Sidebar() {
                 key={item.href}
                 href={item.href}
                 aria-current={active ? "page" : undefined}
-                className="relative inline-flex min-h-11 items-center no-underline transition-opacity duration-[120ms] ease-[var(--ease-press)] active:opacity-60"
+                className="relative inline-flex min-h-11 cursor-pointer items-center no-underline transition-opacity duration-[120ms] ease-[var(--ease-press)] active:opacity-60"
               >
                 <span
                   className={`relative font-sans text-[length:var(--text-meta)] transition-colors duration-150 ${
-                    active ? "text-fg after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:bg-[image:var(--spectral-seam)] after:content-['']" : "text-dim"
+                    active ? "font-medium text-fg after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-full after:bg-accent after:content-['']" : "text-dim"
                   }`}
                 >
                   {item.label}

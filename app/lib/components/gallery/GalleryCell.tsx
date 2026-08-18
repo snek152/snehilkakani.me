@@ -59,7 +59,7 @@ export default function GalleryCell({
           priority={index < 4}
           loading={index < 4 ? undefined : "lazy"}
           sizes={`${Math.ceil(width)}px`}
-          className="block h-full w-full object-cover"
+          className="block h-full w-full object-cover transition-transform duration-[120ms] ease-[var(--ease-press)] group-hover:scale-[1.015] group-focus-within:scale-[1.015]"
         />
         </button>
       </motion.div>

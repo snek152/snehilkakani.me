@@ -11,24 +11,11 @@ import { useIntroReady } from "@/app/lib/components/AppShell";
 import { EASE_OUT } from "@/app/lib/motion";
 import { beats } from "@/app/lib/tempo";
 import ViewfinderFrame from "@/app/lib/components/shared/ViewfinderFrame";
-import { BORDERED_CONTROL } from "@/app/lib/components/shared/controls";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import { GRID_STOPS } from "@/app/lib/grid";
 import RoleCycle from "@/app/lib/components/home/RoleCycle";
 import portrait from "@/public/about.jpg";
 import { socialLinks } from "../../nav";
-
-
-const riseVariants: Variants = {
-  hidden: { opacity: 0, y: 14, scale: 0.985, filter: "blur(9px)" },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    filter: "blur(0px)",
-    transition: { duration: beats(0.8), ease: EASE_OUT },
-  },
-};
 
 const photoVariants: Variants = {
   hidden: { opacity: 0, x: 24, scale: 0.985, filter: "blur(10px)" },
@@ -93,6 +80,8 @@ export default function Hero({
     { label: "Based in", value: "Bay Area, CA" },
     { label: "Seeking", value: "Software engineering internships" },
   ];
+  const resumeLink = socialLinks.find((link) => link.label === "Résumé")!;
+  const secondaryLinks = socialLinks.filter((link) => link.label !== "Résumé");
 
   return (
     <section
@@ -125,15 +114,6 @@ export default function Hero({
 
       <div className="grid grid-cols-1 items-end gap-0 mt-10 z-10 lg:grid-cols-[1.5fr_minmax(220px,1.2fr)] lg:grid-rows-[1fr_auto] lg:gap-x-8 lg:gap-y-0">
         <div className="lg:col-start-1 lg:row-start-1">
-          <motion.div
-            initial={reduceMotion ? false : "hidden"}
-            animate={reduceMotion ? undefined : state}
-            variants={riseVariants}
-            className="mb-1"
-          >
-            <RoleCycle />
-          </motion.div>
-
           <motion.h1
             initial={reduceMotion ? false : { opacity: 0, y: 14 }}
             animate={
@@ -151,20 +131,61 @@ export default function Hero({
           </motion.h1>
         </div>
 
-        <motion.p
-          aria-labelledby="home-introduction"
-          initial={reduceMotion ? false : { opacity: 0, y: 10 }}
-          whileInView={entrance}
-          viewport={{ once: true, amount: 0.25 }}
-          transition={{ duration: 0.45, ease: EASE_OUT }}
-          className="mb-14 text-[length:var(--text-lead)] leading-[var(--leading-lead)] max-w-[var(--measure-lead)] text-dim lg:col-start-1 lg:row-start-2"
-          id="home-introduction"
-        >
-          Building intelligent systems with a focus on creating accessible user
-          experiences. Exploring music production, photography, and video games
-          in my free time. Published researcher, NMSC finalist, and
-          entrepreneurial award winner.
-        </motion.p>
+        <div className="lg:col-start-1 lg:row-start-2 flex flex-col">
+          <motion.p
+            initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+            whileInView={entrance}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{ duration: 0.45, ease: EASE_OUT }}
+            className="order-2 mb-4 text-[length:var(--text-lead)] leading-[var(--leading-lead)] max-w-[var(--measure-lead)] text-dim lg:mb-3"
+          >
+            Building intelligent systems with a focus on creating accessible
+            user experiences. Exploring music production, photography, and video
+            games in my free time. Published researcher, NMSC finalist, and
+            entrepreneurial award winner.
+          </motion.p>
+          <div className="order-2 mb-5 lg:mb-7">
+            <RoleCycle />
+          </div>
+
+          <motion.div
+            initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+            whileInView={entrance}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{
+              duration: 0.45,
+              ease: EASE_OUT,
+              delay: reduceMotion ? 0 : 0.08,
+            }}
+            className="order-1 mb-5 flex flex-wrap items-center gap-2.5 lg:order-2 lg:mb-10"
+          >
+            <a
+              href={resumeLink.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-10 items-center gap-1.5 border border-accent bg-accent px-4 text-[length:var(--text-meta)] font-medium text-white transition-[opacity,scale] duration-[120ms] ease-[var(--ease-press)] hover:opacity-80 active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent focus-visible:opacity-80"
+            >
+              <resumeLink.Icon className="size-3.5" aria-hidden="true" />
+              {resumeLink.label}
+              <span className="sr-only"> (opens in new tab)</span>
+            </a>
+            <div className="flex flex-wrap gap-2">
+              {secondaryLinks.map(({ href, label, Icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  title={label}
+                  className="inline-flex size-10 items-center justify-center border border-border text-dim transition-[color,border-color,scale] duration-[120ms] ease-[var(--ease-press)] hover:text-fg active:scale-[0.97] focus-visible:text-fg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+                >
+                  <Icon className="size-4" aria-hidden="true" />
+                </a>
+              ))}
+            </div>
+          </motion.div>
+        </div>
 
         <motion.div
           className="justify-self-start lg:justify-self-end bg-card z-10 border border-border lg:col-start-2 lg:row-start-1 lg:row-span-2"
@@ -182,12 +203,12 @@ export default function Hero({
                   priority
                   placeholder="blur"
                   sizes="(min-width: 1024px) 280px, 260px"
-                  className="object-cover object-top grayscale-15"
+                  className="object-cover object-top"
                 />
               </div>
             </div>
-            <div className="p-4 border-t-border border-t">
-              <dl className="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2">
+            <div className="border-t border-border px-4 pb-4 pt-3">
+              <dl className="mt-4 grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2">
                 {STATUS.map(({ label, value }) => (
                   <div key={label}>
                     <dt className="mb-1 text-[length:var(--text-meta)] font-normal tracking-[var(--track-text-sm)] text-dim">
@@ -199,21 +220,6 @@ export default function Hero({
                   </div>
                 ))}
               </dl>
-
-            </div>
-            <div className="grid grid-cols-2 gap-2 border-t border-t-border p-4 xl:grid-cols-4">
-              {socialLinks.map(({ href, label, Icon }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`${BORDERED_CONTROL} w-full justify-center whitespace-nowrap px-3`}
-                >
-                  <Icon className="size-3.5" aria-hidden="true" />
-                  {label}
-                </a>
-              ))}
             </div>
           </ViewfinderFrame>
         </motion.div>

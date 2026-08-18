@@ -55,7 +55,7 @@ export default function FeaturedProject({ project }: { project: Project }) {
         if (!event.currentTarget.contains(event.relatedTarget))
           setActive(false);
       }}
-      className={`group relative mb-16 grid overflow-hidden border-y border-border lg:mb-[4.5rem] ${
+      className={`group relative grid overflow-hidden border-t border-border ${
         secondary ? "" : "lg:grid-cols-[minmax(0,1.28fr)_minmax(20rem,0.72fr)]"
       }`}
     >
@@ -104,9 +104,9 @@ export default function FeaturedProject({ project }: { project: Project }) {
             {dateRange(project.subtitle)}
           </p>
         )}
-        <h2 className="font-display text-[length:var(--size-display-md)] font-semibold leading-tight tracking-[var(--track-display-md)] text-fg text-balance">
+        <h3 className="font-display text-[length:var(--size-display-md)] font-semibold leading-tight tracking-[var(--track-display-md)] text-fg text-balance">
           {project.title}
-        </h2>
+        </h3>
         <p className="mt-3 text-[length:var(--text-body)] leading-[var(--leading-body)] text-dim">
           {project.description}
         </p>

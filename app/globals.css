@@ -12,21 +12,10 @@
 
   --accent-rgb: 37 99 235;
 
-  --violet-rgb: 124 92 255;
-  --spectral-seam: linear-gradient(
-    90deg,
-    rgb(var(--accent-rgb) / 0.82),
-    rgb(var(--violet-rgb) / 0.58),
-    rgb(var(--accent-rgb) / 0)
-  );
 
-  --seam-lens: linear-gradient(90deg, transparent, #5575d9, #8b66c9);
-
-
-  --signal-light: rgb(126 164 255);
   --border: rgba(255, 255, 255, 0.07);
 
-  --rule: rgba(255, 255, 255, 0.07);
+  --rule: rgba(255, 255, 255, 0.15);
 
   --scrim: rgba(4, 4, 4, 0.86);
 }
@@ -91,7 +80,7 @@ body {
 
 .route-signal {
   width: clamp(4.5rem, 9vw, 6.5rem);
-  color: var(--signal-light);
+  color: var(--accent);
 }
 
 .route-signal svg {
@@ -109,15 +98,16 @@ body {
 }
 
 .route-signal__seam {
+  stroke: var(--dim2);
   stroke-width: 0.75;
-  opacity: 0.76;
-}
-
+  opacity: 0.82;
+ }
 .route-signal__source {
-  fill: var(--signal-light);
+  fill: var(--fg);
   stroke: var(--bg);
   stroke-width: 1.25;
 }
+
 
 .instrument-chassis {
   min-height: 100dvh;
@@ -130,6 +120,10 @@ html[data-loader-seen="1"] [data-loader] {
 
 :root {
   --ease-press: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+button:not(:disabled) {
+  cursor: pointer;
 }
 
 @media (prefers-reduced-transparency: reduce) {
