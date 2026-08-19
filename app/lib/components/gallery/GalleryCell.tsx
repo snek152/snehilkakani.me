@@ -7,6 +7,7 @@ import type featPhotos from "@/app/lib/data/photos";
 import { EASE_OUT } from "@/app/lib/motion";
 import { beats } from "@/app/lib/tempo";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
+import { lightboxSizesFor } from "./photo-dims";
 import Exposure from "./Exposure";
 
 export type Photo = (typeof featPhotos)[number];
@@ -30,7 +31,9 @@ export default function GalleryCell({
   const [hovered, setHovered] = useState(false);
   const [keyboardFocused, setKeyboardFocused] = useState(false);
   const [pressed, setPressed] = useState(false);
+  const [warm, setWarm] = useState(false);
   const active = hovered || pressed || keyboardFocused;
+  const startWarm = () => setWarm(true);
   return (
     <figure style={{ width: `${width}px` }} className="group m-0 shrink-0">
       <motion.div
@@ -53,14 +56,24 @@ export default function GalleryCell({
         type="button"
         onClick={onOpen}
         style={{ height: `${height}px` }}
-        onMouseEnter={() => setHovered(true)}
+        onMouseEnter={() => {
+          setHovered(true);
+          startWarm();
+        }}
         onMouseLeave={() => setHovered(false)}
         className="peer relative block w-full cursor-pointer overflow-hidden border-0 bg-transparent p-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-        onPointerDown={() => setPressed(true)}
+        onPointerDown={() => {
+          setPressed(true);
+          startWarm();
+        }}
         onPointerUp={() => setPressed(false)}
         onPointerCancel={() => setPressed(false)}
         onPointerLeave={() => setPressed(false)}
-        onFocus={(event) => setKeyboardFocused(event.currentTarget.matches(":focus-visible"))}
+        onFocus={(event) => {
+          const visible = event.currentTarget.matches(":focus-visible");
+          setKeyboardFocused(visible);
+          if (visible) startWarm();
+        }}
         onBlur={() => setKeyboardFocused(false)}
         aria-label={`Open ${photo.alt}`}
       >
@@ -75,6 +88,18 @@ export default function GalleryCell({
           className="block h-full w-full object-cover"
         />
         </button>
+        {warm && (
+          <div aria-hidden className="pointer-events-none absolute h-px w-px overflow-hidden opacity-0">
+            <Image
+              src={photo.image}
+              alt=""
+              width={Math.round(width)}
+              height={Math.round(height)}
+              sizes={lightboxSizesFor(photo.image)}
+              loading="eager"
+            />
+          </div>
+        )}
         <motion.span
           aria-hidden="true"
           className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left bg-accent"

@@ -96,7 +96,7 @@ Three deliberate greys against near-black, plus exactly one blue, split by role 
 |Dim 2|`#7d7d7d`|4.87:1 — captions, dividers, recessive readouts|
 |Border|`rgba(255,255,255,0.07)`|Card edges, inputs, nav — stays quiet|
 |Rule|`rgba(255,255,255,0.15)`|`DrawnRule` only — the lines you are meant to watch arrive|
-|Scrim|`rgba(4,4,4,0.86)`|Lightbox backdrop, deliberately darker than the page, paired with an 18px blur|
+|Scrim|`rgba(4,4,4,0.86)`|Lightbox backdrop, deliberately darker than the page while leaving the contact sheet sharp|
 
 ### Material
 
@@ -174,7 +174,7 @@ Four legitimate shadow uses exist and each does a job a hairline cannot; nothing
 - **`OrbitStage`'s accent ring** — `0 0 0 1px rgb(var(--accent-rgb) / 0.18)`, a 1px zero-blur ring around the loader's orbit node.
 - **`SignalRule`'s downward accent bloom** — a real offset plus blur (`0 6px 14px -7px rgb(var(--accent-rgb) / 0.14 or 0.26)`), explicitly not a zero-offset halo. A zero-offset glow is decoration; this one has a direction, so it reads as light falling rather than a sticker.
 
-`Lightbox` pairs `--scrim` at `0.86` (not the `0.97` it started at) with an 18px `backdrop-blur`: at `0.97` the contact sheet behind was fully erased and the opened photo read as sitting on a black card. At `0.86` with the blur, the contact sheet is still visibly there, pushed back — the same "recede by going soft" idea `WaveField` uses, reaching the interface.
+`Lightbox` uses `--scrim` at `0.86` (not the `0.97` it started at) without a backdrop blur: the dimmed contact sheet remains visible and sharp, so it reads as context rather than as a failed image load. The opened photo stays dominant without being isolated on a black card.
 
 ## Shapes
 
@@ -201,7 +201,7 @@ Hairlines carry three brightness levels, each scoped to a distinct job:
 
 **Gallery cell** (`GalleryCell`) — the image box is sized in exact pixels from the justified grid's row packing, always its true aspect ratio. No hover zoom, no corner ticks, and no visual caption; only the aligned EXIF readout sits beneath the frame.
 
-**Lightbox** — `--scrim` at `0.86` with an 18px `backdrop-blur`, `data-material` for the transparency/contrast overrides. Drag-to-dismiss tracks the pointer 1:1 downward (`project()` commits on projected rest + velocity sign, never raw distance); upward has nothing behind it, so that is where `rubberband()` resistance goes.
+**Lightbox** — `--scrim` at `0.86` without backdrop blur, `data-material` for the transparency/contrast overrides. Drag-to-dismiss tracks the pointer 1:1 downward (`project()` commits on projected rest + velocity sign, never raw distance); upward has nothing behind it, so that is where `rubberband()` resistance goes.
 
 **Transport (`PlayerBar`)** — the site's one signature component and its one persistent translucent surface (`data-material`, `bg-bg/95 backdrop-blur-xl`). Not a media-player slab: it reuses the page's own container padding and the track list's column grid, so the now-playing row sits column-for-column under the list it came from. Its top hairline *is* the progress rule — the same 1px border every row uses, filling with accent as the track plays; there is no separate scrubber floating above it. While a track plays, the signal-line fill breathes at *that track's own tempo*, not the page's BPM-92 grid — the one flourish scoped entirely inside the player.
 

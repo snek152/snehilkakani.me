@@ -85,12 +85,21 @@ export default function JustifiedGrid({
     if (!el) return;
     setWidth(el.getBoundingClientRect().width);
 
+    let frame: number | null = null;
     const observer = new ResizeObserver((entries) => {
       const entry = entries[0];
-      if (entry) setWidth(entry.contentRect.width);
+      if (!entry) return;
+      if (frame !== null) cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        frame = null;
+        setWidth(entry.contentRect.width);
+      });
     });
     observer.observe(el);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      if (frame !== null) cancelAnimationFrame(frame);
+    };
   }, []);
 
   const targetHeight = Math.max(220, Math.min(400, width / 4.2));

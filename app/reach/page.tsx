@@ -64,16 +64,7 @@ export default function ContactPage() {
         />
       </motion.div>
 
-      <motion.div
-        initial={reduceMotion ? false : { opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{
-          duration: beats(0.75),
-          delay: reduceMotion ? 0 : beats(0.15),
-          ease: EASE_OUT,
-        }}
-        className="relative grid grid-cols-1 items-start gap-12 md:grid-cols-[minmax(0,3fr)_minmax(15rem,2fr)] md:gap-x-[clamp(2rem,6vw,5rem)] md:gap-y-12"
-      >
+      <div className="relative grid grid-cols-1 items-start gap-12 md:grid-cols-[minmax(0,3fr)_minmax(15rem,2fr)] md:gap-x-[clamp(2rem,6vw,5rem)] md:gap-y-12">
         <section aria-labelledby="contact-intro" className="max-w-[42rem]">
           <h2 id="contact-intro" className="sr-only">
             Send a message
@@ -124,7 +115,7 @@ export default function ContactPage() {
             ))}
           </div>
         </section>
-      </motion.div>
+      </div>
     </div>
   );
 }

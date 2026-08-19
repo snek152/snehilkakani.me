@@ -314,13 +314,11 @@ for touch and reduced-motion visitors. Keep it local and input-driven; do not
 give it an idle position, autonomous drift, or audio-reactive scale.
 
 **Depth is expressed by defocus, never by a drop shadow.** `WaveField` recedes
-by going soft, not dark. The interface now says depth the same way: `Lightbox`
-pairs `--scrim` at `0.86` with an 18px `backdrop-blur`, so the contact sheet
-behind an opened photograph is still THERE, pushed back, instead of being
-erased by a near-opaque card at `0.97`. The scrim carries `data-material`, so
-`prefers-reduced-transparency` swaps the blur for an opaque `--bg` through the
-existing override rather than a second code path. If a surface needs to sit
-behind another, defocus it.
+by going soft, not dark. `Lightbox` is the deliberate exception: its `--scrim`
+at `0.86` dims the contact sheet but leaves it sharp, because blurred photographs
+read as a loading failure rather than as receding context. The scrim carries
+`data-material`, so `prefers-reduced-transparency` still swaps it for opaque
+`--bg` through the existing override rather than a second code path.
 
 What remains, and is enough:
 

@@ -114,6 +114,7 @@ export default function ContactForm() {
   const statusRef = useRef<HTMLDivElement>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
   const restoreFocusRef = useRef(false);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
     if (sent) statusRef.current?.focus();
@@ -125,6 +126,13 @@ export default function ContactForm() {
       nameInputRef.current?.focus();
     }
   }, [sent]);
+
+  useEffect(() => {
+    return () => {
+      abortControllerRef.current?.abort();
+      abortControllerRef.current = null;
+    };
+  }, []);
 
   const clearError = (key: keyof FieldErrors) =>
     setErrors((prev) => (prev[key] ? { ...prev, [key]: undefined } : prev));
@@ -159,6 +167,10 @@ export default function ContactForm() {
     setSubmissionError(null);
     setSending(true);
 
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
+    const timeoutId = setTimeout(() => controller.abort(), 15000);
+
     fetch(FORMSPREE_ENDPOINT, {
       headers: {
         "Content-Type": "application/json",
@@ -167,8 +179,12 @@ export default function ContactForm() {
       method: "POST",
       mode: "no-cors",
       body: JSON.stringify({ name, email, message }),
+      signal: controller.signal,
     })
       .then(() => {
+        clearTimeout(timeoutId);
+        if (abortControllerRef.current !== controller) return;
+        abortControllerRef.current = null;
         setSending(false);
         setName("");
         setEmail("");
@@ -176,6 +192,9 @@ export default function ContactForm() {
         setSent(true);
       })
       .catch(() => {
+        clearTimeout(timeoutId);
+        if (abortControllerRef.current !== controller) return;
+        abortControllerRef.current = null;
         setSubmissionError("Failed to send message. Please try again later.");
         setSending(false);
       });
@@ -302,7 +321,6 @@ export default function ContactForm() {
         )}
       </motion.div>
       <motion.button
-        variants={fieldMotion}
         type="submit"
         disabled={sending}
         whileHover={reduceMotion || sending ? undefined : { scale: 1.03 }}

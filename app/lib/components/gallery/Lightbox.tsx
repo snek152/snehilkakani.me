@@ -8,17 +8,11 @@ import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { EASE_OUT, SPRING_MOMENTUM, SPRING_UI, project, rubberband } from "@/app/lib/motion";
 import { beats } from "@/app/lib/tempo";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
-import { getPhotoDims } from "./photo-dims";
+import { getPhotoDims, lightboxSizesFor } from "./photo-dims";
 import type { Photo } from "./GalleryCell";
 import Exposure from "./Exposure";
 
 const AXIS_HYSTERESIS = 10;
-
-function lightboxSizesFor(image: string): string {
-  const { w, h } = getPhotoDims(image);
-  const aspect = w / h;
-  return `min(88vw, 1100px, calc(min(76vh, 780px) * ${aspect}))`;
-}
 
 export default function Lightbox({
   photos,
@@ -58,7 +52,7 @@ export default function Lightbox({
 
   const [closing, setClosing] = useState(false);
   const closeTimerRef = useRef<number | null>(null);
-  const [layers, setLayers] = useState<{ key: string; photo: Photo }[]>([]);
+  const [layers, setLayers] = useState<{ key: string; photo: Photo; loaded: boolean }[]>([]);
 
   useEffect(() => {
     if (!photo) {
@@ -67,8 +61,11 @@ export default function Lightbox({
     }
     setLayers((prev) => {
       if (prev.length && prev[prev.length - 1].photo.image === photo.image) return prev;
-      const next = [...prev, { key: `${photo.image}-${Date.now()}`, photo }];
-      return next.length > 2 ? next.slice(next.length - 2) : next;
+      const matched = prev.find((l) => l.loaded && l.photo.image === photo.image);
+      if (matched) return [matched];
+      const newLayer = { key: `${photo.image}-${Date.now()}`, photo, loaded: false };
+      const lastLoaded = [...prev].reverse().find((l) => l.loaded && l.photo.image !== photo.image);
+      return lastLoaded ? [lastLoaded, newLayer] : [newLayer];
     });
   }, [photo]);
 
@@ -88,6 +85,8 @@ export default function Lightbox({
   }, [index]);
   useEffect(() => {
     if (layers.length < 2) return;
+    const incoming = layers[layers.length - 1];
+    if (!incoming.loaded) return;
     const timer = setTimeout(() => {
       setLayers((prev) => (prev.length > 1 ? prev.slice(prev.length - 1) : prev));
     }, beats(0.35) * 1000 + 50);
@@ -118,6 +117,12 @@ export default function Lightbox({
     x.set(0);
     y.set(0);
   }, [open, x, y]);
+  const handleLayerLoad = useCallback((key: string) => {
+    setLayers((prev) =>
+      prev.map((layer) => (layer.key === key && !layer.loaded ? { ...layer, loaded: true } : layer)),
+    );
+  }, []);
+
   const requestClose = useCallback(() => {
     if (closing) return;
     setClosing(true);
@@ -289,7 +294,7 @@ export default function Lightbox({
             aria-hidden
             data-material=""
             onClick={requestClose}
-            className="absolute inset-0 cursor-pointer backdrop-blur-[18px]"
+            className="absolute inset-0 cursor-pointer"
             style={{ background: "var(--scrim)", opacity: backdropOpacity }}
           />
           <div className={`relative flex flex-col items-center${closing ? " pointer-events-none" : ""}`}>
@@ -307,8 +312,8 @@ export default function Lightbox({
                 <motion.div
                   key={layer.key}
                   initial={reduceMotion ? undefined : { opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: beats(0.35), ease: EASE_OUT }}
+                  animate={{ opacity: layer.loaded ? 1 : 0 }}
+                  transition={{ duration: reduceMotion ? 0 : beats(0.35), ease: EASE_OUT }}
                   className="absolute inset-0 flex items-center justify-center"
                   style={{ zIndex: i }}
                 >
@@ -319,6 +324,7 @@ export default function Lightbox({
                     height={getPhotoDims(layer.photo.image).h}
                     sizes={lightboxSizesFor(layer.photo.image)}
                     priority
+                    onLoad={() => handleLayerLoad(layer.key)}
                     className="block max-h-[76vh] w-auto max-w-[88vw] object-contain"
                   />
                 </motion.div>

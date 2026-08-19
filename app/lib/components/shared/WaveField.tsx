@@ -48,7 +48,7 @@ const DEPTH_ALPHA_FLOOR = 0.1;
 const CORE_WIDTH = 1.05;
 const HALO_ALPHA_SHARE = 0.26;
 
-const BLOOM_WIDTH_SCALE = 4.1;
+const BLOOM_WIDTH_SCALE = 5;
 const BLOOM_ALPHA_SHARE = 0.34;
 const BLOOM_BANDS = 4;
 
@@ -408,14 +408,20 @@ export default function WaveField() {
     };
     document.addEventListener("visibilitychange", handleVisibility);
 
+    let resizeRafId: number | null = null;
     const handleResize = () => {
-      resize();
-      draw(startTime === null ? 0 : performance.now() - startTime);
+      if (resizeRafId !== null) return;
+      resizeRafId = requestAnimationFrame(() => {
+        resizeRafId = null;
+        resize();
+        draw(startTime === null ? 0 : performance.now() - startTime);
+      });
     };
     window.addEventListener("resize", handleResize);
 
     return () => {
       stop();
+      if (resizeRafId !== null) cancelAnimationFrame(resizeRafId);
       document.removeEventListener("visibilitychange", handleVisibility);
       window.removeEventListener("resize", handleResize);
     };

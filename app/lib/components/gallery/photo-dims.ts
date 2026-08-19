@@ -7,3 +7,9 @@ export function getPhotoDims(image: string): { w: number; h: number } {
   }
   return dims;
 }
+
+export function lightboxSizesFor(image: string): string {
+  const { w, h } = getPhotoDims(image);
+  const aspect = w / h;
+  return `min(88vw, 1100px, calc(min(76vh, 780px) * ${aspect}))`;
+}
