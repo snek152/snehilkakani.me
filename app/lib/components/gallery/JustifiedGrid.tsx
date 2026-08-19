@@ -99,7 +99,7 @@ export default function JustifiedGrid({
   return (
     <section
       ref={containerRef}
-      className="relative mt-0 overflow-hidden border-t border-border pt-5 sm:pt-7"
+      className="relative mt-0 overflow-hidden"
       aria-label="Contact sheet"
     >
       <div className="flex flex-col" style={{ gap: ROW_GAP }}>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { motion } from "motion/react";
 import type featPhotos from "@/app/lib/data/photos";
@@ -26,10 +27,14 @@ export default function GalleryCell({
   cellRef: (el: HTMLButtonElement | null) => void;
 }) {
   const reduceMotion = useMotionPreference();
-
+  const [hovered, setHovered] = useState(false);
+  const [keyboardFocused, setKeyboardFocused] = useState(false);
+  const [pressed, setPressed] = useState(false);
+  const active = hovered || pressed || keyboardFocused;
   return (
     <figure style={{ width: `${width}px` }} className="group m-0 shrink-0">
       <motion.div
+        className="relative"
         initial={
           reduceMotion || index === 0
             ? false
@@ -48,7 +53,15 @@ export default function GalleryCell({
         type="button"
         onClick={onOpen}
         style={{ height: `${height}px` }}
-        className="block w-full cursor-pointer overflow-hidden border-0 bg-transparent p-0 transition-transform duration-[120ms] ease-[var(--ease-press)] active:scale-[0.99] active:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        className="peer relative block w-full cursor-pointer overflow-hidden border-0 bg-transparent p-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+        onPointerDown={() => setPressed(true)}
+        onPointerUp={() => setPressed(false)}
+        onPointerCancel={() => setPressed(false)}
+        onPointerLeave={() => setPressed(false)}
+        onFocus={(event) => setKeyboardFocused(event.currentTarget.matches(":focus-visible"))}
+        onBlur={() => setKeyboardFocused(false)}
         aria-label={`Open ${photo.alt}`}
       >
         <Image
@@ -59,9 +72,15 @@ export default function GalleryCell({
           priority={index < 4}
           loading={index < 4 ? undefined : "lazy"}
           sizes={`${Math.ceil(width)}px`}
-          className="block h-full w-full object-cover transition-transform duration-[120ms] ease-[var(--ease-press)] group-hover:scale-[1.015] group-focus-within:scale-[1.015]"
+          className="block h-full w-full object-cover"
         />
         </button>
+        <motion.span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left bg-accent"
+          animate={{ opacity: active ? 1 : 0, scaleX: active ? 1 : 0.35 }}
+          transition={{ duration: reduceMotion ? 0 : beats(0.25), ease: EASE_OUT }}
+        />
       </motion.div>
 
       <figcaption className="mt-2">

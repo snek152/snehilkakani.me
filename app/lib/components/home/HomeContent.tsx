@@ -12,7 +12,7 @@ export default function HomeContent() {
   const reduceMotion = useMotionPreference();
 
   return (
-    <div className="px-6 pb-20 sm:px-8 lg:px-12 lg:pb-12">
+    <div className="px-6 pb-12 sm:px-8 lg:px-12">
       <GridIndex />
       <motion.section
         aria-label="Experience"

@@ -28,7 +28,7 @@ export default function FeaturedProject({ project }: { project: Project }) {
         alt={project.title}
         fill
         priority
-        sizes="(min-width: 1024px) 55vw, 100vw"
+        sizes={secondary ? "50vw" : "(min-width: 1024px) 55vw, 100vw"}
         className="object-cover"
       />
     </div>
@@ -61,17 +61,17 @@ export default function FeaturedProject({ project }: { project: Project }) {
     >
       {secondary ? (
         <div className="relative overflow-hidden">
-          <div className="grid grid-cols-1 border-b border-border sm:grid-cols-2 sm:aspect-[3/1] sm:border-b-0">
-            <div className="relative aspect-[16/10] overflow-hidden sm:aspect-auto">
+          <div className="grid aspect-[2/1] grid-cols-2 border-b border-border">
+            <div className="relative overflow-hidden">
               {primaryImage}
             </div>
-            <div className="relative aspect-[16/10] overflow-hidden border-t border-border sm:aspect-auto sm:border-l sm:border-t-0">
+            <div className="relative overflow-hidden border-l border-border">
               <div className="absolute inset-0">
                 <Image
                   src={secondary}
                   alt=""
                   fill
-                  sizes="(min-width: 640px) 50vw, 100vw"
+                  sizes="50vw"
                   className="object-cover"
                 />
               </div>
@@ -91,7 +91,7 @@ export default function FeaturedProject({ project }: { project: Project }) {
       )}
 
       <div
-        className={`relative flex flex-col justify-end px-6 py-8 sm:px-8 sm:py-10 ${
+        className={`relative flex flex-col justify-end px-0 py-8 sm:py-10 lg:px-8 ${
           secondary ? "" : "lg:py-12"
         }`}
       >

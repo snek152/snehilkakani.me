@@ -188,27 +188,27 @@ export default function Hero({
         </div>
 
         <motion.div
-          className="justify-self-start lg:justify-self-end bg-card z-10 border border-border lg:col-start-2 lg:row-start-1 lg:row-span-2"
+          className="w-full justify-self-start border border-border bg-card z-10 lg:w-auto lg:justify-self-end lg:col-start-2 lg:row-start-1 lg:row-span-2"
           initial={reduceMotion ? false : "hidden"}
           animate={reduceMotion ? undefined : state}
           variants={photoVariants}
         >
           <ViewfinderFrame>
             <div className="p-3">
-              <div className="relative aspect-4/5 h-55 overflow-hidden sm:h-65 lg:h-70 w-full">
+              <div className="relative aspect-[16/10] w-full overflow-hidden lg:aspect-4/5 lg:h-70">
                 <Image
                   src={portrait}
                   alt="Snehil Kakani"
                   fill
                   priority
                   placeholder="blur"
-                  sizes="(min-width: 1024px) 280px, 260px"
+                  sizes="(min-width: 1024px) 280px, (min-width: 640px) calc(100vw - 4rem), calc(100vw - 3rem)"
                   className="object-cover object-top"
                 />
               </div>
             </div>
             <div className="border-t border-border px-4 pb-4 pt-3">
-              <dl className="mt-4 grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2">
+              <dl className="grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2">
                 {STATUS.map(({ label, value }) => (
                   <div key={label}>
                     <dt className="mb-1 text-[length:var(--text-meta)] font-normal tracking-[var(--track-text-sm)] text-dim">

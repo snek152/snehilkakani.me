@@ -42,7 +42,7 @@ export default function ExperienceList({
           whileInView="shown"
           viewport={{ once: true, amount: 0, margin: "100000px 0px -6% 0px" }}
           variants={row}
-          className="group relative grid gap-y-5 px-6 py-8 sm:px-8 lg:grid-cols-16 lg:gap-x-0 lg:px-0 lg:py-10"
+          className="group relative grid gap-y-5 px-6 py-8 last:pb-0 sm:px-8 lg:grid-cols-16 lg:gap-x-0 lg:px-0 lg:py-10 lg:last:pb-0"
         >
           <DrawnRule className="absolute inset-x-0 bottom-0 [li:last-child_&]:hidden" />
           <motion.div

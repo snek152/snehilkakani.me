@@ -16,6 +16,7 @@ function SidebarItem({
   expanded,
   active,
   onNavigate,
+  onIndicatorSettled,
   transition,
 }: {
   item: NavItem;
@@ -23,6 +24,7 @@ function SidebarItem({
   active: boolean;
   onNavigate: (event: React.MouseEvent<HTMLAnchorElement>) => void;
   transition: Transition;
+  onIndicatorSettled: () => void;
 }) {
   const { href, label, Icon } = item;
   return (
@@ -41,10 +43,11 @@ function SidebarItem({
       >
         {active && (
           <motion.span
+            layoutId="sidebar-active-indicator"
             aria-hidden
             className="absolute left-0 top-[18%] bottom-[18%] w-1 origin-center bg-accent"
-            animate={{ opacity: 1, scaleY: 1 }}
             transition={transition}
+            onLayoutAnimationComplete={onIndicatorSettled}
           />
         )}
         <span className="flex h-full w-[52px] flex-shrink-0 items-center justify-center">
@@ -74,6 +77,8 @@ export default function Sidebar() {
   const reduceMotion = useMotionPreference();
   const inputModalityRef = useRef<"keyboard" | "pointer">("keyboard");
   const asideRef = useRef<HTMLElement | null>(null);
+  const pointerSuppressedUntilLeaveRef = useRef(false);
+  const collapseAfterIndicatorRef = useRef(false);
 
   const transition: Transition = reduceMotion ? { duration: 0 } : SPRING_UI;
 
@@ -82,7 +87,7 @@ export default function Sidebar() {
     : "";
 
   useEffect(() => {
-    if (asideRef.current?.contains(document.activeElement)) return;
+    if (collapseAfterIndicatorRef.current || asideRef.current?.contains(document.activeElement)) return;
     setExpanded(false);
   }, [pathname]);
 
@@ -106,11 +111,12 @@ export default function Sidebar() {
         onPointerDown={() => {
           inputModalityRef.current = "pointer";
         }}
-        onPointerMove={() => {
+        onPointerEnter={() => {
           inputModalityRef.current = "pointer";
-          setExpanded(true);
+          if (!pointerSuppressedUntilLeaveRef.current) setExpanded(true);
         }}
         onPointerLeave={() => {
+          pointerSuppressedUntilLeaveRef.current = false;
           setExpanded(false);
         }}
         onFocus={() => {
@@ -136,10 +142,24 @@ export default function Sidebar() {
                   : pathname.startsWith(item.href)
               }
 
+              onIndicatorSettled={() => {
+                if (!collapseAfterIndicatorRef.current) return;
+                collapseAfterIndicatorRef.current = false;
+                setExpanded(false);
+              }}
               onNavigate={(event) => {
                 if (event.detail === 0) return;
                 inputModalityRef.current = "pointer";
-                setExpanded(false);
+                pointerSuppressedUntilLeaveRef.current = true;
+                if (item.end ? pathname === item.href : pathname.startsWith(item.href)) {
+                  setExpanded(false);
+                  return;
+                }
+                collapseAfterIndicatorRef.current = true;
+                if (reduceMotion) {
+                  collapseAfterIndicatorRef.current = false;
+                  setExpanded(false);
+                }
               }}
               transition={transition}
             />
@@ -179,10 +199,18 @@ export default function Sidebar() {
               >
                 <span
                   className={`relative font-sans text-[length:var(--text-meta)] transition-colors duration-150 ${
-                    active ? "font-medium text-fg after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-full after:bg-accent after:content-['']" : "text-dim"
+                    active ? "font-medium text-fg" : "text-dim"
                   }`}
                 >
                   {item.label}
+                  {active && (
+                    <motion.span
+                      layoutId="mobile-active-indicator"
+                      aria-hidden
+                      className="absolute -bottom-1 left-0 h-0.5 w-full bg-accent"
+                      transition={transition}
+                    />
+                  )}
                 </span>
               </Link>
             );
