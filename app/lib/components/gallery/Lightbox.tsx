@@ -371,7 +371,7 @@ export default function Lightbox({
               type="button"
               onClick={requestClose}
               aria-label="Close lightbox"
-              className={`absolute -top-9 right-0 border-0 bg-transparent p-0 text-dim hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent ${pressClass}`}
+              className={`absolute -top-9 right-0 border-0 bg-transparent p-0 text-dim hover:text-fg before:absolute before:-inset-3.5 before:content-[''] focus:outline-none focus-visible:ring-2 focus-visible:ring-accent ${pressClass}`}
             >
               <X size={16} strokeWidth={1.75} />
             </button>

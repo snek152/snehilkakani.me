@@ -5,7 +5,7 @@ import { EASE_OUT } from "@/app/lib/motion";
 import { beats } from "@/app/lib/tempo";
 import { useMotionPreference } from "./MotionPreference";
 
-export type RouteScene = "home" | "builds" | "music" | "lens" | "reach";
+export type RouteScene = "builds" | "music" | "lens" | "reach";
 
 export type RouteSignalProps = {
   scene: RouteScene;
@@ -15,7 +15,6 @@ export type RouteSignalProps = {
 };
 
 const SCENES: Record<RouteScene, { path: string; mark: [number, number]; seam?: string }> = {
-  home: { path: "M3 25C18 25 22 8 39 8S62 24 78 24", mark: [39, 8], seam: "M3 31H78" },
   builds: { path: "M3 29L23 29L42 10L78 10", mark: [42, 10], seam: "M3 35L31 35L48 18L78 18" },
   music: { path: "M3 25C12 25 12 12 21 12S30 32 39 32S48 16 57 16S66 25 78 25", mark: [39, 32], seam: "M3 34H78" },
   lens: { path: "M3 28H22L40 8L58 28H78", mark: [40, 8], seam: "M3 34H30L40 22L50 34H78" },

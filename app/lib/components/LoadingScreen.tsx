@@ -63,7 +63,7 @@ export default function LoadingScreen({ onDone }: { onDone: () => void }) {
       tabIndex={0}
       aria-label="Skip intro animation"
       exit={{ opacity: 0, transition: { duration: EXIT_MS / 1000 } }}
-      className={`fixed inset-0 z-[9999] overflow-hidden bg-bg outline-none ${
+      className={`fixed inset-0 z-[9999] cursor-pointer overflow-hidden bg-bg outline-none ${
         complete ? "pointer-events-none" : ""
       }`}
       onPointerDown={skip}
