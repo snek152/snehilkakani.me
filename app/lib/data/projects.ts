@@ -70,7 +70,7 @@ export const projects: Project[] = [
     title: "Orbis: AI Agent Observability Dashboard",
     subtitle: "October 2025 - December 2025",
     description:
-      "Built a full-stack observability platform and Python SDK for devs to instrument and track AI agent executions, costs, and performance in real time. Engineered interactive DAG visualizations mapping agent execution graphs, integrated prompt versioning with rollback, and built cost analytics across runs. Enforced per-user tenant isolation on agents, traces, and prompts at both the API and database layer so one dev's data can never leak into another's.",
+      "Built a full-stack observability platform and Python SDK for devs to instrument and track AI agent executions, costs, and performance in real time. Engineered interactive DAG visualizations mapping agent execution graphs, integrated prompt versioning with rollback, and built cost analytics across runs.",
     image: orbis,
     skills: [
       "next.js & tailwindcss",
@@ -115,7 +115,7 @@ export const projects: Project[] = [
     github: "https://github.com/lynbrookstudio74/studio74website",
     subtitle: "April 2024 - October 2024",
     description:
-      "Architected a custom design and responsive website for Lynbrook Drama to showcase productions, events, and crew info. Implemented a custom GitHub-based CMS for seamless updates, enabling non-technical officers to maintain it themselves for 1.5+ years.",
+      "Architected a custom design and responsive website for Lynbrook Drama to showcase productions, events, and crew info. Implemented a custom GitHub-based CMS for seamless updates, enabling non-technical officers to maintain it themselves for 2+ years.",
     image: drama,
     skills: [
       "next.js & tailwindcss",

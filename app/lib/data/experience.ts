@@ -13,10 +13,10 @@ export const experiences: Experience[] = [
     location: "San Francisco, CA",
     period: "Jun 2026 - Aug 2026",
     description: [
-      "Shipping production infrastructure for Lindy's high-volume AI agent platform",
+      "Built production infrastructure for Lindy's high-volume AI agent platform",
       "Lead engineer of Routines, enabling agents to act on schedules and real-world events",
-      "Built natural-language CRUD, dry-run previews, proactive triggers, and zero-LLM script routines end to end, from data model to UI, eventually scaling it into a managed catalog with fleet-wide rollout",
-      "Integrated the system into workspace-wide agents driven through Slack, enforcing capability boundaries and attribution on shared multi-user surfaces",
+      "Designed features from data model to UI, then scaled it into a managed catalog with fleet-wide rollout and extended it into workspace-wide Slack agents",
+      "Shipped 350+ PRs over 10 weeks, owning Routines end-to-end and integrating it into Lindy Teammate, the company's biggest launch to date.",
     ],
     skills: [
       "typescript",
@@ -30,7 +30,7 @@ export const experiences: Experience[] = [
     title: "Software Engineer",
     company: "Hack4Impact Cal Poly",
     location: "San Luis Obispo, CA",
-    period: "Sep 2025 - Present",
+    period: "Sep 2025 - Jun 2026",
     description: [
       "Completed a two-month engineering bootcamp before contributing to the Paso Robles Food Co-op member portal",
       "Built server actions for group messaging and admin blasts with role-based auth and Zod validation",
@@ -48,7 +48,7 @@ export const experiences: Experience[] = [
     title: "Software Engineer",
     company: "CodeBox",
     location: "San Luis Obispo, CA",
-    period: "Sep 2025 - Present",
+    period: "Sep 2025 - Jun 2026",
     description: [
       "Built navigation features for Mustang Maps, a React Native campus navigation app for Cal Poly students",
       "Implemented A* pathfinding and integrated it into the routing UI",
@@ -83,7 +83,7 @@ export const experiences: Experience[] = [
     title: "Freelance Website Developer",
     company: "Various Organizations",
     location: "Remote",
-    period: "Jun 2021 - Present",
+    period: "Jun 2021 - Apr 2025",
     description: [
       "Built and deployed responsive websites for clients including EuclidLearn and Care for Our Common Home using Next.js and Tailwind CSS",
       "Managed full project lifecycle for paid and pro bono engagements, including post-launch support and feature iterations",
