@@ -136,9 +136,9 @@ Any element at `--text-meta` or `--text-micro` coloured `text-dim`/`text-dim2`
 takes it. Uppercase micro-labels keep their own positive `0.08em` instead, and
 `text-fg` text takes neither.
 
-The `SK` wordmark in `Sidebar` is the one documented exception to all of the
-above: it keeps a fixed `text-[0.9rem]` and `font-bold`, because a brand mark is
-not a scale role.
+`Sidebar`'s Home link uses `app/icon.png`: a compact, layered `152` mark
+rendered from the same master asset for the desktop rail, mobile header and
+favicon. It is a brand composition, not a text scale role.
 
 Tracking belongs to a **typeface**, not to a layout. The current values are
 retuned for Clash Display, which is narrower and drawn tighter than the Epilogue
@@ -305,8 +305,9 @@ typography, spacing, or the content itself, never from a second ambient layer.
 **One ambient system only.** `WaveField` is the site's volumetric, flowing
 background and its sole continuous animation. It carries the depth — curves
 recede by going soft, not dark — without becoming a second set of interface
-rules. Make the field perceptible by widening its soft bloom, never by
-brightening its sharp core or adding a new moving layer above it.
+rules. Make the field perceptible by raising its filament opacity; the bloom
+must remain broad and low-alpha so it blends into the page background without an
+expensive canvas filter. Never add a new moving layer above it.
 
 `CursorGlow` is not ambience. It is precise-pointer feedback: it mounts only
 after `CursorField` reports an active cursor, tracks that cursor, and disappears
@@ -607,12 +608,9 @@ every number here was read from the source, not estimated.
   used to ride along with the spin — the assembly travelled to an offset
   with nothing at it, ending a centred composition by sliding into open
   page; it now turns and closes in place.
-- `Sidebar`'s mobile nav gap ramps via an inline
-  `clamp(0.75rem, calc(0.75rem + (100vw - 320px) * 0.12), 1.5rem)` — 12px at
-  320px up to 24px at 420px — with the middle term wrapped in `calc()` so no
-  engine treats the bare arithmetic as unparseable and drops `gap` to
-  `normal`. At a fixed 24px gap the five nav labels plus the `SK` wordmark
-  overflowed the document by 8px at a 320px viewport.
+- `Sidebar`'s mobile nav centres its five labels in the header's remaining
+  space with a fixed 12px gap. Keeping the group compact preserves its rhythm
+  without allowing it to collide with the Home mark at narrow widths.
 - `Footer`'s icon+label row measures 341px and cannot fit inside the
   footer's 24px side padding until ~420px (45px past the document edge at
   320px). Below 420px the icons drop and the labels stay: the label names

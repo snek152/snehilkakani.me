@@ -40,8 +40,8 @@ const BREATHE_DEPTH = 0.4;
 const WANDER_SPEED = 0.17;
 const WANDER_RATIO = 0.07;
 
-const BASE_ALPHA_MIN = 0.08;
-const BASE_ALPHA_MAX = 0.145;
+const BASE_ALPHA_MIN = 0.1;
+const BASE_ALPHA_MAX = 0.18;
 
 const DEPTH_ALPHA_FLOOR = 0.1;
 
@@ -49,7 +49,7 @@ const CORE_WIDTH = 1.05;
 const HALO_ALPHA_SHARE = 0.26;
 
 const BLOOM_WIDTH_SCALE = 5;
-const BLOOM_ALPHA_SHARE = 0.34;
+const BLOOM_ALPHA_SHARE = 0.22;
 const BLOOM_BANDS = 4;
 
 const DEFOCUS_BY_DEPTH = 1.7;

@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import icon from "@/app/icon.png";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, type Transition } from "motion/react";
@@ -61,7 +63,7 @@ function SidebarItem({
           animate={{ opacity: expanded ? 1 : 0 }}
           transition={transition}
           className={`flex h-full items-center whitespace-nowrap font-sans text-[length:var(--text-meta)] ${
-            active ? "font-medium text-fg" : "font-normal text-dim"
+            active ? "font-medium text-fg" : "font-normal text-dim tracking-[var(--track-text-sm)]"
           }`}
         >
           {label}
@@ -70,6 +72,7 @@ function SidebarItem({
     </Link>
   );
 }
+
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -107,7 +110,7 @@ export default function Sidebar() {
       <motion.aside
         ref={asideRef}
         data-material={expanded ? "" : undefined}
-        className={`fixed inset-y-0 left-0 z-50 hidden flex-col justify-center overflow-hidden border-r border-border bg-bg lg:flex ${material}`}
+        className={`fixed inset-y-0 left-0 z-50 hidden grid-rows-[52px_1fr] overflow-hidden border-r border-border bg-bg lg:grid ${material}`}
         onPointerDown={() => {
           inputModalityRef.current = "pointer";
         }}
@@ -130,7 +133,14 @@ export default function Sidebar() {
         animate={{ width: expanded ? SIDE_FULL : SIDE_THIN }}
         transition={transition}
       >
-        <nav className="flex flex-col">
+        <Link
+          href="/"
+          aria-label="Home"
+          className="flex h-[52px] w-[52px] items-center justify-center no-underline transition-opacity duration-[120ms] ease-[var(--ease-press)] hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent active:opacity-60"
+        >
+          <Image src={icon} alt="" aria-hidden width={32} height={32} className="size-8 object-contain" />
+        </Link>
+        <nav className="self-center">
           {navItems.map((item) => (
             <SidebarItem
               key={item.href}
@@ -173,19 +183,13 @@ export default function Sidebar() {
       >
         <Link
           href="/"
-          className="relative inline-flex min-h-11 cursor-pointer items-center pr-2 no-underline transition-opacity duration-[120ms] ease-[var(--ease-press)] active:opacity-60"
+          aria-label="Home"
+          className="relative inline-flex min-h-11 shrink-0 cursor-pointer items-center pr-2 no-underline transition-opacity duration-[120ms] ease-[var(--ease-press)] active:opacity-60"
         >
-          <span className="font-display text-[0.9rem] font-bold tracking-[var(--track-display-sm)] text-fg">
-            SK
-          </span>
+          <Image src={icon} alt="" aria-hidden width={32} height={32} className="size-8 object-contain" />
         </Link>
 
-        <nav
-          className="flex min-w-0 overflow-x-auto"
-          style={{
-            gap: "clamp(0.75rem, calc(0.75rem + (100vw - 320px) * 0.12), 1.5rem)",
-          }}
-        >
+        <nav className="flex min-w-0 flex-1 justify-center gap-3 overflow-x-auto">
           {navItems.map((item) => {
             const active = item.end
               ? pathname === item.href
@@ -199,7 +203,7 @@ export default function Sidebar() {
               >
                 <span
                   className={`relative font-sans text-[length:var(--text-meta)] transition-colors duration-150 ${
-                    active ? "font-medium text-fg" : "text-dim"
+                    active ? "font-medium text-fg" : "text-dim tracking-[var(--track-text-sm)]"
                   }`}
                 >
                   {item.label}

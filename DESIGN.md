@@ -151,7 +151,8 @@ Leading rises with measure — `--leading-lead` 1.75, `--leading-body` 1.7 — b
 
 **Named Rule: Clash Display's variable axis tops out at 700.** There is no 800, so the display tiers top out at `font-bold`; a `font-extrabold` class on a display element is browser-synthesized, not rendered. Do not reintroduce one.
 
-**The `SK` wordmark in `Sidebar` is the one documented exception to the entire scale.** It keeps a fixed `text-[0.9rem]` and `font-bold` — a brand mark is not a scale role.
+**The compact, layered `152` Home mark is a shared `app/icon.png` asset.** It
+appears in the desktop rail, mobile header and favicon at their native scales.
 
 ## Layout
 
