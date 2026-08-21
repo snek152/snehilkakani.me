@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
-import icon from "@/app/icon.png";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion, type Transition } from "motion/react";
 import { SPRING_UI } from "@/app/lib/motion";
@@ -138,7 +137,7 @@ export default function Sidebar() {
           aria-label="Home"
           className="flex h-[52px] w-[52px] items-center justify-center no-underline transition-opacity duration-[120ms] ease-[var(--ease-press)] hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent active:opacity-60"
         >
-          <Image src={icon} alt="" aria-hidden width={32} height={32} className="size-8 object-contain" />
+          <Image src="/brand-mark.svg" alt="" aria-hidden width={32} height={32} unoptimized priority className="size-8 object-contain" />
         </Link>
         <nav className="self-center">
           {navItems.map((item) => (
@@ -186,10 +185,10 @@ export default function Sidebar() {
           aria-label="Home"
           className="relative inline-flex min-h-11 shrink-0 cursor-pointer items-center pr-2 no-underline transition-opacity duration-[120ms] ease-[var(--ease-press)] active:opacity-60"
         >
-          <Image src={icon} alt="" aria-hidden width={32} height={32} className="size-8 object-contain" />
+          <Image src="/brand-mark.svg" alt="" aria-hidden width={32} height={32} unoptimized priority className="size-8 object-contain" />
         </Link>
 
-        <nav className="flex min-w-0 flex-1 justify-center gap-3 overflow-x-auto">
+        <nav className="flex min-w-0 flex-1 justify-end gap-3 overflow-x-auto">
           {navItems.map((item) => {
             const active = item.end
               ? pathname === item.href

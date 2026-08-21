@@ -45,9 +45,13 @@ const ORBIT_MARKS = [
 export default function OrbitStage({
   complete,
   scale = 1,
+  frozen = false,
+  showLabels = false,
 }: {
   complete: boolean;
   scale?: number;
+  frozen?: boolean;
+  showLabels?: boolean;
 }) {
   const markSize = 44 * scale;
   const iconSize = 18 * scale;
@@ -57,27 +61,41 @@ export default function OrbitStage({
   return (
     <motion.div
       className="absolute inset-0 flex items-center justify-center"
-      animate={{ opacity: complete ? [1, 1, 0] : 1 }}
-      transition={{
-        duration: complete ? RELEASE_MS / 1000 : 0.32,
-        times: complete ? [0, 0.3, 1] : undefined,
-      }}
+      initial={frozen ? false : undefined}
+      animate={frozen ? { opacity: 1 } : { opacity: complete ? [1, 1, 0] : 1 }}
+      transition={
+        frozen
+          ? { duration: 0 }
+          : {
+              duration: complete ? RELEASE_MS / 1000 : 0.32,
+              times: complete ? [0, 0.3, 1] : undefined,
+            }
+      }
     >
 
       <motion.div
-        animate={{ rotate: [0, 2.2, 0, -2.2, 0] }}
-        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        initial={frozen ? false : undefined}
+        animate={frozen ? { rotate: 0 } : { rotate: [0, 2.2, 0, -2.2, 0] }}
+        transition={frozen ? { duration: 0 } : { duration: 5, repeat: Infinity, ease: "easeInOut" }}
       >
         <motion.div
           className="relative"
-          initial={{ scale: 0.7, rotate: -30 }}
+          initial={frozen ? false : { scale: 0.7, rotate: -30 }}
           animate={
-            complete ? { scale: 0.06, rotate: -250 } : { scale: 1, rotate: 0 }
+            frozen
+              ? { scale: 1, rotate: 0 }
+              : complete
+                ? { scale: 0.06, rotate: -250 }
+                : { scale: 1, rotate: 0 }
           }
-          transition={{
-            duration: complete ? RELEASE_MS / 1000 : 0.48,
-            ease: EASE_OUT,
-          }}
+          transition={
+            frozen
+              ? { duration: 0 }
+              : {
+                  duration: complete ? RELEASE_MS / 1000 : 0.48,
+                  ease: EASE_OUT,
+                }
+          }
         >
           <div
             className="absolute left-1/2 top-1/2 border border-accent"
@@ -97,16 +115,24 @@ export default function OrbitStage({
                 key={`line-${angle}`}
                 className="absolute left-1/2 top-1/2 h-px origin-left bg-white/[0.22]"
                 style={{ width: lineLength, rotate: `${angle}deg` }}
-                initial={{ scaleX: 0, opacity: 0 }}
-                animate={{
-                  scaleX: complete ? 2.4 : 1,
-                  opacity: complete ? [1, 0.5, 0] : 1,
-                }}
-                transition={{
-                  duration: durationMs / 1000,
-                  delay: delayMs / 1000,
-                  ease: EASE_OUT,
-                }}
+                initial={frozen ? false : { scaleX: 0, opacity: 0 }}
+                animate={
+                  frozen
+                    ? { scaleX: 1, opacity: 1 }
+                    : {
+                        scaleX: complete ? 2.4 : 1,
+                        opacity: complete ? [1, 0.5, 0] : 1,
+                      }
+                }
+                transition={
+                  frozen
+                    ? { duration: 0 }
+                    : {
+                        duration: durationMs / 1000,
+                        delay: delayMs / 1000,
+                        ease: EASE_OUT,
+                      }
+                }
               />
             );
           })}
@@ -123,21 +149,34 @@ export default function OrbitStage({
                   height: markSize,
                   translate: "-50% -50%",
                 }}
-                initial={{ opacity: 0, x: 0, y: 0, scale: 0.7 }}
-                animate={{
-                  opacity: complete ? [1, 1, 0] : 1,
-                  x: complete ? release.x : x,
-                  y: complete ? release.y : y,
-                  scale: complete ? [1, 0.6, 0] : 1,
-                }}
-                transition={{
-                  duration: durationMs / 1000,
-                  delay: delayMs / 1000,
-                  times: complete ? [0, 0.55, 1] : undefined,
-                  ease: EASE_OUT,
-                }}
+                initial={frozen ? false : { opacity: 0, x: 0, y: 0, scale: 0.7 }}
+                animate={
+                  frozen
+                    ? { opacity: 1, x: x * scale, y: y * scale, scale: 1 }
+                    : {
+                        opacity: complete ? [1, 1, 0] : 1,
+                        x: complete ? release.x : x,
+                        y: complete ? release.y : y,
+                        scale: complete ? [1, 0.6, 0] : 1,
+                      }
+                }
+                transition={
+                  frozen
+                    ? { duration: 0 }
+                    : {
+                        duration: durationMs / 1000,
+                        delay: delayMs / 1000,
+                        times: complete ? [0, 0.55, 1] : undefined,
+                        ease: EASE_OUT,
+                      }
+                }
               >
                 <Icon size={iconSize} strokeWidth={1.65} aria-label={label} />
+                {showLabels && (
+                  <span className="absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap text-[length:var(--text-meta)] tracking-[var(--track-text-sm)] text-dim">
+                    {label}
+                  </span>
+                )}
               </motion.div>
             );
           })}

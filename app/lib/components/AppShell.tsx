@@ -66,6 +66,10 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     setIntroReady(true);
   }, []);
 
+  if (pathname === "/meta-image") {
+    return children;
+  }
+
   return (
     <MotionPreferenceProvider>
       <CursorFieldProvider>

@@ -136,9 +136,21 @@ Any element at `--text-meta` or `--text-micro` coloured `text-dim`/`text-dim2`
 takes it. Uppercase micro-labels keep their own positive `0.08em` instead, and
 `text-fg` text takes neither.
 
-`Sidebar`'s Home link uses `app/icon.png`: a compact, layered `152` mark
-rendered from the same master asset for the desktop rail, mobile header and
-favicon. It is a brand composition, not a text scale role.
+`Sidebar`'s Home links render `public/brand-mark.svg` directly at 32×32
+through `next/image` with the optimizer bypassed (`unoptimized`), so the
+browser gets the all-white 152 ligature source unmodified. The source keeps
+the actual Clash Display Bold numeral outlines intact, then rotates and
+overlaps them: the `1` enters the `5` at full stroke weight, and the `2` is
+painted last so its shoulder absorbs the lower junction into one clean
+silhouette rather than three colliding glyphs. The assembly is scaled to 66%
+of its construction square for the breathing room the old thirds mark had.
+`app/icon.png`, `app/apple-icon.png`, and the public 192/512 PNGs are the
+raster browser/PWA icon family generated from that same SVG, each mounting
+the master on an opaque `--bg` square so the white forms survive light
+browser chrome. `app/favicon.ico` packages a direct 32px render of the
+master plus a palette-snapped, pixel-hinted 16px entry derived from the same
+source; both retain the `1` cap, `5` counter, and `2` baseline. The mark is
+a brand composition rather than a text scale role.
 
 Tracking belongs to a **typeface**, not to a layout. The current values are
 retuned for Clash Display, which is narrower and drawn tighter than the Epilogue
@@ -608,7 +620,7 @@ every number here was read from the source, not estimated.
   used to ride along with the spin — the assembly travelled to an offset
   with nothing at it, ending a centred composition by sliding into open
   page; it now turns and closes in place.
-- `Sidebar`'s mobile nav centres its five labels in the header's remaining
+- `Sidebar`'s mobile nav right-aligns its five labels in the header's remaining
   space with a fixed 12px gap. Keeping the group compact preserves its rhythm
   without allowing it to collide with the Home mark at narrow widths.
 - `Footer`'s icon+label row measures 341px and cannot fit inside the
