@@ -1,19 +1,19 @@
 import type { Metadata } from "next";
-import MetaImageCanvas from "@/app/lib/components/meta/MetaImageCanvas";
+import LinkedInBannerCanvas from "@/app/lib/components/meta/LinkedInBannerCanvas";
 import { MotionPreferenceProvider } from "@/app/lib/components/shared/MotionPreference";
 
 export const metadata: Metadata = {
-  title: "Meta image preview",
+  title: "LinkedIn banner preview",
   robots: {
     index: false,
     follow: false,
   },
 };
 
-export default function MetaImagePage() {
+export default function LinkedInBannerPage() {
   return (
     <MotionPreferenceProvider>
-      <MetaImageCanvas />
+      <LinkedInBannerCanvas />
     </MotionPreferenceProvider>
   );
 }

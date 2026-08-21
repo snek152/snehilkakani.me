@@ -52,6 +52,13 @@ const BLOOM_WIDTH_SCALE = 5;
 const BLOOM_ALPHA_SHARE = 0.22;
 const BLOOM_BANDS = 4;
 
+const POSTER_CORE_ALPHA_SCALE = 2.6;
+const POSTER_SOFT_BANDS = 1;
+const POSTER_SOFT_PASSES: readonly [readonly [number, number], readonly [number, number]] = [
+  [9, 0.1],
+  [16, 0.045],
+];
+
 const DEFOCUS_BY_DEPTH = 1.7;
 
 const MAX_DPR = 1.5;
@@ -200,7 +207,19 @@ function buildCurves(): CurveConfig[] {
   return curves;
 }
 
-export default function WaveField() {
+const DEFAULT_CLASS = "pointer-events-none fixed inset-0 z-0";
+
+interface WaveFieldProps {
+  className?: string;
+  frozenAtMs?: number;
+  variant?: "ambient" | "poster";
+}
+
+export default function WaveField({
+  className = DEFAULT_CLASS,
+  frozenAtMs,
+  variant = "ambient",
+}: WaveFieldProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const reduceMotion = useMotionPreference();
 
@@ -233,7 +252,9 @@ export default function WaveField() {
       ctx.lineJoin = "round";
     };
 
-    let lastScrollY = typeof window === "undefined" ? 0 : window.scrollY;
+    const frozenTime = frozenAtMs;
+    const frozen = typeof frozenTime === "number";
+    let lastScrollY = frozen || typeof window === "undefined" ? 0 : window.scrollY;
     let energy = 0;
     let scrollPhase = 0;
     resize();
@@ -251,9 +272,10 @@ export default function WaveField() {
       const perspNear = FOCAL / (FOCAL - Z_NEAR_LIMIT);
       const perspFar = FOCAL / (FOCAL + Z_FAR_LIMIT);
       const perspSpan = perspNear - perspFar || 1;
-      const scrollTarget = Math.max(0, window.scrollY * SCROLL_TIME_PER_PX);
-      const delta = window.scrollY - lastScrollY;
-      lastScrollY = window.scrollY;
+      const scrollY = frozen ? 0 : window.scrollY;
+      const scrollTarget = Math.max(0, scrollY * SCROLL_TIME_PER_PX);
+      const delta = scrollY - lastScrollY;
+      lastScrollY = scrollY;
       energy +=
         (Math.min(ENERGY_MAX, Math.abs(delta) * ENERGY_GAIN) - energy) * ENERGY_DAMPING;
       scrollPhase += (scrollTarget - scrollPhase) * SCROLL_PHASE_DAMPING;
@@ -319,11 +341,14 @@ export default function WaveField() {
         const baseAlpha =
           curve.alpha * layer.alphaScale * (curve.isAccent ? ACCENT_ALPHA_SCALE : 1);
 
+        const isPoster = variant === "poster";
+        const passCount = isPoster ? 5 : 3;
         const visibleSample = samples;
-        for (let pass = 0; pass < 3; pass++) {
+        for (let pass = 0; pass < passCount; pass++) {
           const isBloom = pass === 0;
           const isHalo = pass === 1;
-          const bands = isBloom ? BLOOM_BANDS : BANDS;
+          const isSoftBloom = pass === 3 || pass === 4;
+          const bands = isBloom ? BLOOM_BANDS : isSoftBloom ? POSTER_SOFT_BANDS : BANDS;
           const step = samples / bands;
           for (let b = 0; b < bands; b++) {
             const start = Math.round(b * step);
@@ -355,15 +380,28 @@ export default function WaveField() {
               ctx.strokeStyle = `rgba(${rgb}, ${
                 (bandAlpha * HALO_ALPHA_SHARE) / bandDefocus
               })`;
+            } else if (pass === 3 || pass === 4) {
+              const [widthScale, alphaShare] = POSTER_SOFT_PASSES[pass - 3];
+              ctx.lineWidth = bandWidth * layer.haloScale * widthScale * bandDefocus;
+              ctx.strokeStyle = `rgba(${rgb}, ${
+                (bandAlpha * POSTER_CORE_ALPHA_SCALE * alphaShare) / bandDefocus
+              })`;
             } else {
               ctx.lineWidth = bandWidth;
-              ctx.strokeStyle = `rgba(${rgb}, ${bandAlpha})`;
+              ctx.strokeStyle = `rgba(${rgb}, ${
+                isPoster ? bandAlpha * POSTER_CORE_ALPHA_SCALE : bandAlpha
+              })`;
             }
             ctx.stroke();
           }
         }
       }
     };
+
+    if (typeof frozenTime === "number") {
+      draw(frozenTime);
+      return;
+    }
 
     let rafId: number | null = null;
     let startTime: number | null = null;
@@ -425,13 +463,7 @@ export default function WaveField() {
       document.removeEventListener("visibilitychange", handleVisibility);
       window.removeEventListener("resize", handleResize);
     };
-  }, [reduceMotion]);
+  }, [reduceMotion, frozenAtMs, variant]);
 
-  return (
-    <canvas
-      ref={canvasRef}
-      aria-hidden
-      className="pointer-events-none fixed inset-0 z-0"
-    />
-  );
+  return <canvas ref={canvasRef} aria-hidden className={className} />;
 }

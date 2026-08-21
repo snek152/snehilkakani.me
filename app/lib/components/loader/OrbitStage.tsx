@@ -47,16 +47,19 @@ export default function OrbitStage({
   scale = 1,
   frozen = false,
   showLabels = false,
+  detail = "full",
 }: {
   complete: boolean;
   scale?: number;
   frozen?: boolean;
   showLabels?: boolean;
+  detail?: "full" | "signal";
 }) {
+  const isSignal = detail === "signal";
   const markSize = 44 * scale;
   const iconSize = 18 * scale;
   const centerSize = 64 * scale;
-  const lineLength = RADIUS * scale;
+  const lineLength = (isSignal ? RADIUS * 0.62 : RADIUS) * scale;
 
   return (
     <motion.div
@@ -137,49 +140,50 @@ export default function OrbitStage({
             );
           })}
 
-          {ORBIT_MARKS.map(({ Icon, label, x, y, release }, index) => {
-            const delayMs = complete ? index * 50 : (0.2 + index * 0.1) * 1000;
-            const durationMs = complete ? RELEASE_MS - delayMs : 620;
-            return (
-              <motion.div
-                key={label}
-                className="absolute left-1/2 top-1/2 flex items-center justify-center border border-white/[0.22] bg-white/[0.03] text-fg"
-                style={{
-                  width: markSize,
-                  height: markSize,
-                  translate: "-50% -50%",
-                }}
-                initial={frozen ? false : { opacity: 0, x: 0, y: 0, scale: 0.7 }}
-                animate={
-                  frozen
-                    ? { opacity: 1, x: x * scale, y: y * scale, scale: 1 }
-                    : {
-                        opacity: complete ? [1, 1, 0] : 1,
-                        x: complete ? release.x : x,
-                        y: complete ? release.y : y,
-                        scale: complete ? [1, 0.6, 0] : 1,
-                      }
-                }
-                transition={
-                  frozen
-                    ? { duration: 0 }
-                    : {
-                        duration: durationMs / 1000,
-                        delay: delayMs / 1000,
-                        times: complete ? [0, 0.55, 1] : undefined,
-                        ease: EASE_OUT,
-                      }
-                }
-              >
-                <Icon size={iconSize} strokeWidth={1.65} aria-label={label} />
-                {showLabels && (
-                  <span className="absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap text-[length:var(--text-meta)] tracking-[var(--track-text-sm)] text-dim">
-                    {label}
-                  </span>
-                )}
-              </motion.div>
-            );
-          })}
+          {!isSignal &&
+            ORBIT_MARKS.map(({ Icon, label, x, y, release }, index) => {
+              const delayMs = complete ? index * 50 : (0.2 + index * 0.1) * 1000;
+              const durationMs = complete ? RELEASE_MS - delayMs : 620;
+              return (
+                <motion.div
+                  key={label}
+                  className="absolute left-1/2 top-1/2 flex items-center justify-center border border-white/[0.22] bg-white/[0.03] text-fg"
+                  style={{
+                    width: markSize,
+                    height: markSize,
+                    translate: "-50% -50%",
+                  }}
+                  initial={frozen ? false : { opacity: 0, x: 0, y: 0, scale: 0.7 }}
+                  animate={
+                    frozen
+                      ? { opacity: 1, x: x * scale, y: y * scale, scale: 1 }
+                      : {
+                          opacity: complete ? [1, 1, 0] : 1,
+                          x: complete ? release.x : x,
+                          y: complete ? release.y : y,
+                          scale: complete ? [1, 0.6, 0] : 1,
+                        }
+                  }
+                  transition={
+                    frozen
+                      ? { duration: 0 }
+                      : {
+                          duration: durationMs / 1000,
+                          delay: delayMs / 1000,
+                          times: complete ? [0, 0.55, 1] : undefined,
+                          ease: EASE_OUT,
+                        }
+                  }
+                >
+                  <Icon size={iconSize} strokeWidth={1.65} aria-label={label} />
+                  {showLabels && (
+                    <span className="absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap text-[length:var(--text-meta)] tracking-[var(--track-text-sm)] text-dim">
+                      {label}
+                    </span>
+                  )}
+                </motion.div>
+              );
+            })}
 
           <span
             className="absolute left-1/2 top-1/2 block rotate-45 bg-accent"

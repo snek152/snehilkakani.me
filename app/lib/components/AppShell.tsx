@@ -66,7 +66,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     setIntroReady(true);
   }, []);
 
-  if (pathname === "/meta-image") {
+  if (pathname === "/meta-image" || pathname === "/linkedin-banner") {
     return children;
   }
 

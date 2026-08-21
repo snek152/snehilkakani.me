@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import { useScrambleText } from "@/app/lib/hooks/useScrambleText";
 
-const ROLES = [
+export const ROLES = [
   "Software Engineer",
   "Photographer",
   "AI Engineer",
