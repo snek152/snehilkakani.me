@@ -16,7 +16,7 @@ export const experiences: Experience[] = [
       "Built production infrastructure for Lindy's high-volume AI agent platform",
       "Lead engineer of Routines, enabling agents to act on schedules and real-world events",
       "Designed features from data model to UI, then scaled it into a managed catalog with fleet-wide rollout and extended it into workspace-wide Slack agents",
-      "Shipped 350+ PRs over 10 weeks, owning Routines end-to-end and integrating it into Lindy Teammate, the company's biggest launch to date.",
+      "Shipped 400+ PRs over 10 weeks, owning Routines end-to-end and integrating it into Lindy Teammate, the company's biggest launch to date",
     ],
     skills: [
       "typescript",

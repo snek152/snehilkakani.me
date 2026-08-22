@@ -7,7 +7,6 @@ import {
   SiGraphql,
   SiLanggraph,
   SiOllama,
-
   SiCss,
   SiDeepgram,
   SiElectron,
@@ -37,14 +36,26 @@ import {
 function PiIcon({ className }: { className?: string }) {
   return createElement(
     "svg",
-    { viewBox: "0 0 24 24", fill: "currentColor", className, "aria-hidden": true },
-    createElement("path", { d: "M0 0v24h6v-6h6v-6H6V6h6v6h6V0Zm18 12v12h6V12Z" }),
+    {
+      viewBox: "0 0 24 24",
+      fill: "currentColor",
+      className,
+      "aria-hidden": true,
+    },
+    createElement("path", {
+      d: "M0 0v24h6v-6h6v-6H6V6h6v6h6V0Zm18 12v12h6V12Z",
+    }),
   );
 }
 function CodexIcon({ className }: { className?: string }) {
   return createElement(
     "svg",
-    { viewBox: "0 0 24 24", fill: "currentColor", className, "aria-hidden": true },
+    {
+      viewBox: "0 0 24 24",
+      fill: "currentColor",
+      className,
+      "aria-hidden": true,
+    },
     createElement("path", {
       fillRule: "evenodd",
       clipRule: "evenodd",
@@ -53,9 +64,12 @@ function CodexIcon({ className }: { className?: string }) {
   );
 }
 
-
-
-export const skillTypes = ["language", "aiSystems", "webPlatforms", "dataWorkflow"] as const;
+export const skillTypes = [
+  "language",
+  "aiSystems",
+  "webPlatforms",
+  "dataWorkflow",
+] as const;
 
 export const skillsList: {
   icon: React.ComponentType<{ className?: string }>;
@@ -124,6 +138,12 @@ export const skillsList: {
     type: "aiSystems",
   },
   {
+    icon: SiDeepgram,
+    label: "Deepgram",
+    colorClass: "SiDeepgram",
+    type: "aiSystems",
+  },
+  {
     icon: SiClaude,
     label: "Claude",
     colorClass: "SiClaude",
@@ -157,12 +177,6 @@ export const skillsList: {
     icon: SiOllama,
     label: "Ollama",
     colorClass: "SiOllama",
-    type: "aiSystems",
-  },
-  {
-    icon: SiDeepgram,
-    label: "Deepgram",
-    colorClass: "SiDeepgram",
     type: "aiSystems",
   },
   {

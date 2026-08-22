@@ -53,6 +53,20 @@ export const projects: Project[] = [
     link: "https://youtu.be/VSajuy4SSEM",
   },
   {
+    title: "GU-Net: Diffuse Glioma Segmentation Research",
+    subtitle: "June 2023 - July 2023",
+    description:
+      "Developed GU-Net, a novel U-Net-based architecture for segmenting diffuse gliomas in T2-FLAIR brain MRIs from the BraTS 2021 dataset, achieving 71.58% accuracy while training on just 1,647 images from 549 scans. Applied advanced data augmentation to compensate for the limited training data, aiming to make the model viable for underfunded hospitals with less imaging data on hand. Presented at UCSB and published in the Journal of Student Research.",
+    link: "/projects/gu_net_diffuse_glioma_segmentation.pdf",
+    github: "https://github.com/snek152/GU_Net_Glioma_Segmentation_SRA",
+    image: sra,
+    skills: [
+      "pytorch neural network",
+      "medical imaging",
+      "research & presentation",
+    ],
+  },
+  {
     title: "Clearance: Car Repair Shop Agent",
     subtitle: "June 2026",
     description:
@@ -67,6 +81,19 @@ export const projects: Project[] = [
     github: "https://github.com/Theswagblader/agents-in-production",
   },
   {
+    title: "FloodSafe: Atmospheric River Prediction",
+    subtitle: "January 2023 - March 2023",
+    description:
+      "Assembled a dataset from scratch by scraping and processing historical weather data, then constructed a neural network for atmospheric river prediction, achieving over 95% accuracy. Built the full pipeline end-to-end, from scraping and train/test/val splitting to model training and evaluation. Deployed the model behind a FastAPI backend and built a web app for real-time predictions.",
+    image: floodsafe,
+    skills: [
+      "pytorch computer vision",
+      "full-stack web development",
+      "data science & engineering",
+    ],
+    github: "https://github.com/snek152/floodsafe",
+  },
+  {
     title: "Orbis: AI Agent Observability Dashboard",
     subtitle: "October 2025 - December 2025",
     description:
@@ -79,20 +106,6 @@ export const projects: Project[] = [
       "postgresql & redis",
     ],
     github: "https://github.com/sbalaji09/Orbis",
-  },
-  {
-    title: "GU-Net: Diffuse Glioma Segmentation Research",
-    subtitle: "June 2023 - July 2023",
-    description:
-      "Developed GU-Net, a novel U-Net-based architecture for segmenting diffuse gliomas in T2-FLAIR brain MRIs from the BraTS 2021 dataset, achieving 71.58% accuracy while training on just 1,647 images from 549 scans. Applied advanced data augmentation to compensate for the limited training data, aiming to make the model viable for underfunded hospitals with less imaging data on hand. Presented at UCSB and published in the Journal of Student Research.",
-    link: "/projects/gu_net_diffuse_glioma_segmentation.pdf",
-    github: "https://github.com/snek152/GU_Net_Glioma_Segmentation_SRA",
-    image: sra,
-    skills: [
-      "pytorch neural network",
-      "medical imaging",
-      "research & presentation",
-    ],
   },
   {
     title: "ProCo: Code Contest Platform",
@@ -146,19 +159,6 @@ export const projects: Project[] = [
     skills: ["ml model deployment", "business development", "public speaking"],
     link: "/projects/genalt.jpg",
     privateRepo: true,
-  },
-  {
-    title: "FloodSafe: Atmospheric River Prediction",
-    subtitle: "January 2023 - March 2023",
-    description:
-      "Assembled a dataset from scratch by scraping and processing historical weather data, then constructed a neural network for atmospheric river prediction, achieving over 95% accuracy. Built the full pipeline end-to-end, from scraping and train/test/val splitting to model training and evaluation. Deployed the model behind a FastAPI backend and built a web app for real-time predictions.",
-    image: floodsafe,
-    skills: [
-      "pytorch computer vision",
-      "full-stack web development",
-      "data science & engineering",
-    ],
-    github: "https://github.com/snek152/floodsafe",
   },
   {
     title: "Steam Force: Accessible STEAM Learning App",

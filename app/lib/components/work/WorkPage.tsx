@@ -17,8 +17,8 @@ export default function WorkPage() {
     margin: "0px 0px -15% 0px",
   });
   const featured = projects[0];
-  const detailed = projects.slice(1, 5);
-  const rest = projects.slice(5);
+  const detailed = projects.slice(1, 6);
+  const rest = projects.slice(6);
 
   return (
     <div className="px-6 pb-12 pt-8 sm:px-8 lg:px-12 lg:pt-8">
@@ -44,7 +44,6 @@ export default function WorkPage() {
       </header>
 
       <section aria-label="Projects">
-
         <FeaturedProject project={featured} />
         <div className="relative -mx-6 sm:-mx-8 lg:-mx-12">
           <DrawnRule />
