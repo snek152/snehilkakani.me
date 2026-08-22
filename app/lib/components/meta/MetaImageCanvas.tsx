@@ -1,11 +1,10 @@
 "use client";
 
 import { ROLES } from "@/app/lib/components/home/RoleCycle";
-import OrbitStage from "@/app/lib/components/loader/OrbitStage";
+import LoaderMatrix from "@/app/lib/components/loader/LoaderMatrix";
 import WaveField from "@/app/lib/components/shared/WaveField";
 
 const FROZEN_MS = 4000;
-const SIGNAL_SCALE = 1.3;
 
 export default function MetaImageCanvas() {
   return (
@@ -25,8 +24,11 @@ export default function MetaImageCanvas() {
         <span className="ml-10 block whitespace-nowrap">KAKANI</span>
       </h1>
 
-      <div aria-hidden="true" className="absolute right-12 top-[202px] z-10 h-40 w-40">
-        <OrbitStage complete={false} frozen detail="signal" scale={SIGNAL_SCALE} />
+      <div
+        aria-hidden="true"
+        className="absolute right-20 top-[194px] z-10 h-[176px] w-[176px]"
+      >
+        <LoaderMatrix />
       </div>
 
       <ul className="absolute inset-x-12 bottom-11 z-10 m-0 flex list-none items-baseline p-0 font-sans text-[length:var(--text-meta-ribbon)] leading-none">

@@ -52,11 +52,11 @@ const BLOOM_WIDTH_SCALE = 5;
 const BLOOM_ALPHA_SHARE = 0.22;
 const BLOOM_BANDS = 4;
 
-const POSTER_CORE_ALPHA_SCALE = 2.6;
+const POSTER_CORE_ALPHA_SCALE = 2.8;
 const POSTER_SOFT_BANDS = 1;
 const POSTER_SOFT_PASSES: readonly [readonly [number, number], readonly [number, number]] = [
-  [9, 0.1],
-  [16, 0.045],
+  [11, 0.17],
+  [24, 0.075],
 ];
 
 const DEFOCUS_BY_DEPTH = 1.7;
@@ -65,6 +65,8 @@ const MAX_DPR = 1.5;
 
 const ACCENT_COLOR = "37, 99, 235";
 const ACCENT_ALPHA_SCALE = 0.5;
+const POSTER_ACCENT_COLOR = "68, 120, 238";
+const POSTER_ACCENT_ALPHA_SCALE = 1.5;
 
 const FREQ_SCALE = 2.7;
 const FREQ_RATIOS = [1, 1.37, 1.71, 2.13, 0.79, 1.53, 2.31, 0.61, 1.19, 1.83, 0.93, 2.47];
@@ -149,6 +151,7 @@ interface CurveConfig {
   xOffset: number;
   alpha: number;
   isAccent: boolean;
+  posterAccent: boolean;
 }
 
 function buildCurves(): CurveConfig[] {
@@ -198,6 +201,7 @@ function buildCurves(): CurveConfig[] {
         xOffset: (frac2 - 0.5) * 0.7,
         alpha: BASE_ALPHA_MIN + frac2 * (BASE_ALPHA_MAX - BASE_ALPHA_MIN),
         isAccent: i % 7 === 2,
+        posterAccent: i % 3 === 0,
       });
 
       i++;
@@ -292,6 +296,7 @@ export default function WaveField({
         };
       });
 
+      const isPoster = variant === "poster";
       for (const curve of curves) {
         const layer = LAYERS[curve.layer];
         const { lt, cosY, sinY, cosX, sinX } = layerState[curve.layer];
@@ -337,11 +342,13 @@ export default function WaveField({
           pDefocus[s] = 1 + DEFOCUS_BY_DEPTH * (1 - depthT);
         }
 
-        const rgb = curve.isAccent ? ACCENT_COLOR : LAYER_RGB[curve.layer];
+        const usesAccent = isPoster ? curve.posterAccent : curve.isAccent;
+        const rgb = usesAccent ? (isPoster ? POSTER_ACCENT_COLOR : ACCENT_COLOR) : LAYER_RGB[curve.layer];
         const baseAlpha =
-          curve.alpha * layer.alphaScale * (curve.isAccent ? ACCENT_ALPHA_SCALE : 1);
+          curve.alpha *
+          layer.alphaScale *
+          (usesAccent ? (isPoster ? POSTER_ACCENT_ALPHA_SCALE : ACCENT_ALPHA_SCALE) : 1);
 
-        const isPoster = variant === "poster";
         const passCount = isPoster ? 5 : 3;
         const visibleSample = samples;
         for (let pass = 0; pass < passCount; pass++) {

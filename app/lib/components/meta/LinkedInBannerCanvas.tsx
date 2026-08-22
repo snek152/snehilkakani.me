@@ -1,11 +1,10 @@
 "use client";
 
 import { ROLES } from "@/app/lib/components/home/RoleCycle";
-import OrbitStage from "@/app/lib/components/loader/OrbitStage";
+import LoaderMatrix from "@/app/lib/components/loader/LoaderMatrix";
 import WaveField from "@/app/lib/components/shared/WaveField";
 
 const FROZEN_MS = 4000;
-const LOADER_SCALE = 0.9;
 
 export default function LinkedInBannerCanvas() {
   return (
@@ -35,8 +34,16 @@ export default function LinkedInBannerCanvas() {
         ))}
       </ul>
 
-      <div aria-hidden="true" className="absolute inset-y-0 right-12 z-10 w-[218px]">
-        <OrbitStage complete={false} frozen scale={LOADER_SCALE} />
+      <div
+        aria-hidden="true"
+        className="absolute left-[1198px] top-[198px] z-10 h-px w-[218px] bg-white/[0.22]"
+      />
+
+      <div
+        aria-hidden="true"
+        className="absolute right-20 top-[110px] z-10 h-[176px] w-[176px]"
+      >
+        <LoaderMatrix />
       </div>
     </section>
   );

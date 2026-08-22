@@ -7,7 +7,7 @@ import { EASE_OUT } from "@/app/lib/motion";
 const RADIUS = 140;
 export const RELEASE_MS = 1000;
 
-const ORBIT_MARKS = [
+export const LOADER_MARKS = [
   {
     Icon: Terminal,
     label: "engineering",
@@ -47,19 +47,16 @@ export default function OrbitStage({
   scale = 1,
   frozen = false,
   showLabels = false,
-  detail = "full",
 }: {
   complete: boolean;
   scale?: number;
   frozen?: boolean;
   showLabels?: boolean;
-  detail?: "full" | "signal";
 }) {
-  const isSignal = detail === "signal";
   const markSize = 44 * scale;
   const iconSize = 18 * scale;
   const centerSize = 64 * scale;
-  const lineLength = (isSignal ? RADIUS * 0.62 : RADIUS) * scale;
+  const lineLength = RADIUS * scale;
 
   return (
     <motion.div
@@ -110,7 +107,7 @@ export default function OrbitStage({
             }}
           />
 
-          {ORBIT_MARKS.map(({ angle }, index) => {
+          {LOADER_MARKS.map(({ angle }, index) => {
             const delayMs = complete ? index * 30 : (0.22 + index * 0.1) * 1000;
             const durationMs = complete ? RELEASE_MS - delayMs : 550;
             return (
@@ -140,8 +137,7 @@ export default function OrbitStage({
             );
           })}
 
-          {!isSignal &&
-            ORBIT_MARKS.map(({ Icon, label, x, y, release }, index) => {
+          {LOADER_MARKS.map(({ Icon, label, x, y, release }, index) => {
               const delayMs = complete ? index * 50 : (0.2 + index * 0.1) * 1000;
               const durationMs = complete ? RELEASE_MS - delayMs : 620;
               return (
