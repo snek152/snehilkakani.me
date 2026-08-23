@@ -23,6 +23,27 @@ export const beats: Beat[] = [
     description: "High-energy trap beat with fast hi-hats and booming 808s",
   },
   {
+    name: "Beach",
+    file: "/beats/beach.mp3",
+    category: "mellow",
+    tempo: 105,
+    description: "Laid-back beat with bouncy chords and catchy drums",
+  },
+  {
+    name: "Bounce Back",
+    file: "/beats/bounce_back.mp3",
+    category: "synth",
+    tempo: 110,
+    description: "Layered synths, a rhythmic bass, and a bouncy drum pattern",
+  },
+  {
+    name: "Alien Trap",
+    file: "/beats/alien_trap.mp3",
+    category: "spacey",
+    tempo: 146,
+    description: "Distorted and cloudy synths paired with catchy trap drums",
+  },
+  {
     name: "Feelings",
     file: "/beats/feelings.mp3",
     category: "mellow",
@@ -45,13 +66,6 @@ export const beats: Beat[] = [
       "Atmospheric piano melodies combined with a laid-back acoustic drum pattern",
   },
   {
-    name: "Alien Trap",
-    file: "/beats/alien_trap.mp3",
-    category: "spacey",
-    tempo: 146,
-    description: "Distorted and cloudy synths paired with catchy trap drums",
-  },
-  {
     name: "Utopia",
     file: "/beats/utopia.mp3",
     category: "trap",
@@ -65,13 +79,6 @@ export const beats: Beat[] = [
     tempo: 140,
     description:
       "An emotional piano beat with soft synths and a simple drum pattern",
-  },
-  {
-    name: "Bounce Back",
-    file: "/beats/bounce_back.mp3",
-    category: "synth",
-    tempo: 110,
-    description: "Layered synths, a rhythmic bass, and a bouncy drum pattern",
   },
   {
     name: "All I Do",
@@ -93,13 +100,6 @@ export const beats: Beat[] = [
     category: "trap",
     tempo: 150,
     description: "Trap drums with more aggressive synths and melodies",
-  },
-  {
-    name: "Beach",
-    file: "/beats/beach.mp3",
-    category: "mellow",
-    tempo: 105,
-    description: "Laid-back beat with bouncy chords and catchy drums",
   },
   {
     name: "Comedy",
