@@ -55,8 +55,8 @@ const BLOOM_BANDS = 4;
 const POSTER_CORE_ALPHA_SCALE = 2.8;
 const POSTER_SOFT_BANDS = 1;
 const POSTER_SOFT_PASSES: readonly [readonly [number, number], readonly [number, number]] = [
-  [11, 0.17],
-  [24, 0.075],
+  [12.5, 0.135],
+  [27, 0.058],
 ];
 
 const DEFOCUS_BY_DEPTH = 1.7;

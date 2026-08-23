@@ -1,8 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import AppShell from "./lib/components/AppShell";
 import { LOADER_GATE_SCRIPT } from "./lib/loader-gate";
+import { SITE_NAME, SITE_URL } from "./lib/metadata";
 
 const clashDisplay = localFont({
   src: "./fonts/ClashDisplay-Variable.woff2",
@@ -65,7 +66,7 @@ export const metadata: Metadata = {
     },
     description: description,
     url: "/",
-    siteName: "Snehil Kakani",
+    siteName: SITE_NAME,
     locale: "en_US",
     type: "website",
   },
@@ -79,6 +80,48 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  themeColor: "#080808",
+};
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": `${SITE_URL}/#person`,
+      name: "Snehil Kakani",
+      url: SITE_URL,
+      email: "mailto:kakanisnehil@gmail.com",
+      jobTitle: "Software Engineer Intern",
+      worksFor: { "@type": "Organization", name: "Lindy" },
+      affiliation: {
+        "@type": "CollegeOrUniversity",
+        name: "California Polytechnic State University, San Luis Obispo",
+      },
+      knowsAbout: [
+        "Software Engineering",
+        "AI Agents",
+        "Music Production",
+        "Photography",
+      ],
+      sameAs: [
+        "https://github.com/snek152",
+        "https://linkedin.com/in/snehilkakani",
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: SITE_NAME,
+      description: description,
+      inLanguage: "en-US",
+      publisher: { "@id": `${SITE_URL}/#person` },
+    },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -88,6 +131,10 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: LOADER_GATE_SCRIPT }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
       </head>
       <body
         className={`${clashDisplay.variable} ${switzer.variable} antialiased`}

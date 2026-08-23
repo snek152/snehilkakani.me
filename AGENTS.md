@@ -631,6 +631,24 @@ every number here was read from the source, not estimated.
   `twitter: { title }` downgrades `twitter:card` from
   `summary_large_image` to `summary`. Verified against the running dev
   server, not assumed.
+- **That replacement also kills the image**, and this one is invisible
+  until you check a real unfurl: the root `app/opengraph-image.png` /
+  `app/twitter-image.png` file convention only auto-injects into the
+  segment that has no descendant declaring `openGraph`. Once a child
+  layout calls `routeMetadata()`, its own `openGraph` object wins and the
+  inherited image is gone — `/builds`, `/music`, `/lens` and `/reach` each
+  emitted zero `og:image` and zero `twitter:image` tags, so every shared
+  link except the homepage unfurled with no preview. `routeMetadata()`
+  therefore carries `images` explicitly (`OPENGRAPH_IMAGE` /
+  `TWITTER_IMAGE`), pointing at the unhashed `/opengraph-image.png` and
+  `/twitter-image.png` public URLs, which `metadataBase` resolves to
+  absolute. Never add a route layout that sets `openGraph` by hand instead
+  of going through the helper.
+- Image `alt` cannot be attached to a file-convention image through the
+  `metadata` export — declaring `openGraph.images` in `app/layout.tsx` is
+  silently overridden by the co-located PNG. The alt text lives in
+  `app/opengraph-image.alt.txt` and `app/twitter-image.alt.txt`, which is
+  the only mechanism that emits `og:image:alt` for the root segment.
 - Every route description is grounded in a data module and must be kept in
   step with it: `/builds` names the projects and the Innovation Quest 2nd
   place from `projects.ts`; `/lens` names the real shoot locations from
@@ -639,6 +657,25 @@ every number here was read from the source, not estimated.
   web work" line is grounded in the live Freelance Website Developer entry
   (Jun 2021–Present) in `experience.ts`; the root title/description are
   grounded in `experience.ts`'s first (most recent) entry.
+- Route descriptions are capped at ~160 characters, because that is where
+  Google truncates the SERP snippet. `/builds` was 203 and `/music` 168;
+  both were trimmed. `/music` also claimed the catalog was "filterable by
+  category" — there is no filter control anywhere in
+  `app/lib/components/music/`, so that was a description advertising a
+  feature the page does not have. Check the component before describing
+  behavior in metadata.
+- `app/robots.ts` and `app/sitemap.ts` are the crawl layer; both were
+  absent (`/robots.txt` and `/sitemap.xml` returned 404). The sitemap is
+  derived from `navItems`, so it lists exactly the five real routes and
+  cannot silently gain `/meta-image` or `/linkedin-banner` — those two are
+  internal render surfaces, `noindex, nofollow`, and additionally
+  `Disallow`ed in `robots.ts`.
+- The JSON-LD `Person`/`WebSite` graph in `app/layout.tsx` is constrained
+  to facts already in the repo: title and employer from `experience.ts`'s
+  most recent entry, links from `nav.ts`'s `socialLinks`. It says
+  `affiliation`, not `alumniOf`, for Cal Poly — he is enrolled, not
+  graduated — and `jobTitle: "Software Engineer Intern"`, matching the
+  real entry rather than the shorter role label the hero cycles.
 - `beats.ts`'s array order IS the running order on `/music` — nothing sorts
   at render. It is sequenced, not alphabetical (alphabetical order used to
   open on "Alien Trap" next to "Alien Trap 3", reading like a directory

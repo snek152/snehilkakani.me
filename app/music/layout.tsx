@@ -4,7 +4,7 @@ import { MusicPlayerProvider } from "@/app/lib/components/music/MusicPlayerProvi
 export const metadata = routeMetadata({
   title: "Music - Beats and Production",
   description:
-    "Original hip-hop beats, filterable by category and playable in the page, each listed with its tempo. Released albums with other artists; head of sound for live theatre.",
+    "Original hip-hop beats, playable in the page and listed with tempo and length. Released albums with other artists; head of sound for live theatre.",
   path: "/music",
 });
 
