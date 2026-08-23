@@ -43,7 +43,10 @@ export default function WorkPage() {
         />
       </header>
 
-      <section aria-label="Projects">
+      <section aria-labelledby="projects-heading">
+        <h2 id="projects-heading" className="sr-only">
+          Projects
+        </h2>
         <FeaturedProject project={featured} />
         <div className="relative -mx-6 sm:-mx-8 lg:-mx-12">
           <DrawnRule />

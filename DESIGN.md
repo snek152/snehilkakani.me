@@ -43,7 +43,7 @@ components:
     typography: "{typography.body}"
     rounded: none
   transport:
-    backgroundColor: "rgb(8 8 8 / 0.95)"
+    backgroundColor: transparent
     textColor: "{colors.fg}"
     typography: "{typography.meta}"
     rounded: none
@@ -219,7 +219,7 @@ Hairlines carry three brightness levels, each scoped to a distinct job:
 
 **Lightbox** — `--scrim` at `0.86` without backdrop blur, `data-material` for the transparency/contrast overrides. Drag-to-dismiss tracks the pointer 1:1 downward (`project()` commits on projected rest + velocity sign, never raw distance); upward has nothing behind it, so that is where `rubberband()` resistance goes.
 
-**Transport (`PlayerBar`)** — the site's one signature component and its one persistent translucent surface (`data-material`, `bg-bg/95 backdrop-blur-xl`). Not a media-player slab: it reuses the page's own container padding and the track list's column grid, so the now-playing row sits column-for-column under the list it came from. Its top hairline *is* the progress rule — the same 1px border every row uses, filling with accent as the track plays; there is no separate scrubber floating above it. While a track plays, the signal-line fill breathes at *that track's own tempo*, not the page's BPM-92 grid — the one flourish scoped entirely inside the player.
+**Transport (`PlayerBar`)** — an inline, route-scoped instrument, not a persistent media-player slab and not boxed as its own surface. It mounts only inside `/music`'s header, sliding out to the left of the page's untouched `RouteSignal` art (a `clip-path` reveal, right edge anchored, so the signal itself never moves and there is no layout shift on start/stop). No fill, no border, no radius, no elevation — the track name and controls sit directly on the page, and the only line is a 1px `bg-border` progress rail that fills with `bg-accent`, the same hairline-fill idiom `ContactForm`'s inputs use. Closing the player (an explicit control) or leaving the route both fully tear down the audio graph.
 
 ## Do's and Don'ts
 

@@ -28,7 +28,7 @@ No test suite is configured.
 |---|---|---|
 | `/` | `app/page.tsx` | Home — hero, index strip, experience |
 | `/builds` | `app/builds/page.tsx` | Featured project, project rows, stack |
-| `/music` | `app/music/page.tsx` | Beat release list + persistent transport |
+| `/music` | `app/music/page.tsx` | Beat release list + inline route-scoped transport |
 | `/lens` | `app/lens/page.tsx` | Photography contact sheet + lightbox |
 | `/reach` | `app/reach/page.tsx` | Contact |
 
@@ -295,9 +295,7 @@ would explain nothing:
 Reduced motion means gentler, not dead. A drag must keep tracking — dragging is
 not vestibular motion, and removing it breaks the control. What changes is the
 settle: swap the spring for `{ duration: 0 }` and drop any overshoot. The
-`Lightbox` gesture and the `PlayerBar` scrubber handle both follow this — the
-handle still appears under reduced motion because it is an affordance, and only
-its transition is dropped.
+`Lightbox` gesture follows this pattern.
 
 **The background belongs to `WaveField`, and nothing else may compete for it.**
 The site has exactly one continuous ambient motion: the wave canvas behind every
@@ -411,30 +409,22 @@ This section is where the reasoning that used to live in code comments went
 when the comments were deleted. Same rule as everywhere else in this file:
 every number here was read from the source, not estimated.
 
-### Shell, routing, and the fixed transport
+### Shell, routing, and the music transport
 
-- `PlayerBar` renders through `createPortal` into `document.body`, and must.
-  `template.tsx` animates each route's `clip-path` from `inset(0 100% 0 0%)`
-  (or the mirror, depending on direction) to `inset(0 0% 0 0%)`. A `clip-path`
-  clips every descendant including `position: fixed` ones, and the wrapper's
-  box ends where the page content ends — rendered in place, the transport was
-  clipped out of existence (not painted, not hit-testable) the moment the
-  footer owned the bottom of the window. Three fixes were tried and rejected:
-  dropping `clipPath` from the animation target (motion falls back to
-  rendering `initial`, which clips the whole route away), overriding the clip
-  via `style` (motion writes animated values imperatively after React's
-  commit and wins), and animating to `none` (not interpolatable, so it is
-  ignored and the settled inset stays). The rule that follows is structural:
-  any other `position: fixed` UI mounted inside a route must portal out too.
-  The portal reproduces its in-page layering with `z-30` — above the `z-0`
-  fixed backdrops, below the scroll rail and the sidebar.
-- `Footer` takes a `bottomReserve` prop (in px) rather than relying on a
-  sibling spacer for the transport's footprint — a spacer made the document
-  taller than the footer's own background, so max scroll ended in a band of
-  empty page below the footer. `AppShell`'s `FooterWithClearance` derives the
-  value from `useMusicPlayer().activeIndex` and passes `TRANSPORT_CLEARANCE`
-  (`64`, `AppShell.tsx`, exactly `PlayerBar`'s pinned height) whenever a track
-  is loaded, on any route.
+- The music transport (`PlayerBar`) is owned by `app/music/layout.tsx`, not
+  `AppShell` — `MusicPlayerProvider` mounts only on `/music`, so audio state,
+  the `<audio>` element, and the transport UI do not exist on any other
+  route. `AppShell` and `Footer` carry no transport-clearance logic; `Footer`
+  takes no props. This replaced an earlier design where the transport was a
+  global, `document.body`-portaled, `position: fixed` bar that survived
+  navigation — that required routing around `template.tsx`'s per-route
+  `clip-path` transition (which clips fixed descendants) and a
+  `TRANSPORT_CLEARANCE`-driven `Footer` prop to reserve its footprint on
+  every page. Scoping the provider to `/music` removed the need for both:
+  leaving the route unmounts the provider, which synchronously pauses,
+  clears, and unloads the `<audio>` element and tears down the Web Audio
+  graph (`useAudioAnalyser`'s own unmount effect closes the `AudioContext`)
+  before any other route can render.
 - `AppShell`'s nav `direction` (`1` forward / `-1` back / `0` initial or
   same-route, through `navItems`) is computed synchronously during render,
   not in an effect, so it is already in context by the time the incoming
@@ -475,15 +465,10 @@ every number here was read from the source, not estimated.
   through it. It is safe to call on every play attempt because
   `createMediaElementSource` can only be called once ever per `<audio>`
   element; the context and node are created once and reused.
-- `level` — one bass-weighted scalar (0–1, resting at a true `0` in
-  silence) — is the single signal lighting both `CursorGlow` and
-  `PlayerBar`'s bloom, and it lives on `MusicPlayerProvider` because the
-  transport is what knows the signal. Silence must cost nothing. `bars`
-  (the five-band meter) rests at a visible `0.12` instead, so the idle meter
-  reads as a shape rather than a gap.
-- Attack/release smoothing on `level` is deliberately asymmetric (`ATTACK
-  0.5`, `RELEASE 0.075`) so it reads as light glowing and fading rather than
-  a twitching meter; equal attack and release reads as a gauge.
+- `bars` — the five-band meter driving `BeatBars` in both `FeatureTrackGrid`
+  and `TrackRow` — rests at a visible `0.12` per bar while idle, so the
+  meter reads as a shape rather than a gap, and collapses back to that rest
+  value the instant playback stops or reduced motion is active.
 - `toggleTrack` branches on `playbackState`, not `audio.paused`: while a
   track is `loading`, `play()` has already fired but `audio.paused` can
   still read `true` until the browser actually produces frames. Branching on
@@ -517,8 +502,8 @@ every number here was read from the source, not estimated.
   `object-contain`, so a prior photo with a different aspect ratio cannot
   overflow the active frame and recreate the dead zone during navigation.
 - `Lightbox` implements its own Tab focus trap because it is a portal-less
-  overlay stacked on top of the page, unlike `PlayerBar`; without it, Tab
-  walks straight into the page content behind the dialog.
+  overlay stacked on top of the page; without it, Tab walks straight into
+  the page content behind the dialog.
 - `getPhotoDims` (`photo-dims.ts`) throws at render on a missing entry
   rather than handing `next/image` a fallback size, which would reintroduce
   layout shift or a distorted aspect ratio for that cell. Regenerate
@@ -568,11 +553,6 @@ every number here was read from the source, not estimated.
   use opacity, not a transform, as the press signal — a transform would
   scale the `::before` extender along with the element and shrink the
   target at the exact moment a thumb is pressing it.
-- `PlayerBar`'s skip buttons use `before:-inset-3.5` (14px, a 44px target
-  around a 16px icon) at rest and `before:-inset-4.5` (a 52px box) at
-  `active:scale-90`: 52 × 0.9 = 46.8px, which keeps the target over the 44px
-  floor for the whole press, so a tap started at the edge cannot slip
-  outside it before release.
 - `RoleCycle` exposes the full, comma-joined role list once, statically, in
   an `sr-only` span, and never `aria-live` (which would re-announce it every
   `HOLD_MS`). Two earlier approaches failed: a single `aria-live="off"` node

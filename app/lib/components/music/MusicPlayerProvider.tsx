@@ -11,10 +11,8 @@ import {
 } from "react";
 import type { MotionValue } from "motion/react";
 import { beats } from "@/app/lib/data/beats";
-import { BEAT_DURATIONS } from "@/app/lib/data/beat-durations";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import { useAudioAnalyser } from "./useAudioAnalyser";
-import PlayerBar from "./PlayerBar";
 
 type PlaybackState = "loading" | "playing" | "paused" | "error";
 
@@ -26,11 +24,11 @@ interface MusicPlayerContextValue {
   duration: number;
   bars: MotionValue<number>[];
 
-  level: MotionValue<number>;
   playTrack: (index: number) => void;
   toggleTrack: (index: number) => void;
   skip: (direction: 1 | -1) => void;
   handleScrub: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  closeTrack: () => void;
 }
 
 const MusicPlayerContext = createContext<MusicPlayerContextValue | null>(null);
@@ -54,7 +52,7 @@ export function MusicPlayerProvider({ children }: { children: React.ReactNode })
   const [error, setError] = useState<string | null>(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const { bars, level, ensureAnalyser } = useAudioAnalyser(
+  const { bars, ensureAnalyser } = useAudioAnalyser(
     audioRef,
     playbackState === "playing",
     prefersReducedMotion,
@@ -101,6 +99,22 @@ export function MusicPlayerProvider({ children }: { children: React.ReactNode })
     [attemptPlay],
   );
 
+  const closeTrack = useCallback(() => {
+    const audio = audioRef.current;
+    ++playbackRequestRef.current;
+    activeIndexRef.current = null;
+    setActiveIndex(null);
+    setError(null);
+    setPlaybackState("paused");
+    setCurrentTime(0);
+    setDuration(0);
+    if (audio) {
+      audio.pause();
+      audio.removeAttribute("src");
+      audio.load();
+    }
+  }, []);
+
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -142,14 +156,7 @@ export function MusicPlayerProvider({ children }: { children: React.ReactNode })
         return;
       }
 
-      ++playbackRequestRef.current;
-      activeIndexRef.current = null;
-      setActiveIndex(null);
-      setPlaybackState("paused");
-      setCurrentTime(0);
-      setDuration(0);
-      audio.removeAttribute("src");
-      audio.load();
+      closeTrack();
     };
 
     audio.addEventListener("play", onPlay);
@@ -173,7 +180,20 @@ export function MusicPlayerProvider({ children }: { children: React.ReactNode })
       audio.removeEventListener("error", onError);
       audio.removeEventListener("ended", onEnded);
     };
-  }, [playTrack]);
+  }, [playTrack, closeTrack]);
+
+  const disposeAudio = useCallback(() => {
+    ++playbackRequestRef.current;
+    activeIndexRef.current = null;
+    const audio = audioRef.current;
+    if (audio) {
+      audio.pause();
+      audio.removeAttribute("src");
+      audio.load();
+    }
+  }, []);
+
+  useEffect(() => disposeAudio, [disposeAudio]);
 
   const toggleTrack = useCallback(
     (index: number) => {
@@ -227,8 +247,6 @@ export function MusicPlayerProvider({ children }: { children: React.ReactNode })
     setCurrentTime(clampedTime);
   }, []);
 
-  const active = activeIndex !== null ? beats[activeIndex] : null;
-
   const value = useMemo<MusicPlayerContextValue>(
     () => ({
       activeIndex,
@@ -237,11 +255,11 @@ export function MusicPlayerProvider({ children }: { children: React.ReactNode })
       currentTime,
       duration,
       bars,
-      level,
       playTrack,
       toggleTrack,
       skip,
       handleScrub,
+      closeTrack,
     }),
     [
       activeIndex,
@@ -250,11 +268,11 @@ export function MusicPlayerProvider({ children }: { children: React.ReactNode })
       currentTime,
       duration,
       bars,
-      level,
       playTrack,
       toggleTrack,
       skip,
       handleScrub,
+      closeTrack,
     ],
   );
 
@@ -262,20 +280,6 @@ export function MusicPlayerProvider({ children }: { children: React.ReactNode })
     <MusicPlayerContext.Provider value={value}>
       <audio ref={audioRef} preload="none" />
       {children}
-      <PlayerBar
-        active={active}
-        error={error}
-        playbackState={playbackState}
-        currentTime={currentTime}
-        duration={duration}
-        displayDuration={active ? BEAT_DURATIONS[active.file] ?? 0 : 0}
-        activeIndex={activeIndex}
-        totalTracks={beats.length}
-        onToggle={() => activeIndex !== null && toggleTrack(activeIndex)}
-        onSkip={skip}
-        onScrub={handleScrub}
-        level={level}
-      />
     </MusicPlayerContext.Provider>
   );
 }

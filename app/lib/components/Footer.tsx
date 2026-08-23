@@ -1,20 +1,9 @@
 import SignalRule from "./shared/SignalRule";
 import { socialLinks } from "@/app/lib/nav";
 
-export default function Footer({
-  bottomReserve = 0,
-}: {
-  bottomReserve?: number;
-}) {
+export default function Footer() {
   return (
-    <footer
-      className="instrument-footer relative flex flex-wrap items-center justify-between gap-3 px-6 py-5 sm:px-8 lg:px-12 bg-bg"
-      style={
-        bottomReserve
-          ? { paddingBottom: `calc(1.25rem + ${bottomReserve}px)` }
-          : undefined
-      }
-    >
+    <footer className="instrument-footer relative flex flex-wrap items-center justify-between gap-3 px-6 py-5 sm:px-8 lg:px-12 bg-bg">
       <SignalRule draw={false} className="absolute inset-x-0 top-0 z-10" />
       <span className="font-sans text-[length:var(--text-meta)] tracking-[var(--track-text-sm)] text-dim2">
         © {new Date().getFullYear()} Snehil Kakani

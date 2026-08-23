@@ -92,7 +92,7 @@ export default function ContactPage() {
               A few things outside of work.
             </h2>
           </div>
-          <div className="grid grid-cols-2 gap-2 sm:gap-3">
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-3">
             {contactPhotos.map((photo, index) => (
               <motion.figure
                 key={photo.caption}
@@ -108,7 +108,8 @@ export default function ContactPage() {
                 <Image
                   src={photo.src}
                   alt={photo.caption}
-                  sizes="(min-width: 768px) 20vw, 44vw"
+                  sizes="(min-width: 768px) 20vw, (min-width: 640px) 44vw, 100vw"
+                  priority={index === 0}
                   className="h-full w-full object-cover"
                 />
               </motion.figure>

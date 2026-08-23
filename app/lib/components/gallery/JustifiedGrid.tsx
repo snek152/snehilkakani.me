@@ -11,6 +11,8 @@ const COL_GAP = 16;
 const ROW_GAP = 32;
 
 const MIN_PLATE = 260;
+const MIN_PLATE_NARROW = 120;
+const NARROW_BREAKPOINT = 640;
 
 type RowItem = { photo: Photo; index: number; width: number };
 type Row = { items: RowItem[]; height: number };
@@ -21,7 +23,8 @@ function packRows(photos: Photo[], containerWidth: number, targetHeight: number)
   let current: { photo: Photo; index: number; aspect: number }[] = [];
   let aspectSum = 0;
 
-  const maxPerRow = Math.max(1, Math.floor((containerWidth + COL_GAP) / (MIN_PLATE + COL_GAP)));
+  const plate = containerWidth < NARROW_BREAKPOINT ? MIN_PLATE_NARROW : MIN_PLATE;
+  const maxPerRow = Math.max(1, Math.floor((containerWidth + COL_GAP) / (plate + COL_GAP)));
   const heightFor = (count: number, sum: number) => (containerWidth - (count - 1) * COL_GAP) / sum;
 
   const flush = (items: typeof current, height: number) => {
@@ -30,6 +33,7 @@ function packRows(photos: Photo[], containerWidth: number, targetHeight: number)
       items: items.map((c) => ({ photo: c.photo, index: c.index, width: c.aspect * height })),
     });
   };
+  const narrow = plate === MIN_PLATE_NARROW;
 
   photos.forEach((photo, index) => {
     const { w, h } = getPhotoDims(photo.image);
@@ -37,12 +41,14 @@ function packRows(photos: Photo[], containerWidth: number, targetHeight: number)
     current.push({ photo, index, aspect });
     aspectSum += aspect;
     const height = heightFor(current.length, aspectSum);
-    if (height > targetHeight && current.length < maxPerRow) return;
+    const holdForPair = narrow && current.length === 1 && maxPerRow >= 2;
+    if (current.length < maxPerRow && (height > targetHeight || holdForPair)) return;
     const dropsLast =
       current.length > 1 &&
       height <= targetHeight &&
       Math.abs(heightFor(current.length - 1, aspectSum - aspect) - targetHeight) <
-        Math.abs(height - targetHeight);
+        Math.abs(height - targetHeight) &&
+      !(narrow && current.length === 2);
 
     if (dropsLast) {
       const carried = current[current.length - 1]!;

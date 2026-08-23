@@ -11,7 +11,6 @@ import { MotionPreferenceProvider } from "./shared/MotionPreference";
 import ScrollProgressRail from "./shared/ScrollProgressRail";
 import Sidebar from "./Sidebar";
 import Footer from "./Footer";
-import { MusicPlayerProvider, useMusicPlayer } from "./music/MusicPlayerProvider";
 import { navItems } from "@/app/lib/nav";
 import { loaderRecentlySeen, stampLoaderSeen } from "@/app/lib/loader-gate";
 
@@ -25,13 +24,6 @@ const NavDirectionContext = createContext<1 | -1 | 0>(0);
 
 export function useNavDirection() {
   return useContext(NavDirectionContext);
-}
-
-export const TRANSPORT_CLEARANCE = 64;
-
-function FooterWithClearance() {
-  const { activeIndex } = useMusicPlayer();
-  return <Footer bottomReserve={activeIndex !== null ? TRANSPORT_CLEARANCE : 0} />;
 }
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
@@ -81,26 +73,24 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             Skip to content
           </a>
 
-          <MusicPlayerProvider>
-            <WaveField />
-            <CursorGlow />
-            <ScrollProgressRail />
-            <AnimatePresence>
-              {!introReady && <LoadingScreen key="loader" onDone={handleLoaderDone} />}
-            </AnimatePresence>
-            <Sidebar />
-            <IntroReadyContext.Provider value={introReady}>
-              <NavDirectionContext.Provider value={direction}>
+          <WaveField />
+          <CursorGlow />
+          <ScrollProgressRail />
+          <AnimatePresence>
+            {!introReady && <LoadingScreen key="loader" onDone={handleLoaderDone} />}
+          </AnimatePresence>
+          <Sidebar />
+          <IntroReadyContext.Provider value={introReady}>
+            <NavDirectionContext.Provider value={direction}>
               <div className="relative z-[1] flex min-h-[100dvh] flex-col lg:pl-[52px]">
                 <main id="main" className="relative z-[1] flex-1">
                   {children}
                 </main>
 
-                <FooterWithClearance />
+                <Footer />
               </div>
-              </NavDirectionContext.Provider>
-            </IntroReadyContext.Provider>
-          </MusicPlayerProvider>
+            </NavDirectionContext.Provider>
+          </IntroReadyContext.Provider>
         </div>
       </CursorFieldProvider>
     </MotionPreferenceProvider>

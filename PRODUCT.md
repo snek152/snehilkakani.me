@@ -52,7 +52,7 @@ Five surfaces, each a complete destination:
 |---|---|
 |`/`|Hero lockup, role cycler, discipline index, experience timeline|
 |`/builds`|Featured project, project rows, skills matrix|
-|`/music`|Beat releases with a persistent transport that survives navigation|
+|`/music`|Beat releases with an inline transport scoped to the route|
 |`/lens`|Photography contact sheet with a lightbox|
 |`/reach`|Contact form and links|
 
@@ -62,9 +62,10 @@ committing. Two of those files are generated and must not be hand-edited:
 `beat-durations.ts` (from the MP3s via `ffprobe`) and
 `photo-dims.generated.ts` (intrinsic image dimensions).
 
-The audio transport is owned by the app shell, not by `/music`, so a track keeps
-playing while the visitor reads other pages. Any future layout work has to
-respect that a fixed player may be present on every route.
+The audio transport is owned by `/music`'s layout, not the app shell: it
+mounts only on that route, and leaving `/music` stops and unloads any
+playing track. It is inline in the page header, not a fixed overlay, and
+never appears on another route.
 
 Published at `snehilkakani.me`.
 

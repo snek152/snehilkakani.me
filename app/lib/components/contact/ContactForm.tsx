@@ -6,6 +6,7 @@ import { Check, ArrowRight } from "lucide-react";
 import { EASE_OUT, staggerContainer } from "@/app/lib/motion";
 import { beats } from "@/app/lib/tempo";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
+import { CONTACT_EMAIL } from "@/app/lib/components/contact/mailto";
 
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/xyylnqbg";
 
@@ -88,15 +89,16 @@ type FieldErrors = { name?: string; email?: string; message?: string };
 function emailProblem(raw: string): string | undefined {
   const value = raw.trim();
   if (!value) return "Add an email address.";
-  if (/\s/.test(value)) return "Not a valid email address.";
-  if (!value.includes("@")) return "Not a valid email address.";
+  if (/\s/.test(value)) return "Remove the spaces from your email address.";
+  if (!value.includes("@")) return "Add an @ to your email address.";
   const [local, ...rest] = value.split("@");
   const domain = rest.join("@");
-  if (!local) return "Not a valid email address.";
-  if (!domain) return "Not a valid email address";
-  if (!domain.includes(".")) return "Not a valid email address.";
+  if (!local) return "Add something before the @.";
+  if (!domain) return "Add a domain after the @, like gmail.com.";
+  if (!domain.includes("."))
+    return "Add a domain ending, like .com, after the @.";
   if (domain.startsWith(".") || domain.endsWith("."))
-    return "Not a valid email address.";
+    return "Fix the domain ending after the @.";
   return undefined;
 }
 
@@ -191,11 +193,15 @@ export default function ContactForm() {
         setMessage("");
         setSent(true);
       })
-      .catch(() => {
+      .catch((err: unknown) => {
         clearTimeout(timeoutId);
         if (abortControllerRef.current !== controller) return;
         abortControllerRef.current = null;
-        setSubmissionError("Failed to send message. Please try again later.");
+        setSubmissionError(
+          err instanceof DOMException && err.name === "AbortError"
+            ? "Sending took too long. Please check your connection."
+            : "Your message could not be sent. Please check your connection.",
+        );
         setSending(false);
       });
   };
@@ -342,7 +348,14 @@ export default function ContactForm() {
           role="alert"
           className="text-[length:var(--text-micro)] tracking-[var(--track-text-sm)] text-fg"
         >
-          {submissionError}
+          {submissionError} Please try sending again, or email me directly at{" "}
+          <a
+            href={`mailto:${CONTACT_EMAIL}`}
+            className="underline decoration-1 underline-offset-[3px] hover:text-accent-text focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+          >
+            {CONTACT_EMAIL}
+          </a>
+          .
         </p>
       )}
     </motion.form>
