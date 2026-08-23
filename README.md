@@ -1,92 +1,56 @@
-<div align="center">
-  <img src="./public/about.jpg" alt="Snehil Kakani" width="100%" />
-</div>
-
-<div align="center">
+<img src="https://raw.githubusercontent.com/snek152/snehilkakani.me/main/public/linkedin_banner.jpg" alt="Snehil Kakani — Software Engineer, AI Engineer, Full-Stack Developer, Photographer, Music Producer, Audio Engineer" width="100%">
 
 # Snehil Kakani
 
-[![Typing SVG](https://readme-typing-svg.herokuapp.com?font=IBM+Plex+Sans&weight=600&size=24&duration=2800&pause=900&color=4FA3FF&center=true&vCenter=true&width=960&lines=Software+Engineer;AI+Builder;Full-Stack+Developer;Music+Producer+%2F+Audio+Engineer;Photographer+%2F+Actor)](https://git.io/typing-svg)
+Software engineer. CS at Cal Poly SLO, currently interning at **Lindy** in San Francisco on
+infrastructure for a high-volume AI agent platform.
 
-[![Website](https://img.shields.io/badge/Portfolio-snehilkakani.me-0A66C2?style=for-the-badge&logo=google-chrome&logoColor=white)](https://snehilkakani.me)
-[![Email](https://img.shields.io/badge/Gmail-kakanisnehil%40gmail.com-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:kakanisnehil@gmail.com)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-snehilkakani-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/snehilkakani/)
-[![GitHub](https://img.shields.io/badge/GitHub-snek152-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/snek152)
+I write software, produce beats, and shoot photographs. Three disciplines, not one job and two
+hobbies — each one has real work behind it rather than a line on a résumé.
 
-![](https://komarev.com/ghpvc/?username=snek152&style=for-the-badge&color=0e75b6)
-![](https://img.shields.io/github/followers/snek152?style=for-the-badge&logo=github&color=24292e)
-![](https://img.shields.io/github/stars/snek152?style=for-the-badge&logo=github&color=f5c518)
+**[snehilkakani.me](https://snehilkakani.me)** — [Builds](https://snehilkakani.me/builds) / [Music](https://snehilkakani.me/music) / [Lens](https://snehilkakani.me/lens) / [Reach](https://snehilkakani.me/reach)
 
-</div>
+---
 
-## About
+## Selected work
 
-I am a Computer Science student at Cal Poly building products at the intersection of software, AI, and creativity.
-I work across full-stack engineering, AI systems, music production, and visual storytelling.
+- **[Fere](https://getfere.com)** — desktop platform that maps a local dev environment into a live
+  service graph: processes, ports, Docker containers and API routes in real time, with an in-app AI
+  assistant wired into the graph. Won 2nd place and $10K at Cal Poly's Innovation Quest.
+  · [code](https://github.com/fere-oss/fere)
+- **[GU-Net](https://github.com/snek152/GU_Net_Glioma_Segmentation_SRA)** — U-Net-based architecture
+  for segmenting diffuse gliomas in T2-FLAIR brain MRIs (BraTS 2021). 71.58% accuracy training on
+  just 1,647 images from 549 scans. Presented at UCSB, published in the Journal of Student Research.
+- **[Orbis](https://github.com/sbalaji09/Orbis)** — AI agent observability: execution tracing,
+  cost and performance analytics, DAG visualization.
+- **[Impasse](https://youtu.be/VSajuy4SSEM)** — AI negotiation training platform with real-time
+  voice interaction and coaching agents. · [code](https://github.com/RahulThennarasu/impasse)
 
-## Core Projects
+Everything else, with dates and sources: **[snehilkakani.me/builds](https://snehilkakani.me/builds)**
 
-- **Impasse**: AI negotiation training platform with real-time voice interaction, coaching agents, and analytics.
-- **Orbis**: AI agent observability dashboard with execution tracing, cost/performance analytics, and DAG visualization.
-- **GU-Net Research**: Diffuse glioma segmentation model (71.58% accuracy), presented at UCSB and published in JSR.
-- **FloodSafe**: Atmospheric river prediction system with data pipeline, neural net, FastAPI backend, and web app.
-- **Steam Force**: Offline-capable STEAM learning app recognized with Synopsys Science Fair Honorable Mention.
-- **SwordSelection**: Medieval-themed Minecraft mod with custom mechanics and 2.2k+ downloads.
+---
 
-<div align="center">
+## Stack
 
-[![Impasse](https://img.shields.io/badge/Impasse-Repo-111827?style=flat-square&logo=github)](https://github.com/RahulThennarasu/impasse)
-[![Orbis](https://img.shields.io/badge/Orbis-Repo-111827?style=flat-square&logo=github)](https://github.com/sbalaji09/Orbis)
-[![GU-Net](https://img.shields.io/badge/GU--Net-Repo-111827?style=flat-square&logo=github)](https://github.com/snek152/GU_Net_Glioma_Segmentation_SRA)
-[![FloodSafe](https://img.shields.io/badge/FloodSafe-Repo-111827?style=flat-square&logo=github)](https://github.com/snek152/floodsafe)
-[![Steam Force](https://img.shields.io/badge/Steam%20Force-Repo-111827?style=flat-square&logo=github)](https://github.com/snek152/steamforce)
-[![SwordSelection](https://img.shields.io/badge/SwordSelection-Repo-111827?style=flat-square&logo=github)](https://github.com/snek152/SwordSelection)
+- **Languages** — TypeScript / JavaScript / Python / Java / C
+- **AI systems** — PyTorch / LangChain / LangGraph / Deepgram / Ollama
+- **Web** — React / Next.js / Tailwind / Node.js / FastAPI / Svelte / Electron
+- **Data & workflow** — PostgreSQL / Prisma / GraphQL / Supabase / Firebase / Git
 
-</div>
+An inventory of tools I've shipped with, not a ranking — proficiency bars are unfalsifiable.
 
-## Tech Stack
+---
 
-<div align="center">
-  <img src="https://skillicons.dev/icons?i=ts,js,react,nextjs,svelte,vue,tailwind,nodejs,python,fastapi,postgres,prisma,supabase,firebase,pytorch,java,c,git,figma&perline=10" />
-</div>
+## Beyond the terminal
 
-## GitHub Analytics
+- **[Music](https://snehilkakani.me/music)** — original beats, each tagged with its tempo and
+  playable in the page. Released albums with other artists; head of sound for live theatre.
+- **[Lens](https://snehilkakani.me/lens)** — photographs from Yosemite, New York, Germany and
+  California's Central Coast, with the capture settings kept alongside each frame.
 
-<div align="center">
-  <img height="170" src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=snek152&theme=github_dark" />
-  <img height="170" src="https://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=snek152&theme=github_dark" />
-</div>
+---
 
-<div align="center">
-  <img height="170" src="https://streak-stats.demolab.com?user=snek152&theme=github-dark-blue&hide_border=true" />
-</div>
+[Résumé](https://snehilkakani.me/resume.pdf) / [LinkedIn](https://linkedin.com/in/snehilkakani) / [Email](mailto:kakanisnehil@gmail.com)
 
-<div align="center">
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=snek152&theme=github_dark" />
-</div>
-
-<div align="center">
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=snek152&bg_color=0d1117&color=58a6ff&line=2f81f7&point=f0f6fc&area=true&area_color=1f6feb&hide_border=true" />
-</div>
-
-## Beyond Code
-
-- Produce and engineer hip-hop and cinematic beats.
-- Shoot photography (travel, city, and landscape).
-- Perform in theatre and work in live sound design.
-
-```javascript
-export const snehil = {
-  pronouns: "he/him",
-  education: "Computer Science @ Cal Poly",
-  website: "https://snehilkakani.me",
-  currentlyBuilding: ["AI products", "full-stack apps", "creative tooling"],
-  interests: ["AI systems", "music production", "photography", "theatre"],
-  experience: [
-    "Lynbrook DevX Club (President / VP / Head of Frontend)",
-    "Freelance Website Developer",
-    "Director of Technology & CS Instructor @ STEMist Education",
-    "Music Producer & Audio Engineer (Independent)",
-  ],
-};
-```
+<sub>The site above is built with Next.js and Tailwind, and is open source in
+<a href="https://github.com/snek152/snehilkakani.me">this repo</a>.</sub>
