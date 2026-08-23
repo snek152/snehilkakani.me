@@ -1,32 +1,52 @@
-<img src="https://raw.githubusercontent.com/snek152/snehilkakani.me/main/public/linkedin_banner.jpg" alt="Snehil Kakani — Software Engineer, AI Engineer, Full-Stack Developer, Photographer, Music Producer, Audio Engineer" width="100%">
+<img src="https://raw.githubusercontent.com/snek152/snehilkakani.me/main/app/opengraph-image.png" alt="Snehil Kakani — software engineer, music producer and photographer" width="100%">
 
-# Snehil Kakani
+Building intelligent systems with a focus on creating accessible user experiences. Exploring music
+production, photography, and video games in my free time. Published researcher, NMSC finalist, and
+entrepreneurial award winner.
 
-Software engineer. CS at Cal Poly SLO, currently interning at **Lindy** in San Francisco on
-infrastructure for a high-volume AI agent platform.
-
-I write software, produce beats, and shoot photographs. Three disciplines, not one job and two
-hobbies — each one has real work behind it rather than a line on a résumé.
-
-**[snehilkakani.me](https://snehilkakani.me)** — [Builds](https://snehilkakani.me/builds) / [Music](https://snehilkakani.me/music) / [Lens](https://snehilkakani.me/lens) / [Reach](https://snehilkakani.me/reach)
+**[snehilkakani.me](https://snehilkakani.me)**
 
 ---
 
-## Selected work
+- **Currently building** — Software and agentic infra @ Lindy
+- **Studying** — Computer Science @ Cal Poly SLO
+- **Based in** — Bay Area, CA
+- **Seeking** — Software engineering internships
 
-- **[Fere](https://getfere.com)** — desktop platform that maps a local dev environment into a live
-  service graph: processes, ports, Docker containers and API routes in real time, with an in-app AI
-  assistant wired into the graph. Won 2nd place and $10K at Cal Poly's Innovation Quest.
-  · [code](https://github.com/fere-oss/fere)
-- **[GU-Net](https://github.com/snek152/GU_Net_Glioma_Segmentation_SRA)** — U-Net-based architecture
-  for segmenting diffuse gliomas in T2-FLAIR brain MRIs (BraTS 2021). 71.58% accuracy training on
-  just 1,647 images from 549 scans. Presented at UCSB, published in the Journal of Student Research.
-- **[Orbis](https://github.com/sbalaji09/Orbis)** — AI agent observability: execution tracing,
-  cost and performance analytics, DAG visualization.
-- **[Impasse](https://youtu.be/VSajuy4SSEM)** — AI negotiation training platform with real-time
-  voice interaction and coaching agents. · [code](https://github.com/RahulThennarasu/impasse)
+---
 
-Everything else, with dates and sources: **[snehilkakani.me/builds](https://snehilkakani.me/builds)**
+## [Builds](https://snehilkakani.me/builds)
+
+Selected projects and tools
+
+- **[Fere](https://getfere.com)** — a desktop platform that maps a local dev environment into a
+  live, interactive service graph, tracking processes, ports, Docker containers, and API routes in
+  real time, with an in-app AI assistant wired into the graph. Won 2nd place ($10K) at Cal Poly's
+  Innovation Quest. · [code](https://github.com/fere-oss/fere)
+- **[GU-Net](https://github.com/snek152/GU_Net_Glioma_Segmentation_SRA)** — a novel U-Net-based
+  architecture for segmenting diffuse gliomas in T2-FLAIR brain MRIs from the BraTS 2021 dataset,
+  achieving 71.58% accuracy while training on just 1,647 images from 549 scans. Presented at UCSB
+  and published in the Journal of Student Research.
+- **[Orbis](https://github.com/sbalaji09/Orbis)** — a full-stack observability platform and Python
+  SDK for devs to instrument and track AI agent executions, costs, and performance in real time,
+  with interactive DAG visualizations mapping agent execution graphs.
+- **[Impasse](https://youtu.be/VSajuy4SSEM)** — a full-stack AI negotiation simulator with agentic
+  opponent, coaching, and analysis agents running concurrently, built at a 24-hour hackathon.
+  · [code](https://github.com/RahulThennarasu/impasse)
+
+## [Music](https://snehilkakani.me/music)
+
+Beats and production
+
+Original hip-hop beats, playable in the page and listed with tempo and length. Released albums with
+other artists; head of sound for live theatre.
+
+## [Lens](https://snehilkakani.me/lens)
+
+Photography portfolio
+
+Photographs from Yosemite, New York, Germany and California's Central Coast, with exposure, shutter
+speed, aperture and ISO details.
 
 ---
 
@@ -37,20 +57,8 @@ Everything else, with dates and sources: **[snehilkakani.me/builds](https://sneh
 - **Web** — React / Next.js / Tailwind / Node.js / FastAPI / Svelte / Electron
 - **Data & workflow** — PostgreSQL / Prisma / GraphQL / Supabase / Firebase / Git
 
-An inventory of tools I've shipped with, not a ranking — proficiency bars are unfalsifiable.
-
 ---
 
-## Beyond the terminal
+Open to internships, collaborations, and interesting problems.
 
-- **[Music](https://snehilkakani.me/music)** — original beats, each tagged with its tempo and
-  playable in the page. Released albums with other artists; head of sound for live theatre.
-- **[Lens](https://snehilkakani.me/lens)** — photographs from Yosemite, New York, Germany and
-  California's Central Coast, with the capture settings kept alongside each frame.
-
----
-
-[Résumé](https://snehilkakani.me/resume.pdf) / [LinkedIn](https://linkedin.com/in/snehilkakani) / [Email](mailto:kakanisnehil@gmail.com)
-
-<sub>The site above is built with Next.js and Tailwind, and is open source in
-<a href="https://github.com/snek152/snehilkakani.me">this repo</a>.</sub>
+[Résumé](https://snehilkakani.me/resume.pdf) / [GitHub](https://github.com/snek152) / [LinkedIn](https://linkedin.com/in/snehilkakani) / [Email](mailto:kakanisnehil@gmail.com)
