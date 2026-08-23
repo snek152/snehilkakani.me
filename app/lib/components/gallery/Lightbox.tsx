@@ -302,7 +302,12 @@ export default function Lightbox({
               ref={frameRef}
               data-testid="lightbox-frame"
               className="relative flex touch-none items-center justify-center"
-              style={{ width: lightboxSizesFor(photo.image), height: "min(76vh, 780px)", x, y }}
+              style={{
+                width: lightboxSizesFor(photo.image),
+                aspectRatio: `${getPhotoDims(photo.image).w} / ${getPhotoDims(photo.image).h}`,
+                x,
+                y,
+              }}
               onPointerDown={handlePointerDown}
               onPointerMove={handlePointerMove}
               onPointerUp={endDrag}
@@ -325,7 +330,7 @@ export default function Lightbox({
                     sizes={lightboxSizesFor(layer.photo.image)}
                     priority
                     onLoad={() => handleLayerLoad(layer.key)}
-                    className="block max-h-[76vh] w-auto max-w-[88vw] object-contain"
+                    className="block h-full w-full object-contain"
                   />
                 </motion.div>
               ))}

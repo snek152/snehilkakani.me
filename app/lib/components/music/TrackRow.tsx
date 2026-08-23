@@ -52,7 +52,7 @@ export default function TrackRow({
         onClick={onToggle}
         aria-pressed={isPlayingRow}
         aria-label={`${isLoadingRow ? "Cancel loading" : isPlayingRow ? "Pause" : "Play"} ${beat.name}, ${beat.category}, ${beat.tempo} BPM`}
-        className={`grid w-full grid-cols-1 items-center gap-x-4 gap-y-1 px-2 py-3.5 text-left transition-[background-color,opacity] duration-[120ms] ease-[var(--ease-press)] active:opacity-80 lg:grid-cols-[minmax(11rem,1fr)_minmax(0,2fr)_auto_auto] ${
+        className={`grid w-full grid-cols-1 items-center gap-x-4 gap-y-1 px-2 py-3.5 text-left transition-[background-color,opacity] duration-[120ms] ease-[var(--ease-press)] active:opacity-80 lg:grid-cols-[minmax(11rem,1fr)_auto_auto] ${
           isActive ? "" : "hover:bg-white/[0.02]"
         }`}
       >
@@ -101,9 +101,6 @@ export default function TrackRow({
           </span>
         </span>
 
-        <span className="block truncate pl-9 font-sans text-[length:var(--text-meta)] tracking-[var(--track-text-sm)] text-dim2 lg:pl-0">
-          {beat.description}
-        </span>
 
         <span className="hidden font-sans text-[length:var(--text-micro)] capitalize tracking-[var(--track-text-sm)] text-dim2 lg:block">
           {beat.category}

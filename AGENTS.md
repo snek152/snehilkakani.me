@@ -136,9 +136,10 @@ Any element at `--text-meta` or `--text-micro` coloured `text-dim`/`text-dim2`
 takes it. Uppercase micro-labels keep their own positive `0.08em` instead, and
 `text-fg` text takes neither.
 
-`Sidebar`'s Home links render `public/brand-mark.svg` directly at 32×32
-through `next/image` with the optimizer bypassed (`unoptimized`), so the
-browser gets the all-white 152 ligature source unmodified. The source keeps
+`Sidebar`'s Home links render the transparent `public/brand-mark.svg` directly
+at 32×32 through `next/image` with the optimizer bypassed (`unoptimized`), so
+the white 152 ligature sits on the nav material without its own background
+plate. The source keeps
 the actual Clash Display Bold numeral outlines intact, then rotates and
 overlaps them: the `1` enters the `5` at full stroke weight, and the `2` is
 painted last so its shoulder absorbs the lower junction into one clean
@@ -189,14 +190,15 @@ standing in for depth, and never by a corner radius above `rounded-sm`.
 the page; it is 3 steps of lightness away from `--bg`, and that is the whole
 range the design uses.
 
-Three shadow values exist and all three are doing a job no hairline can, so
-the earlier flat claim that "`shadow-*` appears nowhere" was simply false —
-it was written from the convention rather than from the code. What is banned
-is a shadow used as *elevation on a card*. What exists: `Sidebar`'s expanded
-rail casts a real directional shadow so it reads as a panel over the page
-rather than a wider strip of it; `ScrollProgressRail`'s fill carries an accent
-bloom; `OrbitStage`'s node carries a 1px accent ring. Depth in this design is
-expressed by DEFOCUS, not by drop shadow — see the Light section below.
+Four shadow values exist and all four are doing a job no hairline can, so the
+earlier flat claim that "`shadow-*` appears nowhere" was simply false — it was
+written from the convention rather than from the code. What is banned is a
+shadow used as *elevation on a card*. What exists: `Sidebar`'s expanded rail
+casts a real directional shadow so it reads as a panel over the page rather
+than a wider strip of it; `ScrollProgressRail`'s fill carries an accent bloom;
+`OrbitStage`'s node carries a 1px accent ring; `SignalRule` casts a restrained
+downward accent bloom from the drawn rule. Depth in this design is expressed
+by DEFOCUS, not by drop shadow — see the Light section below.
 
 **Skill tags are text, not chips.** `ProjectSkills` sets each skill as a list
 item prefixed by a `/` divider drawn with `before:content-['/']` in `--dim2`,
@@ -507,6 +509,13 @@ every number here was read from the source, not estimated.
   instead of a nested `AnimatePresence`, because a nested `AnimatePresence`
   previously stalled the *outer* dialog's own exit — its `onExitComplete`
   never fired.
+- `Lightbox` sizes its drag frame with `lightboxSizesFor()` plus the active
+  photo's intrinsic aspect ratio. Do not independently pin its height: when
+  `88vw` bound the width on mobile while the height stayed at `76vh`, the
+  resulting letterbox area sat above the backdrop and swallowed outside-image
+  taps. Every retained crossfade layer fills that same frame with
+  `object-contain`, so a prior photo with a different aspect ratio cannot
+  overflow the active frame and recreate the dead zone during navigation.
 - `Lightbox` implements its own Tab focus trap because it is a portal-less
   overlay stacked on top of the page, unlike `PlayerBar`; without it, Tab
   walks straight into the page content behind the dialog.

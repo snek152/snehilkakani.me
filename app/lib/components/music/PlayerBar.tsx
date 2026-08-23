@@ -53,7 +53,7 @@ export default function PlayerBar({
 
   if (!active) return null;
 
-  const secondary = error ?? active.description ?? "";
+  const secondary = error ?? "";
 
   const elapsed = currentTime > 0 ? formatTime(currentTime) : "0:00";
   const clock = knownDuration ? `${elapsed} / ${formatTime(displayDuration)}` : "--:-- / --:--";

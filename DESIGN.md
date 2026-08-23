@@ -160,8 +160,10 @@ stroke weight, then the `2` paints over the lower meeting so the three
 glyphs fuse without an added connector, colour split, or decorative seam.
 The transforms change position and angle only; the numeral paths remain the
 font's own. The assembly occupies 66% of its construction square, restoring
-the generous negative space of the old diagonal-thirds mark. The master and
-every raster use an opaque `--bg` plate for cross-theme contrast.
+the generous negative space of the old diagonal-thirds mark. The on-site SVG
+is transparent so it inherits the nav material beneath it; the raster browser
+and PWA icons mount the same white master on an opaque `--bg` plate for
+cross-theme contrast.
 `app/favicon.ico` packages a direct 32px render of the master plus a
 palette-snapped, pixel-hinted 16px entry derived from the same source; both
 preserve the `1` cap, `5` counter, and `2` baseline. This is a brand
