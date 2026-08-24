@@ -8,10 +8,10 @@ entrepreneurial award winner.
 
 ---
 
-- **Currently building** — Software and agentic infra @ Lindy
-- **Studying** — Computer Science @ Cal Poly SLO
-- **Based in** — Bay Area, CA
-- **Seeking** — Software engineering internships
+- **Currently building** - Software and agentic infra @ Lindy
+- **Studying** - Computer Science @ Cal Poly SLO
+- **Based in** - Bay Area, CA
+- **Seeking** - Software engineering internships
 
 ---
 
@@ -19,43 +19,29 @@ entrepreneurial award winner.
 
 Selected projects and tools
 
-- **[Fere](https://getfere.com)** — a desktop platform that maps a local dev environment into a
+- **[Fere](https://getfere.com)** - a desktop platform that maps a local dev environment into a
   live, interactive service graph, tracking processes, ports, Docker containers, and API routes in
   real time, with an in-app AI assistant wired into the graph. Won 2nd place ($10K) at Cal Poly's
   Innovation Quest. · [code](https://github.com/fere-oss/fere)
-- **[GU-Net](https://github.com/snek152/GU_Net_Glioma_Segmentation_SRA)** — a novel U-Net-based
+- **[GU-Net](https://github.com/snek152/GU_Net_Glioma_Segmentation_SRA)** - a novel U-Net-based
   architecture for segmenting diffuse gliomas in T2-FLAIR brain MRIs from the BraTS 2021 dataset,
   achieving 71.58% accuracy while training on just 1,647 images from 549 scans. Presented at UCSB
   and published in the Journal of Student Research.
-- **[Orbis](https://github.com/sbalaji09/Orbis)** — a full-stack observability platform and Python
+- **[Orbis](https://github.com/sbalaji09/Orbis)** - a full-stack observability platform and Python
   SDK for devs to instrument and track AI agent executions, costs, and performance in real time,
   with interactive DAG visualizations mapping agent execution graphs.
-- **[Impasse](https://youtu.be/VSajuy4SSEM)** — a full-stack AI negotiation simulator with agentic
+- **[Impasse](https://youtu.be/VSajuy4SSEM)** - a full-stack AI negotiation simulator with agentic
   opponent, coaching, and analysis agents running concurrently, built at a 24-hour hackathon.
   · [code](https://github.com/RahulThennarasu/impasse)
-
-## [Music](https://snehilkakani.me/music)
-
-Beats and production
-
-Original hip-hop beats, playable in the page and listed with tempo and length. Released albums with
-other artists; head of sound for live theatre.
-
-## [Lens](https://snehilkakani.me/lens)
-
-Photography portfolio
-
-Photographs from Yosemite, New York, Germany and California's Central Coast, with exposure, shutter
-speed, aperture and ISO details.
 
 ---
 
 ## Stack
 
-- **Languages** — TypeScript / JavaScript / Python / Java / C
-- **AI systems** — PyTorch / LangChain / LangGraph / Deepgram / Ollama
-- **Web** — React / Next.js / Tailwind / Node.js / FastAPI / Svelte / Electron
-- **Data & workflow** — PostgreSQL / Prisma / GraphQL / Supabase / Firebase / Git
+- **Languages** - TypeScript / JavaScript / Python / Java / C
+- **AI systems** - PyTorch / LangChain / LangGraph / Deepgram / Ollama
+- **Web** - React / Next.js / Tailwind / Node.js / FastAPI / Svelte / Electron
+- **Data & workflow** - PostgreSQL / Prisma / GraphQL / Supabase / Firebase / Git
 
 ---
 
