@@ -1,9 +1,9 @@
 import { routeMetadata } from "@/app/lib/metadata";
 
 export const metadata = routeMetadata({
-  title: "Lens - Photography",
+  title: "Photography",
   description:
-    "Photographs from Yosemite, New York, Germany and California's Central Coast, with exposure, shutter speed, aperture and ISO details.",
+    "Photography by Snehil Kakani from Yosemite, New York, Germany, and California’s Central Coast, with exposure details for each image.",
   path: "/lens",
 });
 

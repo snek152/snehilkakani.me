@@ -19,9 +19,9 @@ const switzer = localFont({
   display: "swap",
 });
 
-const title = "Snehil Kakani - Software Engineer Intern at Lindy";
+const title = "Snehil Kakani — Software Engineer";
 const description =
-  "Software engineer interning at Lindy, San Francisco, on infrastructure for a high-volume AI agent platform. CS at Cal Poly SLO. Projects, music, photography.";
+  "Snehil Kakani is a software engineer and CS student at Cal Poly SLO. Explore his work in intelligent systems, music production, and photography.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://snehilkakani.me"),

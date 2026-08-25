@@ -1,9 +1,9 @@
 import { routeMetadata } from "@/app/lib/metadata";
 
 export const metadata = routeMetadata({
-  title: "Reach - Contact",
+  title: "Contact",
   description:
-    "Get in touch about software engineering roles and internships, freelance web work, or music and photography. Email directly or use the form on the page.",
+    "Contact Snehil Kakani about software engineering opportunities, freelance web work, collaborations, or other interesting projects.",
   path: "/reach",
 });
 
