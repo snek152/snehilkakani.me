@@ -11,13 +11,15 @@ import { navItems, type NavItem } from "@/app/lib/nav";
 
 const SIDE_THIN = 52;
 const SIDE_FULL = 176;
+const ITEM_HEIGHT = 42;
+const INDICATOR_INSET = ITEM_HEIGHT * 0.18;
+const INDICATOR_HEIGHT = ITEM_HEIGHT - INDICATOR_INSET * 2;
 
 function SidebarItem({
   item,
   expanded,
   active,
   onNavigate,
-  onIndicatorSettled,
   transition,
 }: {
   item: NavItem;
@@ -25,7 +27,6 @@ function SidebarItem({
   active: boolean;
   onNavigate: (event: React.MouseEvent<HTMLAnchorElement>) => void;
   transition: Transition;
-  onIndicatorSettled: () => void;
 }) {
   const { href, label, Icon } = item;
   return (
@@ -42,15 +43,6 @@ function SidebarItem({
             : "hover:bg-white/[0.03] active:bg-white/[0.08]"
         }`}
       >
-        {active && (
-          <motion.span
-            layoutId="sidebar-active-indicator"
-            aria-hidden
-            className="absolute left-0 top-[18%] bottom-[18%] w-1 origin-center bg-accent"
-            transition={transition}
-            onLayoutAnimationComplete={onIndicatorSettled}
-          />
-        )}
         <span className="flex h-full w-[52px] flex-shrink-0 items-center justify-center">
           <Icon
             size={15}
@@ -87,6 +79,10 @@ export default function Sidebar() {
   const material = expanded
     ? "backdrop-blur-[14px] shadow-[6px_0_28px_-8px_rgba(0,0,0,0.85)]"
     : "";
+
+  const activeIndex = navItems.findIndex((item) =>
+    item.end ? pathname === item.href : pathname.startsWith(item.href)
+  );
 
   useEffect(() => {
     if (collapseAfterIndicatorRef.current || asideRef.current?.contains(document.activeElement)) return;
@@ -139,28 +135,34 @@ export default function Sidebar() {
         >
           <Image src="/brand-mark.svg" alt="" aria-hidden width={32} height={32} unoptimized priority className="size-8 object-contain" />
         </Link>
-        <nav className="self-center">
-          {navItems.map((item) => (
+        <nav className="relative self-center">
+          <motion.span
+            aria-hidden
+            className="pointer-events-none absolute left-0 w-1 bg-accent"
+            style={{ top: INDICATOR_INSET, height: INDICATOR_HEIGHT }}
+            initial={false}
+            animate={{
+              y: activeIndex >= 0 ? activeIndex * ITEM_HEIGHT : 0,
+              opacity: activeIndex >= 0 ? 1 : 0,
+            }}
+            transition={transition}
+            onAnimationComplete={() => {
+              if (!collapseAfterIndicatorRef.current) return;
+              collapseAfterIndicatorRef.current = false;
+              setExpanded(false);
+            }}
+          />
+          {navItems.map((item, index) => (
             <SidebarItem
               key={item.href}
               item={item}
               expanded={expanded}
-              active={
-                item.end
-                  ? pathname === item.href
-                  : pathname.startsWith(item.href)
-              }
-
-              onIndicatorSettled={() => {
-                if (!collapseAfterIndicatorRef.current) return;
-                collapseAfterIndicatorRef.current = false;
-                setExpanded(false);
-              }}
+              active={index === activeIndex}
               onNavigate={(event) => {
                 if (event.detail === 0) return;
                 inputModalityRef.current = "pointer";
                 pointerSuppressedUntilLeaveRef.current = true;
-                if (item.end ? pathname === item.href : pathname.startsWith(item.href)) {
+                if (index === activeIndex) {
                   setExpanded(false);
                   return;
                 }
