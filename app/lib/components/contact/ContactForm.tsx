@@ -136,8 +136,13 @@ export default function ContactForm() {
     };
   }, []);
 
-  const clearError = (key: keyof FieldErrors) =>
-    setErrors((prev) => (prev[key] ? { ...prev, [key]: undefined } : prev));
+  const reviseError = (key: keyof FieldErrors, value: string) =>
+    setErrors((prev) => {
+      if (prev[key] === undefined) return prev;
+      const problem =
+        key === "email" ? emailProblem(value) : value.trim() ? undefined : prev[key];
+      return problem === prev[key] ? prev : { ...prev, [key]: problem };
+    });
 
   const validateOnBlur = (key: keyof FieldErrors, value: string) => {
     if (!value.trim()) return;
@@ -268,7 +273,7 @@ export default function ContactForm() {
           value={name}
           onChange={(v) => {
             setName(v);
-            clearError("name");
+            reviseError("name", v);
           }}
           placeholder="Your name"
           autoComplete="name"
@@ -284,7 +289,7 @@ export default function ContactForm() {
           value={email}
           onChange={(v) => {
             setEmail(v);
-            clearError("email");
+            reviseError("email", v);
           }}
           placeholder="your@email.com"
           autoComplete="email"
@@ -310,7 +315,7 @@ export default function ContactForm() {
             value={message}
             onChange={(e) => {
               setMessage(e.target.value);
-              clearError("message");
+              reviseError("message", e.target.value);
             }}
             onBlur={() => validateOnBlur("message", message)}
             placeholder="What are you working on?"

@@ -69,7 +69,7 @@ export default function MusicPage() {
   };
   return (
     <div className="px-6 pb-12 pt-8 sm:px-8 lg:px-12 lg:pt-8">
-      <header className="relative min-h-10">
+      <header className="relative mb-12 min-h-10 sm:mb-4 lg:mb-8">
         <div
           ref={headingRef}
           tabIndex={-1}
@@ -83,7 +83,14 @@ export default function MusicPage() {
             className="font-display text-[length:var(--size-display-lg)] font-bold tracking-[var(--track-display-lg)] text-fg text-balance"
           />
         </div>
-        <div className="mt-4 flex items-center gap-3 sm:absolute sm:right-0 sm:top-1/2 sm:mt-0 sm:-translate-y-1/2">
+        <RouteSignal
+          scene="music"
+          label={activeBeat ? activeBeat.name : "Catalog signal"}
+          detail={activeDetail}
+          className="mt-4 sm:absolute sm:right-0 sm:top-1/2 sm:mt-0 sm:-translate-y-1/2"
+        />
+      </header>
+      <div className="sticky top-4 z-20 flex items-center sm:ml-auto sm:w-fit">
           <AnimatePresence>
             {activeBeat && (
               <PlayerBar
@@ -105,13 +112,7 @@ export default function MusicPage() {
               />
             )}
           </AnimatePresence>
-          <RouteSignal
-            scene="music"
-            label={activeBeat ? activeBeat.name : "Catalog signal"}
-            detail={activeDetail}
-          />
-        </div>
-      </header>
+      </div>
       <section aria-labelledby="music-feature-heading" className="mt-6">
         <h2
           id="music-feature-heading"

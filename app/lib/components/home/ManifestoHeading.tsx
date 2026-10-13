@@ -1,7 +1,17 @@
 "use client";
 
+import { useEffect } from "react";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import { useScrambleText } from "@/app/lib/hooks/useScrambleText";
+
+function hasScrambled(id: string): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    return sessionStorage.getItem(`scrambled:${id}`) === "1";
+  } catch {
+    return false;
+  }
+}
 
 export default function ManifestoHeading({
   text,
@@ -17,7 +27,17 @@ export default function ManifestoHeading({
   as?: "h1" | "h2";
 }) {
   const reduceMotion = useMotionPreference();
-  const display = useScrambleText(text, active, { skip: reduceMotion });
+  const alreadyScrambled = hasScrambled(id);
+  const display = useScrambleText(text, active, {
+    skip: reduceMotion || alreadyScrambled,
+  });
+
+  useEffect(() => {
+    if (!active || alreadyScrambled) return;
+    try {
+      sessionStorage.setItem(`scrambled:${id}`, "1");
+    } catch {}
+  }, [active, alreadyScrambled, id]);
 
   return (
     <Tag id={id} className={className}>

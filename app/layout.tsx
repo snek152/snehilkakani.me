@@ -19,7 +19,7 @@ const switzer = localFont({
   display: "swap",
 });
 
-const title = "Snehil Kakani — Software Engineer";
+const title = "Snehil Kakani, Software Engineer";
 const description =
   "Snehil Kakani is a software engineer and CS student at Cal Poly SLO. Explore his work in intelligent systems, music production, and photography.";
 

@@ -4,7 +4,7 @@ export const SITE_URL = "https://snehilkakani.me";
 export const SITE_NAME = "Snehil Kakani";
 
 const SOCIAL_IMAGE_ALT =
-  "Snehil Kakani — software engineer, music producer and photographer";
+  "Snehil Kakani: software engineer, music producer and photographer";
 
 export const OPENGRAPH_IMAGE = {
   url: "/opengraph-image.png",

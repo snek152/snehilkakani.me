@@ -72,7 +72,7 @@ export default function PlayerBar({
           : { clipPath: "inset(0 0 0 100%)", opacity: 0 }
       }
       transition={{ duration: reduceMotion ? 0 : beatTime(0.55), ease: EASE_OUT }}
-      className="flex w-40 min-w-0 flex-col gap-1.5 sm:w-56"
+      className="flex w-40 min-w-0 flex-col gap-1.5 rounded-sm border border-border bg-bg/95 px-3 py-2 backdrop-blur-[8px] sm:w-56"
     >
       <p className="sr-only" role={error ? "alert" : "status"} aria-live="polite">
         {playbackStatus}
