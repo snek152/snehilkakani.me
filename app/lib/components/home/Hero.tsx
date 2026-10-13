@@ -142,7 +142,7 @@ export default function Hero({
             Building intelligent systems with a focus on creating accessible
             user experiences. Exploring music production, photography, and video
             games in my free time. Published researcher, NMSC finalist, and
-            entrepreneurial award winner.
+            4x competition winner.
           </motion.p>
           <div className="order-2 mb-5 lg:mb-7">
             <RoleCycle />

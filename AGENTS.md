@@ -24,13 +24,13 @@ No test suite is configured.
 
 ### Pages & Routes
 
-| Route | Page file | Purpose |
-|---|---|---|
-| `/` | `app/page.tsx` | Home — hero, index strip, experience |
-| `/builds` | `app/builds/page.tsx` | Featured project, project rows, stack |
-| `/music` | `app/music/page.tsx` | Beat release list + inline route-scoped transport |
-| `/lens` | `app/lens/page.tsx` | Photography contact sheet + lightbox |
-| `/reach` | `app/reach/page.tsx` | Contact |
+| Route     | Page file             | Purpose                                           |
+| --------- | --------------------- | ------------------------------------------------- |
+| `/`       | `app/page.tsx`        | Home — hero, index strip, experience              |
+| `/builds` | `app/builds/page.tsx` | Featured project, project rows, stack             |
+| `/music`  | `app/music/page.tsx`  | Beat release list + inline route-scoped transport |
+| `/lens`   | `app/lens/page.tsx`   | Photography contact sheet + lightbox              |
+| `/reach`  | `app/reach/page.tsx`  | Contact                                           |
 
 Each route except `/` has a server `layout.tsx` beside it carrying that
 route's `metadata`; the page components are `"use client"` and so cannot
@@ -76,7 +76,7 @@ custom properties and exposed to Tailwind through `@theme inline`, so
 ```
 
 Three greys and one blue. The `--accent` / `--accent-text` split is the load-
-bearing rule in that table: the brand blue is *under* the 4.5:1 floor on this
+bearing rule in that table: the brand blue is _under_ the 4.5:1 floor on this
 background, so it may never carry a word. Reach for `--accent-text` the moment
 the blue thing is read rather than seen.
 
@@ -107,12 +107,12 @@ sibling page titles that each scaled differently.
 Display tiers — one size token paired with the tracking token of the same
 suffix:
 
-|Tier|Used for|Classes|
-|---|---|---|
-|XL|Hero name lockup|`text-[length:var(--size-display-xl)] font-bold tracking-[var(--track-display-xl)]`|
-|LG|Full-page titles (all four routes)|`text-[length:var(--size-display-lg)] font-bold tracking-[var(--track-display-lg)]`|
-|MD|Card + section headings|`text-[length:var(--size-display-md)] font-semibold tracking-[var(--track-display-md)]`|
-|SM|Small display labels (index labels, role cycler)|`text-[length:var(--size-display-sm)] font-semibold tracking-[var(--track-display-sm)]`|
+| Tier | Used for                                         | Classes                                                                                 |
+| ---- | ------------------------------------------------ | --------------------------------------------------------------------------------------- |
+| XL   | Hero name lockup                                 | `text-[length:var(--size-display-xl)] font-bold tracking-[var(--track-display-xl)]`     |
+| LG   | Full-page titles (all four routes)               | `text-[length:var(--size-display-lg)] font-bold tracking-[var(--track-display-lg)]`     |
+| MD   | Card + section headings                          | `text-[length:var(--size-display-md)] font-semibold tracking-[var(--track-display-md)]` |
+| SM   | Small display labels (index labels, role cycler) | `text-[length:var(--size-display-sm)] font-semibold tracking-[var(--track-display-sm)]` |
 
 Every tier is a `clamp()`, so a heading is the same size on every route at every
 width. Never add a `sm:`/`lg:` size step to a display element — the token
@@ -120,12 +120,12 @@ already scales.
 
 Text roles — four sizes, no others:
 
-|Token|Value|Used for|
-|---|---|---|
-|`--text-lead`|1.0625rem|the one intro paragraph per page|
-|`--text-body`|1rem|prose: descriptions, bullets, running copy|
-|`--text-meta`|0.875rem|metadata, labels, captions, nav, buttons, EXIF readouts|
-|`--text-micro`|0.8125rem|dense readouts: transport clock, notices|
+| Token          | Value     | Used for                                                |
+| -------------- | --------- | ------------------------------------------------------- |
+| `--text-lead`  | 1.0625rem | the one intro paragraph per page                        |
+| `--text-body`  | 1rem      | prose: descriptions, bullets, running copy              |
+| `--text-meta`  | 0.875rem  | metadata, labels, captions, nav, buttons, EXIF readouts |
+| `--text-micro` | 0.8125rem | dense readouts: transport clock, notices                |
 
 Prose pairs with `--leading-lead`/`--leading-body` and a measure cap
 (`--measure-lead` 56ch, `--measure-body` 66ch). Prose without a cap is a bug:
@@ -160,6 +160,7 @@ they were originally set for. Changing the display face means retuning them.
 ### Static Assets
 
 Public assets are organized by section under `public/`:
+
 - `public/beats/` — MP3 audio files
 - `public/photos/` — Photography portfolio images
 - `public/projects/` — Project screenshot/cover images
@@ -193,7 +194,7 @@ range the design uses.
 Four shadow values exist and all four are doing a job no hairline can, so the
 earlier flat claim that "`shadow-*` appears nowhere" was simply false — it was
 written from the convention rather than from the code. What is banned is a
-shadow used as *elevation on a card*. What exists: `Sidebar`'s expanded rail
+shadow used as _elevation on a card_. What exists: `Sidebar`'s expanded rail
 casts a real directional shadow so it reads as a panel over the page rather
 than a wider strip of it; `ScrollProgressRail`'s fill carries an accent bloom;
 `OrbitStage`'s node carries a 1px accent ring; `SignalRule` casts a restrained
@@ -215,9 +216,11 @@ clear 4.5:1 on `--bg`. Never dim text with an opacity modifier: `text-dim` is
 a colour chosen for contrast, `text-fg/70` is a guess at one.
 
 **Bullet points** (in lists)
+
 ```
 <span aria-hidden="true" className="mt-[0.65rem] h-1.5 w-1.5 flex-shrink-0 rounded-full bg-fg/40" />
 ```
+
 Parent `<li>` uses `flex items-start gap-2.5` — never `items-center` or
 `self-center` on the dot, which misaligns it on wrapped lines. The dot is
 decorative, so it is `aria-hidden`. This used to read `bg-primary/50`, and
@@ -229,12 +232,14 @@ other way around.
 
 **Animations** — standard entrance pattern, applied directly on a
 `motion.*` element:
+
 ```tsx
 initial={reduceMotion ? false : { opacity: 0, y: 20 }}
 whileInView={{ opacity: 1, y: 0 }}
 viewport={{ once: true, amount: 0.3 }}
 transition={{ duration: beats(0.75), ease: EASE_OUT }}
 ```
+
 `EASE_OUT` and `beats()` come from `app/lib/motion.ts` and `app/lib/tempo.ts` — a
 single BPM-92 timing grid (`app/lib/tempo.ts`) every entrance duration derives
 from, instead of components picking their own numbers in isolation. The shared
@@ -262,7 +267,7 @@ was deleted — nothing ever imported it, and every component had gone on
 writing the pattern above inline. Reintroducing a wrapper is fine, but it
 would have to actually be adopted.
 
-**Durations vs. springs** — the pattern above is for *choreography*: entrances
+**Durations vs. springs** — the pattern above is for _choreography_: entrances
 nobody interrupts, which is why a fixed duration on the BPM-92 grid is the
 right tool. Anything a hand can touch takes a spring instead, because a
 duration cannot answer new input — a grabbed or reversed drag has to animate
@@ -270,10 +275,10 @@ from wherever the value currently is. `app/lib/motion.ts` exports two, in
 Apple's two-parameter form (`bounce` is the damping ratio inverted, `duration`
 is the response — how fast it reaches the target, not how long it may take):
 
-|Spring|Values|For|
-|---|---|---|
-|`SPRING_UI`|`bounce 0`, `0.4`|chrome that repositions: the sidebar rail, panels|
-|`SPRING_MOMENTUM`|`bounce 0.2`, `0.4`|**only** a release that carried velocity|
+| Spring            | Values              | For                                               |
+| ----------------- | ------------------- | ------------------------------------------------- |
+| `SPRING_UI`       | `bounce 0`, `0.4`   | chrome that repositions: the sidebar rail, panels |
+| `SPRING_MOMENTUM` | `bounce 0.2`, `0.4` | **only** a release that carried velocity          |
 
 Overshoot is earned. `bounce > 0` belongs solely where the gesture itself had
 momentum — a flick or a throw. A panel that merely appeared has no momentum to
@@ -283,8 +288,8 @@ Two helpers back the gesture work, and both name a formula whose inlined form
 would explain nothing:
 
 - `project(velocity)` — where a flick comes to rest, by exponential decay (the
-  scroll-deceleration form, **not** `v²/2a`). Commit on the *projected* rest and
-  the velocity *sign*, never on raw distance dragged: that is what makes a short
+  scroll-deceleration form, **not** `v²/2a`). Commit on the _projected_ rest and
+  the velocity _sign_, never on raw distance dragged: that is what makes a short
   fast flick read as a throw instead of an ignored gesture.
 - `rubberband(overshoot, dimension)` — progressive resistance, and only ever
   past a real boundary. Applying it from the first pixel makes the element lag
@@ -373,7 +378,7 @@ more simply, it made the page feel like it was jumping around: the reader scroll
 and the section refuses to move, which reads as a broken page rather than as an
 effect, and no amount of correct measurement fixes that impression. `/`'s
 Experience section is an ordinary scrolling section (`ExperienceList`), and
-that is the right answer. Scroll may *affect* motion — `GridIndex` and the hero
+that is the right answer. Scroll may _affect_ motion — `GridIndex` and the hero
 accent lines already do — but it must never take the wheel.
 
 Each surface expresses its own reveal according to what its content actually is,
@@ -429,7 +434,7 @@ every number here was read from the source, not estimated.
   same-route, through `navItems`) is computed synchronously during render,
   not in an effect, so it is already in context by the time the incoming
   route's `template.tsx` reads its `initial` clip position. The tracking ref
-  advances in a *following* `useEffect` — this render reads the OLD ref
+  advances in a _following_ `useEffect` — this render reads the OLD ref
   value, and the effect sets it for the NEXT navigation.
 
 ### The intro gate
@@ -444,9 +449,9 @@ every number here was read from the source, not estimated.
   Safari private mode throws on access rather than returning `null`) and, if
   within `LOADER_INTERVAL_MS` (24h), sets `data-loader-seen="1"` on `<html>`.
   `globals.css` keys `html[data-loader-seen="1"] [data-loader] { display:
-  none; }` off that attribute — `display`, not `opacity`, because the layer
+none; }` off that attribute — `display`, not `opacity`, because the layer
   must also stop swallowing the first click during hydration. The visit is
-  stamped seen by `stampLoaderSeen()` when the intro actually *finishes*, not
+  stamped seen by `stampLoaderSeen()` when the intro actually _finishes_, not
   when it starts, so closing the tab mid-animation does not suppress it for
   a day.
 - `suppressHydrationWarning` on `<html>` in `app/layout.tsx` is required, and
@@ -492,7 +497,7 @@ every number here was read from the source, not estimated.
 - `Lightbox` uses a manual dual-layer crossfade (old frame stays opaque
   underneath, new frame mounts and fades in over it, old layer is dropped)
   instead of a nested `AnimatePresence`, because a nested `AnimatePresence`
-  previously stalled the *outer* dialog's own exit — its `onExitComplete`
+  previously stalled the _outer_ dialog's own exit — its `onExitComplete`
   never fired.
 - `Lightbox` sizes its drag frame with `lightboxSizesFor()` plus the active
   photo's intrinsic aspect ratio. Do not independently pin its height: when
@@ -556,7 +561,7 @@ every number here was read from the source, not estimated.
 - `RoleCycle` exposes the full, comma-joined role list once, statically, in
   an `sr-only` span, and never `aria-live` (which would re-announce it every
   `HOLD_MS`). Two earlier approaches failed: a single `aria-live="off"` node
-  holding the churning glyphs stopped the churn being *announced* but still
+  holding the churning glyphs stopped the churn being _announced_ but still
   left mid-decode glyphs as the text a reader landed on; exposing only
   `ROLES[index]` fixed that but lost the cycle itself — the site's central
   "range" claim.
@@ -592,7 +597,7 @@ every number here was read from the source, not estimated.
   not three; a third step (splitting heading from bullets) reads as a
   cascade rather than "when, then what".
 - `DrawnRule`'s `DRAW_LEAD` is `240` (px, deliberately not `%`: a percentage
-  root margin resolves against the root's *width*, meaningless for a
+  root margin resolves against the root's _width_, meaningless for a
   vertical lead), tuned from two rejected values: `-6%` (~54px, too low to
   be watched) and a positive `72px` (started the draw below the fold, so it
   finished before the rule ever appeared). A rule within `DRAW_LEAD` of the
@@ -624,7 +629,7 @@ every number here was read from the source, not estimated.
 ### Metadata and data ordering
 
 - `routeMetadata()` (`app/lib/metadata.ts`) exists because a child
-  segment's `metadata.openGraph` / `metadata.twitter` *replace* the
+  segment's `metadata.openGraph` / `metadata.twitter` _replace_ the
   parent's object outright rather than merging field by field — a route
   setting only `openGraph: { title, description }` silently drops
   `og:site_name` / `og:locale` / `og:type`, and one setting only
@@ -694,3 +699,5 @@ every number here was read from the source, not estimated.
   (`scripts/gen-photo-dims.mjs`) after adding or removing photos.
 - `app/lib/nav.ts`'s `NavItem.end` marks the one route (`/`) that needs
   exact-match active state; every other route matches by prefix.
+
+NEVER run npm run build unless explicitly asked for.
