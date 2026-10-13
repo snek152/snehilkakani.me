@@ -11,6 +11,7 @@ import orbis from "@/public/projects/orbis.png";
 import fere from "@/public/projects/fere.jpg";
 import fere2 from "@/public/projects/fere-win.jpeg";
 import clearance from "@/public/projects/clearance.jpg";
+import watchdog from "@/public/projects/watchdog.jpg";
 import { StaticImageData } from "next/image";
 
 export type Project = {
@@ -81,17 +82,19 @@ export const projects: Project[] = [
     github: "https://github.com/Theswagblader/agents-in-production",
   },
   {
-    title: "FloodSafe: Atmospheric River Prediction",
-    subtitle: "January 2023 - March 2023",
+    title: "Watchdog: Illegal Wildlife Trade Detection",
+    subtitle: "October 2026",
     description:
-      "Assembled a dataset from scratch by scraping and processing historical weather data, then constructed a neural network for atmospheric river prediction, achieving over 95% accuracy. Built the full pipeline end-to-end, from scraping and train/test/val splitting to model training and evaluation. Deployed the model behind a FastAPI backend and built a web app for real-time predictions.",
-    image: floodsafe,
+      "Built a multi-agent system that catches illegal ivory listings on online marketplaces, which current technologies miss. Engineered three competing agents that debate in a dynamic order on Cisco's AGNTCY, calling specialists on demand, then extended it to live eBay listings where one flagged listing surfaces related listings and linked sellers. Won 1st place in the Cisco Cloud AI track at the UCSC AI Hackathon, sorting 99.2% of an adversarial dataset correctly.",
     skills: [
-      "pytorch computer vision",
-      "full-stack web development",
-      "data science & engineering",
+      "agentic ai development",
+      "cisco agntcy",
+      "fastapi & next.js",
+      "multi-agent orchestration",
     ],
-    github: "https://github.com/snek152/floodsafe",
+    image: watchdog,
+    github: "https://github.com/SrimanRatnapu/watchdog",
+    link: "https://youtu.be/Vn_vT54s7Kw",
   },
   {
     title: "Orbis: AI Agent Observability Dashboard",
@@ -106,6 +109,19 @@ export const projects: Project[] = [
       "postgresql & redis",
     ],
     github: "https://github.com/sbalaji09/Orbis",
+  },
+  {
+    title: "FloodSafe: Atmospheric River Prediction",
+    subtitle: "January 2023 - March 2023",
+    description:
+      "Assembled a dataset from scratch by scraping and processing historical weather data, then constructed a neural network for atmospheric river prediction, achieving over 95% accuracy. Built the full pipeline end-to-end, from scraping and train/test/val splitting to model training and evaluation. Deployed the model behind a FastAPI backend and built a web app for real-time predictions.",
+    image: floodsafe,
+    skills: [
+      "pytorch computer vision",
+      "full-stack web development",
+      "data science & engineering",
+    ],
+    github: "https://github.com/snek152/floodsafe",
   },
   {
     title: "ProCo: Code Contest Platform",
