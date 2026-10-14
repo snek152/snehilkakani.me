@@ -1,5 +1,43 @@
-import { ArrowUpRight, Github, LockKeyhole } from "lucide-react";
+import { ArrowUpRight, Github, LockKeyhole, Trophy } from "lucide-react";
 import type { Project } from "@/app/lib/data/projects";
+
+export function ProjectBlurb({ project }: { project: Project }) {
+  const { description, details, award } = project;
+  return (
+    <div>
+      <p className="max-w-[var(--measure-body)] text-[length:var(--text-body)] font-medium leading-[var(--leading-body)] text-fg text-pretty">
+        {description}
+      </p>
+      {details && (
+        <ul className="mt-3 flex max-w-[var(--measure-body)] flex-col gap-1.5">
+          {details.map((detail) => (
+            <li
+              key={detail}
+              className="flex items-start gap-2.5 text-[length:var(--text-body)] leading-[var(--leading-body)] text-dim"
+            >
+              <span
+                aria-hidden="true"
+                className="mt-[0.65rem] h-1.5 w-1.5 flex-shrink-0 rounded-full bg-fg/40"
+              />
+              {detail}
+            </li>
+          ))}
+        </ul>
+      )}
+      {award && (
+        <p className="mt-4 flex max-w-[var(--measure-body)] items-start gap-2 text-[length:var(--text-meta)] font-medium leading-snug text-accent-text">
+          <Trophy
+            size={16}
+            strokeWidth={1.75}
+            aria-hidden="true"
+            className="mt-px shrink-0 text-accent"
+          />
+          {award}
+        </p>
+      )}
+    </div>
+  );
+}
 
 export function ProjectSkills({ skills }: Pick<Project, "skills">) {
   return (

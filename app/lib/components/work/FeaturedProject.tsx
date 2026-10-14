@@ -8,40 +8,12 @@ import { EASE_OUT } from "@/app/lib/motion";
 import { beats } from "@/app/lib/tempo";
 import { dateRange } from "@/app/lib/format";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
-import { ProjectLinks, ProjectSkills } from "./ProjectMeta";
+import { ProjectBlurb, ProjectLinks, ProjectSkills } from "./ProjectMeta";
 
 export default function FeaturedProject({ project }: { project: Project }) {
   const reduceMotion = useMotionPreference();
   const [active, setActive] = useState(false);
-
-  const cropTransition = {
-    duration: reduceMotion ? 0 : beats(1),
-    ease: EASE_OUT,
-  };
-
   const secondary = project.secondaryImage;
-
-  const primaryImage = (
-    <div className="absolute inset-0">
-      <Image
-        src={project.image}
-        alt={project.title}
-        fill
-        priority
-        sizes={secondary ? "(min-width: 640px) 50vw, 100vw" : "(min-width: 1024px) 55vw, 100vw"}
-        className="object-cover"
-      />
-    </div>
-  );
-
-  const signalSeam = (
-    <motion.span
-      aria-hidden="true"
-      className="absolute inset-x-0 bottom-0 h-px origin-left bg-[linear-gradient(90deg,var(--accent),color-mix(in_srgb,var(--accent)_38%,transparent),transparent)]"
-      animate={{ scaleX: active ? 1 : 0.38 }}
-      transition={cropTransition}
-    />
-  );
 
   return (
     <motion.article
@@ -55,51 +27,14 @@ export default function FeaturedProject({ project }: { project: Project }) {
         if (!event.currentTarget.contains(event.relatedTarget))
           setActive(false);
       }}
-      className={`group relative grid overflow-hidden border-t border-border ${
-        secondary ? "" : "lg:grid-cols-[minmax(0,1.28fr)_minmax(20rem,0.72fr)]"
-      }`}
+      className="group relative grid gap-y-10 border-t border-border py-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-center lg:gap-x-12 lg:py-14"
     >
-      {secondary ? (
-        <div className="relative overflow-hidden">
-          <div className="grid grid-cols-1 border-b border-border sm:aspect-[2/1] sm:grid-cols-2">
-            <div className="relative aspect-[3/2] overflow-hidden sm:aspect-auto">
-              {primaryImage}
-            </div>
-            <div className="relative aspect-[3/2] overflow-hidden border-t border-border sm:aspect-auto sm:border-t-0 sm:border-l">
-              <div className="absolute inset-0">
-                <Image
-                  src={secondary}
-                  alt=""
-                  fill
-                  priority
-                  sizes="(min-width: 640px) 50vw, 100vw"
-                  className="object-cover"
-                />
-              </div>
-            </div>
-          </div>
-          {signalSeam}
-        </div>
-      ) : (
-        <div className="relative min-h-[260px] overflow-hidden border-b border-border sm:min-h-[340px] lg:min-h-[430px] lg:border-b-0 lg:border-r">
-          {primaryImage}
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-y-0 right-[18%] w-px bg-[linear-gradient(to_bottom,transparent,color-mix(in_srgb,var(--accent)_62%,transparent),transparent)]"
-          />
-          {signalSeam}
-        </div>
-      )}
+      <span
+        aria-hidden="true"
+        className="absolute left-0 top-0 h-px w-24 bg-[linear-gradient(90deg,var(--accent),transparent)]"
+      />
 
-      <div
-        className={`relative flex flex-col justify-end px-0 py-8 sm:py-10 lg:px-8 ${
-          secondary ? "" : "lg:py-12"
-        }`}
-      >
-        <span
-          aria-hidden="true"
-          className="absolute left-0 top-0 h-px w-24 bg-[linear-gradient(90deg,var(--accent),transparent)]"
-        />
+      <div className="flex flex-col">
         {project.subtitle && (
           <p className="mb-2 text-[length:var(--text-body)] tabular-nums tracking-[var(--track-text-sm)] text-dim">
             {dateRange(project.subtitle)}
@@ -108,15 +43,49 @@ export default function FeaturedProject({ project }: { project: Project }) {
         <h3 className="font-display text-[length:var(--size-display-md)] font-semibold leading-tight tracking-[var(--track-display-md)] text-fg text-balance">
           {project.title}
         </h3>
-        <p className="mt-3 text-[length:var(--text-body)] leading-[var(--leading-body)] text-dim">
-          {project.description}
-        </p>
+        <div className="mt-4">
+          <ProjectBlurb project={project} />
+        </div>
         <div className="mt-5">
           <ProjectSkills skills={project.skills} />
         </div>
         <div className="mt-6">
           <ProjectLinks project={project} />
         </div>
+      </div>
+
+      <div className="relative flex flex-col gap-3 max-lg:order-first lg:mb-10 lg:block">
+        <div className="relative overflow-hidden border border-border">
+          <Image
+            src={project.image}
+            alt={project.title}
+            priority
+            sizes="(min-width: 1024px) 58vw, 100vw"
+            className="h-auto w-full"
+          />
+          <motion.span
+            aria-hidden="true"
+            className="absolute inset-x-0 bottom-0 h-px origin-left bg-[linear-gradient(90deg,var(--accent),color-mix(in_srgb,var(--accent)_38%,transparent),transparent)]"
+            animate={{ scaleX: active ? 1 : 0.38 }}
+            transition={{
+              duration: reduceMotion ? 0 : beats(1),
+              ease: EASE_OUT,
+            }}
+          />
+        </div>
+        {secondary && (
+          <div className="bg-bg lg:absolute lg:-bottom-10 lg:-left-6 lg:w-[44%] lg:p-1.5">
+            <div className="relative overflow-hidden border border-border">
+              <Image
+                src={secondary}
+                alt=""
+                priority
+                sizes="(min-width: 1024px) 26vw, 100vw"
+                className="h-auto w-full"
+              />
+            </div>
+          </div>
+        )}
       </div>
     </motion.article>
   );

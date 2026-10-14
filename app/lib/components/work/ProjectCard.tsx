@@ -9,7 +9,7 @@ import { EASE_OUT, SPRING_UI } from "@/app/lib/motion";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import DrawnRule from "@/app/lib/components/shared/DrawnRule";
 import { beats } from "@/app/lib/tempo";
-import { ProjectLinks, ProjectSkills } from "./ProjectMeta";
+import { ProjectBlurb, ProjectLinks, ProjectSkills } from "./ProjectMeta";
 import { dateRange } from "@/app/lib/format";
 
 export default function ProjectCard({
@@ -75,19 +75,16 @@ export default function ProjectCard({
           className="block overflow-hidden"
         >
           <div className="grid gap-5 py-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-x-12">
-            <div className="relative aspect-[16/10] overflow-hidden">
+            <div className="relative self-start overflow-hidden">
               <Image
                 src={project.image}
                 alt={project.title}
-                fill
                 sizes="(min-width: 1024px) 46vw, 100vw"
-                className="object-cover"
+                className="h-auto w-full"
               />
             </div>
             <div className="flex flex-col justify-center">
-              <p className="max-w-[var(--measure-body)] text-[length:var(--text-body)] leading-[var(--leading-body)] text-dim">
-                {project.description}
-              </p>
+              <ProjectBlurb project={project} />
               <div className="mt-5">
                 <ProjectSkills skills={project.skills} />
               </div>
@@ -118,7 +115,7 @@ export default function ProjectCard({
       </div>
 
       <motion.div
-        className={`relative aspect-[16/10] overflow-hidden ${reversesTrajectory ? "lg:order-2" : ""}`}
+        className={`relative self-start overflow-hidden border border-border ${reversesTrajectory ? "lg:order-2" : ""}`}
         initial={reduceMotion ? false : "hidden"}
         whileInView="shown"
         viewport={{ once: true, margin: "100000px 0px -18% 0px" }}
@@ -141,9 +138,8 @@ export default function ProjectCard({
         <Image
           src={project.image}
           alt={project.title}
-          fill
           sizes="(min-width: 1024px) 56vw, 100vw"
-          className="object-cover"
+          className="h-auto w-full"
         />
         <motion.span
           aria-hidden="true"
@@ -189,9 +185,9 @@ export default function ProjectCard({
             delay: reduceMotion ? 0 : beats(0.3),
           }}
         >
-          <p className="mt-3 max-w-[var(--measure-body)] text-[length:var(--text-body)] leading-[var(--leading-body)] text-dim">
-            {project.description}
-          </p>
+          <div className="mt-3">
+            <ProjectBlurb project={project} />
+          </div>
           <div className="mt-5">
             <ProjectSkills skills={project.skills} />
           </div>

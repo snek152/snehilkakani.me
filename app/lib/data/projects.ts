@@ -1,4 +1,5 @@
 import drama from "@/public/projects/drama.jpg";
+import lapse from "@/public/projects/lapse.jpg";
 import sra from "@/public/projects/sranew.jpg";
 import genalt from "@/public/projects/genaltnew.jpg";
 import floodsafe from "@/public/projects/floodsafe.jpg";
@@ -18,9 +19,11 @@ export type Project = {
   title: string;
   subtitle?: string;
   description: string;
-  image: StaticImageData | string;
+  details?: string[];
+  award?: string;
+  image: StaticImageData;
 
-  secondaryImage?: StaticImageData | string;
+  secondaryImage?: StaticImageData;
   skills: string[];
   link?: string;
   github?: string;
@@ -32,7 +35,12 @@ export const projects: Project[] = [
     title: "Fere: AI-Powered Desktop Dev Tooling Platform",
     subtitle: "January 2026 - May 2026",
     description:
-      "Built a desktop platform that maps a local dev environment into a live, interactive service graph, tracking processes, ports, Docker containers, and API routes in real time. Won 2nd place ($10K) at Cal Poly's Innovation Quest. Designed an in-app AI assistant wired into the graph for querying, debugging, and proactive background monitoring with service-scoped context and adaptive suggestions.",
+      "A desktop dev tool that maps your local environment into a live, interactive service graph.",
+    details: [
+      "Tracks processes, ports, Docker containers, and API routes in real time",
+      "An in-app AI assistant queries, debugs, and monitors proactively with service-scoped context",
+    ],
+    award: "2nd place ($10K) · Cal Poly Innovation Quest",
     skills: ["electron", "typescript", "agentic ai", "desktop development"],
     image: fere,
     github: "https://github.com/fere-oss/fere",
@@ -40,52 +48,16 @@ export const projects: Project[] = [
     secondaryImage: fere2,
   },
   {
-    title: "Impasse: AI-Powered Negotiation Training Platform",
-    subtitle: "January 2026",
-    description:
-      "Engineered a full-stack AI negotiation simulator with agentic opponent, coaching, and analysis agents running concurrently at a 24-hour hackathon. Designed a multi-agent orchestration layer with real-time voice interaction via WebSockets, session analytics, and persistent storage.",
-    image: impasse,
-    skills: [
-      "next.js & tailwindcss",
-      "fastapi & websockets",
-      "agentic ai development",
-    ],
-    github: "https://github.com/RahulThennarasu/impasse",
-    link: "https://youtu.be/VSajuy4SSEM",
-  },
-  {
-    title: "GU-Net: Diffuse Glioma Segmentation Research",
-    subtitle: "June 2023 - July 2023",
-    description:
-      "Developed GU-Net, a novel U-Net-based architecture for segmenting diffuse gliomas in T2-FLAIR brain MRIs from the BraTS 2021 dataset, achieving 71.58% accuracy while training on just 1,647 images from 549 scans. Applied advanced data augmentation to compensate for the limited training data, aiming to make the model viable for underfunded hospitals with less imaging data on hand. Presented at UCSB and published in the Journal of Student Research.",
-    link: "/projects/gu_net_diffuse_glioma_segmentation.pdf",
-    github: "https://github.com/snek152/GU_Net_Glioma_Segmentation_SRA",
-    image: sra,
-    skills: [
-      "pytorch neural network",
-      "medical imaging",
-      "research & presentation",
-    ],
-  },
-  {
-    title: "Clearance: Car Repair Shop Agent",
-    subtitle: "June 2026",
-    description:
-      "Built a FastAPI agent that lets a car repair shop's sales, manager, and technician roles query jobs and generate quotes through one interface. Scoped every tool call to per-user Scalekit connected accounts so a technician's access denies at the identity layer before reaching an external tool, and grounded quotes in real job history via Actian VectorAI retrieval. Won 1st place ($500) in the Actian VectorAI DB track at the Scalekit x Actian x Render hackathon.",
-    image: clearance,
-    skills: [
-      "fastapi & python",
-      "agentic ai development",
-      "role-based identity scoping",
-      "vector db retrieval",
-    ],
-    github: "https://github.com/Theswagblader/agents-in-production",
-  },
-  {
     title: "Watchdog: Illegal Wildlife Trade Detection",
     subtitle: "October 2026",
     description:
-      "Built a multi-agent system that catches illegal ivory listings on online marketplaces, which current technologies miss. Engineered three competing agents that debate in a dynamic order on Cisco's AGNTCY, calling specialists on demand, then extended it to live eBay listings where one flagged listing surfaces related listings and linked sellers. Won 1st place in the Cisco Cloud AI track at the UCSC AI Hackathon, sorting 99.2% of an adversarial dataset correctly.",
+      "A multi-agent system that catches illegal ivory listings on online marketplaces, which current technologies miss.",
+    details: [
+      "Three competing agents debate in a dynamic order on Cisco's AGNTCY, calling specialists on demand",
+      "Extended to live eBay listings: one flagged listing surfaces related listings and linked sellers",
+      "Sorted 99.2% of an adversarial dataset correctly",
+    ],
+    award: "1st place ($4K in iPad Pros) · Cisco Cloud AI track, UCSC AI Hackathon",
     skills: [
       "agentic ai development",
       "cisco agntcy",
@@ -97,10 +69,67 @@ export const projects: Project[] = [
     link: "https://youtu.be/Vn_vT54s7Kw",
   },
   {
+    title: "Lapse: Medicaid Coverage Retention Engine",
+    subtitle: "September 2026",
+    description:
+      "A web app that keeps qualifying Medicaid patients covered, clearing 39% more than the state's check.",
+    details: [
+      "An AI pipeline pulls verified exemption evidence from clinical notes, so doctors can sign off",
+      "An outreach loop emails or calls patients for the info they need to renew, in their native language",
+    ],
+    award:
+      "3rd place ($2K) · Healthcare AI Hackathon, judged by NEA, Pear VC, AWS, OpenAI, and Stanford Medicine",
+    image: lapse,
+    skills: ["next.js", "aws bedrock", "openai", "healthcare ai"],
+    github: "https://github.com/sbalaji09/lapse",
+  },
+  {
+    title: "Clearance: Car Repair Shop Agent",
+    subtitle: "June 2026",
+    description:
+      "A FastAPI agent that lets a car repair shop's sales, manager, and technician roles query jobs and generate quotes through one interface.",
+    details: [
+      "Every tool call scoped to per-user Scalekit accounts, so a technician is denied at the identity layer",
+      "Quotes grounded in real job history via Actian VectorAI retrieval",
+    ],
+    award:
+      "1st place ($500) · Actian VectorAI DB track, Scalekit x Actian x Render hackathon",
+    image: clearance,
+    skills: [
+      "fastapi & python",
+      "agentic ai development",
+      "role-based identity scoping",
+      "vector db retrieval",
+    ],
+    github: "https://github.com/Theswagblader/agents-in-production",
+  },
+  {
+    title: "Impasse: AI-Powered Negotiation Training Platform",
+    subtitle: "January 2026",
+    description:
+      "A full-stack AI negotiation simulator with opponent, coaching, and analysis agents running concurrently.",
+    details: [
+      "Made in 24 hours at a hackathon",
+      "Multi-agent orchestration with real-time voice over WebSockets, session analytics, and persistent storage",
+    ],
+    image: impasse,
+    skills: [
+      "next.js & tailwindcss",
+      "fastapi & websockets",
+      "agentic ai development",
+    ],
+    github: "https://github.com/RahulThennarasu/impasse",
+    link: "https://youtu.be/VSajuy4SSEM",
+  },
+  {
     title: "Orbis: AI Agent Observability Dashboard",
     subtitle: "October 2025 - December 2025",
     description:
-      "Built a full-stack observability platform and Python SDK for devs to instrument and track AI agent executions, costs, and performance in real time. Engineered interactive DAG visualizations mapping agent execution graphs, integrated prompt versioning with rollback, and built cost analytics across runs.",
+      "An observability platform and Python SDK for tracking AI agent executions, costs, and performance in real time.",
+    details: [
+      "Interactive DAG visualizations of agent execution graphs",
+      "Prompt versioning with rollback, and cost analytics across runs",
+    ],
     image: orbis,
     skills: [
       "next.js & tailwindcss",
@@ -111,23 +140,14 @@ export const projects: Project[] = [
     github: "https://github.com/sbalaji09/Orbis",
   },
   {
-    title: "FloodSafe: Atmospheric River Prediction",
-    subtitle: "January 2023 - March 2023",
-    description:
-      "Assembled a dataset from scratch by scraping and processing historical weather data, then constructed a neural network for atmospheric river prediction, achieving over 95% accuracy. Built the full pipeline end-to-end, from scraping and train/test/val splitting to model training and evaluation. Deployed the model behind a FastAPI backend and built a web app for real-time predictions.",
-    image: floodsafe,
-    skills: [
-      "pytorch computer vision",
-      "full-stack web development",
-      "data science & engineering",
-    ],
-    github: "https://github.com/snek152/floodsafe",
-  },
-  {
     title: "ProCo: Code Contest Platform",
     subtitle: "September 2022 - June 2025",
     description:
-      "Contributed to and maintained a competitive programming platform for 200+ users across 4 high schools. Engineered a remote code execution and grading server, SQL-based user management, and a responsive contest UI.",
+      "A competitive programming platform serving 200+ users across 4 high schools.",
+    details: [
+      "Remote code execution and grading server",
+      "SQL-based user management and a responsive contest UI",
+    ],
     link: "https://proco.vercel.app",
     privateRepo: true,
     skills: [
@@ -139,24 +159,76 @@ export const projects: Project[] = [
     image: proco,
   },
   {
-    title: "Website Development for Lynbrook Drama Department",
-    link: "https://bit.ly/s74lhs",
-    github: "https://github.com/lynbrookstudio74/studio74website",
-    subtitle: "April 2024 - October 2024",
+    title: "GU-Net: Diffuse Glioma Segmentation Research",
+    subtitle: "June 2023 - July 2023",
     description:
-      "Architected a custom design and responsive website for Lynbrook Drama to showcase productions, events, and crew info. Implemented a custom GitHub-based CMS for seamless updates, enabling non-technical officers to maintain it themselves for 2+ years.",
-    image: drama,
-    skills: [
-      "next.js & tailwindcss",
-      "client collaboration",
-      "responsive design & implementation",
+      "A novel U-Net-based architecture for segmenting diffuse gliomas in T2‑FLAIR brain MRIs.",
+    details: [
+      "71.58% accuracy on BraTS 2021, trained on just 1,647 images from 549 scans",
+      "Heavy data augmentation to make it viable for underfunded hospitals with less imaging data",
     ],
+    award: "Presented at UCSB · Published in the Journal of Student Research",
+    link: "/projects/gu_net_diffuse_glioma_segmentation.pdf",
+    github: "https://github.com/snek152/GU_Net_Glioma_Segmentation_SRA",
+    image: sra,
+    skills: [
+      "pytorch neural network",
+      "medical imaging",
+      "research & presentation",
+    ],
+  },
+  {
+    title: "FloodSafe: Atmospheric River Prediction",
+    subtitle: "January 2023 - March 2023",
+    description:
+      "A neural network that predicts atmospheric rivers, with a web app for real-time predictions.",
+    details: [
+      "95%+ accuracy on a dataset assembled from scratch by scraping historical weather data",
+      "The full pipeline, from scraping and splits to training, evaluation, and a FastAPI backend",
+    ],
+    image: floodsafe,
+    skills: [
+      "pytorch computer vision",
+      "full-stack web development",
+      "data science & engineering",
+    ],
+    github: "https://github.com/snek152/floodsafe",
+  },
+  {
+    title: "GenAlt: AI-Powered Web Accessibility",
+    subtitle: "November 2022 - April 2023",
+    description:
+      "An AI prototype that improves web accessibility for the visually impaired.",
+    award: "Horn Entrepreneurship through Equity Award · Diamond Challenge 2023",
+    image: genalt,
+    skills: ["ml model deployment", "business development", "public speaking"],
+    link: "/projects/genalt.jpg",
+    privateRepo: true,
+  },
+  {
+    title: "Steam Force: Accessible STEAM Learning App",
+    subtitle: "November 2021 - April 2022",
+    description:
+      "A Next.js and Firebase web app delivering interactive STEAM education to underprivileged kids.",
+    details: [
+      "Quiz-based lessons across science, tech, engineering, art, and math",
+      "Offline-capable and accessible regardless of internet access or hardware",
+    ],
+    award:
+      "Honorable Mention, Physical Science and Engineering · 2022 Synopsys Science Fair",
+    image: steamforce,
+    skills: [
+      "next.js & firebase",
+      "accessibility & ux design",
+      "constraint optimization",
+    ],
+    github: "https://github.com/snek152/steam-force",
   },
   {
     title: "Website Development for EuclidLearn",
     subtitle: "November 2023 - February 2024",
     description:
-      "Designed and developed a custom website for EuclidLearn, a consulting company focused on high school test prep, emphasizing user experience and responsive design.",
+      "A custom website for EuclidLearn, a high school test prep consultancy, built around user experience and responsive design.",
     image: euclidlearn,
     skills: [
       "next.js & tailwindcss",
@@ -167,26 +239,20 @@ export const projects: Project[] = [
     link: "https://euclidlearn.vercel.app",
   },
   {
-    title: "GenAlt: AI-Powered Web Accessibility",
-    subtitle: "November 2022 - April 2023",
+    title: "Website Development for Lynbrook Drama Department",
+    link: "https://bit.ly/s74lhs",
+    github: "https://github.com/lynbrookstudio74/studio74website",
+    subtitle: "April 2024 - October 2024",
     description:
-      "Collaborated on an AI prototype improving web accessibility for the visually impaired. Received the Horn Entrepreneurship through Equity Award at the Diamond Challenge 2023.",
-    image: genalt,
-    skills: ["ml model deployment", "business development", "public speaking"],
-    link: "/projects/genalt.jpg",
-    privateRepo: true,
-  },
-  {
-    title: "Steam Force: Accessible STEAM Learning App",
-    subtitle: "November 2021 - April 2022",
-    description:
-      "Built a Next.js and Firebase web app delivering interactive STEAM education to underprivileged kids, spanning units across science, tech, engineering, art, and math with quiz-based lessons throughout. Focused on offline-capable, accessible design so the app worked regardless of a student's internet access or hardware. Won Honorable Mention in Physical Science and Engineering at the 2022 Synopsys Science Fair.",
-    image: steamforce,
-    skills: [
-      "next.js & firebase",
-      "accessibility & ux design",
-      "constraint optimization",
+      "A custom, responsive website for Lynbrook Drama showcasing productions, events, and crew info.",
+    details: [
+      "A GitHub-based CMS lets non-technical officers maintain it themselves, for 2+ years and counting",
     ],
-    github: "https://github.com/snek152/steam-force",
+    image: drama,
+    skills: [
+      "next.js & tailwindcss",
+      "client collaboration",
+      "responsive design & implementation",
+    ],
   },
 ];
