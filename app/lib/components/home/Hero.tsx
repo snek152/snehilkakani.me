@@ -74,11 +74,11 @@ export default function Hero({
   const STATUS = [
     {
       label: "Currently building",
-      value: `Software and agentic infra @ Lindy`,
+      value: `Agentic AI side projects`,
     },
     { label: "Studying", value: "Computer Science @ Cal Poly SLO" },
     { label: "Based in", value: "Bay Area, CA" },
-    { label: "Seeking", value: "Software engineering internships" },
+    { label: "Latest win", value: "1st, Cisco AI Hackathon" },
   ];
   const resumeLink = socialLinks.find((link) => link.label === "Résumé")!;
   const secondaryLinks = socialLinks.filter((link) => link.label !== "Résumé");
