@@ -27,12 +27,8 @@ export default function FeaturedProject({ project }: { project: Project }) {
         if (!event.currentTarget.contains(event.relatedTarget))
           setActive(false);
       }}
-      className="group relative grid gap-y-10 border-t border-border py-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-center lg:gap-x-12 lg:py-14"
+      className="group relative grid gap-y-10 pb-10 pt-2 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-center lg:gap-x-12 lg:pb-14 lg:pt-2"
     >
-      <span
-        aria-hidden="true"
-        className="absolute left-0 top-0 h-px w-24 bg-[linear-gradient(90deg,var(--accent),transparent)]"
-      />
 
       <div className="flex flex-col">
         {project.subtitle && (

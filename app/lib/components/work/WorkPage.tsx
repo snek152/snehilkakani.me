@@ -24,7 +24,7 @@ export default function WorkPage() {
     <div className="px-6 pb-12 pt-8 sm:px-8 lg:px-12 lg:pt-8">
       <header
         ref={headerRef}
-        className="relative mb-12 min-h-10 sm:mb-4 lg:mb-8"
+        className="relative mb-6 min-h-10 sm:mb-2 lg:mb-4"
       >
         <div className="relative z-10">
           <ManifestoHeading

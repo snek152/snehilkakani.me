@@ -69,7 +69,7 @@ export default function MusicPage() {
   };
   return (
     <div className="px-6 pb-12 pt-8 sm:px-8 lg:px-12 lg:pt-8">
-      <header className="relative mb-12 min-h-10 sm:mb-4 lg:mb-8">
+      <header className="relative mb-6 min-h-10 sm:mb-2 lg:mb-4">
         <div
           ref={headingRef}
           tabIndex={-1}
@@ -90,30 +90,28 @@ export default function MusicPage() {
           className="mt-4 sm:absolute sm:right-0 sm:top-1/2 sm:mt-0 sm:-translate-y-1/2"
         />
       </header>
-      <div className="sticky top-4 z-20 flex items-center sm:ml-auto sm:w-fit">
-          <AnimatePresence>
-            {activeBeat && (
-              <PlayerBar
-                key="player"
-                active={activeBeat}
-                error={error}
-                playbackState={playbackState}
-                currentTime={currentTime}
-                duration={duration}
-                displayDuration={activeDuration}
-                activeIndex={activeIndex}
-                totalTracks={beats.length}
-                onToggle={() =>
-                  activeIndex !== null && toggleTrack(activeIndex)
-                }
-                onSkip={skip}
-                onScrub={handleScrub}
-                onClose={handleClose}
-              />
-            )}
-          </AnimatePresence>
+      <div className="fixed bottom-4 right-4 z-30 sm:right-8">
+        <AnimatePresence>
+          {activeBeat && (
+            <PlayerBar
+              key="player"
+              active={activeBeat}
+              error={error}
+              playbackState={playbackState}
+              currentTime={currentTime}
+              duration={duration}
+              displayDuration={activeDuration}
+              activeIndex={activeIndex}
+              totalTracks={beats.length}
+              onToggle={() => activeIndex !== null && toggleTrack(activeIndex)}
+              onSkip={skip}
+              onScrub={handleScrub}
+              onClose={handleClose}
+            />
+          )}
+        </AnimatePresence>
       </div>
-      <section aria-labelledby="music-feature-heading" className="mt-6">
+      <section aria-labelledby="music-feature-heading">
         <h2
           id="music-feature-heading"
           className="sr-only"
