@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { useMotionPreference } from "./MotionPreference";
+import { HALFTONE_CELL, bayer } from "@/app/lib/halftone";
 
 const BANDS = 12;
 
@@ -17,12 +18,12 @@ const SCROLL_TIME_PER_PX = 0.0016;
 
 const SCROLL_PHASE_DAMPING = 0.055;
 const ENERGY_GAIN = 0.0024;
-const ENERGY_MAX = 0.32;
+const ENERGY_MAX = 0.5;
 const ENERGY_DAMPING = 0.09;
 
 const SPAN = 1.6;
 
-const AMPLITUDE_RATIO = 0.15;
+const AMPLITUDE_RATIO = 0.19;
 
 const DEPTH_RATIO = 1.05;
 
@@ -30,7 +31,7 @@ const Z_NEAR_LIMIT = 2.6;
 const Z_FAR_LIMIT = 4.1;
 const FOCAL = 7;
 
-const TIME_SCALE = 0.00016;
+const TIME_SCALE = 0.00027;
 
 const TWIST_SPEED = 0.31;
 const TWIST_AMP = 1.35;
@@ -51,6 +52,15 @@ const HALO_ALPHA_SHARE = 0.26;
 const BLOOM_WIDTH_SCALE = 5;
 const BLOOM_ALPHA_SHARE = 0.22;
 const BLOOM_BANDS = 4;
+
+const DOT_MAX = HALFTONE_CELL * 0.32;
+const DOT_GAIN = 6;
+const CORE_DOT_GAIN = 2.4;
+const DITHER_DEPTH = 0.45;
+const NOISE_FLOOR = 30;
+const BLOOM_PROFILE = [1, 0.62, 0.3];
+const DOT_ACCENT_FILL = "rgba(68, 120, 238, 0.36)";
+const DOT_NEUTRAL_FILL = "rgba(200, 205, 220, 0.2)";
 
 const POSTER_CORE_ALPHA_SCALE = 2.8;
 const POSTER_SOFT_BANDS = 1;
@@ -240,6 +250,9 @@ export default function WaveField({
     const pAlpha = new Float32Array(SAMPLES_MAX + 1);
     const pWidth = new Float32Array(SAMPLES_MAX + 1);
     const pDefocus = new Float32Array(SAMPLES_MAX + 1);
+    const hcanvas = document.createElement("canvas");
+    const hctx = hcanvas.getContext("2d", { willReadFrequently: true });
+    if (!hctx) return;
 
     const resize = () => {
       canvas.style.width = "100%";
@@ -251,6 +264,12 @@ export default function WaveField({
       canvas.width = Math.round(width * dpr);
       canvas.height = Math.round(height * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      hcanvas.width = Math.ceil(width / HALFTONE_CELL);
+      hcanvas.height = Math.ceil(height / HALFTONE_CELL);
+      hctx.setTransform(1 / HALFTONE_CELL, 0, 0, 1 / HALFTONE_CELL, 0, 0);
+      hctx.lineCap = "butt";
+      hctx.lineJoin = "round";
+      hctx.globalCompositeOperation = "lighter";
 
       ctx.lineCap = "butt";
       ctx.lineJoin = "round";
@@ -265,6 +284,7 @@ export default function WaveField({
 
     const draw = (timeMs: number) => {
       ctx.clearRect(0, 0, width, height);
+      hctx.clearRect(0, 0, width, height);
 
       ctx.globalCompositeOperation = "lighter";
       const t = timeMs * TIME_SCALE;
@@ -349,9 +369,9 @@ export default function WaveField({
           layer.alphaScale *
           (usesAccent ? (isPoster ? POSTER_ACCENT_ALPHA_SCALE : ACCENT_ALPHA_SCALE) : 1);
 
-        const passCount = isPoster ? 5 : 3;
+        const passes = isPoster ? [0, 1, 2, 3, 4] : [0, 1, 2];
         const visibleSample = samples;
-        for (let pass = 0; pass < passCount; pass++) {
+        for (const pass of passes) {
           const isBloom = pass === 0;
           const isHalo = pass === 1;
           const isSoftBloom = pass === 3 || pass === 4;
@@ -373,20 +393,29 @@ export default function WaveField({
             const bandAlpha = (aSum / count) * baseAlpha;
             const bandWidth = wSum / count;
             const bandDefocus = dSum / count;
-            ctx.beginPath();
-            ctx.moveTo(px[start], py[start]);
-            for (let s = start + 1; s <= end; s++) ctx.lineTo(px[s], py[s]);
+            const toDots = isBloom || !isPoster;
+            const g = toDots ? hctx : ctx;
+            g.beginPath();
+            g.moveTo(px[start], py[start]);
+            for (let s = start + 1; s <= end; s++) g.lineTo(px[s], py[s]);
 
             if (isBloom) {
-              ctx.lineWidth = bandWidth * layer.haloScale * BLOOM_WIDTH_SCALE * bandDefocus;
-              ctx.strokeStyle = `rgba(${rgb}, ${
-                (bandAlpha * BLOOM_ALPHA_SHARE) / bandDefocus
-              })`;
+              const w = bandWidth * layer.haloScale * BLOOM_WIDTH_SCALE * bandDefocus;
+              const a =
+                Math.min(1, (bandAlpha * BLOOM_ALPHA_SHARE * DOT_GAIN) / bandDefocus) /
+                BLOOM_PROFILE.length;
+              g.strokeStyle = `rgba(${rgb}, ${a})`;
+              for (const k of BLOOM_PROFILE) {
+                g.lineWidth = w * k;
+                g.stroke();
+              }
+              continue;
             } else if (isHalo) {
-              ctx.lineWidth = bandWidth * layer.haloScale * bandDefocus;
-              ctx.strokeStyle = `rgba(${rgb}, ${
-                (bandAlpha * HALO_ALPHA_SHARE) / bandDefocus
-              })`;
+              g.lineWidth = bandWidth * layer.haloScale * bandDefocus;
+              g.strokeStyle = `rgba(${rgb}, ${Math.min(
+                1,
+                (bandAlpha * HALO_ALPHA_SHARE * (toDots ? DOT_GAIN : 1)) / bandDefocus,
+              )})`;
             } else if (pass === 3 || pass === 4) {
               const [widthScale, alphaShare] = POSTER_SOFT_PASSES[pass - 3];
               ctx.lineWidth = bandWidth * layer.haloScale * widthScale * bandDefocus;
@@ -394,14 +423,40 @@ export default function WaveField({
                 (bandAlpha * POSTER_CORE_ALPHA_SCALE * alphaShare) / bandDefocus
               })`;
             } else {
-              ctx.lineWidth = bandWidth;
-              ctx.strokeStyle = `rgba(${rgb}, ${
-                isPoster ? bandAlpha * POSTER_CORE_ALPHA_SCALE : bandAlpha
-              })`;
+              g.lineWidth = toDots ? Math.max(bandWidth, HALFTONE_CELL * 0.8) : bandWidth;
+              g.strokeStyle = toDots
+                ? `rgba(${rgb}, ${Math.min(1, bandAlpha * CORE_DOT_GAIN)})`
+                : `rgba(${rgb}, ${bandAlpha * POSTER_CORE_ALPHA_SCALE})`;
             }
-            ctx.stroke();
+            g.stroke();
           }
         }
+      }
+
+      const gw = hcanvas.width;
+      const gh = hcanvas.height;
+      const cells = hctx.getImageData(0, 0, gw, gh).data;
+      for (let bucket = 0; bucket < 2; bucket++) {
+        ctx.fillStyle = bucket === 0 ? DOT_ACCENT_FILL : DOT_NEUTRAL_FILL;
+        ctx.beginPath();
+        for (let gy = 0; gy < gh; gy++) {
+          for (let gx = 0; gx < gw; gx++) {
+            const i = (gy * gw + gx) * 4;
+            const a = cells[i + 3];
+            if (a < NOISE_FLOOR) continue;
+            const accent = cells[i + 2] - cells[i] > 40 ? 0 : 1;
+            if (accent !== bucket) continue;
+            const v = Math.sqrt(a / 255);
+            if (v < bayer(gx, gy) * DITHER_DEPTH) continue;
+            const radius = DOT_MAX * Math.min(1, v * 1.1);
+            if (radius < 0.4) continue;
+            const dx = (gx + 0.5) * HALFTONE_CELL;
+            const dy = (gy + 0.5) * HALFTONE_CELL;
+            ctx.moveTo(dx + radius, dy);
+            ctx.arc(dx, dy, radius, 0, Math.PI * 2);
+          }
+        }
+        ctx.fill();
       }
     };
 

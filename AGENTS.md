@@ -625,6 +625,19 @@ none; }` off that attribute — `display`, not `opacity`, because the layer
 - `fadeUp`'s entrance blur is the one non-compositor CSS property used
   anywhere outside the wave canvas, deliberately scoped to bounded,
   one-shot entrances and never to anything continuous or gesture-driven.
+- `WaveField` and `CursorGlow` are halftone, not strokes. Both quantise to
+  one shared 8px grid (`app/lib/halftone.ts`, `HALFTONE_CELL`), so their
+  dots line up where they overlap, and both gate dot presence with the
+  same 4x4 Bayer matrix (`bayer()`), which turns soft falloff into
+  ordered dither rather than a smooth gradient. In `WaveField` the
+  ambient variant renders only two passes (bloom, core) into a 1/8-scale
+  offscreen canvas and reads it back with `getImageData`; each cell
+  becomes a dot sized by brightness. The crisp 1px filament and halo
+  strokes are deliberately gone from ambient: a solid line through the
+  middle of the page read as a rule and competed with content. The
+  `poster` variant (meta images) still draws its halo and soft passes as
+  strokes. If the readback costs frames on weak hardware, raise
+  `HALFTONE_CELL` before touching anything else.
 
 ### Metadata and data ordering
 
