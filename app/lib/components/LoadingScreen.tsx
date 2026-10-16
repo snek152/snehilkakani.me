@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import OrbitStage, { RELEASE_MS } from "./loader/OrbitStage";
+import DitherReveal from "./loader/DitherReveal";
 
 const COMPLETE_MS = 1500;
 const EXIT_MS = RELEASE_MS;
@@ -62,9 +63,9 @@ export default function LoadingScreen({ onDone }: { onDone: () => void }) {
       role="button"
       tabIndex={0}
       aria-label="Skip intro animation"
-      exit={{ opacity: 0, transition: { duration: EXIT_MS / 1000 } }}
-      className={`fixed inset-0 z-[9999] cursor-pointer overflow-hidden bg-bg outline-none ${
-        complete ? "pointer-events-none" : ""
+      exit={{ opacity: [1, 1, 0], transition: { duration: EXIT_MS / 1000, times: [0, 0.97, 1] } }}
+      className={`fixed inset-0 z-[9999] cursor-pointer overflow-hidden outline-none ${
+        complete ? "pointer-events-none" : "bg-bg"
       }`}
       onPointerDown={skip}
       onKeyDown={(event) => {
@@ -74,6 +75,7 @@ export default function LoadingScreen({ onDone }: { onDone: () => void }) {
         }
       }}
     >
+      <DitherReveal reveal={complete} durationMs={EXIT_MS} />
       <OrbitStage complete={complete} scale={2.1} />
     </motion.div>
   );

@@ -638,6 +638,21 @@ none; }` off that attribute — `display`, not `opacity`, because the layer
   `poster` variant (meta images) still draws its halo and soft passes as
   strokes. If the readback costs frames on weak hardware, raise
   `HALFTONE_CELL` before touching anything else.
+- Halftone stops at the two canvases and the loader exit. A wider pass was
+  tried and rejected: dotted `RouteSignal` traces, a dot-textured loader,
+  dotted hero grid lines, a dotted scroll rail and dot-column `BeatBars` all
+  read worse than the original solid strokes. Decoration that merely swaps
+  lines for dots is the failure; use dithering where it does a job.
+- `DitherReveal` is the loader's exit, one gesture with `OrbitStage`: the
+  tiles and lines collapse into the centre diamond (no spin, no fly-off; the
+  stage is gone by 50% of `RELEASE_MS`), then the page resolves outward from
+  that point. An opaque bg canvas, one pixel per half `HALFTONE_CELL` (4px: 8px
+  squares read as chunky blue confetti), erased by threshold (`0.6 * radial
+  distance + 0.4 * bayer()`) from `DELAY` (0.45) on. The leading `BAND` is
+  accent at 0.4 alpha. It replaces the overlay's opacity fade, so the
+  overlay's `exit` holds at opacity 1 for `EXIT_MS` and `bg-bg` is dropped on
+  completion. Motion keyframe `times` must end at 1: `[0, 0.3, 0.5]` silently
+  never faded the stage.
 
 ### Metadata and data ordering
 

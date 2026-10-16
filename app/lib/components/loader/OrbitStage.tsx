@@ -6,6 +6,7 @@ import { EASE_OUT } from "@/app/lib/motion";
 
 const RADIUS = 140;
 export const RELEASE_MS = 1000;
+const COLLAPSE_MS = 400;
 
 export const LOADER_MARKS = [
   {
@@ -14,7 +15,6 @@ export const LOADER_MARKS = [
     x: -RADIUS * Math.SQRT1_2,
     y: -RADIUS * Math.SQRT1_2,
     angle: -135,
-    release: { x: -160, y: 220 },
   },
   {
     Icon: SlidersVertical,
@@ -22,7 +22,6 @@ export const LOADER_MARKS = [
     x: RADIUS * Math.SQRT1_2,
     y: -RADIUS * Math.SQRT1_2,
     angle: -45,
-    release: { x: 40, y: -260 },
   },
   {
     Icon: Aperture,
@@ -30,7 +29,6 @@ export const LOADER_MARKS = [
     x: RADIUS * Math.SQRT1_2,
     y: RADIUS * Math.SQRT1_2,
     angle: 45,
-    release: { x: 260, y: 200 },
   },
   {
     Icon: Binary,
@@ -38,7 +36,6 @@ export const LOADER_MARKS = [
     x: -RADIUS * Math.SQRT1_2,
     y: RADIUS * Math.SQRT1_2,
     angle: 135,
-    release: { x: -30, y: 280 },
   },
 ];
 
@@ -67,8 +64,8 @@ export default function OrbitStage({
         frozen
           ? { duration: 0 }
           : {
-              duration: complete ? RELEASE_MS / 1000 : 0.32,
-              times: complete ? [0, 0.3, 1] : undefined,
+              duration: complete ? RELEASE_MS / 2000 : 0.32,
+              times: complete ? [0, 0.7, 1] : undefined,
             }
       }
     >
@@ -81,18 +78,12 @@ export default function OrbitStage({
         <motion.div
           className="relative"
           initial={frozen ? false : { scale: 0.7, rotate: -30 }}
-          animate={
-            frozen
-              ? { scale: 1, rotate: 0 }
-              : complete
-                ? { scale: 0.06, rotate: -250 }
-                : { scale: 1, rotate: 0 }
-          }
+          animate={{ scale: 1, rotate: 0 }}
           transition={
             frozen
               ? { duration: 0 }
               : {
-                  duration: complete ? RELEASE_MS / 1000 : 0.48,
+                  duration: 0.48,
                   ease: EASE_OUT,
                 }
           }
@@ -109,7 +100,7 @@ export default function OrbitStage({
 
           {LOADER_MARKS.map(({ angle }, index) => {
             const delayMs = complete ? index * 30 : (0.22 + index * 0.1) * 1000;
-            const durationMs = complete ? RELEASE_MS - delayMs : 550;
+            const durationMs = complete ? COLLAPSE_MS : 550;
             return (
               <motion.div
                 key={`line-${angle}`}
@@ -120,8 +111,8 @@ export default function OrbitStage({
                   frozen
                     ? { scaleX: 1, opacity: 1 }
                     : {
-                        scaleX: complete ? 2.4 : 1,
-                        opacity: complete ? [1, 0.5, 0] : 1,
+                        scaleX: complete ? 0 : 1,
+                        opacity: 1,
                       }
                 }
                 transition={
@@ -137,9 +128,9 @@ export default function OrbitStage({
             );
           })}
 
-          {LOADER_MARKS.map(({ Icon, label, x, y, release }, index) => {
-              const delayMs = complete ? index * 50 : (0.2 + index * 0.1) * 1000;
-              const durationMs = complete ? RELEASE_MS - delayMs : 620;
+          {LOADER_MARKS.map(({ Icon, label, x, y }, index) => {
+              const delayMs = complete ? index * 30 : (0.2 + index * 0.1) * 1000;
+              const durationMs = complete ? COLLAPSE_MS : 620;
               return (
                 <motion.div
                   key={label}
@@ -155,9 +146,9 @@ export default function OrbitStage({
                       ? { opacity: 1, x: x * scale, y: y * scale, scale: 1 }
                       : {
                           opacity: complete ? [1, 1, 0] : 1,
-                          x: complete ? release.x : x,
-                          y: complete ? release.y : y,
-                          scale: complete ? [1, 0.6, 0] : 1,
+                          x: complete ? 0 : x,
+                          y: complete ? 0 : y,
+                          scale: complete ? 0.5 : 1,
                         }
                   }
                   transition={
@@ -166,7 +157,7 @@ export default function OrbitStage({
                       : {
                           duration: durationMs / 1000,
                           delay: delayMs / 1000,
-                          times: complete ? [0, 0.55, 1] : undefined,
+                          times: complete ? [0, 0.7, 1] : undefined,
                           ease: EASE_OUT,
                         }
                   }
