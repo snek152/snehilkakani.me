@@ -413,9 +413,11 @@ or every struck page gained ~250px of horizontal scroll.
 an optional `impact` line in `text-accent-text` with a `TrendingUp` icon. The
 impact line must be a real outcome from the résumé, never invented; omit it
 when there is none (Hack4Impact). Lynbrook DevX and the freelance entry were
-cut, which is why the old compact accordion is gone. An entry with several
-titles at one employer (CodeBox) sets `roles`; the date column stacks each
-role's period and the heading lists titles only, so no date is printed twice.
+cut, which is why the old compact accordion is gone. An entry with a promotion
+at one employer (CodeBox) sets `previously`; the role line reads "Title,
+previously X" and the date column carries the whole span, so no date repeats.
+Per-role dates were tried (stacked in the date column, then inline) and read
+as misaligned or duplicated.
 Keep the résumé (`public/resume.pdf`) and this file in step.
 
 ## Implementation Notes

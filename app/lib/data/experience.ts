@@ -3,7 +3,7 @@ export interface Experience {
   company: string;
   location: string;
   period: string;
-  roles?: { title: string; period: string }[];
+  previously?: string;
   summary: string;
   details: string[];
   impact?: string;
@@ -16,14 +16,14 @@ export const experiences: Experience[] = [
     company: "Lindy",
     location: "San Francisco, CA",
     period: "Jun 2026 - Aug 2026",
-    summary:
-      "Built production infrastructure for Lindy's high-volume AI agent platform",
+    summary: "Built production infrastructure for Lindy's AI agent platform.",
     details: [
-      "Lead engineer of Routines, enabling agents to act on schedules and real-world events",
-      "Designed features from data model to UI, then scaled it into a managed catalog with fleet-wide rollout and extended it into workspace-wide Slack agents",
+      "Lead engineer of Routines, which lets agents act on schedules and real-world events",
+      "Designed it from data model to UI, then scaled it into a managed catalog with fleet-wide rollout",
+      "Extended it into workspace-wide Slack agents",
     ],
     impact:
-      "Shipped 400+ PRs over 10 weeks, owning Routines end-to-end and integrating it into Lindy Teammate, the company's biggest launch to date",
+      "Shipped 400+ PRs in 10 weeks, including Routines in Lindy Teammate, the company's biggest launch to date",
     skills: [
       "typescript",
       "graphql & relay",
@@ -37,11 +37,10 @@ export const experiences: Experience[] = [
     company: "Hack4Impact Cal Poly",
     location: "San Luis Obispo, CA",
     period: "Sep 2025 - Jun 2026",
-    summary:
-      "Contributed to the Paso Robles Food Co-op member portal after a two-month engineering bootcamp",
+    summary: "Built features for the Paso Robles Food Co-op member portal.",
     details: [
-      "Built server actions for group messaging and admin blasts with role-based auth and Zod validation",
-      "Developed modals with member search, owner-pinned ordering, and accessibility support",
+      "Server actions for group messaging and admin blasts, with role-based auth and Zod validation",
+      "Modals with member search, owner-pinned ordering, and accessibility support",
     ],
     skills: [
       "next.js & server actions",
@@ -56,15 +55,12 @@ export const experiences: Experience[] = [
     company: "CodeBox",
     location: "San Luis Obispo, CA",
     period: "Sep 2025 - Present",
-    roles: [
-      { title: "Incoming Tech Lead", period: "Sep 2026 - Present" },
-      { title: "Software Engineer", period: "Sep 2025 - Jun 2026" },
-    ],
+    previously: "Software Engineer",
     summary:
-      "Built navigation features for Mustang Maps, a React Native campus navigation app",
+      "Built navigation features for Mustang Maps, a React Native campus navigation app.",
     details: [
-      "Implemented A* pathfinding and integrated it into the routing UI",
-      "Built map layer filtering and building category matching; fixed core search and directions UX across bottom sheets and input handling",
+      "Implemented A* pathfinding in the routing UI",
+      "Built map layer filtering and building category matching, and fixed search and directions across bottom sheets and input handling",
     ],
     impact: "Used by 2K+ Cal Poly students",
     skills: [

@@ -50,18 +50,9 @@ export default function ExperienceList({
             variants={part}
             className="lg:col-span-4 lg:border-r lg:border-border lg:pl-12 lg:pr-10 lg:pt-2"
           >
-            {(
-              experience.roles ?? [
-                { title: experience.title, period: experience.period },
-              ]
-            ).map((role) => (
-              <p
-                key={role.title}
-                className="text-[length:var(--text-meta)] font-medium leading-snug tabular-nums text-fg"
-              >
-                {dateRange(role.period)}
-              </p>
-            ))}
+            <p className="text-[length:var(--text-meta)] font-medium leading-snug tabular-nums text-fg">
+              {dateRange(experience.period)}
+            </p>
 
             <p className="mt-2 text-[length:var(--text-micro)] leading-snug tracking-[var(--track-text-sm)] text-dim">
               {experience.location}
@@ -76,28 +67,17 @@ export default function ExperienceList({
               <h3 className="font-display text-[length:var(--size-display-md)] font-semibold tracking-[var(--track-display-md)] text-fg">
                 {experience.company}
               </h3>
-              {experience.roles ? (
-                <ul className="mt-1 space-y-0.5">
-                  {experience.roles.map((role) => (
-                    <li
-                      key={role.title}
-                      className="text-[length:var(--text-body)] leading-snug text-dim"
-                    >
-                      {role.title}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="mt-1 text-[length:var(--text-body)] leading-snug text-dim">
-                  {experience.title}
-                </p>
-              )}
+              <p className="mt-1 text-[length:var(--text-meta)] leading-snug text-dim">
+                {experience.previously
+                  ? `${experience.title}, previously ${experience.previously}`
+                  : experience.title}
+              </p>
             </motion.div>
             <motion.div
               variants={part}
-              className="mt-4 max-w-[var(--measure-body)]"
+              className="mt-5 max-w-[var(--measure-body)]"
             >
-              <p className="text-[length:var(--text-body)] font-medium leading-[var(--leading-body)] text-fg text-pretty">
+              <p className="text-[length:var(--text-body)] leading-[var(--leading-body)] text-fg text-pretty">
                 {experience.summary}
               </p>
               <ul className="mt-3 flex flex-col gap-1.5">
