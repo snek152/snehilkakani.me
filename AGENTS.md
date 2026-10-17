@@ -652,17 +652,33 @@ none; }` off that attribute — `display`, not `opacity`, because the layer
   frame are eaten by the same front that reveals the page, from the diamond
   outward, with no collapse, no separate fade and no handoff. Collapsing into
   the diamond (dead beat on an empty frame) and hold-then-fade both read as
-  awkward. Intro: a second `DitherReveal` ABOVE the stage with `reachPx` (380,
-  stage-sized: cells beyond it are never painted, so no ring leaks past the
-  composition) resolves the stage from the diamond outward in 700ms, mounted
-  only until `complete`. The earlier full-screen intro dither (two whole-screen
-  dithers) read as random; scoping it to the stage is what makes it one idea.
-  Quietness of the exit: `SWEEP_RADIAL` 0.8 (0.6 gave a ~570px ragged band
-  of bright heading fragments), `ACCENT` alpha 0.25, `RELEASE_MS` 800. Canvas
+  awkward. The stage group spins on exit (-140deg, scale 0.8). Intro: no screen-level dither (a full-screen one, then a stage-sized
+  one above the stage, both read as an effect pasted over the loader) and no
+  per-tile dither (it read as bubbling into the boxes), and a stepped ease on
+  tile travel read as lag. The intro instead treats the geometry the way
+  `WaveField` treats its curves: `HalftoneHalo` (one canvas inside the
+  rotating stage group) measures each cell's distance to the lines, frame and
+  tile outlines, turns it into a falloff, Bayer-thresholds it and draws
+  accent dots of proportional radius, rippling outward and revealed from the
+  centre at 0.36px/ms. Crisp strokes stay; the halo is their bloom.
+  `DitherReveal` returns early when its canvas has zero size (the
+  `data-loader-seen` gate hides the loader with `display: none`, and
+  `createImageData(0, 0)` throws).
+  Exit tuning: `SWEEP_RADIAL` 0.8, `ACCENT` alpha 0.25, `BAND` 0.03,
+  `RELEASE_MS` 800. Quieting it to 0.9 / 0.1 / 0.02 made the hand-off from
+  the spin to the page read as a film cutaway, so it was reverted. The halo
+  is kept quiet: dots at 0.22 of a cell, 0.6 alpha, 11px falloff. Canvas
   is an opaque bg layer, one pixel per half `HALFTONE_CELL` (4px: 8px read as
   chunky blue confetti). It replaces the overlay's opacity fade, so the
   overlay's `exit` holds at opacity 1 for `EXIT_MS` and `bg-bg` is dropped on
   completion.
+- Hero card corners (`ViewfinderFrame`) are 22px halftone clusters, not L
+  ticks: a 4x4 grid of accent dots whose radius falls off diagonally from the
+  corner, mirrored per corner.
+- `WaveField` stays fully halftone (a solid-core hybrid and hero-line fades
+  were tried and rejected). Prominence comes from dot size, not from lines:
+  `DOT_MAX` 0.34 of a cell, `CORE_DOT_GAIN` 2.5, `DITHER_DEPTH` 0.44, fills
+  0.38 / 0.21 alpha.
 
 ### Metadata and data ordering
 

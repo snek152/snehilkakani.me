@@ -1,9 +1,11 @@
 "use client";
 
 import { Aperture, Binary, SlidersVertical, Terminal } from "lucide-react";
+import { useMemo } from "react";
 import { motion, useTransform } from "motion/react";
 import type { MotionValue } from "motion/react";
 import { SWEEP_RADIAL } from "./DitherReveal";
+import HalftoneHalo from "./HalftoneHalo";
 import { EASE_OUT } from "@/app/lib/motion";
 
 const RADIUS = 140;
@@ -41,11 +43,13 @@ export const LOADER_MARKS = [
 ];
 
 export default function OrbitStage({
+  complete,
   front,
   scale = 1,
   frozen = false,
   showLabels = false,
 }: {
+  complete: boolean;
   front: MotionValue<number>;
   scale?: number;
   frozen?: boolean;
@@ -62,6 +66,14 @@ export default function OrbitStage({
     const inner = Math.max(0, ((p - (1 - SWEEP_RADIAL)) / SWEEP_RADIAL) * reach);
     return `radial-gradient(circle at 50% 50%, transparent ${inner}px, #000 ${outer}px)`;
   });
+  const haloShape = useMemo(
+    () => ({
+      lines: LOADER_MARKS.map(({ angle }) => ({ angle, length: lineLength })),
+      frame: centerSize / 2,
+      boxes: LOADER_MARKS.map(({ x, y }) => ({ x, y, half: markSize / 2 })),
+    }),
+    [lineLength, centerSize, markSize],
+  );
 
   return (
     <motion.div
@@ -80,14 +92,13 @@ export default function OrbitStage({
         <motion.div
           className="relative"
           initial={frozen ? false : { scale: 0.7, rotate: -30 }}
-          animate={{ scale: 1, rotate: 0 }}
+          animate={{ scale: complete ? 0.8 : 1, rotate: complete ? -140 : 0 }}
           transition={
             frozen
               ? { duration: 0 }
-              : {
-                  duration: 0.48,
-                  ease: EASE_OUT,
-                }
+              : complete
+                ? { duration: RELEASE_MS / 1000, ease: EASE_OUT }
+                : { duration: 0.48, ease: EASE_OUT }
           }
         >
           <div
@@ -99,6 +110,8 @@ export default function OrbitStage({
               boxShadow: "0 0 0 1px rgb(var(--accent-rgb) / 0.18)",
             }}
           />
+
+          {!frozen && <HalftoneHalo size={lineLength * 2 + 80} shape={haloShape} />}
 
           {LOADER_MARKS.map(({ angle }, index) => {
             const delayMs = (0.22 + index * 0.1) * 1000;

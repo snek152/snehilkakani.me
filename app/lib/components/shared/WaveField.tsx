@@ -53,14 +53,14 @@ const BLOOM_WIDTH_SCALE = 5;
 const BLOOM_ALPHA_SHARE = 0.22;
 const BLOOM_BANDS = 4;
 
-const DOT_MAX = HALFTONE_CELL * 0.32;
+const DOT_MAX = HALFTONE_CELL * 0.34;
 const DOT_GAIN = 6;
-const CORE_DOT_GAIN = 2.4;
-const DITHER_DEPTH = 0.45;
+const CORE_DOT_GAIN = 2.5;
+const DITHER_DEPTH = 0.44;
 const NOISE_FLOOR = 30;
 const BLOOM_PROFILE = [1, 0.62, 0.3];
-const DOT_ACCENT_FILL = "rgba(68, 120, 238, 0.36)";
-const DOT_NEUTRAL_FILL = "rgba(200, 205, 220, 0.2)";
+const DOT_ACCENT_FILL = "rgba(68, 120, 238, 0.38)";
+const DOT_NEUTRAL_FILL = "rgba(200, 205, 220, 0.21)";
 
 const POSTER_CORE_ALPHA_SCALE = 2.8;
 const POSTER_SOFT_BANDS = 1;
