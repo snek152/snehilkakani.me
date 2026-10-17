@@ -140,9 +140,9 @@ export default function Hero({
             className="order-2 mb-4 text-[length:var(--text-lead)] leading-[var(--leading-lead)] max-w-[var(--measure-lead)] text-dim lg:mb-3"
           >
             Building intelligent systems with a focus on creating accessible
-            user experiences. Exploring music production, photography, and video
-            games in my free time. Published researcher, NMSC finalist, and
-            4x competition winner.
+            user experiences. Exploring music production and photography in my
+            free time. Published researcher, NMSC finalist, and 4x competition
+            winner.
           </motion.p>
           <div className="order-2 mb-5 lg:mb-7">
             <RoleCycle />

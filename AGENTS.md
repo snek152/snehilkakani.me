@@ -408,6 +408,14 @@ or every struck page gained ~250px of horizontal scroll.
 
 **Experience data ordering** — most recent first in `experience.ts`.
 
+`ExperienceList` shows the first 3 entries in full and folds the rest into
+`CompactExperience` accordions, the same pattern as `/builds`' compact
+`ProjectCard`: the older, lower-signal roles stay one line each until opened,
+so the second scroll on `/` is not the densest block on the site. An entry
+with several titles at one employer (CodeBox) sets `roles`; the date column
+shows the whole span and `title` is the most recent role. Keep the
+résumé (`public/resume.pdf`) and this file in step.
+
 ## Implementation Notes
 
 This section is where the reasoning that used to live in code comments went

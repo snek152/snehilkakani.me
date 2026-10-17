@@ -135,7 +135,7 @@ export default function Sidebar() {
         >
           <Image src="/brand-mark.svg" alt="" aria-hidden width={32} height={32} unoptimized priority className="size-8 object-contain" />
         </Link>
-        <nav className="relative self-center">
+        <nav aria-label="Primary" className="relative self-center">
           <motion.span
             aria-hidden
             className="pointer-events-none absolute left-0 w-1 bg-accent"
@@ -190,7 +190,7 @@ export default function Sidebar() {
           <Image src="/brand-mark.svg" alt="" aria-hidden width={32} height={32} unoptimized priority className="size-8 object-contain" />
         </Link>
 
-        <nav className="flex min-w-0 flex-1 justify-end gap-3 overflow-x-auto">
+        <nav aria-label="Primary" className="flex min-w-0 flex-1 justify-end gap-3 overflow-x-auto">
           {navItems.map((item) => {
             const active = item.end
               ? pathname === item.href

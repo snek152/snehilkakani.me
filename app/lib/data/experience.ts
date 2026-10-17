@@ -3,6 +3,7 @@ export interface Experience {
   company: string;
   location: string;
   period: string;
+  roles?: { title: string; period: string }[];
   description: string[];
   skills?: string[];
 }
@@ -45,12 +46,16 @@ export const experiences: Experience[] = [
     ],
   },
   {
-    title: "Software Engineer",
+    title: "Incoming Tech Lead",
     company: "CodeBox",
     location: "San Luis Obispo, CA",
-    period: "Sep 2025 - Jun 2026",
+    period: "Sep 2025 - Present",
+    roles: [
+      { title: "Incoming Tech Lead", period: "Sep 2026 - Present" },
+      { title: "Software Engineer", period: "Sep 2025 - Jun 2026" },
+    ],
     description: [
-      "Built navigation features for Mustang Maps, a React Native campus navigation app for Cal Poly students",
+      "Built navigation features for Mustang Maps, a React Native campus navigation app used by 2K+ Cal Poly students",
       "Implemented A* pathfinding and integrated it into the routing UI",
       "Built map layer filtering and building category matching; fixed core search and directions UX across bottom sheets and input handling",
     ],
