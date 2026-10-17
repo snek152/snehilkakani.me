@@ -7,7 +7,7 @@ import { SWEEP_RADIAL } from "./DitherReveal";
 import { EASE_OUT } from "@/app/lib/motion";
 
 const RADIUS = 140;
-export const RELEASE_MS = 1000;
+export const RELEASE_MS = 800;
 
 export const LOADER_MARKS = [
   {

@@ -7,6 +7,8 @@ import DitherReveal from "./loader/DitherReveal";
 
 const COMPLETE_MS = 1500;
 const EXIT_MS = RELEASE_MS;
+const INTRO_MS = 700;
+const INTRO_REACH = 380;
 
 export default function LoadingScreen({ onDone }: { onDone: () => void }) {
   const prefersReducedMotion = useReducedMotion();
@@ -78,6 +80,7 @@ export default function LoadingScreen({ onDone }: { onDone: () => void }) {
     >
       <DitherReveal reveal={complete} durationMs={EXIT_MS} front={front} />
       <OrbitStage scale={2.1} front={front} />
+      {!complete && <DitherReveal reveal durationMs={INTRO_MS} reachPx={INTRO_REACH} />}
     </motion.div>
   );
 }
