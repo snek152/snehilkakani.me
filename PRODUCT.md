@@ -64,8 +64,9 @@ committing. Two of those files are generated and must not be hand-edited:
 
 The audio transport is owned by `/music`'s layout, not the app shell: it
 mounts only on that route, and leaving `/music` stops and unloads any
-playing track. It is inline in the page header, not a fixed overlay, and
-never appears on another route.
+playing track. It is a compact fixed panel pinned bottom-right of the viewport
+(so it stays reachable while the list scrolls), and never appears on another
+route.
 
 Published at `snehilkakani.me`.
 
@@ -108,16 +109,16 @@ Published at `snehilkakani.me`.
 
 Real, first-party material already in the repository:
 
-- **11 projects** with 20 real screenshots in `public/projects/`. Includes
+- **14 projects** with 15 real screenshots in `public/projects/`. Includes
   Fere, which won 2nd place and $10K at Cal Poly's Innovation Quest.
 - **5 experience entries** in `app/lib/data/experience.ts`, most recent first —
   currently led by a software engineering internship at Lindy in San Francisco,
   working on infrastructure for a high-volume AI agent platform.
-- **22 catalogued beats** backed by 23 original MP3s in `public/beats/`, each
+- **22 catalogued beats** backed by 22 original MP3s in `public/beats/`, each
   with a real tempo and category.
 - **36 photographs** in `public/photos/`, each with EXIF-style capture data
   (exposure, shutter, aperture, ISO) and written alt text.
-- **33 skills** with real tool icons, grouped by type.
+- **34 skills** with real tool icons, grouped by type.
 - `public/resume.pdf`.
 - Stated credentials: CS at Cal Poly SLO, published researcher, NMSC finalist.
 

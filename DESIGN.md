@@ -6,7 +6,7 @@ colors:
   card: "#0e0e0e"
   fg: "#efefef"
   dim: "#a8a8a8"
-  dim2: "#7d7d7d"
+  dim2: "#868686"
   accent: "#2563eb"
   accentText: "#4478ee"
   border: "rgba(255, 255, 255, 0.07)"
@@ -93,7 +93,7 @@ Three deliberate greys against near-black, plus exactly one blue, split by role 
 |Card|`#0e0e0e`|The few surfaces that need to sit one shade off the page; 3 steps of lightness from `--bg`, the whole range the design uses|
 |Foreground|`#efefef`|17.42:1 — primary text|
 |Dim|`#a8a8a8`|8.42:1 — secondary prose, metadata|
-|Dim 2|`#7d7d7d`|4.87:1 — captions, dividers, recessive readouts|
+|Dim 2|`#868686`|5.50:1 — captions, dividers, recessive readouts|
 |Border|`rgba(255,255,255,0.07)`|Card edges, inputs, nav — stays quiet|
 |Rule|`rgba(255,255,255,0.15)`|`DrawnRule` only — the lines you are meant to watch arrive|
 |Scrim|`rgba(4,4,4,0.86)`|Lightbox backdrop, deliberately darker than the page while leaving the contact sheet sharp|
@@ -209,7 +209,7 @@ Hairlines carry three brightness levels, each scoped to a distinct job:
 
 **Inputs** (`ContactForm`'s `Field`) — no visible box; the input's own bottom border is the rule. On focus, that same rule turns solid accent blue. Errors render at full-contrast `text-fg`, never a semantic red — the palette is three greys and one blue, and a semantic colour introduced for three error strings would be a new design decision, not a fix. The problem is carried by the words, position, and `aria-invalid`, never by hue alone.
 
-**Nav (`Sidebar`)** — collapsed `52px` rail, expands to `176px` on hover via `SPRING_UI`. Collapses on every route change (`onNavigate` alone did not survive a click-through). Expanded state carries `data-material` (blur + opaque/high-contrast fallbacks from `globals.css`) plus the one directional shadow in the system, because a translucent slab the same colour as the page otherwise reads as the title being truncated rather than overlapped.
+**Nav (`Sidebar`)** — collapsed `52px` rail, expands to `176px` on hover via `SPRING_UI`, after a 120ms hover-intent delay so a cursor grazing the rail on its way elsewhere does not slide a panel over the page. Keyboard focus expands it at once. Collapses on every route change (`onNavigate` alone did not survive a click-through). Expanded state carries `data-material` (blur + opaque/high-contrast fallbacks from `globals.css`) plus the one directional shadow in the system, because a translucent slab the same colour as the page otherwise reads as the title being truncated rather than overlapped.
 
 **Drawn rules** (`DrawnRule`, `SignalRule`) — a hairline that draws itself across as it enters view rather than fading, because the site is built almost entirely out of 1px rules and having each one draw turns the page's own structure into the animation. `DrawnRule` starts its draw `240px` above the fold (roughly 73% of a laptop viewport) so the ~0.8s draw finishes where the reader is actually looking, not in an unseen strip at the bottom. `SignalRule` is the header-scale relative — a quiet border with the same restrained blue cast as the transport, distinct from `DrawnRule`'s content-row role.
 
@@ -219,7 +219,7 @@ Hairlines carry three brightness levels, each scoped to a distinct job:
 
 **Lightbox** — `--scrim` at `0.86` without backdrop blur, `data-material` for the transparency/contrast overrides. Drag-to-dismiss tracks the pointer 1:1 downward (`project()` commits on projected rest + velocity sign, never raw distance); upward has nothing behind it, so that is where `rubberband()` resistance goes.
 
-**Transport (`PlayerBar`)** — an inline, route-scoped instrument, not a persistent media-player slab and not boxed as its own surface. It mounts only inside `/music`'s header, sliding out to the left of the page's untouched `RouteSignal` art (a `clip-path` reveal, right edge anchored, so the signal itself never moves and there is no layout shift on start/stop). No fill, no border, no radius, no elevation — the track name and controls sit directly on the page, and the only line is a 1px `bg-border` progress rail that fills with `bg-accent`, the same hairline-fill idiom `ContactForm`'s inputs use. Closing the player (an explicit control) or leaving the route both fully tear down the audio graph.
+**Transport (`PlayerBar`)** — a compact, route-scoped panel pinned `fixed bottom-4 right-4` on `/music` only, so the playing track and controls stay reachable while the list scrolls. It is the one boxed surface in the system: `border-border`, `bg-bg/95`, an 8px backdrop blur and `rounded-sm`, because a transport floating over scrolling rows needs an edge to read against them. The progress rail is a 1px `bg-border` line that fills with `bg-accent`. Closing the player (an explicit control) or leaving the route both fully tear down the audio graph.
 
 ## Do's and Don'ts
 

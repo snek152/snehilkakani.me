@@ -53,7 +53,7 @@ All content lives in TypeScript files under `app/lib/data/`. To add or edit port
 
 - **`"use client"`** on all interactive components
 - **`useInView`** from `motion/react` for scroll-triggered entrance animations, paired with `viewport={{ once: true }}` on `whileInView`. (Not `react-intersection-observer` — that dependency is gone.)
-- Navbar expands on hover (desktop: vertical sidebar `lg:w-18` → `lg:w-36`; mobile: top bar)
+- Navbar expands on hover after a 120ms intent delay (desktop: vertical sidebar `52px` → `176px`; mobile: top bar)
 
 ### Styling
 
@@ -66,7 +66,7 @@ custom properties and exposed to Tailwind through `@theme inline`, so
 --card        #0e0e0e          the one step off the page, for the few surfaces that need it
 --fg          #efefef          17.42:1 — anything read as primary text
 --dim         #a8a8a8           8.42:1 — secondary prose, metadata
---dim2        #7d7d7d           4.87:1 — captions, dividers, recessive readouts
+--dim2        #868686           5.50:1 — captions, dividers, recessive readouts
 --accent      #2563eb           3.87:1 — SHAPES ONLY: rules, fills, icons, focus rings
 --accent-text #4478ee           4.93:1 — REQUIRED for anything read as words
 --accent-rgb  37 99 235        the same blue unpacked, for `rgb(var(--accent-rgb) / <alpha>)`
@@ -560,9 +560,10 @@ none; }` off that attribute — `display`, not `opacity`, because the layer
   `::before` to grow the tap target without resizing the visible element or
   shifting the row: `Footer`'s icon+label links use `before:-inset-2` (8px a
   side) on a `gap-5` (20px) floor, leaving 4px of clearance between adjacent
-  hit areas; `ProjectMeta`'s `ICON_LINK_CLASS` uses `before:-inset-1` (4px a
-  side, lifting a 19×19 icon to a 27×27 target, clearing the WCAG 2.5.8
-  24×24 floor) on a `gap-3.5` (14px) floor, leaving 6px of clearance. Both
+  hit areas; `ProjectMeta`'s `ICON_LINK_CLASS` uses `before:-inset-x-1.5`
+  (6px a side, lifting a 19px-wide icon to a 31px target; 4px sides measured
+  23px wide, under the WCAG 2.5.8 24×24 floor) on a `gap-3.5` (14px) floor,
+  leaving 2px of clearance. Both
   use opacity, not a transform, as the press signal — a transform would
   scale the `::before` extender along with the element and shrink the
   target at the exact moment a thumb is pressing it.

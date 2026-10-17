@@ -11,6 +11,7 @@ import { navItems, type NavItem } from "@/app/lib/nav";
 
 const SIDE_THIN = 52;
 const SIDE_FULL = 176;
+const HOVER_INTENT_MS = 120;
 const ITEM_HEIGHT = 42;
 const INDICATOR_INSET = ITEM_HEIGHT * 0.18;
 const INDICATOR_HEIGHT = ITEM_HEIGHT - INDICATOR_INSET * 2;
@@ -73,6 +74,7 @@ export default function Sidebar() {
   const asideRef = useRef<HTMLElement | null>(null);
   const pointerSuppressedUntilLeaveRef = useRef(false);
   const collapseAfterIndicatorRef = useRef(false);
+  const intentTimerRef = useRef<number | undefined>(undefined);
 
   const transition: Transition = reduceMotion ? { duration: 0 } : SPRING_UI;
 
@@ -99,6 +101,8 @@ export default function Sidebar() {
     return () => document.removeEventListener("keydown", onKeyDown, true);
   }, []);
 
+  useEffect(() => () => window.clearTimeout(intentTimerRef.current), []);
+
   return (
     <>
 
@@ -111,9 +115,15 @@ export default function Sidebar() {
         }}
         onPointerEnter={() => {
           inputModalityRef.current = "pointer";
-          if (!pointerSuppressedUntilLeaveRef.current) setExpanded(true);
+          if (pointerSuppressedUntilLeaveRef.current) return;
+          window.clearTimeout(intentTimerRef.current);
+          intentTimerRef.current = window.setTimeout(
+            () => setExpanded(true),
+            reduceMotion ? 0 : HOVER_INTENT_MS,
+          );
         }}
         onPointerLeave={() => {
+          window.clearTimeout(intentTimerRef.current);
           pointerSuppressedUntilLeaveRef.current = false;
           setExpanded(false);
         }}

@@ -58,7 +58,7 @@ export function ProjectSkills({ skills }: Pick<Project, "skills">) {
 }
 
 const ICON_LINK_CLASS =
-  "relative rounded-sm text-dim2 transition-[color,scale] duration-[120ms] ease-[var(--ease-press)] before:absolute before:-inset-x-1 before:-inset-y-2.5 before:content-[''] hover:text-fg active:text-fg active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-bg";
+  "relative rounded-sm text-dim2 transition-[color,scale] duration-[120ms] ease-[var(--ease-press)] before:absolute before:-inset-x-1.5 before:-inset-y-2.5 before:content-[''] hover:text-fg active:text-fg active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-bg";
 
 function projectLinkLabel(name: string, link: string) {
   const path = link.split(/[?#]/)[0].toLowerCase();
