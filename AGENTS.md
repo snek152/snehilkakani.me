@@ -408,13 +408,15 @@ or every struck page gained ~250px of horizontal scroll.
 
 **Experience data ordering** — most recent first in `experience.ts`.
 
-`ExperienceList` shows the first 3 entries in full and folds the rest into
-`CompactExperience` accordions, the same pattern as `/builds`' compact
-`ProjectCard`: the older, lower-signal roles stay one line each until opened,
-so the second scroll on `/` is not the densest block on the site. An entry
-with several titles at one employer (CodeBox) sets `roles`; the date column
-shows the whole span and `title` is the most recent role. Keep the
-résumé (`public/resume.pdf`) and this file in step.
+`ExperienceList` renders every entry in full, in the `ProjectBlurb` shape from
+`/builds`: a `summary` line in `text-fg`, `details` bullets in `text-dim`, and
+an optional `impact` line in `text-accent-text` with a `TrendingUp` icon. The
+impact line must be a real outcome from the résumé, never invented; omit it
+when there is none (Hack4Impact). Lynbrook DevX and the freelance entry were
+cut, which is why the old compact accordion is gone. An entry with several
+titles at one employer (CodeBox) sets `roles`; the date column stacks each
+role's period and the heading lists titles only, so no date is printed twice.
+Keep the résumé (`public/resume.pdf`) and this file in step.
 
 ## Implementation Notes
 
