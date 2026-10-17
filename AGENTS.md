@@ -643,16 +643,22 @@ none; }` off that attribute — `display`, not `opacity`, because the layer
   dotted hero grid lines, a dotted scroll rail and dot-column `BeatBars` all
   read worse than the original solid strokes. Decoration that merely swaps
   lines for dots is the failure; use dithering where it does a job.
-- `DitherReveal` is the loader's exit, one gesture with `OrbitStage`: the
-  tiles and lines collapse into the centre diamond (no spin, no fly-off; the
-  stage is gone by 50% of `RELEASE_MS`), then the page resolves outward from
-  that point. An opaque bg canvas, one pixel per half `HALFTONE_CELL` (4px: 8px
-  squares read as chunky blue confetti), erased by threshold (`0.6 * radial
-  distance + 0.4 * bayer()`) from `DELAY` (0.45) on. The leading `BAND` is
+- `DitherReveal` is the loader's exit, and the stage is part of it, not a
+  separate fade. `LoadingScreen` owns a `front` motion value (sweep progress);
+  `DitherReveal` writes it each frame and `OrbitStage` reads it into a CSS
+  `mask-image` radial gradient whose inner/outer radii are the dither's own
+  fully-cleared and not-yet-touched radii (`(p - 0.4)/0.6` and `p/0.6` of the
+  half-diagonal, from `SWEEP_RADIAL`). So the tiles, lines and frame are eaten
+  by the same front that reveals the page, from the diamond outward, with no
+  collapse, no separate fade and no handoff. Collapsing into the diamond (dead
+  beat on an empty frame), hold-then-fade, and a second dither on the intro
+  all read as awkward or random. The sweep has no delay: the stage's own
+  mask holds it visible until the front reaches it. Canvas is an opaque bg
+  layer, one pixel per half `HALFTONE_CELL` (4px: 8px read as chunky blue
+  confetti), threshold `0.6 * radial distance + 0.4 * bayer()`, leading `BAND`
   accent at 0.4 alpha. It replaces the overlay's opacity fade, so the
   overlay's `exit` holds at opacity 1 for `EXIT_MS` and `bg-bg` is dropped on
-  completion. Motion keyframe `times` must end at 1: `[0, 0.3, 0.5]` silently
-  never faded the stage.
+  completion.
 
 ### Metadata and data ordering
 

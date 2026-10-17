@@ -1,16 +1,25 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import type { MotionValue } from "motion/react";
 import { HALFTONE_CELL, bayer } from "@/app/lib/halftone";
 
 const BG = 0xff080808;
 const ACCENT = 0x66eb6325;
 const BAND = 0.04;
-const DELAY = 0.45;
-const RADIAL = 0.6;
+export const SWEEP_RADIAL = 0.6;
+const RADIAL = SWEEP_RADIAL;
 const CELL = HALFTONE_CELL / 2;
 
-export default function DitherReveal({ reveal, durationMs }: { reveal: boolean; durationMs: number }) {
+export default function DitherReveal({
+  reveal,
+  durationMs,
+  front,
+}: {
+  reveal: boolean;
+  durationMs: number;
+  front: MotionValue<number>;
+}) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const progressRef = useRef(0);
 
@@ -60,8 +69,9 @@ export default function DitherReveal({ reveal, durationMs }: { reveal: boolean; 
     if (reveal) {
       const start = performance.now();
       const tick = (now: number) => {
-        const t = Math.min(1, Math.max(0, ((now - start) / durationMs - DELAY) / (1 - DELAY)));
+        const t = Math.min(1, (now - start) / durationMs);
         progressRef.current = t * t * (3 - 2 * t) * (1 + BAND);
+        front.set(progressRef.current);
         paint();
         if (now - start < durationMs) raf = requestAnimationFrame(tick);
       };
@@ -72,7 +82,7 @@ export default function DitherReveal({ reveal, durationMs }: { reveal: boolean; 
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", resize);
     };
-  }, [reveal, durationMs]);
+  }, [reveal, durationMs, front]);
 
   return (
     <canvas

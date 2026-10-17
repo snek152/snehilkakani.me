@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion, useMotionValue, useReducedMotion } from "motion/react";
 import OrbitStage, { RELEASE_MS } from "./loader/OrbitStage";
 import DitherReveal from "./loader/DitherReveal";
 
@@ -14,6 +14,7 @@ export default function LoadingScreen({ onDone }: { onDone: () => void }) {
   onDoneRef.current = onDone;
   const [complete, setComplete] = useState(false);
   const overlayRef = useRef<HTMLDivElement>(null);
+  const front = useMotionValue(0);
   const completeTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
@@ -75,8 +76,8 @@ export default function LoadingScreen({ onDone }: { onDone: () => void }) {
         }
       }}
     >
-      <DitherReveal reveal={complete} durationMs={EXIT_MS} />
-      <OrbitStage complete={complete} scale={2.1} />
+      <DitherReveal reveal={complete} durationMs={EXIT_MS} front={front} />
+      <OrbitStage scale={2.1} front={front} />
     </motion.div>
   );
 }

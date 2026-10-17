@@ -1,12 +1,13 @@
 "use client";
 
 import { Aperture, Binary, SlidersVertical, Terminal } from "lucide-react";
-import { motion } from "motion/react";
+import { motion, useTransform } from "motion/react";
+import type { MotionValue } from "motion/react";
+import { SWEEP_RADIAL } from "./DitherReveal";
 import { EASE_OUT } from "@/app/lib/motion";
 
 const RADIUS = 140;
 export const RELEASE_MS = 1000;
-const COLLAPSE_MS = 400;
 
 export const LOADER_MARKS = [
   {
@@ -40,12 +41,12 @@ export const LOADER_MARKS = [
 ];
 
 export default function OrbitStage({
-  complete,
+  front,
   scale = 1,
   frozen = false,
   showLabels = false,
 }: {
-  complete: boolean;
+  front: MotionValue<number>;
   scale?: number;
   frozen?: boolean;
   showLabels?: boolean;
@@ -54,20 +55,21 @@ export default function OrbitStage({
   const iconSize = 18 * scale;
   const centerSize = 64 * scale;
   const lineLength = RADIUS * scale;
+  const mask = useTransform(front, (p) => {
+    if (p <= 0) return "none";
+    const reach = Math.hypot(window.innerWidth, window.innerHeight) / 2;
+    const outer = (p / SWEEP_RADIAL) * reach;
+    const inner = Math.max(0, ((p - (1 - SWEEP_RADIAL)) / SWEEP_RADIAL) * reach);
+    return `radial-gradient(circle at 50% 50%, transparent ${inner}px, #000 ${outer}px)`;
+  });
 
   return (
     <motion.div
       className="absolute inset-0 flex items-center justify-center"
-      initial={frozen ? false : undefined}
-      animate={frozen ? { opacity: 1 } : { opacity: complete ? [1, 1, 0] : 1 }}
-      transition={
-        frozen
-          ? { duration: 0 }
-          : {
-              duration: complete ? RELEASE_MS / 2000 : 0.32,
-              times: complete ? [0, 0.7, 1] : undefined,
-            }
-      }
+      style={{ maskImage: mask, WebkitMaskImage: mask }}
+      initial={frozen ? false : { opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={frozen ? { duration: 0 } : { duration: 0.32, ease: "easeOut" }}
     >
 
       <motion.div
@@ -99,8 +101,8 @@ export default function OrbitStage({
           />
 
           {LOADER_MARKS.map(({ angle }, index) => {
-            const delayMs = complete ? index * 30 : (0.22 + index * 0.1) * 1000;
-            const durationMs = complete ? COLLAPSE_MS : 550;
+            const delayMs = (0.22 + index * 0.1) * 1000;
+            const durationMs = 550;
             return (
               <motion.div
                 key={`line-${angle}`}
@@ -111,7 +113,7 @@ export default function OrbitStage({
                   frozen
                     ? { scaleX: 1, opacity: 1 }
                     : {
-                        scaleX: complete ? 0 : 1,
+                        scaleX: 1,
                         opacity: 1,
                       }
                 }
@@ -129,8 +131,8 @@ export default function OrbitStage({
           })}
 
           {LOADER_MARKS.map(({ Icon, label, x, y }, index) => {
-              const delayMs = complete ? index * 30 : (0.2 + index * 0.1) * 1000;
-              const durationMs = complete ? COLLAPSE_MS : 620;
+              const delayMs = (0.2 + index * 0.1) * 1000;
+              const durationMs = 620;
               return (
                 <motion.div
                   key={label}
@@ -145,10 +147,10 @@ export default function OrbitStage({
                     frozen
                       ? { opacity: 1, x: x * scale, y: y * scale, scale: 1 }
                       : {
-                          opacity: complete ? [1, 1, 0] : 1,
-                          x: complete ? 0 : x,
-                          y: complete ? 0 : y,
-                          scale: complete ? 0.5 : 1,
+                          opacity: 1,
+                          x,
+                          y,
+                          scale: 1,
                         }
                   }
                   transition={
@@ -157,7 +159,6 @@ export default function OrbitStage({
                       : {
                           duration: durationMs / 1000,
                           delay: delayMs / 1000,
-                          times: complete ? [0, 0.7, 1] : undefined,
                           ease: EASE_OUT,
                         }
                   }
