@@ -62,26 +62,23 @@ const BLOOM_PROFILE = [1, 0.62, 0.3];
 const DOT_ACCENT_FILL = "rgba(68, 120, 238, 0.38)";
 const DOT_NEUTRAL_FILL = "rgba(200, 205, 220, 0.21)";
 
-const POSTER_CORE_ALPHA_SCALE = 2.8;
-const POSTER_SOFT_BANDS = 1;
-const POSTER_SOFT_PASSES: readonly [readonly [number, number], readonly [number, number]] = [
-  [12.5, 0.135],
-  [27, 0.058],
-];
-
 const DEFOCUS_BY_DEPTH = 1.7;
 
 const MAX_DPR = 1.5;
 
 const ACCENT_COLOR = "37, 99, 235";
 const ACCENT_ALPHA_SCALE = 0.5;
-const POSTER_ACCENT_COLOR = "68, 120, 238";
-const POSTER_ACCENT_ALPHA_SCALE = 1.5;
 
 const FREQ_SCALE = 2.7;
-const FREQ_RATIOS = [1, 1.37, 1.71, 2.13, 0.79, 1.53, 2.31, 0.61, 1.19, 1.83, 0.93, 2.47];
-const SECOND_FREQ_RATIOS = [0.31, 0.47, 0.19, 0.53, 0.37, 0.29, 0.43, 0.23, 0.41, 0.59, 0.17, 0.51];
-const DEPTH_FREQ_RATIOS = [0.63, 0.91, 1.24, 0.48, 1.07, 0.72, 1.41, 0.86, 0.57, 1.13, 0.79, 1.32];
+const FREQ_RATIOS = [
+  1, 1.37, 1.71, 2.13, 0.79, 1.53, 2.31, 0.61, 1.19, 1.83, 0.93, 2.47,
+];
+const SECOND_FREQ_RATIOS = [
+  0.31, 0.47, 0.19, 0.53, 0.37, 0.29, 0.43, 0.23, 0.41, 0.59, 0.17, 0.51,
+];
+const DEPTH_FREQ_RATIOS = [
+  0.63, 0.91, 1.24, 0.48, 1.07, 0.72, 1.41, 0.86, 0.57, 1.13, 0.79, 1.32,
+];
 
 type Species = "arc" | "filament";
 
@@ -161,7 +158,6 @@ interface CurveConfig {
   xOffset: number;
   alpha: number;
   isAccent: boolean;
-  posterAccent: boolean;
 }
 
 function buildCurves(): CurveConfig[] {
@@ -211,7 +207,6 @@ function buildCurves(): CurveConfig[] {
         xOffset: (frac2 - 0.5) * 0.7,
         alpha: BASE_ALPHA_MIN + frac2 * (BASE_ALPHA_MAX - BASE_ALPHA_MIN),
         isAccent: i % 7 === 2,
-        posterAccent: i % 3 === 0,
       });
 
       i++;
@@ -226,13 +221,13 @@ const DEFAULT_CLASS = "pointer-events-none fixed inset-0 z-0";
 interface WaveFieldProps {
   className?: string;
   frozenAtMs?: number;
-  variant?: "ambient" | "poster";
+  intensity?: number;
 }
 
 export default function WaveField({
   className = DEFAULT_CLASS,
   frozenAtMs,
-  variant = "ambient",
+  intensity = 1,
 }: WaveFieldProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const reduceMotion = useMotionPreference();
@@ -277,7 +272,8 @@ export default function WaveField({
 
     const frozenTime = frozenAtMs;
     const frozen = typeof frozenTime === "number";
-    let lastScrollY = frozen || typeof window === "undefined" ? 0 : window.scrollY;
+    let lastScrollY =
+      frozen || typeof window === "undefined" ? 0 : window.scrollY;
     let energy = 0;
     let scrollPhase = 0;
     resize();
@@ -301,12 +297,15 @@ export default function WaveField({
       const delta = scrollY - lastScrollY;
       lastScrollY = scrollY;
       energy +=
-        (Math.min(ENERGY_MAX, Math.abs(delta) * ENERGY_GAIN) - energy) * ENERGY_DAMPING;
+        (Math.min(ENERGY_MAX, Math.abs(delta) * ENERGY_GAIN) - energy) *
+        ENERGY_DAMPING;
       scrollPhase += (scrollTarget - scrollPhase) * SCROLL_PHASE_DAMPING;
       const layerState = LAYERS.map((layer) => {
         const lt = t + scrollPhase * layer.scrollResponse;
-        const rotY = layer.rotYAmp * Math.sin(lt * layer.rotYSpeed + layer.rotPhase);
-        const rotX = layer.rotXAmp * Math.sin(lt * layer.rotXSpeed + layer.rotPhase + 1.1);
+        const rotY =
+          layer.rotYAmp * Math.sin(lt * layer.rotYSpeed + layer.rotPhase);
+        const rotX =
+          layer.rotXAmp * Math.sin(lt * layer.rotXSpeed + layer.rotPhase + 1.1);
         return {
           lt,
           cosY: Math.cos(rotY),
@@ -316,13 +315,14 @@ export default function WaveField({
         };
       });
 
-      const isPoster = variant === "poster";
       for (const curve of curves) {
         const layer = LAYERS[curve.layer];
         const { lt, cosY, sinY, cosX, sinX } = layerState[curve.layer];
 
-        const breathe = 1 + BREATHE_DEPTH * Math.sin(lt * BREATHE_SPEED + curve.breathePhase);
-        const wander = WANDER_RATIO * Math.sin(lt * WANDER_SPEED + curve.wanderPhase);
+        const breathe =
+          1 + BREATHE_DEPTH * Math.sin(lt * BREATHE_SPEED + curve.breathePhase);
+        const wander =
+          WANDER_RATIO * Math.sin(lt * WANDER_SPEED + curve.wanderPhase);
 
         const twist = lt * TWIST_SPEED + curve.twistPhase + energy * 0.9;
         const amp = ampPx * curve.ampScale * breathe * (1 + energy * 0.35);
@@ -332,14 +332,22 @@ export default function WaveField({
           const u = (s / samples) * 2 - 1;
           const wave =
             Math.sin(u * Math.PI * curve.freq + curve.phase + lt) +
-            0.45 * Math.sin(u * Math.PI * 2 * curve.freq2 + curve.phase2 - lt * 0.73);
+            0.45 *
+              Math.sin(
+                u * Math.PI * 2 * curve.freq2 + curve.phase2 - lt * 0.73,
+              );
           const twistAngle = u * TWIST_AMP + twist;
           const lx = u * SPAN + curve.xOffset * 0.3;
-          const ly = (curve.yOffset + wander) * 2 + wave * Math.cos(twistAngle) * ampNorm;
+          const ly =
+            (curve.yOffset + wander) * 2 +
+            wave * Math.cos(twistAngle) * ampNorm;
           let lz =
             DEPTH_RATIO *
             curve.depthScale *
-            (Math.sin(u * Math.PI * curve.depthFreq + curve.depthPhase + lt * 0.61) * 0.65 +
+            (Math.sin(
+              u * Math.PI * curve.depthFreq + curve.depthPhase + lt * 0.61,
+            ) *
+              0.65 +
               wave * Math.sin(twistAngle) * 0.35);
 
           lz += layer.depth;
@@ -352,7 +360,10 @@ export default function WaveField({
           );
 
           const persp = FOCAL / (FOCAL + rz2);
-          const depthT = Math.min(1, Math.max(0, (persp - perspFar) / perspSpan));
+          const depthT = Math.min(
+            1,
+            Math.max(0, (persp - perspFar) / perspSpan),
+          );
 
           px[s] = cx + rx1 * halfW * persp;
           py[s] = cy + ry2 * halfH * persp;
@@ -362,20 +373,19 @@ export default function WaveField({
           pDefocus[s] = 1 + DEFOCUS_BY_DEPTH * (1 - depthT);
         }
 
-        const usesAccent = isPoster ? curve.posterAccent : curve.isAccent;
-        const rgb = usesAccent ? (isPoster ? POSTER_ACCENT_COLOR : ACCENT_COLOR) : LAYER_RGB[curve.layer];
+        const usesAccent = curve.isAccent;
+        const rgb = usesAccent ? ACCENT_COLOR : LAYER_RGB[curve.layer];
         const baseAlpha =
           curve.alpha *
           layer.alphaScale *
-          (usesAccent ? (isPoster ? POSTER_ACCENT_ALPHA_SCALE : ACCENT_ALPHA_SCALE) : 1);
+          (usesAccent ? ACCENT_ALPHA_SCALE : 1);
 
-        const passes = isPoster ? [0, 1, 2, 3, 4] : [0, 1, 2];
+        const passes = [0, 1, 2];
         const visibleSample = samples;
         for (const pass of passes) {
           const isBloom = pass === 0;
           const isHalo = pass === 1;
-          const isSoftBloom = pass === 3 || pass === 4;
-          const bands = isBloom ? BLOOM_BANDS : isSoftBloom ? POSTER_SOFT_BANDS : BANDS;
+          const bands = isBloom ? BLOOM_BANDS : BANDS;
           const step = samples / bands;
           for (let b = 0; b < bands; b++) {
             const start = Math.round(b * step);
@@ -390,20 +400,22 @@ export default function WaveField({
               dSum += pDefocus[s];
             }
             const count = end - start + 1;
-            const bandAlpha = (aSum / count) * baseAlpha;
-            const bandWidth = wSum / count;
+            const bandAlpha = (aSum / count) * baseAlpha * intensity;
+            const bandWidth = (wSum / count) * intensity;
             const bandDefocus = dSum / count;
-            const toDots = isBloom || !isPoster;
-            const g = toDots ? hctx : ctx;
+            const g = hctx;
             g.beginPath();
             g.moveTo(px[start], py[start]);
             for (let s = start + 1; s <= end; s++) g.lineTo(px[s], py[s]);
 
             if (isBloom) {
-              const w = bandWidth * layer.haloScale * BLOOM_WIDTH_SCALE * bandDefocus;
+              const w =
+                bandWidth * layer.haloScale * BLOOM_WIDTH_SCALE * bandDefocus;
               const a =
-                Math.min(1, (bandAlpha * BLOOM_ALPHA_SHARE * DOT_GAIN) / bandDefocus) /
-                BLOOM_PROFILE.length;
+                Math.min(
+                  1,
+                  (bandAlpha * BLOOM_ALPHA_SHARE * DOT_GAIN) / bandDefocus,
+                ) / BLOOM_PROFILE.length;
               g.strokeStyle = `rgba(${rgb}, ${a})`;
               for (const k of BLOOM_PROFILE) {
                 g.lineWidth = w * k;
@@ -414,19 +426,11 @@ export default function WaveField({
               g.lineWidth = bandWidth * layer.haloScale * bandDefocus;
               g.strokeStyle = `rgba(${rgb}, ${Math.min(
                 1,
-                (bandAlpha * HALO_ALPHA_SHARE * (toDots ? DOT_GAIN : 1)) / bandDefocus,
+                (bandAlpha * HALO_ALPHA_SHARE * DOT_GAIN) / bandDefocus,
               )})`;
-            } else if (pass === 3 || pass === 4) {
-              const [widthScale, alphaShare] = POSTER_SOFT_PASSES[pass - 3];
-              ctx.lineWidth = bandWidth * layer.haloScale * widthScale * bandDefocus;
-              ctx.strokeStyle = `rgba(${rgb}, ${
-                (bandAlpha * POSTER_CORE_ALPHA_SCALE * alphaShare) / bandDefocus
-              })`;
             } else {
-              g.lineWidth = toDots ? Math.max(bandWidth, HALFTONE_CELL * 0.8) : bandWidth;
-              g.strokeStyle = toDots
-                ? `rgba(${rgb}, ${Math.min(1, bandAlpha * CORE_DOT_GAIN)})`
-                : `rgba(${rgb}, ${bandAlpha * POSTER_CORE_ALPHA_SCALE})`;
+              g.lineWidth = Math.max(bandWidth, HALFTONE_CELL * 0.8);
+              g.strokeStyle = `rgba(${rgb}, ${Math.min(1, bandAlpha * CORE_DOT_GAIN)})`;
             }
             g.stroke();
           }
@@ -525,7 +529,7 @@ export default function WaveField({
       document.removeEventListener("visibilitychange", handleVisibility);
       window.removeEventListener("resize", handleResize);
     };
-  }, [reduceMotion, frozenAtMs, variant]);
+  }, [reduceMotion, frozenAtMs, intensity]);
 
   return <canvas ref={canvasRef} aria-hidden className={className} />;
 }

@@ -15,7 +15,7 @@ export default function MetaImageCanvas() {
     >
       <WaveField
         frozenAtMs={FROZEN_MS}
-        variant="poster"
+        intensity={1.8}
         className="pointer-events-none absolute inset-0 z-0"
       />
 
@@ -40,7 +40,9 @@ export default function MetaImageCanvas() {
               </span>
             ) : null}
             <span
-              className={index === 0 ? "font-medium text-fg" : "font-normal text-dim"}
+              className={
+                index === 0 ? "font-medium text-fg" : "font-normal text-dim"
+              }
             >
               {role}
             </span>

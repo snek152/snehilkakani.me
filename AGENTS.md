@@ -648,8 +648,8 @@ none; }` off that attribute — `display`, not `opacity`, because the layer
   becomes a dot sized by brightness. The crisp 1px filament and halo
   strokes are deliberately gone from ambient: a solid line through the
   middle of the page read as a rule and competed with content. The
-  `poster` variant (meta images) still draws its halo and soft passes as
-  strokes. If the readback costs frames on weak hardware, raise
+  `intensity` prop (meta images) only scales width and alpha. If the readback
+  costs frames on weak hardware, raise
   `HALFTONE_CELL` before touching anything else.
 - Halftone stops at the two canvases and the loader exit. A wider pass was
   tried and rejected: dotted `RouteSignal` traces, a dot-textured loader,
@@ -742,6 +742,11 @@ none; }` off that attribute — `display`, not `opacity`, because the layer
   cannot silently gain `/meta-image` or `/linkedin-banner` — those two are
   internal render surfaces, `noindex, nofollow`, and additionally
   `Disallow`ed in `robots.ts`.
+  The two pages render the same halftone `WaveField` as the site, with
+  `intensity={1.8}` (width and alpha multiplier, default 1) so the dots hold up
+  as a still image. The old solid-stroke `poster` variant was removed: it
+  rendered the pre-halftone look. They keep the static icon grid, not the
+  current loader stage.
 - The JSON-LD `Person`/`WebSite` graph in `app/layout.tsx` is constrained
   to facts already in the repo: title and employer from `experience.ts`'s
   most recent entry, links from `nav.ts`'s `socialLinks`. It says
