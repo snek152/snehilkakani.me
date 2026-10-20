@@ -1,196 +1,423 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-15T00:00:00Z",
-  "title": "Instrument Panel",
+  "generatedAt": "2026-10-20T22:29:36Z",
+  "title": "Design System: Instrument Panel",
   "extensions": {
-    "colorMeta": [
-      { "role": "background", "displayName": "Background", "value": "#080808" },
-      { "role": "surface", "displayName": "Card", "value": "#0e0e0e" },
-      { "role": "textPrimary", "displayName": "Foreground", "value": "#efefef" },
-      { "role": "textSecondary", "displayName": "Dim", "value": "#a8a8a8" },
-      { "role": "textTertiary", "displayName": "Dim 2", "value": "#7d7d7d" },
-      { "role": "accentShape", "displayName": "Accent (shapes only, 3.87:1 on #080808)", "value": "#2563eb" },
-      { "role": "accentText", "displayName": "Accent Text (required for words, 4.93:1 on #080808)", "value": "#4478ee" },
-      { "role": "accentRgb", "displayName": "Accent channels unpacked", "value": "37 99 235" },
-      { "role": "violetRgb", "displayName": "Violet material undertone, never a text role", "value": "124 92 255" },
-      { "role": "signalLight", "displayName": "Non-text light for fine marks / material edges", "value": "rgb(126 164 255)" },
-      { "role": "border", "displayName": "Border (quiet edges)", "value": "rgba(255, 255, 255, 0.07)" },
-      { "role": "rule", "displayName": "Rule (DrawnRule only)", "value": "rgba(255, 255, 255, 0.15)" },
-      { "role": "scrim", "displayName": "Lightbox scrim", "value": "rgba(4, 4, 4, 0.86)" },
-      { "role": "spectralSeam", "displayName": "Spectral seam gradient", "value": "linear-gradient(90deg, rgb(37 99 235 / 0.82), rgb(124 92 255 / 0.58), rgb(37 99 235 / 0))" },
-      { "role": "seamLens", "displayName": "Lens header rule gradient (pinned, not accent-derived)", "value": "linear-gradient(90deg, transparent, #5575d9, #8b66c9)" },
-      { "role": "seamFocus", "displayName": "Input focus underline gradient", "value": "linear-gradient(90deg, var(--accent), #6d5ede, var(--accent))" }
-    ],
+    "colorMeta": {
+      "bg": {
+        "role": "neutral",
+        "displayName": "Background",
+        "canonical": "#080808",
+        "tonalRamp": [
+          "#262626",
+          "#404040",
+          "#595959",
+          "#737373",
+          "#999999",
+          "#b8b8b8",
+          "#d6d6d6",
+          "#f2f2f2"
+        ]
+      },
+      "card": {
+        "role": "neutral",
+        "displayName": "Card",
+        "canonical": "#0e0e0e",
+        "tonalRamp": [
+          "#262626",
+          "#404040",
+          "#595959",
+          "#737373",
+          "#999999",
+          "#b8b8b8",
+          "#d6d6d6",
+          "#f2f2f2"
+        ]
+      },
+      "fg": {
+        "role": "neutral",
+        "displayName": "Foreground, 17.42:1",
+        "canonical": "#efefef",
+        "tonalRamp": [
+          "#262626",
+          "#404040",
+          "#595959",
+          "#737373",
+          "#999999",
+          "#b8b8b8",
+          "#d6d6d6",
+          "#f2f2f2"
+        ]
+      },
+      "dim": {
+        "role": "neutral",
+        "displayName": "Dim, 8.42:1",
+        "canonical": "#a8a8a8",
+        "tonalRamp": [
+          "#262626",
+          "#404040",
+          "#595959",
+          "#737373",
+          "#999999",
+          "#b8b8b8",
+          "#d6d6d6",
+          "#f2f2f2"
+        ]
+      },
+      "dim2": {
+        "role": "neutral",
+        "displayName": "Dim 2, 5.50:1",
+        "canonical": "#868686",
+        "tonalRamp": [
+          "#262626",
+          "#404040",
+          "#595959",
+          "#737373",
+          "#999999",
+          "#b8b8b8",
+          "#d6d6d6",
+          "#f2f2f2"
+        ]
+      },
+      "accent": {
+        "role": "primary",
+        "displayName": "Accent, shapes only, 3.87:1",
+        "canonical": "#2563eb",
+        "tonalRamp": [
+          "#061a46",
+          "#0b2c75",
+          "#0f3da3",
+          "#134fd2",
+          "#4479ee",
+          "#7ca1f3",
+          "#b4caf8",
+          "#e8eefd"
+        ]
+      },
+      "accent-text": {
+        "role": "primary",
+        "displayName": "Accent Text, words, 4.93:1",
+        "canonical": "#4478ee",
+        "tonalRamp": [
+          "#061a46",
+          "#0b2b75",
+          "#0f3ca4",
+          "#134ed2",
+          "#4478ee",
+          "#7ca0f3",
+          "#b4c9f8",
+          "#e8eefd"
+        ]
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Border, quiet edges",
+        "canonical": "rgba(255, 255, 255, 0.07)"
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Rule, DrawnRule only",
+        "canonical": "rgba(255, 255, 255, 0.15)"
+      },
+      "scrim": {
+        "role": "neutral",
+        "displayName": "Lightbox scrim",
+        "canonical": "rgba(4, 4, 4, 0.86)"
+      }
+    },
     "typographyMeta": {
-      "faces": [
-        {
-          "name": "Clash Display",
-          "cssVar": "--font-clash-display",
-          "themeToken": "font-display",
-          "foundry": "Indian Type Foundry",
-          "variableAxis": "200-700",
-          "file": "app/fonts/ClashDisplay-Variable.woff2",
-          "usage": "every display line",
-          "note": "axis stops at 700; font-extrabold on a display element is browser-synthesized, not rendered"
-        },
-        {
-          "name": "Switzer",
-          "cssVar": "--font-switzer",
-          "themeToken": "font-sans",
-          "foundry": "Indian Type Foundry",
-          "variableAxis": "100-900",
-          "file": "app/fonts/Switzer-Variable.woff2",
-          "usage": "body copy and all UI text; document default",
-          "note": "every weight the design uses is real, no synthesis"
-        }
-      ],
-      "mono": null,
-      "monoNote": "deliberately absent; numeric readouts (BPM, durations, EXIF) use tabular-nums on the sans instead",
-      "trackingScale": {
-        "display-xl": "-0.025em",
-        "display-lg": "-0.02em",
-        "display-md": "-0.012em",
-        "display-sm": "0em",
-        "text-sm": "0.01em (small dim text on near-black, meta/micro roles colored dim/dim2)",
-        "uppercaseMicroLabel": "0.08em (its own positive value, exception to text-sm)"
+      "display-xl": {
+        "displayName": "Display XL",
+        "purpose": "Hero name lockup."
       },
-      "measureCaps": { "lead": "56ch", "body": "66ch" },
-      "leading": { "lead": 1.75, "body": 1.7 },
-      "wordmarkException": {
-        "element": "SK wordmark in Sidebar",
-        "size": "text-[0.9rem]",
-        "weight": "font-bold",
-        "reason": "a brand mark is not a scale role"
+      "display-lg": {
+        "displayName": "Display LG",
+        "purpose": "Full-page titles and 404."
       },
-      "retuningNote": "tracking values are tuned for Clash Display (narrower, tighter than the previous Epilogue face); retune whenever the display face changes"
+      "display-md": {
+        "displayName": "Display MD",
+        "purpose": "Card and section headings, company names."
+      },
+      "display-sm": {
+        "displayName": "Display SM",
+        "purpose": "Index labels, role cycler."
+      },
+      "lead": {
+        "displayName": "Lead",
+        "purpose": "The one intro paragraph per page, 56ch."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Prose, bullets, 66ch."
+      },
+      "meta": {
+        "displayName": "Meta",
+        "purpose": "Metadata, labels, nav, buttons, EXIF."
+      },
+      "micro": {
+        "displayName": "Micro",
+        "purpose": "Dense readouts, notices."
+      }
     },
     "shadows": [
       {
-        "name": "sidebarRailShadow",
+        "name": "rail-panel",
         "value": "6px 0 28px -8px rgba(0,0,0,0.85)",
-        "purpose": "expanded Sidebar rail reads as a panel floating over the page rather than a wider strip of background",
-        "source": "app/lib/components/Sidebar.tsx"
+        "purpose": "Expanded Sidebar rail reads as a panel over the page."
       },
       {
-        "name": "scrollProgressRailBloom",
+        "name": "charged-fill",
         "value": "0 0 20px 2px var(--color-accent)",
-        "purpose": "charges the scroll indicator fill so it reads as lit, not flat",
-        "source": "app/lib/components/shared/ScrollProgressRail.tsx"
+        "purpose": "ScrollProgressRail fill."
       },
       {
-        "name": "orbitStageRing",
+        "name": "orbit-ring",
         "value": "0 0 0 1px rgb(var(--accent-rgb) / 0.18)",
-        "purpose": "1px accent ring around the loader's orbit node",
-        "source": "app/lib/components/loader/OrbitStage.tsx"
+        "purpose": "Loader orbit node, zero-blur ring."
       },
       {
-        "name": "signalRuleBloom",
-        "value": "0 6px 14px -7px rgb(var(--accent-rgb) / 0.14) (quiet) or 0.26 (strong)",
-        "purpose": "restrained downward accent bloom on header-scale rules; real offset + blur, explicitly not a zero-offset halo which would read as decoration",
-        "source": "app/lib/components/shared/SignalRule.tsx"
+        "name": "falling-light",
+        "value": "0 6px 14px -7px rgb(var(--accent-rgb) / 0.14)",
+        "purpose": "SignalRule; 0.26 for emphasis strong. Directional, not a halo."
       }
     ],
-    "motion": {
-      "easeOut": [0.22, 1, 0.36, 1],
-      "easeOutUse": "primary entrance easing, snappy deceleration",
-      "easePress": "cubic-bezier(0.23, 1, 0.32, 1)",
-      "easePressUse": "sub-200ms CSS/gesture transitions on things you can touch (press/hover feedback), not entrance motion",
-      "springs": {
-        "SPRING_UI": { "type": "spring", "bounce": 0, "duration": 0.4, "use": "chrome that repositions: sidebar rail, panels" },
-        "SPRING_MOMENTUM": { "type": "spring", "bounce": 0.2, "duration": 0.4, "use": "only a release that carried velocity: a flick, a throw, a drag let go" }
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "EASE_OUT for every choreographed entrance."
       },
-      "tempo": {
-        "bpm": 92,
-        "beatSeconds": 0.6521739130434783,
-        "helper": "beats(fraction) = (60 / 92) * fraction",
-        "rationale": "single shared timing grid so sequenced animations land on the same underlying pulse instead of arbitrary per-component numbers; a quiet nod to the music-production identity, not a literal audio cue"
+      {
+        "name": "ease-press",
+        "value": "cubic-bezier(0.23, 1, 0.32, 1)",
+        "purpose": "Control press and hover, 120ms."
       },
-      "gestureHelpers": {
-        "project": "project(velocity, decelerationRate = 0.998) — exponential-decay projected rest point of a flick, not v^2/2a; commit on projected rest + velocity sign, never raw distance dragged",
-        "rubberband": "rubberband(overshoot, dimension, constant = 0.55) — progressive resistance applied only past a real boundary; applying from the first pixel makes the element lag the finger"
+      {
+        "name": "beat",
+        "value": "60 / 92 s = 0.652s",
+        "purpose": "beats(fraction) in app/lib/tempo.ts; every duration derives from it."
       },
-      "reducedMotion": "drag gestures keep tracking (not vestibular motion); only the settle changes — spring swaps to { duration: 0 } and overshoot drops"
-    },
-    "breakpoints": {
-      "lg": "single cutoff switching Sidebar between vertical rail (desktop) and top bar (mobile)",
-      "sm/md": "used within either nav mode to step content padding and grid columns, e.g. px-6 sm:px-8 lg:px-12",
-      "railThin": "52px",
-      "railFull": "176px"
-    }
+      {
+        "name": "spring-ui",
+        "value": "spring bounce 0, duration 0.4",
+        "purpose": "SPRING_UI: chrome that repositions."
+      },
+      {
+        "name": "spring-momentum",
+        "value": "spring bounce 0.2, duration 0.4",
+        "purpose": "SPRING_MOMENTUM: only a release that carried velocity."
+      },
+      {
+        "name": "hover-intent",
+        "value": "120ms",
+        "purpose": "Sidebar expands after this delay on hover; keyboard focus is immediate."
+      },
+      {
+        "name": "draw-lead",
+        "value": "240px",
+        "purpose": "DrawnRule starts its ~0.8s draw this far above the fold."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      },
+      {
+        "name": "footer-icons",
+        "value": "420px"
+      }
+    ]
   },
   "components": [
     {
-      "name": "BORDERED_CONTROL",
-      "source": "app/lib/components/shared/controls.ts",
-      "snippet": "inline-flex items-center gap-1.5 border border-border px-[0.875rem] py-[0.45rem] text-[length:var(--text-meta)] text-dim transition-[color,border-color,scale] duration-[120ms] ease-[var(--ease-press)] hover:text-fg active:scale-[0.97] focus-visible:rounded-sm focus-visible:text-fg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Hero Résumé and error retry. Accent fill, white text, square.",
+      "html": "<a class=\"ds-btn-primary\" href=\"#\">Résumé</a>",
+      "css": ".ds-btn-primary{display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 16px;background:#2563eb;border:1px solid #2563eb;color:#fff;font:500 0.875rem Switzer,sans-serif;text-decoration:none;transition:opacity 120ms cubic-bezier(0.23,1,0.32,1),scale 120ms cubic-bezier(0.23,1,0.32,1)}.ds-btn-primary:hover{opacity:.8}.ds-btn-primary:active{scale:.97}.ds-btn-primary:focus-visible{outline:2px solid #2563eb;outline-offset:4px}"
     },
     {
-      "name": "ICON_LINK_CLASS",
-      "source": "app/lib/components/work/ProjectMeta.tsx",
-      "snippet": "relative rounded-sm text-dim2 transition-[color,scale] duration-[120ms] ease-[var(--ease-press)] before:absolute before:-inset-1 before:content-[''] hover:text-fg active:text-fg active:scale-[0.95] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-bg"
+      "name": "Bordered Control",
+      "kind": "button",
+      "refersTo": "button-bordered",
+      "description": "BORDERED_CONTROL: quiet bordered action.",
+      "html": "<a class=\"ds-btn-bordered\" href=\"#\">Download résumé</a>",
+      "css": ".ds-btn-bordered{display:inline-flex;align-items:center;gap:6px;padding:7.2px 14px;border:1px solid rgba(255,255,255,.07);color:#a8a8a8;font:400 0.875rem Switzer,sans-serif;text-decoration:none;transition:color 120ms cubic-bezier(0.23,1,0.32,1),border-color 120ms cubic-bezier(0.23,1,0.32,1),scale 120ms cubic-bezier(0.23,1,0.32,1)}.ds-btn-bordered:hover{color:#efefef}.ds-btn-bordered:active{scale:.97}.ds-btn-bordered:focus-visible{outline:2px solid #2563eb;outline-offset:4px}"
     },
     {
-      "name": "ContactForm input",
-      "source": "app/lib/components/contact/ContactForm.tsx",
-      "snippet": "w-full border-0 border-b border-border bg-transparent py-[0.6rem] text-[length:var(--text-body)] text-fg outline-none transition-colors duration-150 placeholder:text-dim2 focus:border-accent"
+      "name": "Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "No box; the bottom border is the rule, accent on focus.",
+      "html": "<input class=\"ds-input\" placeholder=\"Your name\" />",
+      "css": ".ds-input{width:100%;padding:9.6px 0;border:0;border-bottom:1px solid rgba(255,255,255,.07);background:transparent;color:#efefef;font:400 1rem Switzer,sans-serif;outline:none;transition:border-color 150ms}.ds-input::placeholder{color:#868686}.ds-input:focus{border-bottom-color:#2563eb}"
     },
     {
-      "name": "ProjectSkills tag",
-      "source": "app/lib/components/work/ProjectMeta.tsx",
-      "snippet": "text-[length:var(--text-meta)] tracking-[var(--track-text-sm)] text-dim before:mr-1.5 before:text-dim2 before:content-['/']"
+      "name": "Skill Tag",
+      "kind": "chip",
+      "refersTo": "skill-tag",
+      "description": "Text with a slash prefix. Never a chip.",
+      "html": "<ul class=\"ds-tags\"><li>TypeScript</li><li>React</li><li>Next.js</li></ul>",
+      "css": ".ds-tags{display:flex;flex-wrap:wrap;gap:6px 12px;margin:0;padding:0;list-style:none}.ds-tags li{font:400 0.875rem Switzer,sans-serif;letter-spacing:.01em;color:#a8a8a8}.ds-tags li::before{content:'/';margin-right:6px;color:#868686}"
     },
     {
-      "name": "PlayerBar surface",
-      "source": "app/lib/components/music/PlayerBar.tsx",
-      "snippet": "fixed bottom-0 left-0 right-0 z-30 bg-bg/95 backdrop-blur-xl lg:left-[52px]"
+      "name": "Experience Entry",
+      "kind": "custom",
+      "refersTo": "",
+      "description": "Date column, company, role, summary, dim bullets, accent impact line.",
+      "html": "<div class=\"ds-exp\"><div class=\"ds-exp-date\"><p>Jan 2026 - Present</p><small>Remote</small></div><div><h3>Company</h3><p class=\"ds-exp-role\">Incoming Tech Lead, previously Software Engineer</p><p class=\"ds-exp-sum\">One sentence of what was built and why.</p><ul><li><span></span>A concrete detail.</li></ul><p class=\"ds-exp-impact\">Measured result</p></div></div>",
+      "css": ".ds-exp{display:grid;grid-template-columns:1fr 3fr;border-bottom:1px solid rgba(255,255,255,.15);padding:40px 0;font-family:Switzer,sans-serif}.ds-exp-date{padding:8px 40px 0 0;border-right:1px solid rgba(255,255,255,.07)}.ds-exp-date p{margin:0;font:500 .875rem Switzer;color:#efefef;font-variant-numeric:tabular-nums}.ds-exp-date small{display:block;margin-top:8px;font-size:.8125rem;color:#a8a8a8}.ds-exp>div:last-child{padding-left:40px}.ds-exp h3{margin:0;font:600 1.85rem 'Clash Display',sans-serif;letter-spacing:-.012em;color:#efefef}.ds-exp-role{margin:4px 0 0;font-size:.875rem;color:#a8a8a8}.ds-exp-sum{margin:20px 0 0;font-size:1rem;line-height:1.7;color:#efefef;max-width:66ch}.ds-exp ul{margin:12px 0 0;padding:0;list-style:none;color:#a8a8a8;line-height:1.7}.ds-exp li{display:flex;gap:10px}.ds-exp li span{margin-top:10.4px;width:6px;height:6px;flex:none;border-radius:9999px;background:rgba(239,239,239,.4)}.ds-exp-impact{margin:16px 0 0;font:500 .875rem Switzer;color:#4478ee}"
     },
     {
-      "name": "Sidebar expanded rail",
-      "source": "app/lib/components/Sidebar.tsx",
-      "snippet": "fixed inset-y-0 left-0 z-50 hidden flex-col justify-center overflow-hidden border-r border-border bg-bg lg:flex backdrop-blur-[14px] shadow-[6px_0_28px_-8px_rgba(0,0,0,0.85)]"
+      "name": "Music Transport",
+      "kind": "custom",
+      "refersTo": "transport",
+      "description": "The one boxed surface: fixed bottom-right on /music only.",
+      "html": "<div class=\"ds-transport\"><p>Ascension</p><div class=\"ds-rail\"><i></i></div></div>",
+      "css": ".ds-transport{width:224px;padding:8px 12px;border:1px solid rgba(255,255,255,.07);border-radius:4px;background:rgba(8,8,8,.95);backdrop-filter:blur(8px);color:#efefef;font:400 .8125rem Switzer,sans-serif}.ds-transport p{margin:0 0 6px}.ds-rail{height:1px;background:rgba(255,255,255,.07)}.ds-rail i{display:block;width:40%;height:1px;background:#2563eb}"
     },
     {
-      "name": "Lightbox scrim",
-      "source": "app/lib/components/gallery/Lightbox.tsx",
-      "snippet": "absolute inset-0 backdrop-blur-[18px]; background: var(--scrim)"
+      "name": "Sidebar Rail",
+      "kind": "nav",
+      "refersTo": "nav-rail-expanded",
+      "description": "52px collapsed, 176px expanded after 120ms intent; panel shadow only when expanded.",
+      "html": "<nav class=\"ds-rail-nav\" aria-label=\"Primary\"><a>Home</a><a>Builds</a><a>Music</a><a>Lens</a><a>Reach</a></nav>",
+      "css": ".ds-rail-nav{display:flex;flex-direction:column;width:176px;border-right:1px solid rgba(255,255,255,.07);background:#080808;box-shadow:6px 0 28px -8px rgba(0,0,0,.85);font:500 .875rem Switzer,sans-serif}.ds-rail-nav a{display:flex;align-items:center;height:42px;padding-left:64px;color:#a8a8a8;transition:color 120ms cubic-bezier(0.23,1,0.32,1)}.ds-rail-nav a:hover{color:#efefef}"
+    },
+    {
+      "name": "Lightbox Scrim",
+      "kind": "custom",
+      "refersTo": "",
+      "description": "Dims the contact sheet but leaves it sharp.",
+      "html": "<div class=\"ds-scrim\"></div>",
+      "css": ".ds-scrim{width:100%;height:80px;background:rgba(4,4,4,.86)}"
     }
   ],
   "narrative": {
-    "northStar": "Instrument panel — a near-black, hairline-ruled engineering surface with one continuous ambient field behind it and a music-derived BPM-92 timing grid.",
-    "overview": "A flat, orthogonal foreground of rules and text sits in front of the site's only volumetric layer, WaveField. Density is high but controlled by a four-role type scale and measure caps; colour is rationed to three greys and one blue, split by contrast role rather than taste. Every reveal times off a shared beat grid instead of a per-component guess, and entrances resolve out of defocus, echoing the ambient layer's own optical language.",
+    "northStar": "Instrument panel",
+    "overview": "A near-black engineering surface, hairline-ruled, that reads like the flat, orthogonal chrome around a piece of equipment rather than a stack of paper cards. One continuous ambient field (`WaveField`) breathes behind it. It is the only thing in the interface with depth, perspective, or continuous motion, and everything in front of it is deliberately flat: opacity, `y`, `scale`, `clip-path`. Every reveal, stagger and transport pulse is timed off a single BPM-92 grid (`beats()`), a structural nod to the music half of the site rather than a literal audio cue.\n\nDensity is high but never cramped. Text is a four-role scale (lead / body / meta / micro) and every prose block carries a measure cap. Colour is rationed to three greys and one blue, and the blue is split by role: shapes get `--accent`, words get the brighter `--accent-text`, so restraint is enforced by contrast math, not taste.\n\nNothing is decoration for its own sake. A shadow exists only where it does a job a hairline cannot. A rule draws instead of fading, because the site is built out of hairlines and letting them draw turns the page's own structure into the animation. The one texture is a **halftone dither**: an 8px dot grid gated by a 4x4 Bayer matrix, used by exactly three things (the wave field, the cursor glow, the loader) and nowhere else.",
     "keyCharacteristics": [
-      "Flat and orthogonal in the foreground, volumetric in one background layer only",
-      "Hairlines, not cards — no elevation system, no radius above rounded-sm, no shadow-as-depth",
-      "Three greys, one blue, split by role (accent for shapes, accent-text for words)",
-      "One shared BPM-92 timing grid instead of per-component durations",
-      "Depth by defocus, never by drop shadow"
+      "**Flat and orthogonal in the foreground, volumetric in one background layer.** `WaveField` is the sole place depth, defocus and continuous motion live.",
+      "**Hairlines, not cards.** No elevation system, no card component, nothing rounder than `rounded-sm`.",
+      "**Three greys, one blue, split by role.** `--accent` for shapes, `--accent-text` for words.",
+      "**One timing grid.** `beats()` off BPM 92 for choreography, two springs for anything a hand touches, one press curve (`--ease-press`, 120ms) for controls.",
+      "**Dither as the single texture.** Halftone belongs to `WaveField`, `CursorGlow` and the loader. Swapping lines for dots anywhere else was tried and rejected.",
+      "**Each surface reveals according to what it is.** Rows follow their rule on `/builds`, the contact sheet develops on `/lens`, the history builds as a spine on `/`. A generic fade-and-rise is the thing that would cheapen all of it."
     ],
     "rules": [
-      "accent (#2563eb, 3.87:1) is for shapes only; accent-text (#4478ee, 4.93:1) is required for anything read as words",
-      "no corner radius above rounded-sm anywhere",
-      "only four legitimate shadow uses exist: Sidebar rail, ScrollProgressRail bloom, OrbitStage ring, SignalRule bloom — nothing else may add a shadow",
-      "every display tier is a clamp(); never add an sm:/lg: size step to a display element",
-      "Clash Display's axis tops at 700; font-bold is the ceiling, font-extrabold would be synthesized",
-      "small dim text (meta/micro, colored dim/dim2) takes +0.01em tracking (--track-text-sm); uppercase micro-labels keep their own +0.08em instead",
-      "WaveField is the site's only continuous ambient animation; a second animated background layer is banned",
-      "SK wordmark is the one documented exception to the type scale"
+      {
+        "name": "The Accent/Accent-Text Split Rule",
+        "body": "The brand blue is under the text floor on this background. `--accent` is for what is seen; `--accent-text` is required the moment the blue is read. Exception: white text on an `--accent` fill (the primary button) clears 5.17:1 because the contrast is against the fill, not the page.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Blue Rule",
+        "body": "The accent is the only blue any control, rule, icon or word uses. The wave field tints its three layers from white toward `37, 99, 235` and draws accent dots at `rgba(68,120,238,0.38)` / neutral dots at `rgba(200,205,220,0.21)`; those are canvas pixels, not interface colours, and must not be sampled for anything else. There is no violet, no seam gradient and no second hue anywhere.",
+        "section": "colors"
+      },
+      {
+        "name": "The No-Opacity-Dimming Rule",
+        "body": "`text-dim` and `text-dim2` are colours chosen to clear 4.5:1. `text-fg/70` is a guess at one. Two sanctioned opacity uses exist and neither is text: `bg-fg/40` for the bullet dot, `bg-white/[0.025]` for an active music row.",
+        "section": "colors"
+      },
+      {
+        "name": "The Accent Seam Rule",
+        "body": "The only gradient is the 1px hairline under project media (`ProjectCard`, `FeaturedProject`): `--accent` fading through 38-42% of itself to transparent. It draws left to right. No gradient fills, no gradient text.",
+        "section": "colors"
+      },
+      {
+        "name": "The Token Scale Rule",
+        "body": "Every size, leading, measure and tracking value is a token in `globals.css`; a component references the role it needs. A hand-picked `text-[0.93rem]` at a callsite is the defect the scale replaced.",
+        "section": "typography"
+      },
+      {
+        "name": "The No-Breakpoint-Size Rule",
+        "body": "Display tiers scale by `clamp()`. A heading is the same size on every route at every width. An `sm:` or `lg:` size step on a display element is a defect.",
+        "section": "typography"
+      },
+      {
+        "name": "The No-800 Rule",
+        "body": "Clash Display has no 800. `font-extrabold` on a display element would be synthesized by the browser, not rendered.",
+        "section": "typography"
+      },
+      {
+        "name": "The Uncapped Prose Rule",
+        "body": "Prose without a measure cap is a bug. Caps are in `ch`, so they hold at any zoom.",
+        "section": "typography"
+      },
+      {
+        "name": "The Poster Scale Exception",
+        "body": "`--size-meta-poster` (11rem), `--text-meta-ribbon` (1.3125rem) and `--text-meta-stack` (2.25rem) exist solely for the noindex render surfaces `/meta-image` and `/linkedin-banner`, which are fixed-size 1200x630 and 1584x396 canvases that get exported to images. They are not site roles; do not use them in routes.",
+        "section": "typography"
+      },
+      {
+        "name": "The Brand Mark",
+        "body": "`public/brand-mark.svg` is one all-white ligature of the actual Clash Display Bold numerals `1`, `5`, `2` (the `1` enters the `5` at full stroke, the `2` paints last so its shoulder absorbs the lower junction), scaled to 66% of its construction square. The Sidebar renders it transparent at 32x32 through `next/image` with `unoptimized`. The raster icon family (`app/icon.png`, `app/apple-icon.png`, public 192/512 PNGs) mounts the same master on an opaque `--bg` square; `app/favicon.ico` packs a 32px render plus a pixel-hinted 16px. It is a brand composition, not a text role.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat-By-Default Rule",
+        "body": "Surfaces are flat at rest. No shadow as card elevation, ever.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Defocus Rule",
+        "body": "To put one thing behind another, soften it. Do not darken it and do not shadow the one in front.",
+        "section": "elevation"
+      },
+      {
+        "name": "The One Ambient Layer Rule",
+        "body": "`WaveField` is the site's only continuous ambient motion. A second animated layer in the same plane, however quiet, makes both read as clutter. Make the field perceptible by raising filament opacity, never by adding a layer above it. `CursorGlow` is pointer feedback, not ambience: it mounts only for a precise pointer, tracks it 1:1, and has no idle position, drift or audio reactivity.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Rules-Draw Rule",
+        "body": "Rules draw; they never fade. `DrawnRule` scales a 1px line from an origin over ~0.8s, starting `240px` above the fold (roughly three-quarters of a laptop viewport) so the draw finishes where the reader is looking. A rule within 240px of the end of the document is detected on mount and resize and rendered already present.",
+        "section": "shapes"
+      },
+      {
+        "name": "The No-Pill Rule",
+        "body": "No pill, chip, capsule or rounded-container tag. Skill tags are text.",
+        "section": "shapes"
+      }
     ],
     "dos": [
-      "use text-dim / text-dim2 for de-emphasis",
-      "separate surfaces with a hairline (border or rule) or nothing",
-      "use accent for shapes, accent-text for words",
-      "source every type size from the four text roles and four display tiers",
-      "derive every animation duration from beats() / EASE_OUT / the named springs",
-      "cap corner radius at rounded-sm"
+      "**Do** separate surfaces with a hairline (`--border`, `--rule`) or nothing.",
+      "**Do** use `--accent` for shapes and `--accent-text` for words.",
+      "**Do** use `text-dim` / `text-dim2` for de-emphasis.",
+      "**Do** keep `WaveField` as the one ambient layer, and halftone as the texture of `WaveField`, `CursorGlow` and the loader only.",
+      "**Do** source type from the four text roles and four display tiers in `globals.css`, with a measure cap on prose.",
+      "**Do** time choreography with `beats()` and `EASE_OUT`, hand-driven motion with `SPRING_UI` / `SPRING_MOMENTUM`, and presses with `--ease-press` at 120ms.",
+      "**Do** give every new surface a reveal that fits what it is (a rule leading, a sheet developing, a spine building).",
+      "**Do** respect `useMotionPreference()` and keep drags tracking under reduced motion.",
+      "**Do** put a visible `focus-visible` outline (`outline-2 outline-offset-4 outline-accent`) on every interactive element, and a 24px minimum hit area.",
+      "**Do** route per-route metadata through `routeMetadata()` so OG and Twitter images survive the replace-not-merge behaviour.",
+      "**Do** treat the site's content as typed data under `app/lib/data/`, and keep generated files (`beat-durations.ts`, `photo-dims.generated.ts`) generated."
     ],
     "donts": [
-      "never dim text with an opacity modifier (text-fg/70 is a guess, not a measured colour)",
-      "never add a second ambient animated background layer",
-      "never use a shadow as card elevation",
-      "never let accent (#2563eb) carry a word",
-      "never introduce a fifth text size or a hand-picked literal size at a callsite",
-      "never reintroduce a kicker/eyebrow label above a heading",
-      "never reach for rounded-lg/rounded-xl or a gradient-pill tag"
+      "**Don't** let `--accent` (`#2563eb`, 3.87:1) carry a word.",
+      "**Don't** dim text with an opacity modifier.",
+      "**Don't** use a shadow as card elevation; the four named shadows are the whole list.",
+      "**Don't** add a second animated background, pinned scroll sequence, or a dotted `RouteSignal`, loader texture, hero line, scroll rail or `BeatBars`: all were tried and read worse than the solid strokes.",
+      "**Don't** introduce a fifth text size, a hand-picked literal such as `text-[0.93rem]`, or an `sm:` / `lg:` size step on a display element.",
+      "**Don't** use `font-extrabold` on Clash Display.",
+      "**Don't** use a radius above `rounded-sm`, a pill, a gradient fill, or gradient text.",
+      "**Don't** invent per-component durations, or fade a rule where it should draw.",
+      "**Don't** add a kicker or eyebrow above a heading.",
+      "**Don't** add a semantic colour (error red, success green). The palette has one blue.",
+      "**Don't** add a proficiency level, rating or tier to skills.",
+      "**Don't** put the Poster Scale tokens, `LoaderMatrix` or `intensity` above 1 on a real route.",
+      "**Don't** demote `Builds`, `Music` or `Lens` into a footnote: range is the claim."
     ]
   }
 }

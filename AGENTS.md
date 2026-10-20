@@ -24,13 +24,14 @@ No test suite is configured.
 
 ### Pages & Routes
 
-| Route     | Page file             | Purpose                                           |
-| --------- | --------------------- | ------------------------------------------------- |
-| `/`       | `app/page.tsx`        | Home — hero, index strip, experience              |
-| `/builds` | `app/builds/page.tsx` | Featured project, project rows, stack             |
-| `/music`  | `app/music/page.tsx`  | Beat release list + inline route-scoped transport |
-| `/lens`   | `app/lens/page.tsx`   | Photography contact sheet + lightbox              |
-| `/reach`  | `app/reach/page.tsx`  | Contact                                           |
+| Route                             | Page file                                                 | Purpose                                                                                    |
+| --------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `/`                               | `app/page.tsx`                                            | Home — hero, index strip, experience                                                       |
+| `/builds`                         | `app/builds/page.tsx`                                     | Featured project, project rows, stack                                                      |
+| `/music`                          | `app/music/page.tsx`                                      | Beat release list + inline route-scoped transport                                          |
+| `/lens`                           | `app/lens/page.tsx`                                       | Photography contact sheet + lightbox                                                       |
+| `/reach`                          | `app/reach/page.tsx`                                      | Contact                                                                                    |
+| `/meta-image`, `/linkedin-banner` | `app/meta-image/page.tsx`, `app/linkedin-banner/page.tsx` | `noindex` render surfaces, exported by hand to the OG/Twitter PNGs and the LinkedIn banner |
 
 Each route except `/` has a server `layout.tsx` beside it carrying that
 route's `metadata`; the page components are `"use client"` and so cannot
@@ -72,13 +73,24 @@ custom properties and exposed to Tailwind through `@theme inline`, so
 --accent-rgb  37 99 235        the same blue unpacked, for `rgb(var(--accent-rgb) / <alpha>)`
 --border      rgba(255,255,255,0.07)   card edges, inputs, nav — stays quiet
 --rule        rgba(255,255,255,0.15)   `DrawnRule` only — the lines you are meant to watch arrive
---scrim       rgba(4,4,4,0.97)         the lightbox backdrop, deliberately darker than the page
+--scrim       rgba(4,4,4,0.86)         the lightbox backdrop, darker than the page but leaves the sheet sharp
 ```
 
 Three greys and one blue. The `--accent` / `--accent-text` split is the load-
 bearing rule in that table: the brand blue is _under_ the 4.5:1 floor on this
 background, so it may never carry a word. Reach for `--accent-text` the moment
 the blue thing is read rather than seen.
+
+`DESIGN.md` is the design-system document (tokens, components, named rules,
+do's and don'ts); `.impeccable/design.json` is its generated sidecar. When a
+token, shadow, component or rule changes here, change it there in the same
+commit.
+
+Smaller tokens outside the table: `--ease-press` (`cubic-bezier(0.23, 1, 0.32,
+1)`, the 120ms press curve every control uses), and three poster-only sizes
+(`--size-meta-poster`, `--text-meta-ribbon`, `--text-meta-stack`) that belong
+to the two render surfaces and nothing else. `.instrument-chassis` draws the
+app's inset 1px `rgb(255 255 255 / 0.025)` frame.
 
 **Fonts** — both are **self-hosted variable** fonts from the Indian Type
 Foundry, loaded with `next/font/local` in `app/layout.tsx` from `app/fonts/`
@@ -186,7 +198,8 @@ Animations). What follows is what the code actually does.
 **Surfaces are defined by a hairline, not by a fill.** There is no card
 component and no elevation system. A region is separated from the page by a 1px
 `border-border` edge, a `DrawnRule`, or nothing at all — never by a drop shadow
-standing in for depth, and never by a corner radius above `rounded-sm`.
+standing in for depth, and never by a corner radius above `rounded-sm` (circles exist only as marks:
+bullet dots, the `SignalRule` endpoint, the scroll-rail fill).
 `--card` (`#0e0e0e`) exists for the few surfaces that need to sit a shade off
 the page; it is 3 steps of lightness away from `--bg`, and that is the whole
 range the design uses.
@@ -643,10 +656,10 @@ none; }` off that attribute — `display`, not `opacity`, because the layer
   dots line up where they overlap, and both gate dot presence with the
   same 4x4 Bayer matrix (`bayer()`), which turns soft falloff into
   ordered dither rather than a smooth gradient. In `WaveField` the
-  ambient variant renders only two passes (bloom, core) into a 1/8-scale
+  ambient field renders three passes (bloom, halo, core) into a 1/8-scale
   offscreen canvas and reads it back with `getImageData`; each cell
-  becomes a dot sized by brightness. The crisp 1px filament and halo
-  strokes are deliberately gone from ambient: a solid line through the
+  becomes a dot sized by brightness. The crisp 1px filament
+  stroke is deliberately gone from ambient (halo and core are drawn as dots): a solid line through the
   middle of the page read as a rule and competed with content. The
   `intensity` prop (meta images) only scales width and alpha. If the readback
   costs frames on weak hardware, raise
