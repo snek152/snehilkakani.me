@@ -16,7 +16,7 @@ export default function LoaderMatrix() {
           return (
             <div
               key={`${rowIndex}-${colIndex}`}
-              className="flex items-center justify-center border border-white/[0.22] bg-white/[0.03] text-fg"
+              className="flex items-center justify-center border border-white/[0.22] bg-white/[0.03] text-fg backdrop-blur-sm"
             >
               <Icon size={30} strokeWidth={1.65} aria-hidden="true" />
             </div>

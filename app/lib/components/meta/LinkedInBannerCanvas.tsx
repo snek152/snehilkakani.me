@@ -15,7 +15,7 @@ export default function LinkedInBannerCanvas() {
     >
       <WaveField
         frozenAtMs={FROZEN_MS}
-        intensity={1.8}
+        intensity={1.7}
         className="pointer-events-none absolute inset-0 z-0"
       />
 

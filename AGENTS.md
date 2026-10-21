@@ -756,7 +756,7 @@ none; }` off that attribute — `display`, not `opacity`, because the layer
   internal render surfaces, `noindex, nofollow`, and additionally
   `Disallow`ed in `robots.ts`.
   The two pages render the same halftone `WaveField` as the site, with
-  `intensity={1.8}` (width and alpha multiplier, default 1) so the dots hold up
+  `intensity={1.7}` (width and alpha multiplier, default 1) so the dots hold up
   as a still image. The old solid-stroke `poster` variant was removed: it
   rendered the pre-halftone look. They keep the static icon grid, not the
   current loader stage.

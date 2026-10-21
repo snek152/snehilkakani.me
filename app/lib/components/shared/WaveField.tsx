@@ -59,8 +59,10 @@ const CORE_DOT_GAIN = 2.5;
 const DITHER_DEPTH = 0.44;
 const NOISE_FLOOR = 30;
 const BLOOM_PROFILE = [1, 0.62, 0.3];
-const DOT_ACCENT_FILL = "rgba(68, 120, 238, 0.38)";
-const DOT_NEUTRAL_FILL = "rgba(200, 205, 220, 0.21)";
+const DOT_ACCENT_RGB = "68, 120, 238";
+const DOT_ACCENT_ALPHA = 0.38;
+const DOT_NEUTRAL_RGB = "200, 205, 220";
+const DOT_NEUTRAL_ALPHA = 0.21;
 
 const DEFOCUS_BY_DEPTH = 1.7;
 
@@ -441,7 +443,10 @@ export default function WaveField({
       const gh = hcanvas.height;
       const cells = hctx.getImageData(0, 0, gw, gh).data;
       for (let bucket = 0; bucket < 2; bucket++) {
-        ctx.fillStyle = bucket === 0 ? DOT_ACCENT_FILL : DOT_NEUTRAL_FILL;
+        ctx.fillStyle =
+          bucket === 0
+            ? `rgba(${DOT_ACCENT_RGB}, ${Math.min(1, DOT_ACCENT_ALPHA * intensity)})`
+            : `rgba(${DOT_NEUTRAL_RGB}, ${Math.min(1, DOT_NEUTRAL_ALPHA * intensity)})`;
         ctx.beginPath();
         for (let gy = 0; gy < gh; gy++) {
           for (let gx = 0; gx < gw; gx++) {
