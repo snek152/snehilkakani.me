@@ -149,7 +149,8 @@ export default function OrbitStage({
               return (
                 <motion.div
                   key={label}
-                  className="absolute left-1/2 top-1/2 flex items-center justify-center border border-white/[0.22] bg-white/[0.03] text-fg"
+                  data-material
+                  className="glass-tile absolute left-1/2 top-1/2 flex items-center justify-center text-fg"
                   style={{
                     width: markSize,
                     height: markSize,

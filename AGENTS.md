@@ -760,6 +760,10 @@ none; }` off that attribute — `display`, not `opacity`, because the layer
   as a still image. The old solid-stroke `poster` variant was removed: it
   rendered the pre-halftone look. They keep the static icon grid, not the
   current loader stage.
+  Loader tiles (`OrbitStage`, `LoaderMatrix`) share `.glass-tile` in `globals.css`:
+  hairline border, flat 4.5% fill, 8px blur. A gradient sheen with inset
+  top/bottom highlights was tried and read as slick; it stays flat and matte. It carries `data-material`, so reduced-transparency and
+  high-contrast fall back to opaque through the existing override.
 - The JSON-LD `Person`/`WebSite` graph in `app/layout.tsx` is constrained
   to facts already in the repo: title and employer from `experience.ts`'s
   most recent entry, links from `nav.ts`'s `socialLinks`. It says
