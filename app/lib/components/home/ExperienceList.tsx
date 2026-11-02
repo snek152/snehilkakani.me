@@ -64,7 +64,6 @@ export default function ExperienceList({
               src={experience.logo.src}
               aspect={experience.logo.aspect}
               label={experience.company}
-              luma={experience.logo.luma}
             />
           </motion.div>
 

@@ -3,7 +3,7 @@ export interface Experience {
   company: string;
   location?: string;
   period: string;
-  logo: { src: string; aspect: number; luma?: boolean };
+  logo: { src: string; aspect: number };
   previously?: string;
   summary?: string;
   details?: string[];
@@ -24,7 +24,7 @@ export const experiences: Experience[] = [
     company: "Lindy",
     location: "San Francisco, CA",
     period: "Jun 2026 - Aug 2026",
-    logo: { src: "/logos/lindy.png", aspect: 1, luma: true },
+    logo: { src: "/logos/lindy.svg", aspect: 3 },
     summary: "Built production infrastructure for Lindy's AI agent platform.",
     details: [
       "Lead engineer of Routines, which lets agents act on schedules and real-world events",

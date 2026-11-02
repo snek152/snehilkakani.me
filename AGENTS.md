@@ -428,8 +428,7 @@ metadata and JSON-LD still name Lindy, the current role, not `experiences[0]`.
 `LogoSpin` fills the date column's blank space (`lg` and up only) with the
 company mark as a small halftone canvas, a third place halftone is allowed
 alongside `WaveField`/`CursorGlow`/the loader, by explicit request. It samples a
-coverage mask (image alpha, or alpha x luminance when `logo.luma` is set, which
-is how Lindy's avatar renders as a face: white disc, dark features as holes)
+coverage mask (image alpha)
 on a 4px cell (`HALFTONE_CELL / 2`) and spins it on Y at a constant
 `SPIN_RAD_PER_MS`, one revolution in ~15s. Extrusion is 12 layers over 14px,
 nearest layer to the viewer wins each cell (order flips past 90deg), face dots
@@ -438,7 +437,7 @@ gate dithers. The back is deliberately NOT mirrored (`|cos|`): a mirrored
 "stripe" reads as a bug. It runs only while in view and draws one static frame
 under reduced motion. Scroll-driven rotation was tried and rejected. Logos:
 Stripe wordmark SVG (wikimedia, because simple-icons' Stripe is only the S
-glyph), Hack4Impact's `logomark.svg`, Lindy's 512px avatar PNG, CodeBox's favicon PNG.
+glyph), Hack4Impact's `logomark.svg`, Lindy's own face-and-wordmark lockup SVG (the avatar tile, the face alone and a cropped wordmark all read worse), CodeBox's favicon PNG.
 
 `ExperienceList` renders every entry in full, in the `ProjectBlurb` shape from
 `/builds`: a `summary` line in `text-fg`, `details` bullets in `text-dim`, and

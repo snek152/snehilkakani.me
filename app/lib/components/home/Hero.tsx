@@ -74,7 +74,7 @@ export default function Hero({
   const STATUS = [
     {
       label: "Incoming",
-      value: "Software Engineer Intern, Stripe",
+      value: "Stripe, Software Engineer Intern",
     },
     { label: "Studying", value: "Computer Science @ Cal Poly SLO" },
     { label: "Based in", value: "Bay Area, CA" },

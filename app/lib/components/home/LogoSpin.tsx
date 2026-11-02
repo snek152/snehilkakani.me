@@ -20,12 +20,10 @@ export default function LogoSpin({
   src,
   aspect,
   label,
-  luma = false,
 }: {
   src: string;
   aspect: number;
   label: string;
-  luma?: boolean;
 }) {
   const reduceMotion = useMotionPreference();
   const boxRef = useRef<HTMLDivElement>(null);
@@ -145,9 +143,7 @@ export default function LogoSpin({
       const px = octx.getImageData(0, 0, mw, mh).data;
       cover = new Float32Array(mw * mh);
       for (let i = 0; i < cover.length; i++) {
-        const a = px[i * 4 + 3] / 255;
-        const l = (px[i * 4] + px[i * 4 + 1] + px[i * 4 + 2]) / 765;
-        cover[i] = luma ? a * l : a;
+        cover[i] = px[i * 4 + 3] / 255;
       }
       start();
     };
@@ -163,7 +159,7 @@ export default function LogoSpin({
       window.removeEventListener("resize", onResize);
       if (rafId !== null) cancelAnimationFrame(rafId);
     };
-  }, [src, aspect, luma, inView, reduceMotion]);
+  }, [src, aspect, inView, reduceMotion]);
 
   return (
     <div
