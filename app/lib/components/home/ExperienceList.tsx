@@ -8,6 +8,7 @@ import { beats } from "@/app/lib/tempo";
 import { dateRange } from "@/app/lib/format";
 import { useMotionPreference } from "@/app/lib/components/shared/MotionPreference";
 import DrawnRule from "@/app/lib/components/shared/DrawnRule";
+import LogoSpin from "@/app/lib/components/home/LogoSpin";
 
 export default function ExperienceList({
   experiences,
@@ -54,9 +55,17 @@ export default function ExperienceList({
               {dateRange(experience.period)}
             </p>
 
-            <p className="mt-2 text-[length:var(--text-micro)] leading-snug tracking-[var(--track-text-sm)] text-dim">
-              {experience.location}
-            </p>
+            {experience.location && (
+              <p className="mt-2 text-[length:var(--text-micro)] leading-snug tracking-[var(--track-text-sm)] text-dim">
+                {experience.location}
+              </p>
+            )}
+            <LogoSpin
+              src={experience.logo.src}
+              aspect={experience.logo.aspect}
+              label={experience.company}
+              luma={experience.logo.luma}
+            />
           </motion.div>
 
           <motion.div
@@ -73,39 +82,41 @@ export default function ExperienceList({
                   : experience.title}
               </p>
             </motion.div>
-            <motion.div
-              variants={part}
-              className="mt-5 max-w-[var(--measure-body)]"
-            >
-              <p className="text-[length:var(--text-body)] leading-[var(--leading-body)] text-fg text-pretty">
-                {experience.summary}
-              </p>
-              <ul className="mt-3 flex flex-col gap-1.5">
-                {experience.details.map((line) => (
-                  <li
-                    key={line}
-                    className="flex items-start gap-2.5 text-[length:var(--text-body)] leading-[var(--leading-body)] text-dim"
-                  >
-                    <span
-                      aria-hidden="true"
-                      className="mt-[0.65rem] h-1.5 w-1.5 flex-shrink-0 rounded-full bg-fg/40"
-                    />
-                    {line}
-                  </li>
-                ))}
-              </ul>
-              {experience.impact && (
-                <p className="mt-4 flex items-start gap-2 text-[length:var(--text-meta)] font-medium leading-snug text-accent-text">
-                  <TrendingUp
-                    size={16}
-                    strokeWidth={1.75}
-                    aria-hidden="true"
-                    className="mt-px shrink-0 text-accent"
-                  />
-                  {experience.impact}
+            {(experience.summary || experience.details) && (
+              <motion.div
+                variants={part}
+                className="mt-5 max-w-[var(--measure-body)]"
+              >
+                <p className="text-[length:var(--text-body)] leading-[var(--leading-body)] text-fg text-pretty">
+                  {experience.summary}
                 </p>
-              )}
-            </motion.div>
+                <ul className="mt-3 flex flex-col gap-1.5">
+                  {experience.details?.map((line) => (
+                    <li
+                      key={line}
+                      className="flex items-start gap-2.5 text-[length:var(--text-body)] leading-[var(--leading-body)] text-dim"
+                    >
+                      <span
+                        aria-hidden="true"
+                        className="mt-[0.65rem] h-1.5 w-1.5 flex-shrink-0 rounded-full bg-fg/40"
+                      />
+                      {line}
+                    </li>
+                  ))}
+                </ul>
+                {experience.impact && (
+                  <p className="mt-4 flex items-start gap-2 text-[length:var(--text-meta)] font-medium leading-snug text-accent-text">
+                    <TrendingUp
+                      size={16}
+                      strokeWidth={1.75}
+                      aria-hidden="true"
+                      className="mt-px shrink-0 text-accent"
+                    />
+                    {experience.impact}
+                  </p>
+                )}
+              </motion.div>
+            )}
             {experience.skills && (
               <motion.ul
                 variants={{

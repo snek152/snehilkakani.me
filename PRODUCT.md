@@ -111,9 +111,10 @@ Real, first-party material already in the repository:
 
 - **14 projects** with 15 real screenshots in `public/projects/`. Includes
   Fere, which won 2nd place and $10K at Cal Poly's Innovation Quest.
-- **5 experience entries** in `app/lib/data/experience.ts`, most recent first —
-  currently led by a software engineering internship at Lindy in San Francisco,
-  working on infrastructure for a high-volume AI agent platform.
+- **4 experience entries** in `app/lib/data/experience.ts`, most recent first —
+  an incoming Stripe software engineering internship (Summer 2027), then the
+  current Lindy internship in San Francisco, working on infrastructure for a
+  high-volume AI agent platform. Each row carries a company mark in `public/logos/`.
 - **22 catalogued beats** backed by 22 original MP3s in `public/beats/`, each
   with a real tempo and category.
 - **36 photographs** in `public/photos/`, each with EXIF-style capture data

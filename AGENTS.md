@@ -42,7 +42,7 @@ export it themselves. Shared metadata values live in `app/lib/metadata.ts`.
 All content lives in TypeScript files under `app/lib/data/`. To add or edit portfolio content, edit these files — **no CMS, no API, no markdown**:
 
 - `projects.ts` — `Project[]` with title, subtitle (date range), description, image, skills, and optional `link` / `github` / `privateRepo`
-- `experience.ts` — `Experience[]` with title, company, location, period, description bullets, skills
+- `experience.ts` — `Experience[]` with title, company, period, `logo` (`/logos/*` + aspect), and optional location, summary, details, impact, skills
 - `beats.ts` — `Beat[]` with audio file path, category, tempo, description
 - `beat-durations.ts` — track lengths in seconds, generated from the MP3s with `ffprobe`; regenerate when the beats change
 - `skills.ts` — skill objects with icon (from `@icons-pack/react-simple-icons`), label, colorClass, and `type` (`"frontend"` | `"backend"` | `"AI"` | `"other"`), rendered as a grouped icon grid. It is an inventory of tools used, not a ranking — deliberately no proficiency levels, tiers or ratings, which are unfalsifiable and read as padding
@@ -419,7 +419,25 @@ can never fire. And a transform that travels outside its container still creates
 scrollable overflow: the accent segment needed `overflow-hidden` on its wrapper
 or every struck page gained ~250px of horizontal scroll.
 
-**Experience data ordering** — most recent first in `experience.ts`.
+**Experience data ordering** — most recent first in `experience.ts`. Stripe
+(incoming, Summer 2027) leads with no summary, details or location, since
+none exist yet; the row renders date, company and title only. The root
+metadata and JSON-LD still name Lindy, the current role, not `experiences[0]`.
+
+`LogoSpin` fills the date column's blank space (`lg` and up only) with the
+company mark as a small halftone canvas, a third place halftone is allowed
+alongside `WaveField`/`CursorGlow`/the loader, by explicit request. It samples a
+coverage mask (image alpha, or alpha x luminance when `logo.luma` is set, which
+is how Lindy's avatar renders as a face: white disc, dark features as holes)
+on a 4px cell (`HALFTONE_CELL / 2`) and spins it on Y at a constant
+`SPIN_RAD_PER_MS`, one revolution in ~15s. Extrusion is 12 layers over 14px,
+nearest layer to the viewer wins each cell (order flips past 90deg), face dots
+in `fg` and sides in accent. Brightness falls off to the lower right so the Bayer
+gate dithers. The back is deliberately NOT mirrored (`|cos|`): a mirrored
+"stripe" reads as a bug. It runs only while in view and draws one static frame
+under reduced motion. Scroll-driven rotation was tried and rejected. Logos:
+Stripe wordmark SVG (wikimedia, because simple-icons' Stripe is only the S
+glyph), Hack4Impact's `logomark.svg`, Lindy's 512px avatar PNG, CodeBox's favicon PNG.
 
 `ExperienceList` renders every entry in full, in the `ProjectBlurb` shape from
 `/builds`: a `summary` line in `text-fg`, `details` bullets in `text-dim`, and
@@ -508,6 +526,20 @@ none; }` off that attribute — `display`, not `opacity`, because the layer
   for an unknown duration and wrong for a playhead at rest. `PlayerBar`
   special-cases `currentTime > 0 ? formatTime(currentTime) : "0:00"` for the
   elapsed label so a track sitting at the start reads `0:00`, not `--:--`.
+
+### Terrain experiment
+
+- `/terrain` (`TerrainField`, `app/lib/components/lab/`) is an unlinked,
+  `noindex`, `robots.ts`-disallowed experiment and bypasses `AppShell` like
+  the two render pages. One canvas of dots on the shared `HALFTONE_CELL` grid
+  is a heightfield: three warped sines, ridged and squared, drive dot size,
+  alpha and a small upward offset (the depth read). Every 6.4s a rumble (radial
+  ripple, canvas shake, per-dot jitter) pulls the heights to a rasterised
+  icon mask (terminal, sliders, binary, aperture), which is drawn in accent
+  and dissolves back. The reveal is a radial wipe from the centre. Dots are
+  batched into 6 size/alpha levels per colour, one `Path2D` each, so a frame
+  is 12 fills. 20k dots at 1440x900 held 60fps in headless Chromium. Not wired
+  into the real loader.
 
 ### Gallery and lightbox
 
@@ -741,7 +773,7 @@ none; }` off that attribute — `display`, not `opacity`, because the layer
   library grows and a hardcoded number goes stale; `/reach`'s "freelance
   web work" line is grounded in the live Freelance Website Developer entry
   (Jun 2021–Present) in `experience.ts`; the root title/description are
-  grounded in `experience.ts`'s first (most recent) entry.
+  grounded in the Lindy entry in `experience.ts` (the current role).
 - Route descriptions are capped at ~160 characters, because that is where
   Google truncates the SERP snippet. `/builds` was 203 and `/music` 168;
   both were trimmed. `/music` also claimed the catalog was "filterable by

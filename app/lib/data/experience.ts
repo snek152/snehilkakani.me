@@ -1,21 +1,29 @@
 export interface Experience {
   title: string;
   company: string;
-  location: string;
+  location?: string;
   period: string;
+  logo: { src: string; aspect: number; luma?: boolean };
   previously?: string;
-  summary: string;
-  details: string[];
+  summary?: string;
+  details?: string[];
   impact?: string;
   skills?: string[];
 }
 
 export const experiences: Experience[] = [
   {
+    title: "Incoming Software Engineer Intern",
+    company: "Stripe",
+    period: "Summer 2027",
+    logo: { src: "/logos/stripe.svg", aspect: 360.02 / 149.84 },
+  },
+  {
     title: "Software Engineer Intern",
     company: "Lindy",
     location: "San Francisco, CA",
     period: "Jun 2026 - Aug 2026",
+    logo: { src: "/logos/lindy.png", aspect: 1, luma: true },
     summary: "Built production infrastructure for Lindy's AI agent platform.",
     details: [
       "Lead engineer of Routines, which lets agents act on schedules and real-world events",
@@ -37,6 +45,7 @@ export const experiences: Experience[] = [
     company: "Hack4Impact Cal Poly",
     location: "San Luis Obispo, CA",
     period: "Sep 2025 - Jun 2026",
+    logo: { src: "/logos/hack4impact.svg", aspect: 1 },
     summary: "Built features for the Paso Robles Food Co-op member portal.",
     details: [
       "Server actions for group messaging and admin blasts, with role-based auth and Zod validation",
@@ -55,6 +64,7 @@ export const experiences: Experience[] = [
     company: "CodeBox",
     location: "San Luis Obispo, CA",
     period: "Sep 2025 - Present",
+    logo: { src: "/logos/codebox.png", aspect: 1 },
     previously: "Software Engineer",
     summary:
       "Built navigation features for Mustang Maps, a React Native campus navigation app.",
