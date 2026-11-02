@@ -73,8 +73,8 @@ export default function Hero({
   const entrance = reduceMotion ? undefined : { opacity: 1, y: 0 };
   const STATUS = [
     {
-      label: "Currently building",
-      value: `Agentic AI side projects`,
+      label: "Incoming",
+      value: "Software Engineer Intern, Stripe",
     },
     { label: "Studying", value: "Computer Science @ Cal Poly SLO" },
     { label: "Based in", value: "Bay Area, CA" },

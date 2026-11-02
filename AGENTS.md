@@ -420,8 +420,9 @@ scrollable overflow: the accent segment needed `overflow-hidden` on its wrapper
 or every struck page gained ~250px of horizontal scroll.
 
 **Experience data ordering** — most recent first in `experience.ts`. Stripe
-(incoming, Summer 2027) leads with no summary, details or location, since
-none exist yet; the row renders date, company and title only. The root
+(incoming, Jun-Aug 2027, South San Francisco) leads with no summary or bullets, since
+none exist yet; the row is date, location, logo, company and title. The hero
+card's "Incoming" field names it. The root
 metadata and JSON-LD still name Lindy, the current role, not `experiences[0]`.
 
 `LogoSpin` fills the date column's blank space (`lg` and up only) with the

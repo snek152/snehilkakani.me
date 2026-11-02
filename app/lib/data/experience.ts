@@ -15,7 +15,8 @@ export const experiences: Experience[] = [
   {
     title: "Incoming Software Engineer Intern",
     company: "Stripe",
-    period: "Summer 2027",
+    location: "South San Francisco, CA",
+    period: "Jun 2027 - Aug 2027",
     logo: { src: "/logos/stripe.svg", aspect: 360.02 / 149.84 },
   },
   {
